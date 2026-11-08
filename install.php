@@ -252,8 +252,8 @@ function page(string $title, string $body): void
   echo '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'
     . '<meta name="robots" content="noindex, nofollow"><title>' . h($title) . ' - LeweDesk</title><link rel="icon" href="favicon.svg">'
     . '<style>
-:root{--bg:#f4f5f8;--card:#fff;--text:#1f2430;--muted:#667085;--line:#dfe2ea;--accent:#5856d6;--accent-text:#fff;--ok:#1b9e3e;--warn:#b7791f;--bad:#d92d20;--field:#fff}
-@media (prefers-color-scheme:dark){:root{--bg:#14161c;--card:#1d2028;--text:#e8eaf0;--muted:#9aa3b2;--line:#2e3340;--accent:#7d7bf0;--accent-text:#10111a;--ok:#4cc46a;--warn:#e0b04a;--bad:#ff7a70;--field:#14161c}}
+:root{--bg:#f4f5f8;--card:#fff;--text:#1f2430;--muted:#667085;--line:#dfe2ea;--accent:#0d6efd;--accent-text:#fff;--ok:#1b9e3e;--warn:#b7791f;--bad:#d92d20;--field:#fff}
+@media (prefers-color-scheme:dark){:root{--bg:#14161c;--card:#1d2028;--text:#e8eaf0;--muted:#9aa3b2;--line:#2e3340;--accent:#6ea8fe;--accent-text:#10111a;--ok:#4cc46a;--warn:#e0b04a;--bad:#ff7a70;--field:#14161c}}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 main{max-width:720px;margin:0 auto;padding:24px 16px 48px}
 header{display:flex;align-items:center;gap:12px;margin-bottom:16px}header img{width:40px;height:40px}h1{font-size:1.4rem;margin:0}h2{font-size:1.05rem;margin:0 0 12px}

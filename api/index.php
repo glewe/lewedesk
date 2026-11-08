@@ -154,6 +154,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
   exit(0);
 }
 
+// Not installed yet: no .env file and no database settings in the environment. The pages (static files) cannot know
+// that, so they ask the API; the answer makes them go to the installer (src/js/install-check.js).
+if (!is_file(dirname(__DIR__) . '/.env') && empty($_ENV['DB_NAME']) && getenv('DB_NAME') === false) {
+  http_response_code(503);
+  echo json_encode([
+    'status' => 'error',
+    'code' => 'not_installed',
+    'installer' => is_file(dirname(__DIR__) . '/install.php') && !is_file(dirname(__DIR__) . '/install.lock'),
+    'message' => 'LeweDesk is not installed yet. Open install.php in the LeweDesk folder.'
+  ]);
+  exit;
+}
+
 try {
   // Initialize Database
   $dbHost = new Database();

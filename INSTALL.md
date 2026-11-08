@@ -40,7 +40,7 @@ The web server user must be able to write to
 
 ## 3. Run the installer
 
-Open `https://your-server/your-folder/install.php` in the browser and follow the page:
+Open `https://your-server/your-folder/install.php` in the browser (opening any LeweDesk page before the installation has the same effect: it sends you to the installer) and follow the page:
 
 1. **Server check.** Fix everything marked with a red cross, then reload.
 2. **Database.** Enter host, port, database name, user and password. The installer tests the connection.

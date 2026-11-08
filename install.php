@@ -266,6 +266,7 @@ label{display:block;font-weight:600;margin:12px 0 4px}input[type=text],input[typ
 .check{display:flex;gap:8px;align-items:flex-start;font-weight:400;margin:10px 0}.check input{margin-top:5px}
 button{background:var(--accent);color:var(--accent-text);border:0;border-radius:6px;padding:10px 18px;font:inherit;font-weight:600;cursor:pointer}button[disabled]{opacity:.5;cursor:not-allowed}
 .alert{border:1px solid;border-radius:8px;padding:10px 12px;margin-bottom:16px}.alert.bad{border-color:var(--bad)}.alert.warn{border-color:var(--warn)}.alert.good{border-color:var(--ok)}
+a{color:var(--accent)}a:hover{text-decoration:none}
 details summary{cursor:pointer;font-weight:600;margin-top:12px}code{background:var(--bg);padding:1px 5px;border-radius:4px}
 </style></head><body><main><header><img src="favicon.svg" alt=""><h1>' . h($title) . '</h1></header>' . $body . '</main></body></html>';
 }

@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    (function () {
+      var t = localStorage.getItem('theme') || 'auto';
+      if (t === 'auto') t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-bs-theme', t);
+    })();
+  </script>
+  
+
+  <title>System Settings - LeweDesk</title>
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="icon" href="./favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="./assets/img/icons/app-icon-180.png">
+  <link rel="manifest" href="./site.webmanifest">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#212631" media="(prefers-color-scheme: dark)">
+
+  <meta name="robots" content="noindex, nofollow">
+
+
+  <script type="module" crossorigin src="./assets/js/settings-Dv8wUZHq.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/js/fonts-DulLi24i.js">
+  <link rel="modulepreload" crossorigin href="./assets/js/lookups-C_5IjfOa.js">
+  <link rel="modulepreload" crossorigin href="./assets/js/main-C5OaDeha.js">
+  <link rel="stylesheet" crossorigin href="./assets/css/fonts-Bkfm3jnF.css">
+</head>
+<body>
+  <div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
+    <div class="sidebar-brand d-none d-md-flex">
+      <i class="bi bi-ticket-perforated me-2 logo-gradient fs-4"></i>
+      <span class="sidebar-brand-full">Lewe<strong>Desk</strong></span>
+      <span class="sidebar-brand-narrow"></span>
+    </div>
+    <div class="sidebar-mobile-bar d-md-none">
+      <span><i class="bi bi-ticket-perforated me-2 logo-gradient fs-4"></i>Lewe<strong>Desk</strong></span>
+      <button class="sidebar-close" id="sidebar-close" type="button" aria-label="Close menu"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <ul class="sidebar-nav">
+      <li class="nav-item" data-auth="user">
+        <a class="nav-link" href="dashboard.html">
+          <i class="nav-icon bi bi-speedometer2"></i> <span class="nav-text" data-i18n="sidebar.dashboard">Dashboard</span>
+        </a>
+      </li>
+      <li class="nav-title" data-public data-i18n="sidebar.issues_title">Issues</li>
+      <li class="nav-item" data-permission="create_issue">
+        <a class="nav-link" href="issue-add.html">
+          <i class="nav-icon bi bi-plus-circle"></i> <span class="nav-text" data-i18n="sidebar.create_issue">Create issue</span>
+        </a>
+      </li>
+      <li class="nav-item" data-public>
+        <a class="nav-link" href="issues.html">
+          <i class="nav-icon bi bi-list-ul"></i> <span class="nav-text" data-i18n="sidebar.all_issues">All issues</span> <span class="nav-count d-none" data-count="all"></span>
+        </a>
+      </li>
+      <li class="nav-item" data-auth="user">
+        <a class="nav-link" href="issues.html?view=mine">
+          <i class="nav-icon bi bi-person-lines-fill"></i> <span class="nav-text" data-i18n="sidebar.my_issues">My issues</span> <span class="nav-count d-none" data-count="mine"></span>
+        </a>
+      </li>
+      <li class="nav-item" data-auth="user">
+        <a class="nav-link" href="issues.html?view=assigned">
+          <i class="nav-icon bi bi-person-check"></i> <span class="nav-text" data-i18n="sidebar.assigned_to_me">Assigned to me</span> <span class="nav-count d-none" data-count="assigned"></span>
+        </a>
+      </li>
+      <li class="nav-item" data-permission="view_all_issues">
+        <a class="nav-link" href="issues.html?view=unassigned">
+          <i class="nav-icon bi bi-person-dash"></i> <span class="nav-text" data-i18n="sidebar.unassigned">Unassigned</span> <span class="nav-count d-none" data-count="unassigned"></span>
+        </a>
+      </li>
+      <li class="nav-item" data-auth="user">
+        <a class="nav-link" href="issues.html?view=open">
+          <i class="nav-icon bi bi-circle" data-category="open"></i> <span class="nav-text" data-i18n="sidebar.open">Open</span> <span class="nav-count d-none" data-count="open"></span>
+        </a>
+      </li>
+      <li class="nav-item" data-auth="user">
+        <a class="nav-link" href="issues.html?view=waiting">
+          <i class="nav-icon bi bi-hourglass-split" data-category="waiting"></i> <span class="nav-text" data-i18n="sidebar.waiting">Waiting</span> <span class="nav-count d-none" data-count="waiting"></span>
+        </a>
+      </li>
+      <li class="nav-item" data-auth="user">
+        <a class="nav-link" href="issues.html?view=in_progress">
+          <i class="nav-icon bi bi-play-circle" data-category="in_progress"></i> <span class="nav-text" data-i18n="sidebar.in_progress">In progress</span> <span class="nav-count d-none" data-count="in_progress"></span>
+        </a>
+      </li>
+      <li class="nav-item" data-auth="user">
+        <a class="nav-link" href="issues.html?view=done">
+          <i class="nav-icon bi bi-check-circle" data-category="done"></i> <span class="nav-text" data-i18n="sidebar.done">Done</span> <span class="nav-count d-none" data-count="done"></span>
+        </a>
+      </li>
+      <li class="nav-item" data-permission="delete_issue">
+        <a class="nav-link" href="issues.html?view=deleted">
+          <i class="nav-icon bi bi-trash"></i> <span class="nav-text" data-i18n="sidebar.deleted_issues">Deleted</span> <span class="nav-count d-none" data-count="deleted"></span>
+        </a>
+      </li>
+      <li class="nav-title" data-permission-any="view_audit_log manage_settings manage_users manage_roles manage_groups manage_permissions manage_issue_types manage_status manage_status_categories manage_resolutions manage_products manage_tags" data-i18n="sidebar.administration">Administration</li>
+      <li class="nav-item nav-group" data-permission-any="view_audit_log manage_settings manage_users manage_roles manage_groups manage_permissions">
+        <a class="nav-link nav-group-toggle" href="#">
+          <i class="nav-icon bi bi-shield-lock"></i> <span class="nav-text" data-i18n="sidebar.management">System</span>
+        </a>
+        <ul class="nav-group-items">
+          <li class="nav-item" data-permission="view_audit_log">
+            <a class="nav-link" href="audit-log.html">
+              <i class="nav-icon bi bi-journal-text"></i> <span class="nav-text">Audit Log</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_groups">
+            <a class="nav-link" href="groups.html">
+              <i class="nav-icon bi bi-collection"></i> <span class="nav-text" data-i18n="sidebar.groups">Groups</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_permissions">
+            <a class="nav-link" href="permissions.html">
+              <i class="nav-icon bi bi-key"></i> <span class="nav-text" data-i18n="sidebar.permissions">Permissions</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_roles">
+            <a class="nav-link" href="roles.html">
+              <i class="nav-icon bi bi-shield-check"></i> <span class="nav-text" data-i18n="sidebar.roles">Roles</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_settings">
+            <a class="nav-link" href="settings.html">
+              <i class="nav-icon bi bi-gear"></i> <span class="nav-text" data-i18n="sidebar.settings">Settings</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_users">
+            <a class="nav-link" href="users.html">
+              <i class="nav-icon bi bi-people"></i> <span class="nav-text" data-i18n="sidebar.users">Users</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="nav-item nav-group" data-permission-any="manage_issue_types manage_status manage_status_categories manage_resolutions manage_products manage_tags">
+        <a class="nav-link nav-group-toggle" href="#">
+          <i class="nav-icon bi bi-ticket-detailed"></i> <span class="nav-text" data-i18n="sidebar.issues">Issues</span>
+        </a>
+        <ul class="nav-group-items">
+          <li class="nav-item" data-permission="manage_issue_types">
+            <a class="nav-link" href="issue-types.html">
+              <i class="nav-icon bi bi-bug"></i> <span class="nav-text" data-i18n="sidebar.issue_types">Issue Types</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_products">
+            <a class="nav-link" href="products.html">
+              <i class="nav-icon bi bi-box-seam"></i> <span class="nav-text" data-i18n="sidebar.products">Products</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_resolutions">
+            <a class="nav-link" href="resolutions.html">
+              <i class="nav-icon bi bi-check2-circle"></i> <span class="nav-text" data-i18n="sidebar.resolutions">Resolutions</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_status">
+            <a class="nav-link" href="status.html">
+              <i class="nav-icon bi bi-flag"></i> <span class="nav-text" data-i18n="sidebar.status">Status</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_status_categories">
+            <a class="nav-link" href="status-categories.html">
+              <i class="nav-icon bi bi-folder2"></i> <span class="nav-text" data-i18n="sidebar.status_categories">Status Categories</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_tags">
+            <a class="nav-link" href="tags.html">
+              <i class="nav-icon bi bi-tags"></i> <span class="nav-text" data-i18n="sidebar.tags">Tags</span>
+            </a>
+          </li>
+        </ul>
+      </li>    </ul>
+    <button class="sidebar-toggler" type="button"></button>
+  </div>
+  <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+  <div class="wrapper d-flex flex-column">
+    <header class="header header-sticky mb-4">
+      <div class="container-fluid">
+        <button class="header-toggler px-md-0 me-md-3" type="button">
+          <i class="bi bi-list fs-4"></i>
+        </button>
+        <a class="header-brand d-md-none" href="#">
+          <i class="bi bi-ticket-perforated logo-gradient fs-4"></i>
+        </a>
+        <form class="d-none d-md-flex ms-auto me-4" id="header-search-form" role="search">
+          <div class="input-group">
+            <span class="input-group-text bg-transparent border-0"><i class="bi bi-search"></i></span>
+            <input class="form-control border-0 bg-transparent" type="search" id="header-search" name="q" maxlength="100" autocomplete="off" placeholder="Search..." aria-label="Search" data-i18n="header.search">
+          </div>
+        </form>
+        <ul class="header-nav d-none d-md-flex">
+          <!-- LDAP or SSO authentication is active (administrators only, see updateLdapBadge in main.js) -->
+          <li class="nav-item d-none align-items-center" id="ldap-badge">
+            <span class="badge text-bg-info" data-i18n-title="header.ldap_active" title="LDAP authentication is active"><i class="bi bi-diagram-3 me-1"></i><span id="ldap-badge-label">LDAP</span></span>
+          </li>
+          <!-- Help -->
+          <li class="nav-item dropdown" id="help-menu">
+            <button class="btn btn-link nav-link dropdown-toggle d-flex align-items-center" id="help-toggle" type="button" aria-expanded="false" data-bs-toggle="dropdown">
+              <i class="bi bi-question-circle me-2"></i> <span data-i18n="header.help">Help</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="help-toggle">
+              <li class="d-none" data-manual>
+                <a class="dropdown-item" id="help-manual-link" href="#" data-manual-link target="_blank" rel="noopener noreferrer"><i class="bi bi-book me-2"></i> <span data-i18n="header.manual">User Manual</span></a>
+              </li>
+              <li>
+                <a class="dropdown-item" id="help-privacy-link" href="privacy.html"><i class="bi bi-shield-lock me-2"></i> <span data-i18n="header.privacy">Privacy Policy</span></a>
+              </li>
+              <li>
+                <a class="dropdown-item" id="help-imprint-link" href="imprint.html"><i class="bi bi-vector-pen me-2"></i> <span data-i18n="header.imprint">Imprint</span></a>
+              </li>
+              <li>
+                <a class="dropdown-item" id="help-about-link" href="about.html"><i class="bi bi-info-circle me-2"></i> <span data-i18n="header.about">About</span></a>
+              </li>
+            </ul>
+          </li>
+          <!-- Language Switcher -->
+          <li class="nav-item dropdown">
+            <button class="btn btn-link nav-link dropdown-toggle d-flex align-items-center" id="lang-switcher" type="button" aria-expanded="false" data-bs-toggle="dropdown">
+              <img src="assets/img/flags/en.svg" class="me-2 rounded-1" width="20" height="15" id="current-flag" alt="Flag">
+              <span id="current-lang">EN</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="lang-switcher">
+              <li>
+                <button type="button" class="dropdown-item d-flex align-items-center" data-lang-value="en">
+                  <img src="assets/img/flags/en.svg" class="me-2 rounded-1" width="20" height="15" alt="EN"> English
+                </button>
+              </li>
+              <li>
+                <button type="button" class="dropdown-item d-flex align-items-center" data-lang-value="de">
+                  <img src="assets/img/flags/de.svg" class="me-2 rounded-1" width="20" height="15" alt="DE"> Deutsch
+                </button>
+              </li>
+              <li>
+                <button type="button" class="dropdown-item d-flex align-items-center" data-lang-value="fr">
+                  <img src="assets/img/flags/fr.svg" class="me-2 rounded-1" width="20" height="15" alt="FR"> Français
+                </button>
+              </li>
+              <li>
+                <button type="button" class="dropdown-item d-flex align-items-center" data-lang-value="es">
+                  <img src="assets/img/flags/es.svg" class="me-2 rounded-1" width="20" height="15" alt="ES"> Español
+                </button>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <button class="btn btn-link nav-link dropdown-toggle d-flex align-items-center" id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static">
+              <i class="bi bi-circle-half me-2"></i>
+              <span class="d-none" id="bd-theme-text">Toggle theme</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="bd-theme-text">
+              <li>
+                <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light">
+                  <i class="bi bi-sun-fill me-2 opacity-50"></i> <span data-i18n="common.light">Light</span>
+                </button>
+              </li>
+              <li>
+                <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark">
+                  <i class="bi bi-moon-stars-fill me-2 opacity-50"></i> <span data-i18n="common.dark">Dark</span>
+                </button>
+              </li>
+              <li>
+                <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto">
+                  <i class="bi bi-circle-half me-2 opacity-50"></i> <span data-i18n="common.auto">Auto</span>
+                </button>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown px-2" data-auth="user" id="notification-menu">
+            <a class="nav-link py-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" id="notification-toggle">
+              <i class="bi bi-bell fs-5"></i>
+              <span class="position-absolute top-25 start-75 translate-middle badge rounded-pill bg-danger d-none" style="font-size: 0.5rem;" id="notification-badge">0</span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end dropdown-menu-lg pt-0" style="width: 22rem; max-width: 92vw;">
+              <div class="dropdown-header bg-body-tertiary py-2 d-flex flex-wrap justify-content-between align-items-center column-gap-3 text-wrap">
+                <strong id="notification-title" data-i18n="notifications.title">Notifications</strong>
+                <button type="button" class="btn btn-link btn-sm p-0 text-decoration-none text-nowrap d-none" id="notification-read-all" data-i18n="notifications.mark_all_read">Mark all as read</button>
+              </div>
+              <div id="notification-list" style="max-height: 26rem; overflow-y: auto;">
+                <div class="dropdown-item-text text-body-secondary" data-i18n="notifications.empty">No notifications.</div>
+              </div>
+              <div class="dropdown-divider my-0"></div>
+              <a class="dropdown-item text-center small py-2" href="profile.html#notifications" data-i18n="notifications.settings">Notification settings</a>
+            </div>
+          </li>
+        </ul>
+        <ul class="header-nav ms-3">
+          <!-- Login link (anonymous visitors of the public pages) -->
+          <li class="nav-item d-none" data-auth="anonymous">
+            <a class="btn btn-primary btn-sm" href="login.html"><i class="bi bi-box-arrow-in-right me-1"></i> <span data-i18n="header.login">Login</span></a>
+          </li>
+          <li class="nav-item dropdown" data-auth="user">
+            <a class="nav-link py-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+              <div class="avatar avatar-md border rounded-circle bg-primary text-white d-flex align-items-center justify-content-center overflow-hidden" id="header-avatar">
+                <i class="bi bi-person"></i>
+              </div>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end pt-0">
+              <div class="dropdown-header bg-body-tertiary py-2"><strong data-i18n="header.settings">Settings</strong></div>
+              <a class="dropdown-item" href="profile.html"><i class="bi bi-person me-2"></i> <span data-i18n="header.profile">Profile</span></a>
+              <a class="dropdown-item" data-permission="manage_settings" href="settings.html"><i class="bi bi-gear me-2"></i> <span data-i18n="header.settings">Settings</span></a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#" id="logout-btn"><i class="bi bi-box-arrow-right me-2"></i> <span data-i18n="header.logout">Logout</span></a>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="header-divider"></div>
+      <div class="container-fluid header-breadcrumb">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb my-0 ms-2">
+            <li class="breadcrumb-item" data-auth="user"><a href="dashboard.html" class="text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item d-none" data-auth="anonymous"><a href="index.html" class="text-decoration-none">Home</a></li>
+            
+              
+                
+                  <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Settings</a></li>
+                
+              
+                
+                  <li class="breadcrumb-item active"><span>System Settings</span></li>
+                
+              
+            
+          </ol>
+        </nav>
+      </div>
+    </header>
+    <div class="body flex-grow-1 px-3">
+      <div class="container-lg">
+        <div class="alert alert-warning d-none" id="maintenance-banner" role="alert">
+          <i class="bi bi-cone-striped me-2"></i> <span data-i18n="maintenance.banner">Maintenance mode is active. Only administrators can use the application.</span>
+        </div>
+        <div class="alert alert-info d-none" id="license-trial-banner" role="alert">
+          <i class="bi bi-key me-2"></i> <span id="license-trial-text"></span>
+          <a href="settings.html#license" class="alert-link ms-1 d-none" id="license-trial-link" data-i18n="license.banner.link">License settings</a>
+        </div>
+        <div class="alert alert-warning d-none" id="license-expiry-banner" role="alert">
+          <i class="bi bi-key me-2"></i> <span id="license-expiry-text"></span>
+          <a href="settings.html#license" class="alert-link ms-1" data-i18n="license.banner.link">License settings</a>
+        </div>
+
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card mb-4">
+      <div class="card-header" data-i18n="settings.title">System Settings</div>
+      <div class="card-body">
+        <!-- Tab Navigation -->
+        <ul class="nav nav-tabs mb-4" id="settingsTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#general" type="button" role="tab" aria-controls="general" aria-selected="true" data-i18n="settings.tabs.general">General</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="system-tab" data-bs-toggle="tab" data-bs-target="#system" type="button" role="tab" aria-controls="system" aria-selected="false" data-i18n="settings.tabs.system">System</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="theme-tab" data-bs-toggle="tab" data-bs-target="#theme" type="button" role="tab" aria-controls="theme" aria-selected="false" data-i18n="settings.tabs.theme">Theme</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="issues-tab" data-bs-toggle="tab" data-bs-target="#issues" type="button" role="tab" aria-controls="issues" aria-selected="false" data-i18n="settings.tabs.issues">Issue Config</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="license-tab" data-bs-toggle="tab" data-bs-target="#license" type="button" role="tab" aria-controls="license" aria-selected="false" data-i18n="settings.tabs.license">License</button>
+          </li>
+        </ul>
+
+        <form id="settings-form">
+          <div class="tab-content" id="settingsTabsContent">
+            
+            <!-- General Tab -->
+            <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.application_url">Application URL</span>
+                  <p class="form-description" data-i18n="settings.fields.application_url_desc">Enter the full application URL here.</p>
+                </div>
+                <div class="form-content">
+                  <input type="url" class="form-control" name="application_url" id="application_url">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.application_name">Application Name</span>
+                  <p class="form-description" data-i18n="settings.fields.application_name_desc">Enter an application title here.</p>
+                </div>
+                <div class="form-content">
+                  <input type="text" class="form-control" name="application_name" id="application_name" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.application_manual">Application Manual</span>
+                  <p class="form-description" data-i18n="settings.fields.application_manual_desc">Link to the user manual.</p>
+                </div>
+                <div class="form-content">
+                  <input type="url" class="form-control" name="application_manual" id="application_manual">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.html_description">HTML Description</span>
+                  <p class="form-description" data-i18n="settings.fields.html_description_desc">Search engine description.</p>
+                </div>
+                <div class="form-content">
+                  <input type="text" class="form-control" name="html_description" id="html_description">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.html_keywords">HTML Keywords</span>
+                  <p class="form-description" data-i18n="settings.fields.html_keywords_desc">Search engine keywords.</p>
+                </div>
+                <div class="form-content">
+                  <input type="text" class="form-control" name="html_keywords" id="html_keywords">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.default_language">Default Language</span>
+                  <p class="form-description" data-i18n="settings.fields.default_language_desc">Select the default language.</p>
+                </div>
+                <div class="form-content">
+                  <select class="form-select" name="default_language" id="default_language">
+                    <option value="en">English</option>
+                    <option value="de">Deutsch</option>
+                    <option value="fr">Français</option>
+                    <option value="es">Español</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.alert_show">Show Alerts</span>
+                  <p class="form-description" data-i18n="settings.fields.alert_show_desc">Select alert types to show.</p>
+                </div>
+                <div class="form-content">
+                  <div class="d-flex flex-wrap gap-3">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" name="alert_show_info" id="alert_show_info" value="true">
+                      <label class="form-check-label" for="alert_show_info" data-i18n="common.info">Info</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" name="alert_show_success" id="alert_show_success" value="true">
+                      <label class="form-check-label" for="alert_show_success" data-i18n="common.success">Success</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" name="alert_show_warning" id="alert_show_warning" value="true">
+                      <label class="form-check-label" for="alert_show_warning" data-i18n="common.warning">Warning</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" name="alert_show_error" id="alert_show_error" value="true">
+                      <label class="form-check-label" for="alert_show_error" data-i18n="common.error">Error</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.alert_autoclose_info">Autoclose Info Alerts</span>
+                  <p class="form-description" data-i18n="settings.fields.alert_autoclose_info_desc">Automatically close Info alerts.</p>
+                </div>
+                <div class="form-content">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" name="alert_autoclose_info" id="alert_autoclose_info" value="true">
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.alert_autoclose_success">Autoclose Success Alerts</span>
+                  <p class="form-description" data-i18n="settings.fields.alert_autoclose_success_desc">Automatically close Success alerts.</p>
+                </div>
+                <div class="form-content">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" name="alert_autoclose_success" id="alert_autoclose_success" value="true">
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.alert_autoclose_warning">Autoclose Warning Alerts</span>
+                  <p class="form-description" data-i18n="settings.fields.alert_autoclose_warning_desc">Automatically close Warning alerts.</p>
+                </div>
+                <div class="form-content">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" name="alert_autoclose_warning" id="alert_autoclose_warning" value="true">
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.alert_autoclose_error">Autoclose Error Alerts</span>
+                  <p class="form-description" data-i18n="settings.fields.alert_autoclose_error_desc">Automatically close Error alerts.</p>
+                </div>
+                <div class="form-content">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" name="alert_autoclose_error" id="alert_autoclose_error" value="true">
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.alert_autoclose_delay">Alert Autoclose Delay</span>
+                  <p class="form-description" data-i18n="settings.fields.alert_autoclose_delay_desc">Delay in milliseconds.</p>
+                </div>
+                <div class="form-content">
+                  <input type="number" class="form-control" name="alert_autoclose_delay" id="alert_autoclose_delay" min="0" max="60000">
+                </div>
+              </div>
+            </div>
+
+            <!-- System Tab -->
+            <div class="tab-pane fade" id="system" role="tabpanel" aria-labelledby="system-tab">
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.timezone">Timezone</span>
+                  <p class="form-description" data-i18n="settings.fields.timezone_desc">Select default timezone.</p>
+                </div>
+                <div class="form-content">
+                  <select class="form-select" name="timezone" id="timezone">
+                    <option value="UTC">UTC</option>
+                    <option value="Europe/Berlin">Europe/Berlin</option>
+                    <option value="Europe/London">Europe/London</option>
+                    <option value="America/New_York">America/New_York</option>
+                    <option value="Asia/Tokyo">Asia/Tokyo</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.matomo_analytics">Matomo Analytics</span>
+                  <p class="form-description" data-i18n="settings.fields.matomo_analytics_desc">Enable Matomo tracking.</p>
+                </div>
+                <div class="form-content">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" name="matomo_analytics" id="matomo_analytics" value="true">
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.matomo_url">Matomo URL</span>
+                  <p class="form-description" data-i18n="settings.fields.matomo_url_desc">URL of Matomo server.</p>
+                </div>
+                <div class="form-content">
+                  <input type="text" class="form-control" name="matomo_url" id="matomo_url">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.matomo_siteid">Matomo Site ID</span>
+                  <p class="form-description" data-i18n="settings.fields.matomo_siteid_desc">Matomo Site ID.</p>
+                </div>
+                <div class="form-content">
+                  <input type="number" class="form-control" name="matomo_siteid" id="matomo_siteid" min="1">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.disable_search_engines">Disable Search Engines</span>
+                  <p class="form-description" data-i18n="settings.fields.disable_search_engines_desc">Instruct robots not to index.</p>
+                </div>
+                <div class="form-content">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" name="disable_search_engines" id="disable_search_engines" value="true">
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.disable_caching">Disable Caching</span>
+                  <p class="form-description" data-i18n="settings.fields.disable_caching_desc">Send No-caching instructions.</p>
+                </div>
+                <div class="form-content">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" name="disable_caching" id="disable_caching" value="true">
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.debug_mode">Debug Mode</span>
+                  <p class="form-description" data-i18n="settings.fields.debug_mode_desc">Display debug info in console.</p>
+                </div>
+                <div class="form-content">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" name="debug_mode" id="debug_mode" value="true">
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.under_maintenance">Under Maintenance</span>
+                  <p class="form-description" data-i18n="settings.fields.under_maintenance_desc">Maintenance mode.</p>
+                </div>
+                <div class="form-content">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" name="under_maintenance" id="under_maintenance" value="true">
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.force_2fa">Force Two Factor Authentication</span>
+                  <p class="form-description" data-i18n="settings.fields.force_2fa_desc">Forces users to setup a two factor authentication, e.g. via Google or Microsoft Authenticator. If a user has not setup 2FA yet, he will be redirected to a Setup 2FA page after regular login.</p>
+                </div>
+                <div class="form-content">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" name="force_2fa" id="force_2fa" value="true">
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.audit_retention_days">Audit Log Retention (Days)</span>
+                  <p class="form-description" data-i18n="settings.fields.audit_retention_days_desc">Days after which audit log entries are deleted. 0 keeps them forever.</p>
+                </div>
+                <div class="form-content">
+                  <input type="number" class="form-control" name="audit_retention_days" id="audit_retention_days" min="0" max="3650" required>
+                </div>
+              </div>
+            </div>
+
+            <!-- Theme Tab -->
+            <div class="tab-pane fade" id="theme" role="tabpanel" aria-labelledby="theme-tab">
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.color_mode">Color Mode</span>
+                  <p class="form-description" data-i18n="settings.fields.color_mode_desc">Default color mode.</p>
+                </div>
+                <div class="form-content">
+                  <div class="d-flex gap-3">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="color_mode" id="color_mode_light" value="light">
+                      <label class="form-check-label" for="color_mode_light" data-i18n="common.light">Light</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="color_mode" id="color_mode_dark" value="dark">
+                      <label class="form-check-label" for="color_mode_dark" data-i18n="common.dark">Dark</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="color_mode" id="color_mode_auto" value="auto">
+                      <label class="form-check-label" for="color_mode_auto" data-i18n="common.auto">Auto</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.font">Font</span>
+                  <p class="form-description" data-i18n="settings.fields.font_desc">Select application font.</p>
+                </div>
+                <div class="form-content">
+                  <select class="form-select" name="font" id="font">
+                    <option value="Default">Default</option>
+                    <option value="Poppins">Poppins</option>
+                    <option value="Roboto">Roboto</option>
+                    <option value="Lato">Lato</option>
+                    <option value="Montserrat">Montserrat</option>
+                    <option value="Open Sans">Open Sans</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Issue Config Tab -->
+            <div class="tab-pane fade" id="issues" role="tabpanel" aria-labelledby="issues-tab">
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.issue_key_prefix">Issue Key Prefix</span>
+                  <p class="form-description" data-i18n="settings.fields.issue_key_prefix_desc">Prefix of the issue key.</p>
+                </div>
+                <div class="form-content">
+                  <input type="text" class="form-control text-uppercase" name="issue_key_prefix" id="issue_key_prefix" maxlength="10" pattern="[A-Za-z][A-Za-z0-9]{0,9}" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.support_email">Support Email</span>
+                  <p class="form-description" data-i18n="settings.fields.support_email_desc">Email address of the support team.</p>
+                </div>
+                <div class="form-content">
+                  <input type="email" class="form-control" name="support_email" id="support_email" maxlength="255" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.attachment_max_size">Maximum Attachment Size (MB)</span>
+                  <p class="form-description" data-i18n="settings.fields.attachment_max_size_desc">Maximum size of a single attachment.</p>
+                </div>
+                <div class="form-content">
+                  <input type="number" class="form-control" name="attachment_max_size" id="attachment_max_size" min="1" max="50" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.attachment_max_count">Maximum Attachments per Issue</span>
+                  <p class="form-description" data-i18n="settings.fields.attachment_max_count_desc">Maximum number of attachments of an issue.</p>
+                </div>
+                <div class="form-content">
+                  <input type="number" class="form-control" name="attachment_max_count" id="attachment_max_count" min="1" max="100" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.attachment_max_total_size">Maximum Total Attachment Size per Issue (MB)</span>
+                  <p class="form-description" data-i18n="settings.fields.attachment_max_total_size_desc">Maximum total size of all attachments of an issue.</p>
+                </div>
+                <div class="form-content">
+                  <input type="number" class="form-control" name="attachment_max_total_size" id="attachment_max_total_size" min="1" max="500" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.rate_limit_issues">Issues per Hour</span>
+                  <p class="form-description" data-i18n="settings.fields.rate_limit_issues_desc">Issues a user may create per hour.</p>
+                </div>
+                <div class="form-content">
+                  <input type="number" class="form-control" name="rate_limit_issues" id="rate_limit_issues" min="0" max="1000" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.rate_limit_comments">Comments per Hour</span>
+                  <p class="form-description" data-i18n="settings.fields.rate_limit_comments_desc">Comments a user may add per hour.</p>
+                </div>
+                <div class="form-content">
+                  <input type="number" class="form-control" name="rate_limit_comments" id="rate_limit_comments" min="0" max="1000" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.notification_retention_days">Notification Retention (Days)</span>
+                  <p class="form-description" data-i18n="settings.fields.notification_retention_days_desc">Days after which in-app notifications are deleted.</p>
+                </div>
+                <div class="form-content">
+                  <input type="number" class="form-control" name="notification_retention_days" id="notification_retention_days" min="1" max="3650" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.notification_poll_interval">Notification Poll Interval (Seconds)</span>
+                  <p class="form-description" data-i18n="settings.fields.notification_poll_interval_desc">How often the browser checks for new notifications.</p>
+                </div>
+                <div class="form-content">
+                  <input type="number" class="form-control" name="notification_poll_interval" id="notification_poll_interval" min="10" max="3600" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.temp_upload_cleanup_hours">Temporary Upload Cleanup (Hours)</span>
+                  <p class="form-description" data-i18n="settings.fields.temp_upload_cleanup_hours_desc">Hours after which unused temporary uploads are deleted.</p>
+                </div>
+                <div class="form-content">
+                  <input type="number" class="form-control" name="temp_upload_cleanup_hours" id="temp_upload_cleanup_hours" min="1" max="168" required>
+                </div>
+              </div>
+            </div>
+
+
+            <!-- License Tab -->
+            <div class="tab-pane fade" id="license" role="tabpanel" aria-labelledby="license-tab">
+              <div id="license-panel" class="mb-4"></div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.license.key">License Key</span>
+                  <p class="form-description" data-i18n="settings.license.key_desc">Enter your license key and save it.</p>
+                </div>
+                <div class="form-content">
+                  <div class="input-group">
+                    <input type="text" class="form-control" id="lic_key" maxlength="100" autocomplete="off" spellcheck="false">
+                    <button type="button" class="btn btn-primary" id="license-save-key" data-i18n="settings.license.save_key">Save Key</button>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.lic_expiry_warning">Expiry Warning (Days)</span>
+                  <p class="form-description" data-i18n="settings.fields.lic_expiry_warning_desc">Number of days before the license expires from which administrators are warned.</p>
+                </div>
+                <div class="form-content">
+                  <input type="number" class="form-control" name="lic_expiry_warning" id="lic_expiry_warning" min="0" max="365" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.license.activate">Activate License</span>
+                  <p class="form-description" data-i18n="settings.license.activate_desc">Activates the license.</p>
+                </div>
+                <div class="form-content">
+                  <button type="button" class="btn btn-success license-action" data-action="activate" data-i18n="settings.license.activate_btn">Activate</button>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.license.deregister">Deregister Domain</span>
+                  <p class="form-description" data-i18n="settings.license.deregister_desc">Removes this domain from the license.</p>
+                </div>
+                <div class="form-content">
+                  <button type="button" class="btn btn-outline-danger license-action" data-action="deregister" data-i18n="settings.license.deregister_btn">Deregister</button>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.license.refresh">Check License</span>
+                  <p class="form-description" data-i18n="settings.license.refresh_desc">Checks the license with the license server now.</p>
+                </div>
+                <div class="form-content">
+                  <button type="button" class="btn btn-outline-secondary license-action" data-action="refresh" data-i18n="settings.license.refresh_btn">Check Now</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer Actions -->
+          <div class="d-flex justify-content-end gap-2 mt-4">
+            <button type="submit" class="btn btn-primary px-4" id="save-settings-btn" data-i18n="settings.actions.save">Save Settings</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="license-deregister-modal" tabindex="-1" aria-labelledby="license-deregister-title" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="license-deregister-title" data-i18n="settings.license.deregister">Deregister Domain</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" data-i18n="settings.license.confirm_deregister">Remove this domain from the license?</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-i18n="common.cancel">Cancel</button>
+        <button type="button" class="btn btn-danger" id="license-deregister-confirm" data-i18n="settings.license.deregister_btn">Deregister</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+      </div>
+    </div>
+    <footer class="footer">
+      <div class="container-fluid h-100 d-flex align-items-center">
+        <div class="flex-fill">&copy; 2026 by <a href="https://lewe.com" class="text-decoration-none">Lewe Labs</a>.</div>
+        <div class="flex-fill text-center"><a href="privacy.html" class="text-decoration-none" data-i18n="header.privacy">Privacy Policy</a> &middot; <a href="imprint.html" class="text-decoration-none" data-i18n="header.imprint">Imprint</a></div>
+        <div class="flex-fill text-end">Powered by <i class="bi bi-ticket-perforated logo-gradient mx-1" aria-hidden="true"></i>Lewe<strong>Desk</strong> 1.0.0-SNAPSHOT</div>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
+

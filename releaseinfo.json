@@ -1,0 +1,13 @@
+[
+  {
+    "version": "1.0.0",
+    "date": "2026-11-01",
+    "info": "Initial release.",
+    "bugfixes": [],
+    "features": [
+      { "summary": "Issue tracking with products, issue types, status, resolutions and tags", "issue": "" }
+    ],
+    "improvements": [],
+    "removals": []
+  }
+]

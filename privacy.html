@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    (function () {
+      var t = localStorage.getItem('theme') || 'auto';
+      if (t === 'auto') t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-bs-theme', t);
+    })();
+  </script>
+  
+
+  <title>Privacy Policy - LeweDesk</title>
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="icon" href="./favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="./assets/img/icons/app-icon-180.png">
+  <link rel="manifest" href="./site.webmanifest">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#212631" media="(prefers-color-scheme: dark)">
+
+  
+  <meta name="seo-mode" content="static">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="description" content="The LeweDesk privacy policy explains which personal data the helpdesk processes, why, how long it is stored and which rights you have.">
+  <meta name="keywords" content="LeweDesk privacy policy, data protection, GDPR, personal data, helpdesk privacy, Lewe Labs">
+  <meta name="author" content="Lewe Labs">
+  <link rel="canonical" href="https://desk.lewe.com/privacy.html">
+
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="LeweDesk">
+  <meta property="og:title" content="Privacy Policy - LeweDesk">
+  <meta property="og:description" content="The LeweDesk privacy policy explains which personal data the helpdesk processes, why, how long it is stored and which rights you have.">
+  <meta property="og:url" content="https://desk.lewe.com/privacy.html">
+  <meta property="og:image" content="https://desk.lewe.com/assets/img/og-image.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="LeweDesk - Lewe Ticket Management, the customer support helpdesk by Lewe Labs">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="de_DE">
+  <meta property="og:locale:alternate" content="fr_FR">
+  <meta property="og:locale:alternate" content="es_ES">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Privacy Policy - LeweDesk">
+  <meta name="twitter:description" content="The LeweDesk privacy policy explains which personal data the helpdesk processes, why, how long it is stored and which rights you have.">
+  <meta name="twitter:image" content="https://desk.lewe.com/assets/img/twitter-image.png">
+  <meta name="twitter:image:alt" content="LeweDesk - Lewe Ticket Management, the customer support helpdesk by Lewe Labs">
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://desk.lewe.com/#organization","name":"Lewe Labs","url":"https://lewe.com","logo":{"@type":"ImageObject","url":"https://desk.lewe.com/assets/img/lewe-labs-icon-114.png","width":114,"height":114},"email":"support@lewe.com","contactPoint":{"@type":"ContactPoint","contactType":"customer support","email":"support@lewe.com","availableLanguage":["English","German"]},"sameAs":["https://github.com/glewe"]},{"@type":"WebSite","@id":"https://desk.lewe.com/#website","name":"LeweDesk","alternateName":"LeweDesk - Lewe Ticket Management","url":"https://desk.lewe.com/","inLanguage":"en","publisher":{"@id":"https://desk.lewe.com/#organization"}},{"@type":"WebPage","@id":"https://desk.lewe.com/privacy.html#webpage","url":"https://desk.lewe.com/privacy.html","name":"Privacy Policy - LeweDesk","description":"The LeweDesk privacy policy explains which personal data the helpdesk processes, why, how long it is stored and which rights you have.","inLanguage":"en","isPartOf":{"@id":"https://desk.lewe.com/#website"},"publisher":{"@id":"https://desk.lewe.com/#organization"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://desk.lewe.com/assets/img/og-image.png","width":1200,"height":630},"breadcrumb":{"@id":"https://desk.lewe.com/privacy.html#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://desk.lewe.com/privacy.html#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://desk.lewe.com/"},{"@type":"ListItem","position":2,"name":"Privacy Policy","item":"https://desk.lewe.com/privacy.html"}]}]}</script>
+
+
+  <script type="module" crossorigin src="./assets/js/fonts-DulLi24i.js"></script>
+  <script type="module" crossorigin src="./assets/js/lookups-C_5IjfOa.js"></script>
+  <script type="module" crossorigin src="./assets/js/main-C5OaDeha.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/css/fonts-Bkfm3jnF.css">
+</head>
+<body>
+  <div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
+    <div class="sidebar-brand d-none d-md-flex">
+      <i class="bi bi-ticket-perforated me-2 logo-gradient fs-4"></i>
+      <span class="sidebar-brand-full">Lewe<strong>Desk</strong></span>
+      <span class="sidebar-brand-narrow"></span>
+    </div>
+    <div class="sidebar-mobile-bar d-md-none">
+      <span><i class="bi bi-ticket-perforated me-2 logo-gradient fs-4"></i>Lewe<strong>Desk</strong></span>
+      <button class="sidebar-close" id="sidebar-close" type="button" aria-label="Close menu"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <ul class="sidebar-nav">
+      <li class="nav-item" data-auth="user">
+        <a class="nav-link" href="dashboard.html">
+          <i class="nav-icon bi bi-speedometer2"></i> <span class="nav-text" data-i18n="sidebar.dashboard">Dashboard</span>
+        </a>
+      </li>
+      <li class="nav-title" data-public data-i18n="sidebar.issues_title">Issues</li>
+      <li class="nav-item" data-permission="create_issue">
+        <a class="nav-link" href="issue-add.html">
+          <i class="nav-icon bi bi-plus-circle"></i> <span class="nav-text" data-i18n="sidebar.create_issue">Create issue</span>
+        </a>
+      </li>
+      <li class="nav-item" data-public>
+        <a class="nav-link" href="issues.html">
+          <i class="nav-icon bi bi-list-ul"></i> <span class="nav-text" data-i18n="sidebar.all_issues">All issues</span> <span class="nav-count d-none" data-count="all"></span>
+        </a>
+      </li>
+      <li class="nav-item" data-auth="user">
+        <a class="nav-link" href="issues.html?view=mine">
+          <i class="nav-icon bi bi-person-lines-fill"></i> <span class="nav-text" data-i18n="sidebar.my_issues">My issues</span> <span class="nav-count d-none" data-count="mine"></span>
+        </a>
+      </li>
+      <li class="nav-item" data-auth="user">
+        <a class="nav-link" href="issues.html?view=assigned">
+          <i class="nav-icon bi bi-person-check"></i> <span class="nav-text" data-i18n="sidebar.assigned_to_me">Assigned to me</span> <span class="nav-count d-none" data-count="assigned"></span>
+        </a>
+      </li>
+      <li class="nav-item" data-permission="view_all_issues">
+        <a class="nav-link" href="issues.html?view=unassigned">
+          <i class="nav-icon bi bi-person-dash"></i> <span class="nav-text" data-i18n="sidebar.unassigned">Unassigned</span> <span class="nav-count d-none" data-count="unassigned"></span>
+        </a>
+      </li>
+      <li class="nav-item" data-auth="user">
+        <a class="nav-link" href="issues.html?view=open">
+          <i class="nav-icon bi bi-circle" data-category="open"></i> <span class="nav-text" data-i18n="sidebar.open">Open</span> <span class="nav-count d-none" data-count="open"></span>
+        </a>
+      </li>
+      <li class="nav-item" data-auth="user">
+        <a class="nav-link" href="issues.html?view=waiting">
+          <i class="nav-icon bi bi-hourglass-split" data-category="waiting"></i> <span class="nav-text" data-i18n="sidebar.waiting">Waiting</span> <span class="nav-count d-none" data-count="waiting"></span>
+        </a>
+      </li>
+      <li class="nav-item" data-auth="user">
+        <a class="nav-link" href="issues.html?view=in_progress">
+          <i class="nav-icon bi bi-play-circle" data-category="in_progress"></i> <span class="nav-text" data-i18n="sidebar.in_progress">In progress</span> <span class="nav-count d-none" data-count="in_progress"></span>
+        </a>
+      </li>
+      <li class="nav-item" data-auth="user">
+        <a class="nav-link" href="issues.html?view=done">
+          <i class="nav-icon bi bi-check-circle" data-category="done"></i> <span class="nav-text" data-i18n="sidebar.done">Done</span> <span class="nav-count d-none" data-count="done"></span>
+        </a>
+      </li>
+      <li class="nav-item" data-permission="delete_issue">
+        <a class="nav-link" href="issues.html?view=deleted">
+          <i class="nav-icon bi bi-trash"></i> <span class="nav-text" data-i18n="sidebar.deleted_issues">Deleted</span> <span class="nav-count d-none" data-count="deleted"></span>
+        </a>
+      </li>
+      <li class="nav-title" data-permission-any="view_audit_log manage_settings manage_users manage_roles manage_groups manage_permissions manage_issue_types manage_status manage_status_categories manage_resolutions manage_products manage_tags" data-i18n="sidebar.administration">Administration</li>
+      <li class="nav-item nav-group" data-permission-any="view_audit_log manage_settings manage_users manage_roles manage_groups manage_permissions">
+        <a class="nav-link nav-group-toggle" href="#">
+          <i class="nav-icon bi bi-shield-lock"></i> <span class="nav-text" data-i18n="sidebar.management">System</span>
+        </a>
+        <ul class="nav-group-items">
+          <li class="nav-item" data-permission="view_audit_log">
+            <a class="nav-link" href="audit-log.html">
+              <i class="nav-icon bi bi-journal-text"></i> <span class="nav-text">Audit Log</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_groups">
+            <a class="nav-link" href="groups.html">
+              <i class="nav-icon bi bi-collection"></i> <span class="nav-text" data-i18n="sidebar.groups">Groups</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_permissions">
+            <a class="nav-link" href="permissions.html">
+              <i class="nav-icon bi bi-key"></i> <span class="nav-text" data-i18n="sidebar.permissions">Permissions</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_roles">
+            <a class="nav-link" href="roles.html">
+              <i class="nav-icon bi bi-shield-check"></i> <span class="nav-text" data-i18n="sidebar.roles">Roles</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_settings">
+            <a class="nav-link" href="settings.html">
+              <i class="nav-icon bi bi-gear"></i> <span class="nav-text" data-i18n="sidebar.settings">Settings</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_users">
+            <a class="nav-link" href="users.html">
+              <i class="nav-icon bi bi-people"></i> <span class="nav-text" data-i18n="sidebar.users">Users</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="nav-item nav-group" data-permission-any="manage_issue_types manage_status manage_status_categories manage_resolutions manage_products manage_tags">
+        <a class="nav-link nav-group-toggle" href="#">
+          <i class="nav-icon bi bi-ticket-detailed"></i> <span class="nav-text" data-i18n="sidebar.issues">Issues</span>
+        </a>
+        <ul class="nav-group-items">
+          <li class="nav-item" data-permission="manage_issue_types">
+            <a class="nav-link" href="issue-types.html">
+              <i class="nav-icon bi bi-bug"></i> <span class="nav-text" data-i18n="sidebar.issue_types">Issue Types</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_products">
+            <a class="nav-link" href="products.html">
+              <i class="nav-icon bi bi-box-seam"></i> <span class="nav-text" data-i18n="sidebar.products">Products</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_resolutions">
+            <a class="nav-link" href="resolutions.html">
+              <i class="nav-icon bi bi-check2-circle"></i> <span class="nav-text" data-i18n="sidebar.resolutions">Resolutions</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_status">
+            <a class="nav-link" href="status.html">
+              <i class="nav-icon bi bi-flag"></i> <span class="nav-text" data-i18n="sidebar.status">Status</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_status_categories">
+            <a class="nav-link" href="status-categories.html">
+              <i class="nav-icon bi bi-folder2"></i> <span class="nav-text" data-i18n="sidebar.status_categories">Status Categories</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_tags">
+            <a class="nav-link" href="tags.html">
+              <i class="nav-icon bi bi-tags"></i> <span class="nav-text" data-i18n="sidebar.tags">Tags</span>
+            </a>
+          </li>
+        </ul>
+      </li>    </ul>
+    <button class="sidebar-toggler" type="button"></button>
+  </div>
+  <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+  <div class="wrapper d-flex flex-column">
+    <header class="header header-sticky mb-4">
+      <div class="container-fluid">
+        <button class="header-toggler px-md-0 me-md-3" type="button">
+          <i class="bi bi-list fs-4"></i>
+        </button>
+        <a class="header-brand d-md-none" href="#">
+          <i class="bi bi-ticket-perforated logo-gradient fs-4"></i>
+        </a>
+        <form class="d-none d-md-flex ms-auto me-4" id="header-search-form" role="search">
+          <div class="input-group">
+            <span class="input-group-text bg-transparent border-0"><i class="bi bi-search"></i></span>
+            <input class="form-control border-0 bg-transparent" type="search" id="header-search" name="q" maxlength="100" autocomplete="off" placeholder="Search..." aria-label="Search" data-i18n="header.search">
+          </div>
+        </form>
+        <ul class="header-nav d-none d-md-flex">
+          <!-- LDAP or SSO authentication is active (administrators only, see updateLdapBadge in main.js) -->
+          <li class="nav-item d-none align-items-center" id="ldap-badge">
+            <span class="badge text-bg-info" data-i18n-title="header.ldap_active" title="LDAP authentication is active"><i class="bi bi-diagram-3 me-1"></i><span id="ldap-badge-label">LDAP</span></span>
+          </li>
+          <!-- Help -->
+          <li class="nav-item dropdown" id="help-menu">
+            <button class="btn btn-link nav-link dropdown-toggle d-flex align-items-center" id="help-toggle" type="button" aria-expanded="false" data-bs-toggle="dropdown">
+              <i class="bi bi-question-circle me-2"></i> <span data-i18n="header.help">Help</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="help-toggle">
+              <li class="d-none" data-manual>
+                <a class="dropdown-item" id="help-manual-link" href="#" data-manual-link target="_blank" rel="noopener noreferrer"><i class="bi bi-book me-2"></i> <span data-i18n="header.manual">User Manual</span></a>
+              </li>
+              <li>
+                <a class="dropdown-item" id="help-privacy-link" href="privacy.html"><i class="bi bi-shield-lock me-2"></i> <span data-i18n="header.privacy">Privacy Policy</span></a>
+              </li>
+              <li>
+                <a class="dropdown-item" id="help-imprint-link" href="imprint.html"><i class="bi bi-vector-pen me-2"></i> <span data-i18n="header.imprint">Imprint</span></a>
+              </li>
+              <li>
+                <a class="dropdown-item" id="help-about-link" href="about.html"><i class="bi bi-info-circle me-2"></i> <span data-i18n="header.about">About</span></a>
+              </li>
+            </ul>
+          </li>
+          <!-- Language Switcher -->
+          <li class="nav-item dropdown">
+            <button class="btn btn-link nav-link dropdown-toggle d-flex align-items-center" id="lang-switcher" type="button" aria-expanded="false" data-bs-toggle="dropdown">
+              <img src="assets/img/flags/en.svg" class="me-2 rounded-1" width="20" height="15" id="current-flag" alt="Flag">
+              <span id="current-lang">EN</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="lang-switcher">
+              <li>
+                <button type="button" class="dropdown-item d-flex align-items-center" data-lang-value="en">
+                  <img src="assets/img/flags/en.svg" class="me-2 rounded-1" width="20" height="15" alt="EN"> English
+                </button>
+              </li>
+              <li>
+                <button type="button" class="dropdown-item d-flex align-items-center" data-lang-value="de">
+                  <img src="assets/img/flags/de.svg" class="me-2 rounded-1" width="20" height="15" alt="DE"> Deutsch
+                </button>
+              </li>
+              <li>
+                <button type="button" class="dropdown-item d-flex align-items-center" data-lang-value="fr">
+                  <img src="assets/img/flags/fr.svg" class="me-2 rounded-1" width="20" height="15" alt="FR"> Français
+                </button>
+              </li>
+              <li>
+                <button type="button" class="dropdown-item d-flex align-items-center" data-lang-value="es">
+                  <img src="assets/img/flags/es.svg" class="me-2 rounded-1" width="20" height="15" alt="ES"> Español
+                </button>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <button class="btn btn-link nav-link dropdown-toggle d-flex align-items-center" id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static">
+              <i class="bi bi-circle-half me-2"></i>
+              <span class="d-none" id="bd-theme-text">Toggle theme</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="bd-theme-text">
+              <li>
+                <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light">
+                  <i class="bi bi-sun-fill me-2 opacity-50"></i> <span data-i18n="common.light">Light</span>
+                </button>
+              </li>
+              <li>
+                <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark">
+                  <i class="bi bi-moon-stars-fill me-2 opacity-50"></i> <span data-i18n="common.dark">Dark</span>
+                </button>
+              </li>
+              <li>
+                <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto">
+                  <i class="bi bi-circle-half me-2 opacity-50"></i> <span data-i18n="common.auto">Auto</span>
+                </button>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown px-2" data-auth="user" id="notification-menu">
+            <a class="nav-link py-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" id="notification-toggle">
+              <i class="bi bi-bell fs-5"></i>
+              <span class="position-absolute top-25 start-75 translate-middle badge rounded-pill bg-danger d-none" style="font-size: 0.5rem;" id="notification-badge">0</span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end dropdown-menu-lg pt-0" style="width: 22rem; max-width: 92vw;">
+              <div class="dropdown-header bg-body-tertiary py-2 d-flex flex-wrap justify-content-between align-items-center column-gap-3 text-wrap">
+                <strong id="notification-title" data-i18n="notifications.title">Notifications</strong>
+                <button type="button" class="btn btn-link btn-sm p-0 text-decoration-none text-nowrap d-none" id="notification-read-all" data-i18n="notifications.mark_all_read">Mark all as read</button>
+              </div>
+              <div id="notification-list" style="max-height: 26rem; overflow-y: auto;">
+                <div class="dropdown-item-text text-body-secondary" data-i18n="notifications.empty">No notifications.</div>
+              </div>
+              <div class="dropdown-divider my-0"></div>
+              <a class="dropdown-item text-center small py-2" href="profile.html#notifications" data-i18n="notifications.settings">Notification settings</a>
+            </div>
+          </li>
+        </ul>
+        <ul class="header-nav ms-3">
+          <!-- Login link (anonymous visitors of the public pages) -->
+          <li class="nav-item d-none" data-auth="anonymous">
+            <a class="btn btn-primary btn-sm" href="login.html"><i class="bi bi-box-arrow-in-right me-1"></i> <span data-i18n="header.login">Login</span></a>
+          </li>
+          <li class="nav-item dropdown" data-auth="user">
+            <a class="nav-link py-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+              <div class="avatar avatar-md border rounded-circle bg-primary text-white d-flex align-items-center justify-content-center overflow-hidden" id="header-avatar">
+                <i class="bi bi-person"></i>
+              </div>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end pt-0">
+              <div class="dropdown-header bg-body-tertiary py-2"><strong data-i18n="header.settings">Settings</strong></div>
+              <a class="dropdown-item" href="profile.html"><i class="bi bi-person me-2"></i> <span data-i18n="header.profile">Profile</span></a>
+              <a class="dropdown-item" data-permission="manage_settings" href="settings.html"><i class="bi bi-gear me-2"></i> <span data-i18n="header.settings">Settings</span></a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#" id="logout-btn"><i class="bi bi-box-arrow-right me-2"></i> <span data-i18n="header.logout">Logout</span></a>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="header-divider"></div>
+      <div class="container-fluid header-breadcrumb">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb my-0 ms-2">
+            <li class="breadcrumb-item" data-auth="user"><a href="dashboard.html" class="text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item d-none" data-auth="anonymous"><a href="index.html" class="text-decoration-none">Home</a></li>
+            
+              
+                
+                  <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Help</a></li>
+                
+              
+                
+                  <li class="breadcrumb-item active"><span>Privacy Policy</span></li>
+                
+              
+            
+          </ol>
+        </nav>
+      </div>
+    </header>
+    <div class="body flex-grow-1 px-3">
+      <div class="container-lg">
+        <div class="alert alert-warning d-none" id="maintenance-banner" role="alert">
+          <i class="bi bi-cone-striped me-2"></i> <span data-i18n="maintenance.banner">Maintenance mode is active. Only administrators can use the application.</span>
+        </div>
+        <div class="alert alert-info d-none" id="license-trial-banner" role="alert">
+          <i class="bi bi-key me-2"></i> <span id="license-trial-text"></span>
+          <a href="settings.html#license" class="alert-link ms-1 d-none" id="license-trial-link" data-i18n="license.banner.link">License settings</a>
+        </div>
+        <div class="alert alert-warning d-none" id="license-expiry-banner" role="alert">
+          <i class="bi bi-key me-2"></i> <span id="license-expiry-text"></span>
+          <a href="settings.html#license" class="alert-link ms-1" data-i18n="license.banner.link">License settings</a>
+        </div>
+
+
+
+
+
+<!-- ======================================================================= ENGLISH -->
+<div class="card mb-4 privacy-policy" data-lang="en">
+  <div class="card-header"><i class="bi bi-shield-lock me-3"></i><h1 class="fs-6 fw-normal m-0 d-inline">Privacy Policy</h1></div>
+  <div class="card-body">
+    <p class="text-body-secondary">Last updated: 1 November 2026</p>
+    <p>This policy explains which personal data LeweDesk (Lewe Ticket Management) processes when you visit or use this installation, why this is done, on which legal basis, and which rights you have under the General Data Protection Regulation (GDPR).</p>
+
+    <h5 class="mt-4">1. Controller</h5>
+    <p class="mb-1">The controller within the meaning of Art. 4 (7) GDPR is:</p>
+    <address>
+      Lewe Labs<br>
+      Am Bahnhof 1<br>
+      64546 Mörfelden-Walldorf<br>
+      Email: info @ lewe.com
+    </address>
+
+    <h5 class="mt-4">2. Overview</h5>
+    <p>LeweDesk is a web-based ticket management system. We process only the data that is needed to run it. LeweDesk does not use advertising, does not profile its users, does not make automated decisions about you and does not load fonts, scripts or other content from third-party servers. LeweDesk sets no cookies.</p>
+
+    <h5 class="mt-4">3. Which data we process, why, and on which legal basis</h5>
+
+    <h6 class="mt-3">3.1 Visiting the website (server log data)</h6>
+    <p>When you open a page, the web server of the hosting environment technically has to process your IP address, the date and time, the requested address, the response status and your browser details. This data is used to deliver the pages, to ensure security and stability and to resolve faults.<br>
+    <em>Legal basis:</em> Art. 6 (1) (f) GDPR (legitimate interest in a secure and functioning service).</p>
+
+    <h6 class="mt-3">3.2 User account</h6>
+    <p>If you register or an administrator creates an account for you, we store your username, email address, first and last name, your password (only as a salted hash, never in plain text), an optional avatar image, your role and group memberships, your notification and display preferences, and the time the account was created and last changed.<br>
+    <em>Purpose:</em> identification, login, assigning permissions, communication about your issues.<br>
+    <em>Legal basis:</em> Art. 6 (1) (b) GDPR (providing the service you requested) or, for accounts created by an organisation for its staff or customers, Art. 6 (1) (f) GDPR.</p>
+
+    <h6 class="mt-3">3.3 Login session</h6>
+    <p>When you log in, a random login token is created. Only its SHA-256 hash is stored on the server together with its expiry time; the token itself is kept in your browser (see section 4). Password reset requests are handled the same way: only a hash of the reset token is stored and it expires automatically.<br>
+    <em>Legal basis:</em> Art. 6 (1) (b) and (f) GDPR.</p>
+
+    <h6 class="mt-3">3.4 Issues, comments, attachments and history</h6>
+    <p>Content you enter (issues, comments, attached files) is stored together with your user reference and timestamps. The activity history of an issue records who changed what and when. Depending on the access level of an issue (Public, Registered, Reporter) and on their permissions, other users, agents and administrators can see this content and your name. Issues marked Public can be seen by anonymous visitors. <strong>Please do not enter personal data of third parties or sensitive data (Art. 9 GDPR) into issues unless it is necessary.</strong><br>
+    <em>Legal basis:</em> Art. 6 (1) (b) and (f) GDPR.</p>
+
+    <h6 class="mt-3">3.5 Notifications and emails</h6>
+    <p>If you are the reporter, assignee or watcher of an issue, LeweDesk creates in-app notifications and sends emails (for example about new comments or status changes) to your email address. Emails are queued in an outbox and sent through the mail server configured by the operator. You can switch each event off for email and in-app messages in your profile under "Notification settings". Account-related emails (for example a password reset) cannot be switched off. In-app notifications are deleted automatically after the configured retention period (default: 90 days); sent emails are removed from the outbox after a short period.<br>
+    <em>Legal basis:</em> Art. 6 (1) (b) GDPR; for optional notifications Art. 6 (1) (f) GDPR.</p>
+
+    <h6 class="mt-3">3.6 Abuse protection</h6>
+    <p>To prevent misuse, LeweDesk counts how many issues and comments an account creates per hour (rate limit). A hidden honeypot field in the issue form detects automated submissions; if one is detected, the submission is rejected and the IP address is written to the server error log.<br>
+    <em>Legal basis:</em> Art. 6 (1) (f) GDPR (protection of the service against misuse).</p>
+
+    <h6 class="mt-3">3.7 Web analytics (only if enabled)</h6>
+    <p>The operator can optionally enable the web analytics tool Matomo in the system settings. If it is enabled, your visit (pages viewed, approximate location, browser and device type) is recorded by the Matomo installation configured by the operator. Matomo is hosted at IONOS in Germany on the basis of consent under Art. 6 (1) (a) GDPR or legitimate interest under Art. 6 (1) (f) GDPR.</p>
+
+    <h6 class="mt-3">3.8 Audit log</h6>
+    <p>LeweDesk keeps an audit log of security-relevant and administrative actions: logins and logouts, failed logins for existing accounts, password changes and resets, events of the two factor authentication, changes to user accounts, roles, groups, permissions and system settings, the deletion and restoration of issues, the deletion of attachments, requests that were denied for lack of permission, and exports of the log itself. An entry contains the time, the user name and user number of the person who acted, the action, the object it concerned (for example the user name of an account) and, for changes, the old and new values. Passwords, secrets and tokens are never stored; where such a value is part of a change, it is replaced by asterisks. The entry also contains your IP address in shortened form &ndash; the last block of an IPv4 address is set to 0 and an IPv6 address is cut to its first 48 bits, so that it can no longer be assigned to a single device &ndash; and your browser identification.<br>
+    Ordinary work on issues (creating, commenting, changing the status) is not recorded here; it is documented in the activity history of the issue (section 3.4). Failed logins with unknown user names are not recorded, and neither is the mere viewing of data. The entries cannot be changed, and only administrators can view and export the log.<br>
+    <em>Purpose:</em> traceability and security: detecting and investigating misuse and showing who changed what in the configuration.<br>
+    <em>Legal basis:</em> Art. 6 (1) (f) GDPR (legitimate interest in the security and the traceability of the administration of the service).</p>
+
+    <h5 class="mt-4">4. Browser storage instead of cookies</h5>
+    <p>LeweDesk does not use cookies. It uses the local storage and session storage of your browser. This storage is strictly necessary to provide the service you requested or to remember settings you chose yourself, so no consent is required (section 25 (2) TDDDG). The data stays on your device and is removed when you log out or clear the site data of your browser.</p>
+    <div class="table-responsive">
+      <table class="table table-sm table-bordered align-middle">
+        <thead><tr><th>Key</th><th>Purpose</th><th>Duration</th></tr></thead>
+        <tbody>
+          <tr><td><code>token</code></td><td>Login token for your session</td><td>Until logout or expiry</td></tr>
+          <tr><td><code>user</code></td><td>Your basic profile data (name, role, permissions) for displaying the interface</td><td>Until logout</td></tr>
+          <tr><td><code>leti_lang</code></td><td>Chosen language</td><td>Until deleted by you</td></tr>
+          <tr><td><code>theme</code></td><td>Chosen colour mode (light, dark, auto)</td><td>Until deleted by you</td></tr>
+          <tr><td><code>leti_debug</code></td><td>Optional debug switch for administrators</td><td>Until deleted by you</td></tr>
+          <tr><td>Session storage</td><td>One-time confirmation and error messages between two pages</td><td>Until the tab is closed</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h5 class="mt-4">5. Recipients of data</h5>
+    <p>Your data is visible to the users of this installation only within the limits of the roles, permissions and issue access levels described above. Beyond that, data is passed on only to service providers who process it on our behalf under a data processing agreement (Art. 28 GDPR), such as the hosting provider and the email provider: IONOS. The administrators of this installation can see the audit log (section 3.8). We do not sell your data and do not pass it on for advertising purposes.</p>
+
+    <h5 class="mt-4">6. Transfers to third countries</h5>
+    <p>LeweDesk itself does not transfer data to third countries. Fonts and all other resources are served from this installation. If the hosting or email provider processes data outside the EU/EEA, this happens only on the basis of an adequacy decision or the EU standard contractual clauses (Art. 44 et seq. GDPR).</p>
+
+    <h5 class="mt-4">7. Retention and deletion</h5>
+    <ul>
+      <li>Account data, issues, comments and attachments are kept as long as the account and the issue exist or are needed for the purpose described.</li>
+      <li>Login and password reset tokens are deleted when they expire or when you log out.</li>
+      <li>When an account is deleted, the account data, its login tokens, preferences, notifications and rate-limit entries are deleted. Content you created (issues, comments) and entries in the activity history can remain for the traceability of the tickets; the reference to your account is then removed or the content is anonymised on request, unless statutory retention duties apply.</li>
+      <li>Entries of the audit log are deleted automatically after 365 days; the operator can set a different period or keep the entries without limit. If an account is deleted, its entries remain for traceability, with the user name as text but without the link to the account; on request the user name is anonymised, unless statutory retention duties apply.</li>
+      <li>Statutory retention periods (for example under commercial or tax law) remain unaffected.</li>
+    </ul>
+
+    <h5 class="mt-4">8. Your rights</h5>
+    <p>You have the following rights against the controller:</p>
+    <ul>
+      <li><strong>Access</strong> to your data and a copy of it (Art. 15 GDPR)</li>
+      <li><strong>Rectification</strong> of inaccurate data (Art. 16 GDPR) &ndash; most of it you can do yourself in your profile</li>
+      <li><strong>Erasure</strong> (Art. 17 GDPR)</li>
+      <li><strong>Restriction</strong> of processing (Art. 18 GDPR)</li>
+      <li><strong>Data portability</strong> (Art. 20 GDPR)</li>
+      <li><strong>Objection</strong> to processing based on legitimate interests (Art. 21 GDPR). If you object, we will stop the processing unless we can demonstrate compelling legitimate grounds.</li>
+      <li><strong>Withdrawal of consent</strong> at any time with effect for the future, where processing is based on consent (Art. 7 (3) GDPR)</li>
+      <li><strong>Complaint</strong> to a supervisory authority (Art. 77 GDPR), in particular in the Member State of your habitual residence, place of work or the place of the alleged infringement.</li>
+    </ul>
+    <p>To exercise your rights, contact us at the address in section 1.</p>
+
+    <h5 class="mt-4">9. Obligation to provide data</h5>
+    <p>Providing the data marked as required in the registration form (username, email address, password) is necessary to create an account. Without it, an account cannot be created. Viewing public issues does not require an account.</p>
+
+    <h5 class="mt-4">10. Automated decision-making</h5>
+    <p>There is no automated decision-making including profiling within the meaning of Art. 22 GDPR.</p>
+
+    <h5 class="mt-4">11. Security</h5>
+    <p>We protect your data with technical and organisational measures, among them encrypted transmission (HTTPS), salted password hashes, hashed login and reset tokens, permission checks on every request, and rate limiting. Please use a strong, unique password and keep it secret.</p>
+
+    <h5 class="mt-4">12. Changes to this policy</h5>
+    <p class="mb-0">We update this policy when the application or the legal situation changes. The current version is always available on this page.</p>
+  </div>
+</div>
+
+<!-- ======================================================================= DEUTSCH -->
+<div class="card mb-4 privacy-policy" data-lang="de">
+  <div class="card-header"><i class="bi bi-shield-lock me-3"></i><h1 class="fs-6 fw-normal m-0 d-inline" lang="de">Datenschutzerklärung</h1></div>
+  <div class="card-body">
+    <p class="text-body-secondary">Stand: 1. November 2026</p>
+    <p>Diese Datenschutzerklärung informiert darüber, welche personenbezogenen Daten LeweDesk (Lewe Ticket Management) bei Besuch und Nutzung dieser Installation verarbeitet, zu welchen Zwecken und auf welcher Rechtsgrundlage dies geschieht und welche Rechte Ihnen nach der Datenschutz-Grundverordnung (DSGVO) zustehen.</p>
+
+    <h5 class="mt-4">1. Verantwortlicher</h5>
+    <p class="mb-1">Verantwortlicher im Sinne von Art. 4 Nr. 7 DSGVO ist:</p>
+    <address>
+      Lewe Labs</mark><br>
+      Am Bahnhof 1<br>
+      64546 Mörfelden-Walldorf<br>
+      Email: info @ lewe.com</mark>
+    </address>
+
+    <h5 class="mt-4">2. Überblick</h5>
+    <p>LeweDesk ist ein webbasiertes Ticketsystem. Wir verarbeiten nur die Daten, die für den Betrieb erforderlich sind. LeweDesk verwendet keine Werbung, erstellt keine Nutzerprofile, trifft keine automatisierten Entscheidungen über Sie und lädt keine Schriftarten, Skripte oder sonstigen Inhalte von Servern Dritter nach. LeweDesk setzt keine Cookies.</p>
+
+    <h5 class="mt-4">3. Welche Daten wir verarbeiten, wozu und auf welcher Rechtsgrundlage</h5>
+
+    <h6 class="mt-3">3.1 Besuch der Website (Server-Logdaten)</h6>
+    <p>Beim Aufruf einer Seite muss der Webserver der Hosting-Umgebung technisch bedingt Ihre IP-Adresse, Datum und Uhrzeit, die angeforderte Adresse, den Antwortstatus und Angaben zu Ihrem Browser verarbeiten. Die Daten dienen der Auslieferung der Seiten, der Sicherheit und Stabilität sowie der Fehlerbehebung.<br>
+    <em>Rechtsgrundlage:</em> Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einem sicheren und funktionsfähigen Dienst).</p>
+
+    <h6 class="mt-3">3.2 Benutzerkonto</h6>
+    <p>Wenn Sie sich registrieren oder ein Administrator ein Konto für Sie anlegt, speichern wir Benutzername, E-Mail-Adresse, Vor- und Nachname, Ihr Passwort (ausschließlich als gesalzener Hash, nie im Klartext), ein optionales Avatar-Bild, Ihre Rollen- und Gruppenzugehörigkeit, Ihre Benachrichtigungs- und Anzeigeeinstellungen sowie den Zeitpunkt der Erstellung und der letzten Änderung des Kontos.<br>
+    <em>Zweck:</em> Identifikation, Anmeldung, Vergabe von Berechtigungen, Kommunikation zu Ihren Tickets.<br>
+    <em>Rechtsgrundlage:</em> Art. 6 Abs. 1 lit. b DSGVO (Bereitstellung des gewünschten Dienstes) bzw. bei Konten, die eine Organisation für ihre Mitarbeitenden oder Kunden anlegt, Art. 6 Abs. 1 lit. f DSGVO.</p>
+
+    <h6 class="mt-3">3.3 Anmeldesitzung</h6>
+    <p>Bei der Anmeldung wird ein zufälliges Login-Token erzeugt. Auf dem Server wird nur dessen SHA-256-Hash mit Ablaufzeitpunkt gespeichert; das Token selbst liegt in Ihrem Browser (siehe Abschnitt 4). Anfragen zum Zurücksetzen des Passworts werden ebenso behandelt: Es wird nur ein Hash des Token gespeichert, der automatisch abläuft.<br>
+    <em>Rechtsgrundlage:</em> Art. 6 Abs. 1 lit. b und f DSGVO.</p>
+
+    <h6 class="mt-3">3.4 Tickets, Kommentare, Anhänge und Verlauf</h6>
+    <p>Von Ihnen eingegebene Inhalte (Tickets, Kommentare, angehängte Dateien) werden zusammen mit Ihrem Benutzerbezug und Zeitstempeln gespeichert. Der Aktivitätsverlauf eines Tickets hält fest, wer wann was geändert hat. Je nach Zugriffsstufe eines Tickets (Öffentlich, Registriert, Reporter) und den Berechtigungen können andere Benutzer, Agenten und Administratoren diese Inhalte und Ihren Namen sehen. Als „Öffentlich“ markierte Tickets sind auch für anonyme Besucher sichtbar. <strong>Bitte geben Sie in Tickets keine personenbezogenen Daten Dritter und keine besonders sensiblen Daten (Art. 9 DSGVO) ein, sofern dies nicht erforderlich ist.</strong><br>
+    <em>Rechtsgrundlage:</em> Art. 6 Abs. 1 lit. b und f DSGVO.</p>
+
+    <h6 class="mt-3">3.5 Benachrichtigungen und E-Mails</h6>
+    <p>Sind Sie Reporter, Bearbeiter oder Beobachter eines Tickets, erzeugt LeweDesk In-App-Benachrichtigungen und sendet E-Mails (z. B. zu neuen Kommentaren oder Statusänderungen) an Ihre E-Mail-Adresse. E-Mails werden in einem Postausgang zwischengespeichert und über den vom Betreiber konfigurierten Mailserver versandt. In Ihrem Profil unter „Benachrichtigungseinstellungen“ können Sie jedes Ereignis für E-Mail und In-App-Nachrichten abschalten. Kontobezogene E-Mails (z. B. zum Zurücksetzen des Passworts) lassen sich nicht abschalten. In-App-Benachrichtigungen werden nach der eingestellten Aufbewahrungsdauer (Standard: 90 Tage) automatisch gelöscht; versandte E-Mails werden nach kurzer Zeit aus dem Postausgang entfernt.<br>
+    <em>Rechtsgrundlage:</em> Art. 6 Abs. 1 lit. b DSGVO; für optionale Benachrichtigungen Art. 6 Abs. 1 lit. f DSGVO.</p>
+
+    <h6 class="mt-3">3.6 Missbrauchsschutz</h6>
+    <p>Zur Missbrauchsabwehr zählt LeweDesk, wie viele Tickets und Kommentare ein Konto pro Stunde erstellt (Ratenbegrenzung). Ein verstecktes Honeypot-Feld im Ticketformular erkennt automatisierte Eingaben; wird eine erkannt, wird die Eingabe abgewiesen und die IP-Adresse in das Fehlerprotokoll des Servers geschrieben.<br>
+    <em>Rechtsgrundlage:</em> Art. 6 Abs. 1 lit. f DSGVO (Schutz des Dienstes vor Missbrauch).</p>
+
+    <h6 class="mt-3">3.7 Webanalyse (nur wenn aktiviert)</h6>
+    <p>Der Betreiber kann in den Systemeinstellungen optional das Webanalyse-Werkzeug Matomo aktivieren. Ist es aktiviert, wird Ihr Besuch (aufgerufene Seiten, ungefährer Standort, Browser- und Gerätetyp) von der vom Betreiber konfigurierten Matomo-Installation erfasst. Matomo wird bei IONOS in Deutschland gehostet auf der Rechtsgrundlage "Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO oder berechtigtes Interesse nach Art. 6 Abs. 1 lit. f DSGVO".</p>
+
+    <h6 class="mt-3">3.8 Audit-Log</h6>
+    <p>LeweDesk führt ein Audit-Log über sicherheitsrelevante und administrative Vorgänge: An- und Abmeldungen, fehlgeschlagene Anmeldungen bei bestehenden Konten, Passwortänderungen und -zurücksetzungen, Ereignisse der Zwei-Faktor-Authentifizierung, Änderungen an Benutzerkonten, Rollen, Gruppen, Berechtigungen und Systemeinstellungen, das Löschen und Wiederherstellen von Tickets, das Löschen von Anhängen, wegen fehlender Berechtigung abgelehnte Anfragen sowie Exporte des Logs selbst. Ein Eintrag enthält den Zeitpunkt, den Benutzernamen und die Benutzernummer der handelnden Person, die Aktion, das betroffene Objekt (z. B. den Benutzernamen eines Kontos) und bei Änderungen die alten und neuen Werte. Passwörter, Geheimnisse und Token werden nie gespeichert; ist ein solcher Wert Teil einer Änderung, wird er durch Sternchen ersetzt. Außerdem enthält der Eintrag Ihre IP-Adresse in verkürzter Form &ndash; der letzte Block einer IPv4-Adresse wird auf 0 gesetzt, eine IPv6-Adresse auf ihre ersten 48 Bit gekürzt, sodass sie keinem einzelnen Gerät mehr zugeordnet werden kann &ndash; und Ihre Browserkennung.<br>
+    Die gewöhnliche Arbeit an Tickets (Anlegen, Kommentieren, Statuswechsel) wird hier nicht erfasst; sie ist im Aktivitätsverlauf des Tickets dokumentiert (Abschnitt 3.4). Fehlgeschlagene Anmeldungen mit unbekannten Benutzernamen werden nicht erfasst, ebenso wenig das bloße Ansehen von Daten. Die Einträge können nicht geändert werden, und nur Administratoren können das Log einsehen und exportieren.<br>
+    <em>Zweck:</em> Nachvollziehbarkeit und Sicherheit: Missbrauch erkennen und untersuchen sowie nachweisen, wer was in der Konfiguration geändert hat.<br>
+    <em>Rechtsgrundlage:</em> Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Sicherheit und Nachvollziehbarkeit der Verwaltung des Dienstes).</p>
+
+    <h5 class="mt-4">4. Browser-Speicher statt Cookies</h5>
+    <p>LeweDesk verwendet keine Cookies, sondern den Local Storage und Session Storage Ihres Browsers. Dieser Speicher ist unbedingt erforderlich, um den von Ihnen gewünschten Dienst bereitzustellen oder von Ihnen selbst gewählte Einstellungen zu merken; eine Einwilligung ist daher nicht erforderlich (§ 25 Abs. 2 TDDDG). Die Daten verbleiben auf Ihrem Gerät und werden beim Abmelden oder beim Löschen der Websitedaten in Ihrem Browser entfernt.</p>
+    <div class="table-responsive">
+      <table class="table table-sm table-bordered align-middle">
+        <thead><tr><th>Schlüssel</th><th>Zweck</th><th>Dauer</th></tr></thead>
+        <tbody>
+          <tr><td><code>token</code></td><td>Login-Token Ihrer Sitzung</td><td>Bis zur Abmeldung oder zum Ablauf</td></tr>
+          <tr><td><code>user</code></td><td>Grunddaten Ihres Profils (Name, Rolle, Berechtigungen) zur Darstellung der Oberfläche</td><td>Bis zur Abmeldung</td></tr>
+          <tr><td><code>leti_lang</code></td><td>Gewählte Sprache</td><td>Bis zur Löschung durch Sie</td></tr>
+          <tr><td><code>theme</code></td><td>Gewählter Farbmodus (hell, dunkel, automatisch)</td><td>Bis zur Löschung durch Sie</td></tr>
+          <tr><td><code>leti_debug</code></td><td>Optionaler Debug-Schalter für Administratoren</td><td>Bis zur Löschung durch Sie</td></tr>
+          <tr><td>Session Storage</td><td>Einmalige Bestätigungs- und Fehlermeldungen zwischen zwei Seiten</td><td>Bis zum Schließen des Tabs</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h5 class="mt-4">5. Empfänger der Daten</h5>
+    <p>Ihre Daten sind für die Benutzer dieser Installation nur im Rahmen der oben beschriebenen Rollen, Berechtigungen und Zugriffsstufen sichtbar. Darüber hinaus erhalten nur Dienstleister Daten, die in unserem Auftrag auf Grundlage eines Auftragsverarbeitungsvertrags (Art. 28 DSGVO) tätig sind, etwa der Hosting- und der E-Mail-Anbieter: IONOS. Die Administratoren dieser Installation können das Audit-Log einsehen (Abschnitt 3.8). Wir verkaufen Ihre Daten nicht und geben sie nicht zu Werbezwecken weiter.</p>
+
+    <h5 class="mt-4">6. Übermittlung in Drittländer</h5>
+    <p>LeweDesk selbst übermittelt keine Daten in Drittländer. Schriftarten und alle weiteren Ressourcen werden von dieser Installation ausgeliefert. Verarbeitet der Hosting- oder E-Mail-Anbieter Daten außerhalb der EU/des EWR, geschieht dies nur auf Grundlage eines Angemessenheitsbeschlusses oder der EU-Standardvertragsklauseln (Art. 44 ff. DSGVO).</p>
+
+    <h5 class="mt-4">7. Speicherdauer und Löschung</h5>
+    <ul>
+      <li>Kontodaten, Tickets, Kommentare und Anhänge werden gespeichert, solange das Konto und das Ticket bestehen oder für den genannten Zweck benötigt werden.</li>
+      <li>Login- und Passwort-Reset-Token werden bei Ablauf oder Abmeldung gelöscht.</li>
+      <li>Wird ein Konto gelöscht, werden die Kontodaten sowie Login-Token, Einstellungen, Benachrichtigungen und Ratenbegrenzungs-Einträge gelöscht. Von Ihnen erstellte Inhalte (Tickets, Kommentare) und Einträge im Aktivitätsverlauf können zur Nachvollziehbarkeit der Tickets bestehen bleiben; der Bezug zu Ihrem Konto wird dann entfernt bzw. die Inhalte werden auf Wunsch anonymisiert, soweit keine gesetzlichen Aufbewahrungspflichten entgegenstehen.</li>
+      <li>Einträge des Audit-Logs werden nach 365 Tagen automatisch gelöscht; der Betreiber kann einen anderen Zeitraum festlegen oder die Einträge unbegrenzt aufbewahren. Wird ein Konto gelöscht, bleiben seine Einträge zur Nachvollziehbarkeit bestehen, mit dem Benutzernamen als Text, aber ohne Verknüpfung zum Konto; auf Wunsch wird der Benutzername anonymisiert, soweit keine gesetzlichen Aufbewahrungspflichten entgegenstehen.</li>
+      <li>Gesetzliche Aufbewahrungsfristen (z. B. nach Handels- oder Steuerrecht) bleiben unberührt.</li>
+    </ul>
+
+    <h5 class="mt-4">8. Ihre Rechte</h5>
+    <p>Ihnen stehen gegenüber dem Verantwortlichen folgende Rechte zu:</p>
+    <ul>
+      <li><strong>Auskunft</strong> über Ihre Daten und Erhalt einer Kopie (Art. 15 DSGVO)</li>
+      <li><strong>Berichtigung</strong> unrichtiger Daten (Art. 16 DSGVO) &ndash; vieles können Sie selbst in Ihrem Profil ändern</li>
+      <li><strong>Löschung</strong> (Art. 17 DSGVO)</li>
+      <li><strong>Einschränkung</strong> der Verarbeitung (Art. 18 DSGVO)</li>
+      <li><strong>Datenübertragbarkeit</strong> (Art. 20 DSGVO)</li>
+      <li><strong>Widerspruch</strong> gegen die Verarbeitung auf Grundlage berechtigter Interessen (Art. 21 DSGVO). Bei einem Widerspruch beenden wir die Verarbeitung, es sei denn, wir können zwingende schutzwürdige Gründe nachweisen.</li>
+      <li><strong>Widerruf einer Einwilligung</strong> jederzeit mit Wirkung für die Zukunft, soweit die Verarbeitung auf einer Einwilligung beruht (Art. 7 Abs. 3 DSGVO)</li>
+      <li><strong>Beschwerde</strong> bei einer Aufsichtsbehörde (Art. 77 DSGVO), insbesondere in dem Mitgliedstaat Ihres gewöhnlichen Aufenthaltsorts, Ihres Arbeitsplatzes oder des Orts des mutmaßlichen Verstoßes.</li>
+    </ul>
+    <p>Zur Ausübung Ihrer Rechte wenden Sie sich an die Adresse in Abschnitt 1.</p>
+
+    <h5 class="mt-4">9. Pflicht zur Bereitstellung von Daten</h5>
+    <p>Die im Registrierungsformular als erforderlich gekennzeichneten Angaben (Benutzername, E-Mail-Adresse, Passwort) sind zur Anlage eines Kontos notwendig. Ohne sie kann kein Konto erstellt werden. Zum Ansehen öffentlicher Tickets ist kein Konto erforderlich.</p>
+
+    <h5 class="mt-4">10. Automatisierte Entscheidungsfindung</h5>
+    <p>Eine automatisierte Entscheidungsfindung einschließlich Profiling im Sinne von Art. 22 DSGVO findet nicht statt.</p>
+
+    <h5 class="mt-4">11. Sicherheit</h5>
+    <p>Wir schützen Ihre Daten durch technische und organisatorische Maßnahmen, darunter verschlüsselte Übertragung (HTTPS), gesalzene Passwort-Hashes, gehashte Login- und Reset-Token, Berechtigungsprüfungen bei jeder Anfrage und Ratenbegrenzung. Bitte verwenden Sie ein starkes, nur hierfür genutztes Passwort und halten Sie es geheim.</p>
+
+    <h5 class="mt-4">12. Änderungen dieser Erklärung</h5>
+    <p class="mb-0">Wir passen diese Datenschutzerklärung an, wenn sich die Anwendung oder die Rechtslage ändert. Die jeweils aktuelle Fassung finden Sie stets auf dieser Seite.</p>
+  </div>
+</div>
+
+      </div>
+    </div>
+    <footer class="footer">
+      <div class="container-fluid h-100 d-flex align-items-center">
+        <div class="flex-fill">&copy; 2026 by <a href="https://lewe.com" class="text-decoration-none">Lewe Labs</a>.</div>
+        <div class="flex-fill text-center"><a href="privacy.html" class="text-decoration-none" data-i18n="header.privacy">Privacy Policy</a> &middot; <a href="imprint.html" class="text-decoration-none" data-i18n="header.imprint">Imprint</a></div>
+        <div class="flex-fill text-end">Powered by <i class="bi bi-ticket-perforated logo-gradient mx-1" aria-hidden="true"></i>Lewe<strong>Desk</strong> 1.0.0-SNAPSHOT</div>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
+

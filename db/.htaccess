@@ -1,0 +1,8 @@
+# The SQL scripts are read by install.php from the file system and must never be downloaded.
+<IfModule mod_authz_core.c>
+  Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+  Order allow,deny
+  Deny from all
+</IfModule>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    (function () {
+      var t = localStorage.getItem('theme') || 'auto';
+      if (t === 'auto') t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-bs-theme', t);
+    })();
+  </script>
+  
+
+  <title>Register - LeweDesk</title>
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="icon" href="./favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="./assets/img/icons/app-icon-180.png">
+  <link rel="manifest" href="./site.webmanifest">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#212631" media="(prefers-color-scheme: dark)">
+
+  <meta name="robots" content="noindex, nofollow">
+
+
+  <script type="module" crossorigin src="./assets/js/fonts-DulLi24i.js"></script>
+  <script type="module" crossorigin src="./assets/js/auth-Dk3MmXZs.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/css/fonts-Bkfm3jnF.css">
+</head>
+<body class="auth-page">
+  <div class="container d-flex align-items-center min-vh-100">
+    <div class="row justify-content-center w-100">
+      <div class="col-md-5">
+        <div class="card p-4 shadow-sm border-0">
+          <div class="card-body">
+            <div class="text-center mb-4">
+              <i class="bi bi-ticket-perforated fs-1 logo-gradient"></i>
+              <h1 class="h3 mt-2">Create Account</h1>
+              <p class="text-muted">Join Lewe<strong>Desk</strong> Management</p>
+            </div>
+            <form id="register-form">
+              <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" required>
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" required>
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" required>
+              </div>
+              <div class="mb-3">
+                <label for="confirm-password" class="form-label">Confirm Password</label>
+                <input type="password" class="form-control" id="confirm-password" required>
+              </div>
+              <div class="d-grid">
+                <button type="submit" class="btn btn-primary" id="register-btn">Register</button>
+              </div>
+              <p class="text-center text-muted small mt-3 mb-0">
+                How we process your data: <a href="privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+              </p>
+            </form>
+          </div>
+          <div class="card-footer bg-body border-0 text-center pb-4">
+            Already have an account? <a href="login.html" class="text-decoration-none">Login</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

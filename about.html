@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    (function () {
+      var t = localStorage.getItem('theme') || 'auto';
+      if (t === 'auto') t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-bs-theme', t);
+    })();
+  </script>
+  
+
+  <title>About - LeweDesk</title>
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="icon" href="./favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="./assets/img/icons/app-icon-180.png">
+  <link rel="manifest" href="./site.webmanifest">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#212631" media="(prefers-color-scheme: dark)">
+
+  
+  <meta name="seo-mode" content="static">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="description" content="About LeweDesk, the web-based helpdesk and ticket management system by Lewe Labs: features, frequently asked questions, current version, credits and links to the project.">
+  <meta name="keywords" content="about LeweDesk, helpdesk software, ticket management system, Lewe Labs, version, credits">
+  <meta name="author" content="Lewe Labs">
+  <link rel="canonical" href="https://desk.lewe.com/about.html">
+
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="LeweDesk">
+  <meta property="og:title" content="About - LeweDesk">
+  <meta property="og:description" content="About LeweDesk, the web-based helpdesk and ticket management system by Lewe Labs: features, frequently asked questions, current version, credits and links to the project.">
+  <meta property="og:url" content="https://desk.lewe.com/about.html">
+  <meta property="og:image" content="https://desk.lewe.com/assets/img/og-image.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="LeweDesk - Lewe Ticket Management, the customer support helpdesk by Lewe Labs">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="de_DE">
+  <meta property="og:locale:alternate" content="fr_FR">
+  <meta property="og:locale:alternate" content="es_ES">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="About - LeweDesk">
+  <meta name="twitter:description" content="About LeweDesk, the web-based helpdesk and ticket management system by Lewe Labs: features, frequently asked questions, current version, credits and links to the project.">
+  <meta name="twitter:image" content="https://desk.lewe.com/assets/img/twitter-image.png">
+  <meta name="twitter:image:alt" content="LeweDesk - Lewe Ticket Management, the customer support helpdesk by Lewe Labs">
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://desk.lewe.com/#organization","name":"Lewe Labs","url":"https://lewe.com","logo":{"@type":"ImageObject","url":"https://desk.lewe.com/assets/img/lewe-labs-icon-114.png","width":114,"height":114},"email":"support@lewe.com","contactPoint":{"@type":"ContactPoint","contactType":"customer support","email":"support@lewe.com","availableLanguage":["English","German"]},"sameAs":["https://github.com/glewe"]},{"@type":"WebSite","@id":"https://desk.lewe.com/#website","name":"LeweDesk","alternateName":"LeweDesk - Lewe Ticket Management","url":"https://desk.lewe.com/","inLanguage":"en","publisher":{"@id":"https://desk.lewe.com/#organization"}},{"@type":"AboutPage","@id":"https://desk.lewe.com/about.html#webpage","url":"https://desk.lewe.com/about.html","name":"About - LeweDesk","description":"About LeweDesk, the web-based helpdesk and ticket management system by Lewe Labs: features, frequently asked questions, current version, credits and links to the project.","inLanguage":"en","isPartOf":{"@id":"https://desk.lewe.com/#website"},"publisher":{"@id":"https://desk.lewe.com/#organization"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://desk.lewe.com/assets/img/og-image.png","width":1200,"height":630},"about":{"@id":"https://desk.lewe.com/#software"},"breadcrumb":{"@id":"https://desk.lewe.com/about.html#breadcrumb"}},{"@type":"SoftwareApplication","@id":"https://desk.lewe.com/#software","name":"LeweDesk","description":"Web-based customer support helpdesk and ticket management system.","url":"https://desk.lewe.com/","applicationCategory":"BusinessApplication","operatingSystem":"Web","softwareVersion":"1.0.0-SNAPSHOT","image":"https://desk.lewe.com/assets/img/og-image.png","inLanguage":["en","de","fr","es"],"publisher":{"@id":"https://desk.lewe.com/#organization"}},{"@type":"BreadcrumbList","@id":"https://desk.lewe.com/about.html#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://desk.lewe.com/"},{"@type":"ListItem","position":2,"name":"About","item":"https://desk.lewe.com/about.html"}]}]}</script>
+
+
+  <script type="module" crossorigin src="./assets/js/about-BUlWhoGk.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/js/fonts-DulLi24i.js">
+  <link rel="modulepreload" crossorigin href="./assets/js/lookups-C_5IjfOa.js">
+  <link rel="modulepreload" crossorigin href="./assets/js/main-C5OaDeha.js">
+  <link rel="stylesheet" crossorigin href="./assets/css/fonts-Bkfm3jnF.css">
+</head>
+<body>
+  <div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
+    <div class="sidebar-brand d-none d-md-flex">
+      <i class="bi bi-ticket-perforated me-2 logo-gradient fs-4"></i>
+      <span class="sidebar-brand-full">Lewe<strong>Desk</strong></span>
+      <span class="sidebar-brand-narrow"></span>
+    </div>
+    <div class="sidebar-mobile-bar d-md-none">
+      <span><i class="bi bi-ticket-perforated me-2 logo-gradient fs-4"></i>Lewe<strong>Desk</strong></span>
+      <button class="sidebar-close" id="sidebar-close" type="button" aria-label="Close menu"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <ul class="sidebar-nav">
+      <li class="nav-item" data-auth="user">
+        <a class="nav-link" href="dashboard.html">
+          <i class="nav-icon bi bi-speedometer2"></i> <span class="nav-text" data-i18n="sidebar.dashboard">Dashboard</span>
+        </a>
+      </li>
+      <li class="nav-title" data-public data-i18n="sidebar.issues_title">Issues</li>
+      <li class="nav-item" data-permission="create_issue">
+        <a class="nav-link" href="issue-add.html">
+          <i class="nav-icon bi bi-plus-circle"></i> <span class="nav-text" data-i18n="sidebar.create_issue">Create issue</span>
+        </a>
+      </li>
+      <li class="nav-item" data-public>
+        <a class="nav-link" href="issues.html">
+          <i class="nav-icon bi bi-list-ul"></i> <span class="nav-text" data-i18n="sidebar.all_issues">All issues</span> <span class="nav-count d-none" data-count="all"></span>
+        </a>
+      </li>
+      <li class="nav-item" data-auth="user">
+        <a class="nav-link" href="issues.html?view=mine">
+          <i class="nav-icon bi bi-person-lines-fill"></i> <span class="nav-text" data-i18n="sidebar.my_issues">My issues</span> <span class="nav-count d-none" data-count="mine"></span>
+        </a>
+      </li>
+      <li class="nav-item" data-auth="user">
+        <a class="nav-link" href="issues.html?view=assigned">
+          <i class="nav-icon bi bi-person-check"></i> <span class="nav-text" data-i18n="sidebar.assigned_to_me">Assigned to me</span> <span class="nav-count d-none" data-count="assigned"></span>
+        </a>
+      </li>
+      <li class="nav-item" data-permission="view_all_issues">
+        <a class="nav-link" href="issues.html?view=unassigned">
+          <i class="nav-icon bi bi-person-dash"></i> <span class="nav-text" data-i18n="sidebar.unassigned">Unassigned</span> <span class="nav-count d-none" data-count="unassigned"></span>
+        </a>
+      </li>
+      <li class="nav-item" data-auth="user">
+        <a class="nav-link" href="issues.html?view=open">
+          <i class="nav-icon bi bi-circle" data-category="open"></i> <span class="nav-text" data-i18n="sidebar.open">Open</span> <span class="nav-count d-none" data-count="open"></span>
+        </a>
+      </li>
+      <li class="nav-item" data-auth="user">
+        <a class="nav-link" href="issues.html?view=waiting">
+          <i class="nav-icon bi bi-hourglass-split" data-category="waiting"></i> <span class="nav-text" data-i18n="sidebar.waiting">Waiting</span> <span class="nav-count d-none" data-count="waiting"></span>
+        </a>
+      </li>
+      <li class="nav-item" data-auth="user">
+        <a class="nav-link" href="issues.html?view=in_progress">
+          <i class="nav-icon bi bi-play-circle" data-category="in_progress"></i> <span class="nav-text" data-i18n="sidebar.in_progress">In progress</span> <span class="nav-count d-none" data-count="in_progress"></span>
+        </a>
+      </li>
+      <li class="nav-item" data-auth="user">
+        <a class="nav-link" href="issues.html?view=done">
+          <i class="nav-icon bi bi-check-circle" data-category="done"></i> <span class="nav-text" data-i18n="sidebar.done">Done</span> <span class="nav-count d-none" data-count="done"></span>
+        </a>
+      </li>
+      <li class="nav-item" data-permission="delete_issue">
+        <a class="nav-link" href="issues.html?view=deleted">
+          <i class="nav-icon bi bi-trash"></i> <span class="nav-text" data-i18n="sidebar.deleted_issues">Deleted</span> <span class="nav-count d-none" data-count="deleted"></span>
+        </a>
+      </li>
+      <li class="nav-title" data-permission-any="view_audit_log manage_settings manage_users manage_roles manage_groups manage_permissions manage_issue_types manage_status manage_status_categories manage_resolutions manage_products manage_tags" data-i18n="sidebar.administration">Administration</li>
+      <li class="nav-item nav-group" data-permission-any="view_audit_log manage_settings manage_users manage_roles manage_groups manage_permissions">
+        <a class="nav-link nav-group-toggle" href="#">
+          <i class="nav-icon bi bi-shield-lock"></i> <span class="nav-text" data-i18n="sidebar.management">System</span>
+        </a>
+        <ul class="nav-group-items">
+          <li class="nav-item" data-permission="view_audit_log">
+            <a class="nav-link" href="audit-log.html">
+              <i class="nav-icon bi bi-journal-text"></i> <span class="nav-text">Audit Log</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_groups">
+            <a class="nav-link" href="groups.html">
+              <i class="nav-icon bi bi-collection"></i> <span class="nav-text" data-i18n="sidebar.groups">Groups</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_permissions">
+            <a class="nav-link" href="permissions.html">
+              <i class="nav-icon bi bi-key"></i> <span class="nav-text" data-i18n="sidebar.permissions">Permissions</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_roles">
+            <a class="nav-link" href="roles.html">
+              <i class="nav-icon bi bi-shield-check"></i> <span class="nav-text" data-i18n="sidebar.roles">Roles</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_settings">
+            <a class="nav-link" href="settings.html">
+              <i class="nav-icon bi bi-gear"></i> <span class="nav-text" data-i18n="sidebar.settings">Settings</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_users">
+            <a class="nav-link" href="users.html">
+              <i class="nav-icon bi bi-people"></i> <span class="nav-text" data-i18n="sidebar.users">Users</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="nav-item nav-group" data-permission-any="manage_issue_types manage_status manage_status_categories manage_resolutions manage_products manage_tags">
+        <a class="nav-link nav-group-toggle" href="#">
+          <i class="nav-icon bi bi-ticket-detailed"></i> <span class="nav-text" data-i18n="sidebar.issues">Issues</span>
+        </a>
+        <ul class="nav-group-items">
+          <li class="nav-item" data-permission="manage_issue_types">
+            <a class="nav-link" href="issue-types.html">
+              <i class="nav-icon bi bi-bug"></i> <span class="nav-text" data-i18n="sidebar.issue_types">Issue Types</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_products">
+            <a class="nav-link" href="products.html">
+              <i class="nav-icon bi bi-box-seam"></i> <span class="nav-text" data-i18n="sidebar.products">Products</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_resolutions">
+            <a class="nav-link" href="resolutions.html">
+              <i class="nav-icon bi bi-check2-circle"></i> <span class="nav-text" data-i18n="sidebar.resolutions">Resolutions</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_status">
+            <a class="nav-link" href="status.html">
+              <i class="nav-icon bi bi-flag"></i> <span class="nav-text" data-i18n="sidebar.status">Status</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_status_categories">
+            <a class="nav-link" href="status-categories.html">
+              <i class="nav-icon bi bi-folder2"></i> <span class="nav-text" data-i18n="sidebar.status_categories">Status Categories</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_tags">
+            <a class="nav-link" href="tags.html">
+              <i class="nav-icon bi bi-tags"></i> <span class="nav-text" data-i18n="sidebar.tags">Tags</span>
+            </a>
+          </li>
+        </ul>
+      </li>    </ul>
+    <button class="sidebar-toggler" type="button"></button>
+  </div>
+  <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+  <div class="wrapper d-flex flex-column">
+    <header class="header header-sticky mb-4">
+      <div class="container-fluid">
+        <button class="header-toggler px-md-0 me-md-3" type="button">
+          <i class="bi bi-list fs-4"></i>
+        </button>
+        <a class="header-brand d-md-none" href="#">
+          <i class="bi bi-ticket-perforated logo-gradient fs-4"></i>
+        </a>
+        <form class="d-none d-md-flex ms-auto me-4" id="header-search-form" role="search">
+          <div class="input-group">
+            <span class="input-group-text bg-transparent border-0"><i class="bi bi-search"></i></span>
+            <input class="form-control border-0 bg-transparent" type="search" id="header-search" name="q" maxlength="100" autocomplete="off" placeholder="Search..." aria-label="Search" data-i18n="header.search">
+          </div>
+        </form>
+        <ul class="header-nav d-none d-md-flex">
+          <!-- LDAP or SSO authentication is active (administrators only, see updateLdapBadge in main.js) -->
+          <li class="nav-item d-none align-items-center" id="ldap-badge">
+            <span class="badge text-bg-info" data-i18n-title="header.ldap_active" title="LDAP authentication is active"><i class="bi bi-diagram-3 me-1"></i><span id="ldap-badge-label">LDAP</span></span>
+          </li>
+          <!-- Help -->
+          <li class="nav-item dropdown" id="help-menu">
+            <button class="btn btn-link nav-link dropdown-toggle d-flex align-items-center" id="help-toggle" type="button" aria-expanded="false" data-bs-toggle="dropdown">
+              <i class="bi bi-question-circle me-2"></i> <span data-i18n="header.help">Help</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="help-toggle">
+              <li class="d-none" data-manual>
+                <a class="dropdown-item" id="help-manual-link" href="#" data-manual-link target="_blank" rel="noopener noreferrer"><i class="bi bi-book me-2"></i> <span data-i18n="header.manual">User Manual</span></a>
+              </li>
+              <li>
+                <a class="dropdown-item" id="help-privacy-link" href="privacy.html"><i class="bi bi-shield-lock me-2"></i> <span data-i18n="header.privacy">Privacy Policy</span></a>
+              </li>
+              <li>
+                <a class="dropdown-item" id="help-imprint-link" href="imprint.html"><i class="bi bi-vector-pen me-2"></i> <span data-i18n="header.imprint">Imprint</span></a>
+              </li>
+              <li>
+                <a class="dropdown-item" id="help-about-link" href="about.html"><i class="bi bi-info-circle me-2"></i> <span data-i18n="header.about">About</span></a>
+              </li>
+            </ul>
+          </li>
+          <!-- Language Switcher -->
+          <li class="nav-item dropdown">
+            <button class="btn btn-link nav-link dropdown-toggle d-flex align-items-center" id="lang-switcher" type="button" aria-expanded="false" data-bs-toggle="dropdown">
+              <img src="assets/img/flags/en.svg" class="me-2 rounded-1" width="20" height="15" id="current-flag" alt="Flag">
+              <span id="current-lang">EN</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="lang-switcher">
+              <li>
+                <button type="button" class="dropdown-item d-flex align-items-center" data-lang-value="en">
+                  <img src="assets/img/flags/en.svg" class="me-2 rounded-1" width="20" height="15" alt="EN"> English
+                </button>
+              </li>
+              <li>
+                <button type="button" class="dropdown-item d-flex align-items-center" data-lang-value="de">
+                  <img src="assets/img/flags/de.svg" class="me-2 rounded-1" width="20" height="15" alt="DE"> Deutsch
+                </button>
+              </li>
+              <li>
+                <button type="button" class="dropdown-item d-flex align-items-center" data-lang-value="fr">
+                  <img src="assets/img/flags/fr.svg" class="me-2 rounded-1" width="20" height="15" alt="FR"> Français
+                </button>
+              </li>
+              <li>
+                <button type="button" class="dropdown-item d-flex align-items-center" data-lang-value="es">
+                  <img src="assets/img/flags/es.svg" class="me-2 rounded-1" width="20" height="15" alt="ES"> Español
+                </button>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <button class="btn btn-link nav-link dropdown-toggle d-flex align-items-center" id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static">
+              <i class="bi bi-circle-half me-2"></i>
+              <span class="d-none" id="bd-theme-text">Toggle theme</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="bd-theme-text">
+              <li>
+                <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light">
+                  <i class="bi bi-sun-fill me-2 opacity-50"></i> <span data-i18n="common.light">Light</span>
+                </button>
+              </li>
+              <li>
+                <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark">
+                  <i class="bi bi-moon-stars-fill me-2 opacity-50"></i> <span data-i18n="common.dark">Dark</span>
+                </button>
+              </li>
+              <li>
+                <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto">
+                  <i class="bi bi-circle-half me-2 opacity-50"></i> <span data-i18n="common.auto">Auto</span>
+                </button>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown px-2" data-auth="user" id="notification-menu">
+            <a class="nav-link py-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" id="notification-toggle">
+              <i class="bi bi-bell fs-5"></i>
+              <span class="position-absolute top-25 start-75 translate-middle badge rounded-pill bg-danger d-none" style="font-size: 0.5rem;" id="notification-badge">0</span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end dropdown-menu-lg pt-0" style="width: 22rem; max-width: 92vw;">
+              <div class="dropdown-header bg-body-tertiary py-2 d-flex flex-wrap justify-content-between align-items-center column-gap-3 text-wrap">
+                <strong id="notification-title" data-i18n="notifications.title">Notifications</strong>
+                <button type="button" class="btn btn-link btn-sm p-0 text-decoration-none text-nowrap d-none" id="notification-read-all" data-i18n="notifications.mark_all_read">Mark all as read</button>
+              </div>
+              <div id="notification-list" style="max-height: 26rem; overflow-y: auto;">
+                <div class="dropdown-item-text text-body-secondary" data-i18n="notifications.empty">No notifications.</div>
+              </div>
+              <div class="dropdown-divider my-0"></div>
+              <a class="dropdown-item text-center small py-2" href="profile.html#notifications" data-i18n="notifications.settings">Notification settings</a>
+            </div>
+          </li>
+        </ul>
+        <ul class="header-nav ms-3">
+          <!-- Login link (anonymous visitors of the public pages) -->
+          <li class="nav-item d-none" data-auth="anonymous">
+            <a class="btn btn-primary btn-sm" href="login.html"><i class="bi bi-box-arrow-in-right me-1"></i> <span data-i18n="header.login">Login</span></a>
+          </li>
+          <li class="nav-item dropdown" data-auth="user">
+            <a class="nav-link py-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+              <div class="avatar avatar-md border rounded-circle bg-primary text-white d-flex align-items-center justify-content-center overflow-hidden" id="header-avatar">
+                <i class="bi bi-person"></i>
+              </div>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end pt-0">
+              <div class="dropdown-header bg-body-tertiary py-2"><strong data-i18n="header.settings">Settings</strong></div>
+              <a class="dropdown-item" href="profile.html"><i class="bi bi-person me-2"></i> <span data-i18n="header.profile">Profile</span></a>
+              <a class="dropdown-item" data-permission="manage_settings" href="settings.html"><i class="bi bi-gear me-2"></i> <span data-i18n="header.settings">Settings</span></a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#" id="logout-btn"><i class="bi bi-box-arrow-right me-2"></i> <span data-i18n="header.logout">Logout</span></a>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="header-divider"></div>
+      <div class="container-fluid header-breadcrumb">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb my-0 ms-2">
+            <li class="breadcrumb-item" data-auth="user"><a href="dashboard.html" class="text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item d-none" data-auth="anonymous"><a href="index.html" class="text-decoration-none">Home</a></li>
+            
+              
+                
+                  <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Help</a></li>
+                
+              
+                
+                  <li class="breadcrumb-item active"><span>About</span></li>
+                
+              
+            
+          </ol>
+        </nav>
+      </div>
+    </header>
+    <div class="body flex-grow-1 px-3">
+      <div class="container-lg">
+        <div class="alert alert-warning d-none" id="maintenance-banner" role="alert">
+          <i class="bi bi-cone-striped me-2"></i> <span data-i18n="maintenance.banner">Maintenance mode is active. Only administrators can use the application.</span>
+        </div>
+        <div class="alert alert-info d-none" id="license-trial-banner" role="alert">
+          <i class="bi bi-key me-2"></i> <span id="license-trial-text"></span>
+          <a href="settings.html#license" class="alert-link ms-1 d-none" id="license-trial-link" data-i18n="license.banner.link">License settings</a>
+        </div>
+        <div class="alert alert-warning d-none" id="license-expiry-banner" role="alert">
+          <i class="bi bi-key me-2"></i> <span id="license-expiry-text"></span>
+          <a href="settings.html#license" class="alert-link ms-1" data-i18n="license.banner.link">License settings</a>
+        </div>
+
+
+<div class="card mb-4">
+  <div class="card-header"><i class="bi bi-info-circle me-3"></i><h1 class="fs-6 fw-normal m-0 d-inline" data-i18n="about.title">About Lewe<strong>Desk</strong></h1></div>
+  <div class="card-body">
+    <div class="d-flex flex-column flex-md-row align-items-center align-items-md-start gap-4 p-md-3">
+      <img src="favicon.svg" alt="LeweDesk" width="150" height="150" class="flex-shrink-0">
+      <div>
+        <h4 class="fw-normal mb-2">Lewe<strong>Desk</strong></h4>
+        <div class="mb-1"><strong data-i18n="about.version">Version</strong>: 1.0.0-SNAPSHOT</div>
+        <div class="mb-1"><strong data-i18n="about.copyright">Copyright</strong>: &copy; 2026 by <a href="https://lewe.com" target="_blank" rel="noopener noreferrer">Lewe Labs</a></div>
+        <div class="mb-1"><strong data-i18n="about.issues">Issues</strong>: <a href="https://github.com/glewe/lewedesk/issues" target="_blank" rel="noopener noreferrer" data-i18n="about.issues_link">GitHub Issues</a></div>
+        <div class="mb-1 d-none" data-manual><strong data-i18n="about.documentation">Documentation</strong>: <a href="#" data-manual-link target="_blank" rel="noopener noreferrer" data-i18n="header.manual">User Manual</a></div>
+
+        <h4 class="fw-bold mt-4 mb-2" data-i18n="about.credits">Credits go to</h4>
+        <ul class="mb-0">
+          <li>Bootstrap Team for Bootstrap and Bootstrap Icons</li>
+          <li>SpryMedia Ltd. for DataTables</li>
+          <li>Popper Team for Popper</li>
+          <li>Chart.js Contributors for Chart.js</li>
+          <li>Fontsource for the Fontsource web fonts</li>
+          <li>Cure53 for DOMPurify and the Marked Team for Marked</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card mb-4">
+  <div class="card-header"><i class="bi bi-stars me-3"></i><h2 class="fs-6 fw-normal m-0 d-inline" data-i18n="landing.features_title">Everything a support team needs</h2></div>
+  <div class="card-body">
+    <div class="row g-4">
+        <div class="col-md-6 col-lg-4">
+          <h3 class="h6"><i class="bi bi-ticket-perforated text-primary me-2" aria-hidden="true"></i><span data-i18n="landing.features.issues.title">Issue tracking</span></h3>
+          <p class="text-body-secondary mb-0" data-i18n="landing.features.issues.text">Report issues and request improvements. Every issue has a type, status, product, tags, markdown description, comments and a full history.</p>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <h3 class="h6"><i class="bi bi-diagram-3 text-primary me-2" aria-hidden="true"></i><span data-i18n="landing.features.workflow.title">Configurable workflow</span></h3>
+          <p class="text-body-secondary mb-0" data-i18n="landing.features.workflow.text">Define your own issue types, statuses, resolutions and products so the helpdesk follows the way your team works.</p>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <h3 class="h6"><i class="bi bi-shield-lock text-primary me-2" aria-hidden="true"></i><span data-i18n="landing.features.access.title">Fine-grained access control</span></h3>
+          <p class="text-body-secondary mb-0" data-i18n="landing.features.access.text">Roles, groups and permissions decide who sees what. Issues are public, visible to registered users or private to the reporter.</p>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <h3 class="h6"><i class="bi bi-bell text-primary me-2" aria-hidden="true"></i><span data-i18n="landing.features.notifications.title">Notifications</span></h3>
+          <p class="text-body-secondary mb-0" data-i18n="landing.features.notifications.text">Stay informed with in-app and email notifications, set up per user and per event.</p>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <h3 class="h6"><i class="bi bi-paperclip text-primary me-2" aria-hidden="true"></i><span data-i18n="landing.features.attachments.title">Attachments and search</span></h3>
+          <p class="text-body-secondary mb-0" data-i18n="landing.features.attachments.text">Attach files to issues and comments, and find any issue quickly with the built-in search and saved views.</p>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <h3 class="h6"><i class="bi bi-shield-check text-primary me-2" aria-hidden="true"></i><span data-i18n="landing.features.security.title">Secure by design</span></h3>
+          <p class="text-body-secondary mb-0" data-i18n="landing.features.security.text">Two-factor authentication, optional LDAP or SSO (OIDC), spam protection and an audit log keep your data safe.</p>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="card mb-4">
+  <div class="card-header"><i class="bi bi-question-circle me-3"></i><h2 class="fs-6 fw-normal m-0 d-inline" data-i18n="landing.faq_title">Frequently asked questions</h2></div>
+  <div class="card-body">
+        <div class="mb-3">
+          <h3 class="h6" data-i18n="landing.faq.what.q">What is LeweDesk?</h3>
+          <p class="mb-0 text-body-secondary" data-i18n="landing.faq.what.a">LeweDesk is a web-based customer support helpdesk and ticket management system by Lewe Labs. Customers report issues and request improvements, and support staff track them to resolution.</p>
+        </div>
+        <div class="mb-3">
+          <h3 class="h6" data-i18n="landing.faq.who.q">Who is it for?</h3>
+          <p class="mb-0 text-body-secondary" data-i18n="landing.faq.who.a">Software vendors and service teams that want a structured, central place for customer reports, feature requests and support conversations.</p>
+        </div>
+        <div class="mb-3">
+          <h3 class="h6" data-i18n="landing.faq.languages.q">Which languages does it support?</h3>
+          <p class="mb-0 text-body-secondary" data-i18n="landing.faq.languages.a">The interface is available in English and German.</p>
+        </div>
+        <div class="mb-3">
+          <h3 class="h6" data-i18n="landing.faq.private.q">Who can see my issues?</h3>
+          <p class="mb-0 text-body-secondary" data-i18n="landing.faq.private.a">Each issue is either public, visible to registered users only, or private to the person who reported it. Internal comments stay hidden from reporters.</p>
+        </div>
+  </div>
+</div>
+
+<div class="card mb-4">
+  <div class="card-header p-0">
+    <button class="btn btn-link text-decoration-none w-100 d-flex align-items-center justify-content-between px-3 py-2" id="release-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#release-info" aria-expanded="false" aria-controls="release-info">
+      <span><i class="bi bi-clock-history me-2"></i><span data-i18n="about.release_info">Release Information</span></span>
+      <i class="bi bi-chevron-down"></i>
+    </button>
+  </div>
+  <div class="collapse" id="release-info">
+    <div class="card-body" id="release-list"></div>
+  </div>
+</div>
+
+
+      </div>
+    </div>
+    <footer class="footer">
+      <div class="container-fluid h-100 d-flex align-items-center">
+        <div class="flex-fill">&copy; 2026 by <a href="https://lewe.com" class="text-decoration-none">Lewe Labs</a>.</div>
+        <div class="flex-fill text-center"><a href="privacy.html" class="text-decoration-none" data-i18n="header.privacy">Privacy Policy</a> &middot; <a href="imprint.html" class="text-decoration-none" data-i18n="header.imprint">Imprint</a></div>
+        <div class="flex-fill text-end">Powered by <i class="bi bi-ticket-perforated logo-gradient mx-1" aria-hidden="true"></i>Lewe<strong>Desk</strong> 1.0.0-SNAPSHOT</div>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
+

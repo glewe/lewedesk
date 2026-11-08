@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    (function () {
+      var t = localStorage.getItem('theme') || 'auto';
+      if (t === 'auto') t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-bs-theme', t);
+    })();
+  </script>
+  
+
+  <title>Set Up 2FA - LeweDesk</title>
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="icon" href="./favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="./assets/img/icons/app-icon-180.png">
+  <link rel="manifest" href="./site.webmanifest">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#212631" media="(prefers-color-scheme: dark)">
+
+  <meta name="robots" content="noindex, nofollow">
+
+
+  <script type="module" crossorigin src="./assets/js/fonts-DulLi24i.js"></script>
+  <script type="module" crossorigin src="./assets/js/purify.es-BGCr_sdL.js"></script>
+  <script type="module" crossorigin src="./assets/js/auth-Dk3MmXZs.js"></script>
+  <script type="module" crossorigin src="./assets/js/two-factor-BFb-y3yz.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/css/fonts-Bkfm3jnF.css">
+</head>
+<body class="auth-page">
+  <div class="container d-flex align-items-center min-vh-100 py-4">
+    <div class="row justify-content-center w-100">
+      <div class="col-md-7 col-lg-6">
+        <div class="card p-4 shadow-sm border-0">
+          <div class="card-body">
+            <div class="text-center mb-4">
+              <i class="bi bi-shield-lock fs-1 logo-gradient"></i>
+              <h1 class="h3 mt-2 fw-normal">Set Up Two-Factor Authentication</h1>
+            </div>
+
+            <div id="setup-loading" class="text-center py-4">
+              <div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div>
+            </div>
+
+            <form id="setup-form" novalidate>
+              <div id="setup-content" class="d-none">
+                <ol id="setup-steps" class="ps-3">
+                  <li class="mb-3">
+                    Install an authenticator app on your mobile device, e.g. Google Authenticator or Microsoft Authenticator.
+                  </li>
+                  <li class="mb-3">
+                    Scan this QR code with the app.
+                    <div id="qr-code" class="qr-code my-3 mx-auto" aria-label="QR code for the authenticator app" role="img"></div>
+                    <p class="small text-muted mb-1">Cannot scan it? Enter this secret in the app instead (time based):</p>
+                    <div class="input-group">
+                      <code id="secret" class="form-control secret-code" aria-label="Secret code"></code>
+                      <button type="button" class="btn btn-outline-secondary" id="copy-secret" title="Copy the secret" aria-label="Copy the secret"><i class="bi bi-clipboard"></i></button>
+                    </div>
+                  </li>
+                  <li class="mb-3">
+                    Enter the 6-digit code that the app shows to confirm.
+                    <div class="mt-2">
+                      <label for="code" class="visually-hidden">Authentication code</label>
+                      <input type="text" class="form-control form-control-lg otp-input" id="code" name="code"
+                        inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" maxlength="9"
+                        placeholder="000000" required>
+                    </div>
+                  </li>
+                </ol>
+                <div class="d-flex justify-content-end gap-2">
+                  <a href="profile.html#2fa" class="btn btn-secondary" id="cancel-link">Cancel</a>
+                  <button type="submit" class="btn btn-primary px-4" id="setup-btn">Confirm</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

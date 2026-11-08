@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    (function () {
+      var t = localStorage.getItem('theme') || 'auto';
+      if (t === 'auto') t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-bs-theme', t);
+    })();
+  </script>
+  
+
+  <title>Two-Factor Authentication - LeweDesk</title>
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="icon" href="./favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="./assets/img/icons/app-icon-180.png">
+  <link rel="manifest" href="./site.webmanifest">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#212631" media="(prefers-color-scheme: dark)">
+
+  <meta name="robots" content="noindex, nofollow">
+
+
+  <script type="module" crossorigin src="./assets/js/fonts-DulLi24i.js"></script>
+  <script type="module" crossorigin src="./assets/js/purify.es-BGCr_sdL.js"></script>
+  <script type="module" crossorigin src="./assets/js/auth-Dk3MmXZs.js"></script>
+  <script type="module" crossorigin src="./assets/js/two-factor-BFb-y3yz.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/css/fonts-Bkfm3jnF.css">
+</head>
+<body class="auth-page">
+  <div class="container d-flex align-items-center min-vh-100">
+    <div class="row justify-content-center w-100">
+      <div class="col-md-5">
+        <div class="card p-4 shadow-sm border-0">
+          <div class="card-body">
+            <div class="text-center mb-4">
+              <i class="bi bi-shield-lock fs-1 logo-gradient"></i>
+              <h1 class="h3 mt-2 fw-normal">Two-Factor Authentication</h1>
+              <p class="text-muted mb-0">Enter the 6-digit code from your authenticator app.</p>
+            </div>
+            <form id="challenge-form" novalidate>
+              <div class="mb-3">
+                <label for="code" class="visually-hidden">Authentication code</label>
+                <input type="text" class="form-control form-control-lg otp-input" id="code" name="code"
+                  inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" maxlength="9"
+                  placeholder="000000" autofocus required aria-describedby="code-help">
+                <div id="code-help" class="form-text text-center">The code changes every 30 seconds.</div>
+              </div>
+              <div class="d-grid">
+                <button type="submit" class="btn btn-primary" id="challenge-btn">Verify</button>
+              </div>
+              <div class="text-center mt-3">
+                <a href="login.html" class="text-decoration-none small" id="back-to-login">Back to login</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

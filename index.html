@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    (function () {
+      var t = localStorage.getItem('theme') || 'auto';
+      if (t === 'auto') t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-bs-theme', t);
+    })();
+  </script>
+  
+
+  <title>LeweDesk - Customer Support Helpdesk and Ticket Management</title>
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="icon" href="./favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="./assets/img/icons/app-icon-180.png">
+  <link rel="manifest" href="./site.webmanifest">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#212631" media="(prefers-color-scheme: dark)">
+
+  
+  <meta name="seo-mode" content="static">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="description" content="LeweDesk is a web-based helpdesk and ticket management system by Lewe Labs. Report issues, track their status and keep customer support organized.">
+  <meta name="keywords" content="helpdesk, ticket management, customer support, issue tracking, support portal, ticketing system, LeweDesk, Lewe Labs">
+  <meta name="author" content="Lewe Labs">
+  <link rel="canonical" href="https://desk.lewe.com/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="LeweDesk">
+  <meta property="og:title" content="LeweDesk - Customer Support Helpdesk and Ticket Management">
+  <meta property="og:description" content="LeweDesk is a web-based helpdesk and ticket management system by Lewe Labs. Report issues, track their status and keep customer support organized.">
+  <meta property="og:url" content="https://desk.lewe.com/">
+  <meta property="og:image" content="https://desk.lewe.com/assets/img/og-image.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="LeweDesk - Lewe Ticket Management, the customer support helpdesk by Lewe Labs">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="de_DE">
+  <meta property="og:locale:alternate" content="fr_FR">
+  <meta property="og:locale:alternate" content="es_ES">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="LeweDesk - Customer Support Helpdesk and Ticket Management">
+  <meta name="twitter:description" content="LeweDesk is a web-based helpdesk and ticket management system by Lewe Labs. Report issues, track their status and keep customer support organized.">
+  <meta name="twitter:image" content="https://desk.lewe.com/assets/img/twitter-image.png">
+  <meta name="twitter:image:alt" content="LeweDesk - Lewe Ticket Management, the customer support helpdesk by Lewe Labs">
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://desk.lewe.com/#organization","name":"Lewe Labs","url":"https://lewe.com","logo":{"@type":"ImageObject","url":"https://desk.lewe.com/assets/img/lewe-labs-icon-114.png","width":114,"height":114},"email":"support@lewe.com","contactPoint":{"@type":"ContactPoint","contactType":"customer support","email":"support@lewe.com","availableLanguage":["English","German"]},"sameAs":["https://github.com/glewe"]},{"@type":"WebSite","@id":"https://desk.lewe.com/#website","name":"LeweDesk","alternateName":"LeweDesk - Lewe Ticket Management","url":"https://desk.lewe.com/","inLanguage":"en","publisher":{"@id":"https://desk.lewe.com/#organization"}},{"@type":"WebPage","@id":"https://desk.lewe.com/#webpage","url":"https://desk.lewe.com/","name":"LeweDesk - Customer Support Helpdesk and Ticket Management","description":"LeweDesk is a web-based helpdesk and ticket management system by Lewe Labs. Report issues, track their status and keep customer support organized.","inLanguage":"en","isPartOf":{"@id":"https://desk.lewe.com/#website"},"publisher":{"@id":"https://desk.lewe.com/#organization"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://desk.lewe.com/assets/img/og-image.png","width":1200,"height":630},"about":{"@id":"https://desk.lewe.com/#software"}},{"@type":"SoftwareApplication","@id":"https://desk.lewe.com/#software","name":"LeweDesk","description":"Web-based customer support helpdesk and ticket management system.","url":"https://desk.lewe.com/","applicationCategory":"BusinessApplication","operatingSystem":"Web","softwareVersion":"1.0.0-SNAPSHOT","image":"https://desk.lewe.com/assets/img/og-image.png","inLanguage":["en","de","fr","es"],"publisher":{"@id":"https://desk.lewe.com/#organization"}}]}</script>
+
+
+  <script type="module" crossorigin src="./assets/js/main-5-zbrg2O.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/js/fonts-DulLi24i.js">
+  <link rel="modulepreload" crossorigin href="./assets/js/lookups-C_5IjfOa.js">
+  <link rel="stylesheet" crossorigin href="./assets/css/fonts-Bkfm3jnF.css">
+</head>
+<body class="landing-page">
+  <header class="landing-header border-bottom">
+    <nav class="container d-flex align-items-center py-3" aria-label="Main navigation">
+      <a class="navbar-brand fs-4 me-auto text-decoration-none" href="./" aria-label="LeweDesk">
+        <i class="bi bi-ticket-perforated me-2 logo-gradient" aria-hidden="true"></i>Lewe<strong>Desk</strong>
+      </a>
+      <a class="btn btn-outline-secondary me-2" href="issues.html" data-i18n="landing.issues">Issues</a>
+      <a class="btn btn-outline-primary me-2" href="login.html" data-i18n="landing.login">Login</a>
+      <a class="btn btn-primary" href="register.html" data-landing-register data-i18n="landing.register">Register</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="landing-hero py-5">
+      <div class="container py-lg-4 text-center">
+        <h1 class="display-5 fw-bold" data-i18n="landing.hero_title">Lewe Labs <span class="text-primary hero-shimmer">Customer Support</span></h1>
+        <p class="lead mx-auto mt-3 mb-4 landing-lead" data-i18n="landing.hero_lead">Report bugs, request improvements, suggest new features and follow every issue from the first message to the solution.</p>
+        <form class="landing-search mx-auto" action="issues.html" method="get" role="search">
+          <div class="input-group input-group-lg shadow-sm">
+            <span class="input-group-text bg-body"><i class="bi bi-search" aria-hidden="true"></i></span>
+            <input type="search" class="form-control" name="q" maxlength="100" required autocomplete="off" aria-label="Search issues" placeholder="Search issues, e.g. login error" data-i18n="landing.search_placeholder">
+            <button type="submit" class="btn btn-primary px-4" data-i18n="landing.search">Search</button>
+          </div>
+        </form>
+        <div id="landing-browse" class="landing-browse mx-auto mt-3 d-none" aria-label="Browse issues"></div>
+      </div>
+    </section>
+
+    <section class="py-5" aria-labelledby="recent-title">
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-lg-8">
+            <div class="d-flex align-items-baseline justify-content-between mb-3">
+              <h2 id="recent-title" class="h4 fw-bold mb-0" data-i18n="landing.recent_title">Recently updated issues</h2>
+              <a href="issues.html" class="text-decoration-none" data-i18n="landing.view_all">View all issues</a>
+            </div>
+            <div id="landing-recent" class="list-group shadow-sm" aria-live="polite">
+              <div class="list-group-item text-body-secondary" data-i18n="landing.loading">Loading...</div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div id="landing-stats-box" class="d-none mb-4">
+              <h2 class="h4 fw-bold mb-3" data-i18n="landing.status_title">Status</h2>
+              <div id="landing-stats" class="row g-2"></div>
+            </div>
+            <div class="card border-0 bg-body-tertiary">
+              <div class="card-body p-4">
+                <h2 class="h5 fw-bold" data-i18n="landing.report_title">Didn't find an answer?</h2>
+                <p class="text-body-secondary" data-i18n="landing.report_text">Sign in to report an issue or request an improvement, or create a free account in a minute.</p>
+                <div class="d-flex flex-wrap gap-2">
+                  <a class="btn btn-primary" href="login.html" data-i18n="landing.login">Login</a>
+                  <a class="btn btn-outline-primary" href="register.html" data-landing-register data-i18n="landing.register">Register</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-4 bg-body-tertiary" aria-label="Highlights">
+      <div class="container">
+        <ul class="row g-3 list-unstyled text-center mb-0">
+          <li class="col-md-4"><i class="bi bi-ticket-perforated text-primary me-2" aria-hidden="true"></i><span data-i18n="landing.highlights.track">Track every report from first message to solution</span></li>
+          <li class="col-md-4"><i class="bi bi-bell text-primary me-2" aria-hidden="true"></i><span data-i18n="landing.highlights.notify">Get notified about comments and status changes</span></li>
+          <li class="col-md-4"><i class="bi bi-shield-check text-primary me-2" aria-hidden="true"></i><span data-i18n="landing.highlights.private">Public, registered-only or private issues</span></li>
+        </ul>
+        <p class="text-center mt-3 mb-0"><a href="about.html" class="text-decoration-none" data-i18n="landing.learn_more">Learn more about LeweDesk</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="landing-footer border-top py-4">
+    <div class="container d-flex flex-column flex-md-row align-items-center gap-2">
+      <div class="flex-fill">&copy; 2026 by <a href="https://lewe.com" class="text-decoration-none">Lewe Labs</a></div>
+      <div class="flex-fill text-md-center"><a href="about.html" class="text-decoration-none" data-i18n="landing.about">About</a> &middot; <a href="privacy.html" class="text-decoration-none" data-i18n="header.privacy">Privacy Policy</a> &middot; <a href="imprint.html" class="text-decoration-none" data-i18n="header.imprint">Imprint</a></div>
+      <div class="flex-fill text-md-end">Powered by <i class="bi bi-ticket-perforated logo-gradient mx-1" aria-hidden="true"></i>Lewe<strong>Desk</strong> 1.0.0-SNAPSHOT</div>
+    </div>
+  </footer>
+
+</body>
+</html>

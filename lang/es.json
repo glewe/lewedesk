@@ -1,0 +1,1179 @@
+{
+  "app_name": "LeweDesk",
+  "dashboard": "Panel",
+  "dashboard_page": {
+    "no_access": "No tienes permiso para ver incidencias, así que aún no hay nada que mostrar aquí.",
+    "load_error": "No se pudo cargar el panel.",
+    "tiles": {
+      "open": "Incidencias abiertas",
+      "assigned": "Asignadas a mí",
+      "unassigned": "Sin asignar",
+      "resolved": "Resueltas (7 días)"
+    },
+    "lists": {
+      "reported": "Informadas por mí",
+      "assigned": "Asignadas a mí",
+      "watching": "En seguimiento",
+      "empty": "No hay incidencias abiertas.",
+      "view_all": "Ver todas",
+      "more": "{count} en total"
+    },
+    "charts": {
+      "created_vs_resolved": "Creadas vs resueltas (últimos 30 días)",
+      "created": "Creadas",
+      "resolved": "Resueltas",
+      "by_category": "Incidencias por categoría de estado",
+      "by_type": "Incidencias por tipo",
+      "by_product": "Incidencias por producto",
+      "no_product": "Sin producto",
+      "issues": "Incidencias",
+      "empty": "Aún no hay incidencias."
+    },
+    "activity": {
+      "title": "Actividad reciente",
+      "empty": "Aún no hay actividad en tus incidencias."
+    }
+  },
+  "sidebar": {
+    "dashboard": "Panel",
+    "administration": "Administración",
+    "management": "Sistema",
+    "settings": "Ajustes",
+    "users": "Usuarios",
+    "roles": "Roles",
+    "groups": "Grupos",
+    "permissions": "Permisos",
+    "issues": "Incidencias",
+    "issue_types": "Tipos de incidencia",
+    "products": "Productos",
+    "resolutions": "Resoluciones",
+    "status": "Estado",
+    "status_categories": "Categorías de estado",
+    "tags": "Etiquetas",
+    "issues_title": "Incidencias",
+    "all_issues": "Todas las incidencias",
+    "create_issue": "Crear incidencia",
+    "my_issues": "Mis incidencias",
+    "assigned_to_me": "Asignadas a mí",
+    "unassigned": "Sin asignar",
+    "open": "Abiertas",
+    "waiting": "En espera",
+    "in_progress": "En curso",
+    "done": "Finalizadas",
+    "deleted_issues": "Eliminadas"
+  },
+  "header": {
+    "search": "Buscar...",
+    "ldap_active": "La autenticación LDAP está activa",
+    "sso_active": "La autenticación SSO (inicio de sesión único) está activa",
+    "notifications": "Notificaciones",
+    "profile": "Perfil",
+    "logout": "Cerrar sesión",
+    "settings": "Ajustes",
+    "help": "Ayuda",
+    "manual": "Manual de usuario",
+    "about": "Acerca de",
+    "privacy": "Política de privacidad",
+    "imprint": "Aviso legal",
+    "login": "Iniciar sesión"
+  },
+  "about": {
+    "title": "Acerca de Lewe<strong>Desk</strong>",
+    "tagline": "Sistema de gestión de tickets Lewe",
+    "version": "Versión",
+    "copyright": "Copyright",
+    "issues": "Incidencias",
+    "issues_link": "Incidencias de GitHub",
+    "documentation": "Documentación",
+    "credits": "Agradecimientos a:",
+    "release_info": "Información de la versión",
+    "release": "Versión",
+    "issue": "Incidencia",
+    "bugfixes": "Corrección de errores",
+    "improvements": "Mejoras",
+    "features": "Nuevas funciones",
+    "removals": "Funciones retiradas",
+    "load_error": "No se pudo cargar la información de la versión."
+  },
+  "footer": {
+    "powered_by": "Desarrollado con"
+  },
+  "settings": {
+    "title": "Ajustes del sistema",
+    "tabs": {
+      "general": "General",
+      "system": "Sistema",
+      "theme": "Tema",
+      "issues": "Configuración de incidencias",
+      "license": "Licencia"
+    },
+    "fields": {
+      "application_url": "URL de la aplicación",
+      "application_url_desc": "Introduce aquí la URL completa de la aplicación. Se utilizará en los correos de notificación.",
+      "application_name": "Nombre de la aplicación",
+      "application_name_desc": "Introduce aquí un título para la aplicación. Se utiliza en varios lugares, por ejemplo en la cabecera HTML, el menú y otras páginas donde se hace referencia al título.",
+      "application_manual": "Manual de la aplicación",
+      "application_manual_desc": "El manual de usuario se mantiene en inglés y está disponible en el sitio Lewe Gitbook. Si has escrito tu propio manual, introduce aquí el enlace. Se mostrará en el menú Ayuda mientras el campo no esté vacío.",
+      "html_description": "Descripción HTML",
+      "html_description_desc": "Introduce aquí una descripción de la aplicación. Se utilizará en la cabecera HTML para los motores de búsqueda.",
+      "html_keywords": "Palabras clave HTML",
+      "html_keywords_desc": "Introduce aquí las palabras clave de la aplicación. Se utilizarán en la cabecera HTML para los motores de búsqueda.",
+      "default_language": "Idioma predeterminado",
+      "default_language_desc": "Selecciona aquí el idioma predeterminado. Los usuarios pueden cambiar de idioma en la interfaz.",
+      "alert_show": "Mostrar alertas",
+      "alert_show_desc": "Selecciona qué tipos de alertas (mensajes emergentes) se mostrarán.",
+      "alert_autoclose_info": "Cerrar automáticamente las alertas de información",
+      "alert_autoclose_info_desc": "Indica si las alertas de información deben cerrarse automáticamente tras la cantidad de milisegundos indicada abajo.",
+      "alert_autoclose_success": "Cerrar automáticamente las alertas de éxito",
+      "alert_autoclose_success_desc": "Indica si las alertas de éxito deben cerrarse automáticamente tras la cantidad de milisegundos indicada abajo.",
+      "alert_autoclose_warning": "Cerrar automáticamente las alertas de advertencia",
+      "alert_autoclose_warning_desc": "Indica si las alertas de advertencia deben cerrarse automáticamente tras la cantidad de milisegundos indicada abajo.",
+      "alert_autoclose_error": "Cerrar automáticamente las alertas de error",
+      "alert_autoclose_error_desc": "Indica si las alertas de error deben cerrarse automáticamente tras la cantidad de milisegundos indicada abajo.",
+      "alert_autoclose_delay": "Retardo de cierre automático de alertas",
+      "alert_autoclose_delay_desc": "Introduce la cantidad de milisegundos tras la cual los tipos de alerta seleccionados arriba se cerrarán automáticamente (p. ej. 4000 = 4 segundos).",
+      "timezone": "Zona horaria",
+      "timezone_desc": "Selecciona aquí la zona horaria predeterminada.",
+      "matomo_analytics": "Matomo Analytics",
+      "matomo_analytics_desc": "La aplicación admite Matomo Analytics. Si quieres registrar los accesos a tu instancia, marca esta casilla e introduce abajo la URL de Matomo y el ID del sitio.",
+      "matomo_url": "URL de Matomo",
+      "matomo_url_desc": "Si has activado Matomo Analytics, introduce la URL donde está alojado tu servidor Matomo.",
+      "matomo_siteid": "ID de sitio de Matomo",
+      "matomo_siteid_desc": "Si has activado Matomo Analytics, introduce aquí el ID de sitio de Matomo.",
+      "disable_search_engines": "Desactivar motores de búsqueda",
+      "disable_search_engines_desc": "Con esta opción activada, se indica a los robots de los motores de búsqueda que no indexen las páginas de este sitio LeweDesk. Las páginas públicas (página de inicio, Acerca de, Política de privacidad y Aviso legal) llevan etiquetas SEO fijas y no se ven afectadas.",
+      "disable_caching": "Desactivar la caché",
+      "disable_caching_desc": "En algunos entornos servidor-cliente pueden producirse efectos de caché no deseados. Con esta opción activada, LeweDesk envía al servidor web instrucciones de no almacenar en caché que pueden ayudar.",
+      "debug_mode": "Modo de depuración",
+      "debug_mode_desc": "Con esta opción activada, se muestra información de depuración en la consola del navegador.",
+      "under_maintenance": "En mantenimiento",
+      "under_maintenance_desc": "Con esta opción activada, la aplicación pasa al modo de mantenimiento. Solo los administradores pueden acceder a la aplicación.",
+      "force_2fa": "Exigir autenticación de dos factores",
+      "force_2fa_desc": "Obliga a los usuarios a configurar una autenticación de dos factores, p. ej. mediante Google o Microsoft Authenticator. Si un usuario aún no ha configurado la 2FA, será redirigido a una página de configuración de la 2FA tras el inicio de sesión normal.",
+      "audit_retention_days": "Conservación del registro de auditoría (días)",
+      "audit_retention_days_desc": "Introduce tras cuántos días se eliminan las entradas del registro de auditoría. Introduce 0 para conservarlas siempre.",
+      "color_mode": "Modo de color",
+      "color_mode_desc": "Selecciona el modo de color predeterminado de la aplicación.",
+      "font": "Fuente",
+      "font_desc": "Selecciona la fuente que se usará en la aplicación.",
+      "issue_key_prefix": "Prefijo de la clave de incidencia",
+      "issue_key_prefix_desc": "Introduce el prefijo de la clave de incidencia. Las incidencias se muestran como PREFIJO-123 (p. ej. LD-123). El prefijo ya no se puede cambiar una vez que existe la primera incidencia.",
+      "support_email": "Correo de soporte",
+      "support_email_desc": "Introduce aquí la dirección de correo de tu equipo de soporte. Se envía un mensaje a esta dirección cuando se crea una incidencia.",
+      "attachment_max_size": "Tamaño máximo de archivo adjunto (MB)",
+      "attachment_max_size_desc": "Introduce el tamaño máximo de un archivo adjunto o imagen insertada, en megabytes. Los ajustes de PHP upload_max_filesize y post_max_size de tu servidor web deben permitir este tamaño.",
+      "attachment_max_count": "Máximo de archivos adjuntos por incidencia",
+      "attachment_max_count_desc": "Introduce el número máximo de archivos adjuntos de una incidencia. Las imágenes insertadas en comentarios y descripciones cuentan como archivos adjuntos.",
+      "attachment_max_total_size": "Tamaño total máximo de adjuntos por incidencia (MB)",
+      "attachment_max_total_size_desc": "Introduce el tamaño total máximo de todos los archivos adjuntos de una incidencia, en megabytes.",
+      "rate_limit_issues": "Incidencias por hora",
+      "rate_limit_issues_desc": "Introduce cuántas incidencias puede crear un usuario por hora. Los agentes y administradores no tienen límite. Introduce 0 para desactivar el límite.",
+      "rate_limit_comments": "Comentarios por hora",
+      "rate_limit_comments_desc": "Introduce cuántos comentarios puede añadir un usuario por hora. Los agentes y administradores no tienen límite. Introduce 0 para desactivar el límite.",
+      "notification_retention_days": "Conservación de notificaciones (días)",
+      "notification_retention_days_desc": "Introduce tras cuántos días se eliminan las notificaciones de la aplicación.",
+      "notification_poll_interval": "Intervalo de consulta de notificaciones (segundos)",
+      "notification_poll_interval_desc": "Introduce con qué frecuencia el navegador comprueba si hay notificaciones nuevas.",
+      "temp_upload_cleanup_hours": "Limpieza de subidas temporales (horas)",
+      "temp_upload_cleanup_hours_desc": "Las imágenes subidas mientras se redacta una nueva incidencia se eliminan pasadas estas horas si la incidencia nunca se guardó.",
+      "lic_expiry_warning": "Aviso de caducidad (días)",
+      "lic_expiry_warning_desc": "Introduce cuántos días antes de que caduque la licencia se avisa a los administradores con un banner en cada página. Introduce 0 para no avisar."
+    },
+    "actions": {
+      "save": "Guardar ajustes",
+      "saving": "Guardando..."
+    },
+    "messages": {
+      "success": "Los ajustes del sistema se guardaron correctamente.",
+      "error": "Se produjo un error al guardar los ajustes del sistema.",
+      "load_error": "No se pudieron cargar los ajustes del sistema desde el servidor."
+    },
+    "license": {
+      "key": "Clave de licencia",
+      "key_desc": "Introduce la clave de licencia que recibiste y haz clic en Guardar clave. Tras guardar la clave, haz clic en Activar para registrar este dominio en el servidor de licencias.",
+      "save_key": "Guardar clave",
+      "activate": "Activar licencia",
+      "activate_desc": "Activa la licencia de esta instalación y registra su dominio en el servidor de licencias. Una licencia pendiente pasa a estar activa. Si se alcanza el número máximo de instalaciones, se sustituye el registro más antiguo.",
+      "activate_btn": "Activar",
+      "deregister": "Anular registro del dominio",
+      "deregister_desc": "Elimina el dominio de esta instalación de la licencia, p. ej. antes de trasladar LeweDesk a otro servidor. El puesto queda libre para otra instalación.",
+      "deregister_btn": "Anular registro",
+      "confirm_deregister": "¿Eliminar este dominio de la licencia? La licencia dejará de ser válida para esta instalación hasta que la registres de nuevo.",
+      "refresh": "Comprobar licencia",
+      "refresh_desc": "Consulta al servidor de licencias el estado actual de la licencia. Esto ocurre automáticamente cada 30 minutos.",
+      "refresh_btn": "Comprobar ahora",
+      "product": "Producto",
+      "license_key": "Clave de licencia",
+      "customer": "Cliente",
+      "company": "Empresa",
+      "expiry": "Fecha de caducidad",
+      "days_left": "Quedan {days} días",
+      "activations": "Instalaciones registradas",
+      "activations_value": "{used} de {max}",
+      "domain": "Dominio de esta instalación",
+      "last_check": "Última comprobación",
+      "server_error": "El último contacto con el servidor de licencias falló",
+      "not_configured": "La conexión con el servidor de licencias no está configurada: falta LICENSE_SERVER o LICENSE_SECRET en el archivo .env.",
+      "state": {
+        "active": "Activa",
+        "trial": "Prueba",
+        "pending": "Pendiente",
+        "expired": "Caducada",
+        "blocked": "Bloqueada",
+        "unregistered": "No registrada",
+        "unavailable": "No disponible",
+        "invalid": "No válida",
+        "trial_expired": "Prueba finalizada"
+      },
+      "status": {
+        "active": {
+          "title": "Licencia activa",
+          "subject": "Tu licencia es válida para esta instalación.",
+          "help": ""
+        },
+        "trial": {
+          "title": "Sin licencia - periodo de prueba",
+          "subject": "Esta instalación de LeweDesk no tiene licencia. Dejará de funcionar en {days} días.",
+          "help": "Introduce abajo tu clave de licencia y actívala."
+        },
+        "trial_expired": {
+          "title": "Sin licencia - periodo de prueba finalizado",
+          "subject": "Esta instalación de LeweDesk no tiene licencia y el periodo de prueba ha finalizado. Solo los administradores pueden iniciar sesión.",
+          "help": "Introduce abajo tu clave de licencia y actívala."
+        },
+        "pending": {
+          "title": "Licencia pendiente",
+          "subject": "Tu licencia aún no se ha activado.",
+          "help": "Haz clic en Activar para activar la licencia de esta instalación."
+        },
+        "expired": {
+          "title": "Licencia caducada",
+          "subject": "Tu licencia ha caducado. Solo los administradores pueden iniciar sesión.",
+          "help": "Renueva tu licencia o ponte en contacto con el proveedor."
+        },
+        "blocked": {
+          "title": "Licencia bloqueada",
+          "subject": "Tu licencia ha sido bloqueada. Solo los administradores pueden iniciar sesión.",
+          "help": "Ponte en contacto con el proveedor."
+        },
+        "unregistered": {
+          "title": "Dominio no registrado",
+          "subject": "La licencia es válida, pero este dominio no está registrado en ella.",
+          "help": "Haz clic en Activar para registrar este dominio."
+        },
+        "invalid": {
+          "title": "Licencia no válida",
+          "subject": "El servidor de licencias no conoce la clave de licencia.",
+          "help": "Comprueba la clave y guárdala de nuevo, o ponte en contacto con el proveedor."
+        },
+        "unavailable": {
+          "title": "Servidor de licencias no disponible",
+          "subject": "No se pudo determinar el estado de la licencia porque no se pudo acceder al servidor de licencias. LeweDesk sigue funcionando con el último estado conocido.",
+          "help": "La licencia se vuelve a comprobar automáticamente."
+        }
+      },
+      "messages": {
+        "load_error": "No se pudo cargar la licencia desde el servidor.",
+        "error": "La acción sobre la licencia falló.",
+        "done_key": "La clave de licencia se guardó.",
+        "done_activate": "La licencia se activó.",
+        "done_deregister": "Se anuló el registro del dominio.",
+        "done_refresh": "La licencia se comprobó.",
+        "key_removed": "La clave de licencia se eliminó.",
+        "license_expired": "La licencia ha caducado.",
+        "license_blocked": "La licencia está bloqueada.",
+        "license_not_found": "La clave de licencia es desconocida.",
+        "domain_not_activated": "La licencia no está activada para este dominio.",
+        "invalid_request": "Falta la clave de licencia o es demasiado larga.",
+        "no_key": "No hay clave de licencia. Introduce y guarda primero una clave.",
+        "unavailable": "No se pudo acceder al servidor de licencias. Inténtalo de nuevo más tarde.",
+        "invalid_secret": "El servidor de licencias rechazó el secreto del producto. Comprueba LICENSE_SECRET en el archivo .env.",
+        "product_inactive": "El producto está desactivado en el servidor de licencias.",
+        "rate_limited": "Demasiadas solicitudes al servidor de licencias. Espera un momento.",
+        "invalid_domain": "El dominio de esta instalación no es válido para el servidor de licencias.",
+        "https_required": "El servidor de licencias debe ser accesible mediante HTTPS. Comprueba LICENSE_SERVER en el archivo .env."
+      }
+    }
+  },
+  "lookups": {
+    "issue_types": {
+      "bug": "Error",
+      "improvement": "Mejora",
+      "feature": "Función",
+      "question": "Pregunta",
+      "license": "Licencia",
+      "task": "Tarea"
+    },
+    "status_categories": {
+      "open": "Abierta",
+      "waiting": "En espera",
+      "in_progress": "En curso",
+      "done": "Finalizada"
+    },
+    "status": {
+      "open": "Abierta",
+      "waiting_for_agent": "Esperando al agente",
+      "waiting_for_customer": "Esperando al cliente",
+      "pending": "Pendiente",
+      "on_hold": "En pausa",
+      "resolved": "Resuelta",
+      "closed": "Cerrada"
+    },
+    "resolutions": {
+      "completed": "Completada",
+      "fixed": "Corregida",
+      "answered": "Respondida",
+      "expired": "Caducada",
+      "duplicate": "Duplicada",
+      "wont_do": "No se hará",
+      "not_reproducible": "No reproducible"
+    }
+  },
+  "lookup_pages": {
+    "shared": {
+      "preview_desc": "Así se muestra el registro en las listas y en las incidencias.",
+      "icon_desc": "Clase de Bootstrap Icons, p. ej. bi-bug. Déjalo vacío para no tener icono.",
+      "color_desc": "Color del icono y del texto.",
+      "text_color_desc": "Color del texto de la etiqueta.",
+      "background_color_desc": "Color de fondo. Se muestra con transparencia para que funcione en modo claro y oscuro.",
+      "tag_background_color_desc": "Color de fondo de la etiqueta.",
+      "sort_order_desc": "Posición en las listas y menús desplegables (el menor primero). Déjalo vacío para poner un registro nuevo al final.",
+      "active_desc": "Los registros inactivos no se pueden seleccionar para incidencias nuevas, pero se mantienen en las incidencias existentes."
+    },
+    "issue_types": {
+      "title": "Tipos de incidencia",
+      "add_title": "Añadir tipo de incidencia",
+      "edit_title": "Editar tipo de incidencia",
+      "name_desc": "Nombre único del tipo de incidencia (máx. 50 caracteres).",
+      "description_desc": "Breve descripción de para qué sirve el tipo de incidencia.",
+      "confirm_delete": "¿Eliminar los tipos de incidencia seleccionados? Esta acción no se puede deshacer.",
+      "messages": {
+        "created": "El tipo de incidencia se creó.",
+        "updated": "El tipo de incidencia se actualizó.",
+        "deleted": "Los tipos de incidencia seleccionados se eliminaron.",
+        "load_error": "No se pudieron cargar los tipos de incidencia desde el servidor.",
+        "save_error": "No se pudo guardar el tipo de incidencia.",
+        "delete_error": "No se pudieron eliminar los tipos de incidencia seleccionados.",
+        "not_found": "No se encontró el tipo de incidencia."
+      }
+    },
+    "status_categories": {
+      "title": "Categorías de estado",
+      "add_title": "Añadir categoría de estado",
+      "edit_title": "Editar categoría de estado",
+      "name_desc": "El nombre de una categoría de estado del sistema está bloqueado.",
+      "description_desc": "Breve descripción de para qué sirve la categoría de estado.",
+      "confirm_delete": "¿Eliminar las categorías de estado seleccionadas? Esta acción no se puede deshacer.",
+      "messages": {
+        "created": "La categoría de estado se creó.",
+        "updated": "La categoría de estado se actualizó.",
+        "deleted": "Las categorías de estado seleccionadas se eliminaron.",
+        "load_error": "No se pudieron cargar las categorías de estado desde el servidor.",
+        "save_error": "No se pudo guardar la categoría de estado.",
+        "delete_error": "No se pudieron eliminar las categorías de estado seleccionadas.",
+        "not_found": "No se encontró la categoría de estado."
+      },
+      "intro": "Las categorías de estado agrupan los estados y determinan las vistas rápidas de la lista de incidencias. Son registros del sistema: puedes cambiar su descripción, icono y colores."
+    },
+    "status": {
+      "title": "Estado",
+      "add_title": "Añadir estado",
+      "edit_title": "Editar estado",
+      "name_desc": "Nombre único del estado (máx. 50 caracteres).",
+      "description_desc": "Breve descripción de para qué sirve el estado.",
+      "confirm_delete": "¿Eliminar los estados seleccionados? Esta acción no se puede deshacer.",
+      "messages": {
+        "created": "El estado se creó.",
+        "updated": "El estado se actualizó.",
+        "deleted": "Los estados seleccionados se eliminaron.",
+        "load_error": "No se pudieron cargar los estados desde el servidor.",
+        "save_error": "No se pudo guardar el estado.",
+        "delete_error": "No se pudieron eliminar los estados seleccionados.",
+        "not_found": "No se encontró el estado."
+      },
+      "category_desc": "La categoría a la que pertenece el estado. Las categorías agrupan los estados en las listas de incidencias."
+    },
+    "resolutions": {
+      "title": "Resoluciones",
+      "add_title": "Añadir resolución",
+      "edit_title": "Editar resolución",
+      "name_desc": "Nombre único de la resolución (máx. 50 caracteres).",
+      "description_desc": "Breve descripción de para qué sirve la resolución.",
+      "confirm_delete": "¿Eliminar las resoluciones seleccionadas? Esta acción no se puede deshacer.",
+      "messages": {
+        "created": "La resolución se creó.",
+        "updated": "La resolución se actualizó.",
+        "deleted": "Las resoluciones seleccionadas se eliminaron.",
+        "load_error": "No se pudieron cargar las resoluciones desde el servidor.",
+        "save_error": "No se pudo guardar la resolución.",
+        "delete_error": "No se pudieron eliminar las resoluciones seleccionadas.",
+        "not_found": "No se encontró la resolución."
+      }
+    },
+    "products": {
+      "title": "Productos",
+      "add_title": "Añadir producto",
+      "edit_title": "Editar producto",
+      "name_desc": "Nombre único del producto (máx. 50 caracteres).",
+      "description_desc": "Breve descripción de para qué sirve el producto.",
+      "confirm_delete": "¿Eliminar los productos seleccionados? Se quitan de las incidencias. Esta acción no se puede deshacer.",
+      "messages": {
+        "created": "El producto se creó.",
+        "updated": "El producto se actualizó.",
+        "deleted": "Los productos seleccionados se eliminaron.",
+        "load_error": "No se pudieron cargar los productos desde el servidor.",
+        "save_error": "No se pudo guardar el producto.",
+        "delete_error": "No se pudieron eliminar los productos seleccionados.",
+        "not_found": "No se encontró el producto."
+      }
+    },
+    "tags": {
+      "title": "Etiquetas",
+      "add_title": "Añadir etiqueta",
+      "edit_title": "Editar etiqueta",
+      "name_desc": "Nombre único de la etiqueta (máx. 50 caracteres).",
+      "confirm_delete": "¿Eliminar las etiquetas seleccionadas? Se quitan de las incidencias. Esta acción no se puede deshacer.",
+      "messages": {
+        "created": "La etiqueta se creó.",
+        "updated": "La etiqueta se actualizó.",
+        "deleted": "Las etiquetas seleccionadas se eliminaron.",
+        "load_error": "No se pudieron cargar las etiquetas desde el servidor.",
+        "save_error": "No se pudo guardar la etiqueta.",
+        "delete_error": "No se pudieron eliminar las etiquetas seleccionadas.",
+        "not_found": "No se encontró la etiqueta."
+      }
+    }
+  },
+  "common": {
+    "success": "Éxito",
+    "error": "Error",
+    "enabled": "Activado",
+    "disabled": "Desactivado",
+    "light": "Modo claro",
+    "dark": "Modo oscuro",
+    "auto": "Predeterminado del sistema",
+    "info": "Información",
+    "warning": "Advertencia",
+    "name": "Nombre",
+    "description": "Descripción",
+    "color": "Color",
+    "icon": "Icono",
+    "users": "Usuarios",
+    "actions": "Acciones",
+    "add": "Añadir",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "saving": "Guardando...",
+    "back": "Volver",
+    "confirm": "Confirmar",
+    "yes_delete": "Sí, eliminar",
+    "permission_denied": "No tienes permiso para abrir esta página.",
+    "background_color": "Color de fondo",
+    "text_color": "Color del texto",
+    "colors": "Colores",
+    "category": "Categoría",
+    "sort_order": "Orden",
+    "active": "Activo",
+    "yes": "Sí",
+    "no": "No",
+    "preview": "Vista previa",
+    "system_record": "Registro del sistema",
+    "system_record_notice": "Este es un registro del sistema. Su nombre está bloqueado y no se puede eliminar ni desactivar. Puedes cambiar la descripción, el icono y los colores.",
+    "system_record_no_delete": "Los registros del sistema no se pueden eliminar.",
+    "replacement": "Sustitución",
+    "replacement_needed": "El registro seleccionado lo usan {count} incidencia(s). Elige el registro que deben recibir estas incidencias en su lugar:",
+    "replacement_needed_many": "Los registros seleccionados los usan {count} incidencia(s). Elige el registro que deben recibir estas incidencias en su lugar:",
+    "replacement_none": "No hay ningún otro registro activo que pueda sustituirlo."
+  },
+  "datatables": {
+    "search": "Buscar:",
+    "lengthMenu": "Mostrar _MENU_ entradas",
+    "info": "Mostrando de _START_ a _END_ de _TOTAL_ entradas",
+    "infoEmpty": "Sin entradas",
+    "infoFiltered": "(filtrado de _MAX_ entradas)",
+    "emptyTable": "No hay entradas disponibles",
+    "zeroRecords": "No se encontraron entradas coincidentes",
+    "first": "Primero",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "last": "Último",
+    "selected_one": "1 seleccionado",
+    "selected_many": "%d seleccionados",
+    "processing": "Cargando..."
+  },
+  "users": {
+    "title": "Usuarios",
+    "edit_title": "Editar usuario",
+    "add_title": "Añadir usuario",
+    "username": "Nombre de usuario",
+    "full_name": "Nombre",
+    "email": "Correo electrónico",
+    "first_name": "Nombre",
+    "last_name": "Apellidos",
+    "password": "Contraseña",
+    "roles": "Roles",
+    "groups": "Grupos",
+    "username_desc": "El nombre de usuario no se puede cambiar.",
+    "username_add_desc": "De 3 a 50 caracteres: letras, dígitos, guion bajo, punto y guion. Con LDAP es el nombre de usuario de LDAP. No se puede cambiar después.",
+    "password_add_desc": "Contraseña inicial del usuario (al menos 8 caracteres).",
+    "password_ldap_note": "Este usuario inicia sesión con la contraseña de LDAP. LeweDesk no guarda ninguna contraseña para él, así que aquí no hay nada que cambiar.",
+    "password_sso_note": "Este usuario inicia sesión con SSO (inicio de sesión único). LeweDesk no guarda ninguna contraseña utilizable para él, así que aquí no hay nada que cambiar.",
+    "password_sso_add_note": "La autenticación SSO está activa: el usuario inicia sesión con el proveedor de identidad. Aquí no se establece ninguna contraseña.",
+    "password_ldap_add_note": "La autenticación LDAP está activa: el usuario inicia sesión con la contraseña de LDAP. Aquí no se establece ninguna contraseña.",
+    "email_desc": "Dirección de correo del usuario. Debe ser única.",
+    "first_name_desc": "Nombre del usuario.",
+    "last_name_desc": "Apellidos del usuario.",
+    "password_desc": "Introduce una nueva contraseña para cambiarla (al menos 8 caracteres). Déjalo vacío para mantener la contraseña actual.",
+    "roles_desc": "Roles asignados al usuario. Mantén pulsada Ctrl (Cmd) para seleccionar varios.",
+    "groups_desc": "Grupos a los que pertenece el usuario. Mantén pulsada Ctrl (Cmd) para seleccionar varios.",
+    "tabs": {
+      "account": "Cuenta",
+      "avatar": "Avatar"
+    },
+    "twofa": {
+      "column": "2FA",
+      "title": "Autenticación de dos factores",
+      "desc": "Indica si el usuario ha configurado la autenticación de dos factores. Restablécela si el usuario perdió el dispositivo; entonces tendrá que configurarla de nuevo (en el siguiente inicio de sesión si la 2FA es obligatoria).",
+      "enabled": "Activada",
+      "disabled": "No configurada",
+      "reset_button": "Restablecer 2FA",
+      "reset_title": "Restablecer 2FA",
+      "reset_text": "¿Restablecer la autenticación de dos factores de {user}? El usuario podrá iniciar sesión solo con la contraseña (o tendrá que configurar la 2FA de nuevo si es obligatoria).",
+      "messages": {
+        "reset": "La autenticación de dos factores se restableció.",
+        "reset_error": "No se pudo restablecer la autenticación de dos factores."
+      }
+    },
+    "confirm_delete": "¿Eliminar los usuarios seleccionados? Esta acción no se puede deshacer.",
+    "participation": {
+      "issues_one": "1 incidencia",
+      "issues_other": "{count} incidencias",
+      "single": "Este usuario participa en {issues}. El nombre se sustituirá por «{deleted}».",
+      "multiple": "Estos usuarios participan en incidencias:",
+      "multiple_confirm": "Los nombres se sustituirán por «{deleted}»."
+    },
+    "messages": {
+      "updated": "El usuario se actualizó.",
+      "created": "El usuario se creó.",
+      "deleted": "Los usuarios seleccionados se eliminaron.",
+      "load_error": "No se pudieron cargar los usuarios desde el servidor.",
+      "save_error": "No se pudo guardar el usuario.",
+      "delete_error": "No se pudieron eliminar los usuarios seleccionados.",
+      "not_found": "No se encontró el usuario."
+    }
+  },
+  "roles": {
+    "title": "Roles",
+    "add_title": "Añadir rol",
+    "edit_title": "Editar rol",
+    "breadcrumb": "Roles",
+    "name_desc": "Nombre único del rol (máx. 50 caracteres).",
+    "description_desc": "Breve descripción de para qué sirve el rol.",
+    "color_desc": "Color utilizado para mostrar el rol.",
+    "icon_desc": "Clase de Bootstrap Icons, p. ej. bi-person. Déjalo vacío para no tener icono.",
+    "confirm_delete": "¿Eliminar los roles seleccionados? Esta acción no se puede deshacer.",
+    "messages": {
+      "created": "El rol se creó.",
+      "updated": "El rol se actualizó.",
+      "deleted": "Los roles seleccionados se eliminaron.",
+      "load_error": "No se pudieron cargar los roles desde el servidor.",
+      "save_error": "No se pudo guardar el rol.",
+      "delete_error": "No se pudieron eliminar los roles seleccionados.",
+      "not_found": "No se encontró el rol."
+    }
+  },
+  "groups": {
+    "title": "Grupos",
+    "add_title": "Añadir grupo",
+    "edit_title": "Editar grupo",
+    "breadcrumb": "Grupos",
+    "name_desc": "Nombre único del grupo (máx. 50 caracteres).",
+    "description_desc": "Breve descripción del grupo.",
+    "color_desc": "Color utilizado para mostrar el grupo.",
+    "icon_desc": "Clase de Bootstrap Icons, p. ej. bi-people. Déjalo vacío para no tener icono.",
+    "confirm_delete": "¿Eliminar los grupos seleccionados? Esta acción no se puede deshacer.",
+    "messages": {
+      "created": "El grupo se creó.",
+      "updated": "El grupo se actualizó.",
+      "deleted": "Los grupos seleccionados se eliminaron.",
+      "load_error": "No se pudieron cargar los grupos desde el servidor.",
+      "save_error": "No se pudo guardar el grupo.",
+      "delete_error": "No se pudieron eliminar los grupos seleccionados.",
+      "not_found": "No se encontró el grupo."
+    }
+  },
+  "permissions": {
+    "title": "Permisos",
+    "add_title": "Añadir permiso",
+    "edit_title": "Editar permiso",
+    "breadcrumb": "Permisos",
+    "roles": "Roles",
+    "groups": "Grupos",
+    "name_desc": "Nombre único del permiso (máx. 50 caracteres). Caracteres permitidos: a-z, A-Z, 0-9, _ y -.",
+    "description_desc": "Breve descripción de lo que permite el permiso.",
+    "roles_desc": "Roles a los que se concede este permiso. Mantén pulsada Ctrl (Cmd) para seleccionar varios.",
+    "groups_desc": "Grupos a los que se concede este permiso. Mantén pulsada Ctrl (Cmd) para seleccionar varios.",
+    "confirm_delete": "¿Eliminar los permisos seleccionados? Esta acción no se puede deshacer.",
+    "messages": {
+      "created": "El permiso se creó.",
+      "updated": "El permiso se actualizó.",
+      "deleted": "Los permisos seleccionados se eliminaron.",
+      "load_error": "No se pudieron cargar los permisos desde el servidor.",
+      "save_error": "No se pudo guardar el permiso.",
+      "delete_error": "No se pudieron eliminar los permisos seleccionados.",
+      "not_found": "No se encontró el permiso.",
+      "invalid_name": "El nombre solo puede contener los caracteres a-z, A-Z, 0-9, _ y -."
+    }
+  },
+  "profile": {
+    "title": "Mi perfil",
+    "sso_note": "Tu cuenta usa SSO (inicio de sesión único). Tu contraseña la gestiona tu proveedor de identidad y no se puede cambiar aquí.",
+    "ldap_note": "Tu cuenta usa autenticación LDAP. Tu contraseña se gestiona fuera de LeweDesk y no se puede cambiar aquí.",
+    "tabs": {
+      "profile": "Perfil",
+      "avatar": "Avatar",
+      "notifications": "Notificaciones",
+      "options": "Opciones",
+      "twofa": "2FA"
+    },
+    "options": {
+      "language": "Idioma",
+      "language_desc": "Elige el idioma de la interfaz. Predeterminado del sistema usa el idioma definido por el administrador.",
+      "language_default": "Predeterminado del sistema",
+      "status_row_color": "Mostrar color de fondo del estado",
+      "status_row_color_desc": "Colorea el fondo de las filas de las tablas de incidencias según el estado de la incidencia.",
+      "saved": "Tus opciones se guardaron.",
+      "load_error": "No se pudieron cargar tus opciones.",
+      "save_error": "No se pudieron guardar tus opciones."
+    },
+    "twofa": {
+      "description": "LeweDesk te permite configurar una autenticación de segundo factor, p. ej. con Google o Microsoft Authenticator en tu dispositivo móvil.<br>Haz clic en el botón de abajo para iniciar el proceso. (Esto solo lo puede hacer el propio usuario.)",
+      "setup_button": "Configurar 2FA",
+      "enabled": "La autenticación de dos factores está activada en tu cuenta.",
+      "disable_button": "Desactivar 2FA",
+      "mandatory_note": "Ten en cuenta que la 2FA es obligatoria. Si la desactivas aquí, tendrás que configurarla de nuevo en tu próximo inicio de sesión.",
+      "disable_title": "Desactivar 2FA",
+      "disable_text": "Introduce tu contraseña para desactivar la autenticación de dos factores.",
+      "password": "Contraseña",
+      "messages": {
+        "enabled": "La autenticación de dos factores está ahora activada.",
+        "disabled": "La autenticación de dos factores se desactivó.",
+        "wrong_password": "La contraseña no es correcta.",
+        "disable_error": "No se pudo desactivar la autenticación de dos factores."
+      }
+    },
+    "password_desc": "Introduce una nueva contraseña para cambiarla (al menos 8 caracteres). Déjalo vacío para mantener tu contraseña actual.",
+    "current_password": "Contraseña actual",
+    "current_password_desc": "Obligatoria para cambiar tu contraseña.",
+    "confirm_password": "Confirmar nueva contraseña",
+    "confirm_password_desc": "Repite la nueva contraseña.",
+    "avatar_current": "Avatar actual",
+    "avatar_current_desc": "Esta imagen se muestra en la barra de navegación superior.",
+    "avatar_none": "No hay ningún avatar seleccionado.",
+    "avatar_upload": "Subir uno propio",
+    "avatar_upload_desc": "PNG, JPG, GIF o WEBP, hasta 1 MB. La imagen se muestra como un círculo, por lo que una imagen cuadrada funciona mejor.",
+    "avatar_upload_btn": "Subir",
+    "avatar_samples": "Avatares de ejemplo",
+    "avatar_samples_desc": "Haz clic en una imagen para usarla como avatar.",
+    "messages": {
+      "updated": "Tu perfil se actualizó.",
+      "avatar_updated": "Tu avatar se actualizó.",
+      "load_error": "No se pudo cargar tu perfil.",
+      "save_error": "No se pudo guardar tu perfil.",
+      "avatar_error": "No se pudo guardar tu avatar.",
+      "passwords_mismatch": "Las contraseñas no coinciden.",
+      "file_too_large": "La imagen no puede superar 1 MB.",
+      "no_file": "Elige primero una imagen."
+    }
+  },
+  "maintenance": {
+    "banner": "El modo de mantenimiento está activo. Solo los administradores pueden usar la aplicación."
+  },
+  "tags": {
+    "input": {
+      "label": "Etiquetas",
+      "placeholder": "Escribe para buscar etiquetas...",
+      "max": "Como máximo {max} etiquetas",
+      "remove": "Quitar la etiqueta {name}",
+      "create": "Crear etiqueta «{name}»",
+      "results": "{count} sugerencias"
+    },
+    "create": {
+      "title": "Crear etiqueta",
+      "confirm": "La etiqueta «{name}» aún no existe. ¿Quieres crearla?",
+      "submit": "Crear etiqueta"
+    },
+    "messages": {
+      "create_error": "No se pudo crear la etiqueta."
+    }
+  },
+  "issues": {
+    "unassigned": "Sin asignar",
+    "deleted_user": "Usuario eliminado",
+    "fields": {
+      "type": "Tipo",
+      "status_category": "Categoría de estado",
+      "summary": "Resumen",
+      "description": "Descripción",
+      "product": "Producto",
+      "version": "Versión",
+      "access": "Acceso",
+      "resolution": "Resolución",
+      "tags": "Etiquetas",
+      "watchers": "Seguidores"
+    },
+    "columns": {
+      "id": "Incidencia",
+      "summary": "Resumen",
+      "reporter": "Informante",
+      "assignee": "Asignado a",
+      "created": "Creada",
+      "updated": "Actualizada",
+      "status": "Estado"
+    },
+    "access": {
+      "public": "Pública",
+      "registered": "Usuarios registrados",
+      "reporter": "Solo el informante"
+    },
+    "access_desc": {
+      "public": "Todos pueden ver la incidencia, incluidos los visitantes que no han iniciado sesión.",
+      "registered": "Todos los usuarios que han iniciado sesión pueden ver la incidencia.",
+      "reporter": "Solo tú y el equipo de soporte pueden ver la incidencia."
+    },
+    "views": {
+      "all": "Todas las incidencias",
+      "mine": "Mis incidencias",
+      "assigned": "Asignadas a mí",
+      "unassigned": "Incidencias sin asignar",
+      "open": "Incidencias abiertas",
+      "waiting": "Incidencias en espera",
+      "in_progress": "Incidencias en curso",
+      "done": "Incidencias finalizadas",
+      "deleted": "Incidencias eliminadas"
+    },
+    "list": {
+      "empty": "No se encontraron incidencias."
+    },
+    "filters": {
+      "all_status": "Todos los estados",
+      "all_status_categories": "Todas las categorías de estado",
+      "all_types": "Todos los tipos",
+      "all_products": "Todos los productos",
+      "all_assignees": "Todos los asignados",
+      "all_reporters": "Todos los informantes",
+      "all_tags": "Todas las etiquetas",
+      "search_results": "Resultados de búsqueda de «{term}»",
+      "participant": "Participante: {name}",
+      "reset": "Restablecer filtros"
+    },
+    "create": {
+      "title": "Crear incidencia",
+      "type_desc": "¿Qué tipo de incidencia es?",
+      "type_placeholder": "Selecciona un tipo...",
+      "type_required": "Selecciona un tipo.",
+      "summary_desc": "Un título breve en una línea (hasta 200 caracteres).",
+      "summary_required": "Introduce un resumen.",
+      "description_desc": "Describe la incidencia con la mayor precisión posible: qué ocurrió, qué esperabas y cómo podemos reproducirlo.",
+      "description_required": "Introduce una descripción.",
+      "tags_desc": "Las etiquetas ayudan a encontrar y agrupar incidencias (opcional). Escribe para buscar entre las etiquetas existentes.",
+      "product_desc": "El producto al que se refiere la incidencia (opcional).",
+      "no_product": "Sin producto",
+      "version_desc": "La versión del producto en la que ocurre la incidencia (opcional).",
+      "access_desc": "Quién puede ver esta incidencia. El equipo de soporte siempre puede verla.",
+      "submit": "Crear incidencia"
+    },
+    "edit": {
+      "title": "Editar incidencia",
+      "submit": "Guardar cambios",
+      "status_desc": "El estado se puede establecer libremente. Un estado de la categoría Finalizada necesita una resolución.",
+      "resolution_desc": "Por qué la incidencia está finalizada. Obligatoria para un estado de la categoría Finalizada.",
+      "resolution_placeholder": "Selecciona una resolución...",
+      "resolution_required": "Selecciona una resolución.",
+      "assignee_desc": "Solo se puede asignar a usuarios con el rol Agente.",
+      "watchers_desc": "Quién recibe avisos de los cambios de esta incidencia. Mantenga Ctrl (Cmd en Mac) para seleccionar varios. Solo se listan los usuarios que pueden ver la incidencia.",
+      "access_desc": "Quién puede ver esta incidencia. Los seguidores que pierden el acceso se eliminan.",
+      "load_error": "No se pudo cargar la incidencia.",
+      "no_permission": "No tienes permiso para editar esta incidencia.",
+      "save_error": "No se pudo guardar la incidencia.",
+      "saved": "La incidencia {key} se actualizó.",
+      "unchanged": "No se cambió nada."
+    },
+    "detail": {
+      "loading": "Cargando...",
+      "back": "Volver a la lista",
+      "properties": "Propiedades",
+      "deleted": "Eliminada"
+    },
+    "messages": {
+      "load_error": "No se pudieron cargar las incidencias.",
+      "not_found": "La incidencia no existe o no tienes permiso para verla.",
+      "create_error": "No se pudo crear la incidencia.",
+      "created": "La incidencia {key} se creó.",
+      "saved": "La incidencia {key} se actualizó."
+    }
+  },
+  "markdown": {
+    "write": "Escribir",
+    "preview": "Vista previa",
+    "nothing_to_preview": "Nada que previsualizar.",
+    "help": "Se admite Markdown. Las claves de incidencia como {key} se enlazan automáticamente.",
+    "toolbar": "Formato",
+    "bold": "Negrita",
+    "italic": "Cursiva",
+    "code": "Código",
+    "link": "Enlace",
+    "bullet_list": "Lista con viñetas",
+    "numbered_list": "Lista numerada",
+    "quote": "Cita",
+    "link_text": "texto del enlace",
+    "image": "Insertar imagen",
+    "existing_image": "Insertar una imagen existente de esta incidencia",
+    "no_existing_images": "Aún no hay imágenes adjuntas a esta incidencia.",
+    "help_images": "Pega o suelta imágenes en el texto para adjuntarlas.",
+    "image_removed": "Imagen eliminada",
+    "image_type": "Solo se pueden insertar imágenes (gif, jpg, png) en el texto."
+  },
+  "comments": {
+    "title": "Comentarios",
+    "order_newest": "Más recientes primero",
+    "order_oldest": "Más antiguos primero",
+    "order_label": "Orden de los comentarios",
+    "empty": "Aún no hay comentarios.",
+    "internal": "Interno",
+    "edited": "editado",
+    "edited_on": "Editado el {date}",
+    "deleted": "Comentario eliminado",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "form": {
+      "title": "Añadir un comentario",
+      "body_desc": "Escribe tu comentario.",
+      "body_required": "Introduce un comentario.",
+      "internal": "Comentario interno",
+      "internal_desc": "Solo el equipo de soporte puede ver un comentario interno.",
+      "submit": "Añadir comentario",
+      "respond": "Responder con comentario",
+      "login_hint": "Inicia sesión para añadir un comentario.",
+      "blocked_closed": "Esta incidencia está cerrada y no admite más comentarios.",
+      "blocked_deleted": "Esta incidencia está eliminada y no admite más comentarios."
+    },
+    "delete_confirm": {
+      "title": "Eliminar comentario",
+      "text": "¿Quieres eliminar este comentario? Se sustituye por una nota que indica que se eliminó un comentario."
+    },
+    "messages": {
+      "load_error": "No se pudieron cargar los comentarios.",
+      "added": "Tu comentario se añadió.",
+      "add_error": "No se pudo añadir el comentario.",
+      "saved": "El comentario se guardó.",
+      "save_error": "No se pudo guardar el comentario.",
+      "deleted": "El comentario se eliminó.",
+      "delete_error": "No se pudo eliminar el comentario.",
+      "order_error": "No se pudo guardar el orden de los comentarios."
+    }
+  },
+  "actions": {
+    "menu": "Acciones",
+    "names": {
+      "edit": "Editar",
+      "respond": "Responder",
+      "resolve": "Resolver",
+      "close": "Cerrar",
+      "reopen": "Reabrir",
+      "assign": "Asignar",
+      "assign_me": "Asignármela",
+      "watch": "Seguir incidencia",
+      "unwatch": "Dejar de seguir incidencia",
+      "change_access": "Cambiar acceso",
+      "delete": "Eliminar incidencia",
+      "restore": "Restaurar incidencia"
+    },
+    "fields": {
+      "comment": "Comentario",
+      "comment_optional": "Comentario (opcional)",
+      "resolution": "Resolución",
+      "assignee": "Asignado a",
+      "access": "Acceso",
+      "internal": "Comentario interno",
+      "internal_desc": "Solo el equipo de soporte puede ver un comentario interno. Un comentario interno no cambia el estado."
+    },
+    "placeholders": {
+      "resolution": "Selecciona una resolución...",
+      "assignee": "Selecciona un agente...",
+      "access": "Selecciona el nuevo acceso..."
+    },
+    "unassign": "Sin asignar",
+    "modal": {
+      "respond": {
+        "title": "Responder",
+        "text": "Tu respuesta se añade como comentario. El estado cambia para mostrar quién debe responder a continuación.",
+        "submit": "Responder"
+      },
+      "resolve": {
+        "title": "Resolver incidencia",
+        "text": "Selecciona cómo se resolvió la incidencia. El estado cambia a Resuelta.",
+        "submit": "Resolver"
+      },
+      "reopen": {
+        "title": "Reabrir incidencia",
+        "text": "Indica por qué se reabre la incidencia. El estado cambia a Abierta y se borra la resolución.",
+        "submit": "Reabrir"
+      },
+      "assign": {
+        "title": "Asignar incidencia",
+        "text": "Selecciona el agente que se encarga de la incidencia.",
+        "submit": "Asignar"
+      },
+      "change_access": {
+        "title": "Cambiar acceso",
+        "text": "¿Quién puede ver esta incidencia? Los seguidores que pierden el acceso se eliminan.",
+        "text_reporter": "Solo puedes restringir el acceso a tu incidencia, no volver a ampliarlo. Los seguidores que pierden el acceso se eliminan.",
+        "submit": "Cambiar acceso"
+      },
+      "delete": {
+        "title": "Eliminar incidencia",
+        "text": "La incidencia se oculta para todos salvo el equipo de soporte. Se puede restaurar más adelante. ¿Eliminar esta incidencia?",
+        "submit": "Sí, eliminar"
+      }
+    },
+    "validation": {
+      "comment_required": "Introduce un comentario.",
+      "resolution_required": "Selecciona una resolución.",
+      "assignee_required": "Selecciona un agente.",
+      "access_required": "Selecciona el nuevo acceso."
+    },
+    "done": {
+      "respond": "Tu respuesta se añadió.",
+      "resolve": "La incidencia se resolvió.",
+      "close": "La incidencia se cerró.",
+      "reopen": "La incidencia se reabrió.",
+      "assign": "La incidencia se asignó.",
+      "assign_me": "La incidencia está asignada a ti.",
+      "watch": "Ahora sigues esta incidencia.",
+      "unwatch": "Ya no sigues esta incidencia.",
+      "change_access": "El acceso se cambió.",
+      "delete": "La incidencia se eliminó.",
+      "restore": "La incidencia se restauró."
+    },
+    "error": "No se pudo realizar la acción.",
+    "load_error": "No se pudo cargar la lista de agentes."
+  },
+  "history": {
+    "title": "Historial",
+    "empty": "Aún no hay historial.",
+    "none": "(ninguno)",
+    "sort_newest": "Más recientes primero (clic para más antiguos primero)",
+    "sort_oldest": "Más antiguos primero (clic para más recientes primero)",
+    "columns": {
+      "when": "Cuándo",
+      "who": "Quién",
+      "what": "Qué",
+      "from": "De",
+      "to": "A"
+    },
+    "events": {
+      "issue_created": "creó la incidencia",
+      "comment_added": "añadió un comentario",
+      "comment_added_internal": "añadió un comentario interno",
+      "comment_edited": "editó un comentario",
+      "comment_edited_internal": "editó un comentario interno",
+      "comment_deleted": "eliminó un comentario",
+      "comment_deleted_internal": "eliminó un comentario interno",
+      "field_changed": "cambió {field}",
+      "unknown": "hizo un cambio",
+      "issue_deleted": "eliminó la incidencia",
+      "issue_restored": "restauró la incidencia",
+      "attachment_added": "añadió el archivo adjunto {name}",
+      "attachment_deleted": "eliminó el archivo adjunto {name}"
+    },
+    "fields": {
+      "tags": "Etiquetas",
+      "type": "Tipo",
+      "status": "Estado",
+      "resolution": "Resolución",
+      "assignee": "Asignado a",
+      "access": "Acceso",
+      "summary": "Resumen",
+      "description": "Descripción",
+      "product": "Producto",
+      "version": "Versión"
+    },
+    "load_error": "No se pudo cargar el historial."
+  },
+  "attachments": {
+    "title": "Archivos adjuntos",
+    "create_desc": "Adjunta archivos a la incidencia. Se guardan junto con la incidencia.",
+    "empty": "No hay archivos adjuntos.",
+    "add": "Añadir archivo adjunto",
+    "limits": "Permitidos: {types}. Como máximo {size} por archivo, {count} archivos y {total} en total (las imágenes del texto cuentan).",
+    "inline": "Imagen en el texto",
+    "delete": "Eliminar",
+    "blocked_closed": "Esta incidencia está cerrada y no admite más archivos adjuntos.",
+    "blocked_deleted": "Esta incidencia está eliminada y no admite más archivos adjuntos.",
+    "delete_confirm": {
+      "title": "Eliminar archivo adjunto",
+      "text": "¿Quieres eliminar el archivo adjunto «{name}»?",
+      "inline_warning": "Este archivo adjunto se muestra como imagen en la descripción o en un comentario. La imagen se sustituye por la nota «Imagen eliminada»."
+    },
+    "messages": {
+      "added": "El archivo adjunto «{name}» se añadió.",
+      "add_error": "No se pudo añadir el archivo adjunto.",
+      "deleted": "El archivo adjunto se eliminó.",
+      "delete_error": "No se pudo eliminar el archivo adjunto.",
+      "load_error": "No se pudieron cargar los archivos adjuntos.",
+      "download_error": "No se pudo descargar el archivo adjunto."
+    }
+  },
+  "notifications": {
+    "title": "Notificaciones",
+    "unread": "{count} notificación(es) sin leer",
+    "mark_all_read": "Marcar todas como leídas",
+    "empty": "No hay notificaciones.",
+    "settings": "Ajustes de notificaciones",
+    "someone": "Alguien",
+    "events": {
+      "issue_created": "{actor} creó la incidencia",
+      "issue_assigned": "{actor} asignó la incidencia a {assignee}",
+      "issue_unassigned": "{actor} quitó la asignación de la incidencia",
+      "status_changed": "{actor} cambió el estado a {status}",
+      "comment_added": "{actor} añadió un comentario",
+      "comment_added_internal": "{actor} añadió un comentario interno"
+    },
+    "prefs": {
+      "description": "Elige para cada evento si recibes un correo y si recibes una notificación en la barra superior. Solo te enteras de las incidencias que puedes ver.",
+      "event": "Evento",
+      "email": "Correo",
+      "in_app": "En la aplicación",
+      "events": {
+        "issue_created": {
+          "title": "Incidencia creada",
+          "desc": "Se creó una nueva incidencia (informantes y agentes)."
+        },
+        "issue_assigned": {
+          "title": "Incidencia asignada",
+          "desc": "Se asignó o se quitó la asignación de una incidencia que informaste, sigues o en la que trabajas."
+        },
+        "status_changed": {
+          "title": "Estado cambiado",
+          "desc": "Cambió el estado de una incidencia que informaste, sigues o en la que trabajas."
+        },
+        "comment_added": {
+          "title": "Comentario añadido",
+          "desc": "Se añadió un comentario a una incidencia que informaste, sigues o en la que trabajas."
+        }
+      },
+      "saved": "Tus ajustes de notificaciones se guardaron.",
+      "load_error": "No se pudieron cargar tus ajustes de notificaciones.",
+      "save_error": "No se pudieron guardar tus ajustes de notificaciones.",
+      "own_actions": "Notificarme mis propias acciones",
+      "own_actions_desc": "Notificarme también de las incidencias que creé y de los cambios que hice yo mismo."
+    }
+  },
+  "landing": {
+    "login": "Iniciar sesión",
+    "register": "Registrarse",
+    "issues": "Incidencias",
+    "hero_title": "Atención al cliente, <span class=\"text-primary hero-shimmer\">organizada</span>",
+    "hero_lead": "LeweDesk es el sistema de helpdesk y gestión de tickets de Lewe Labs. Informa de problemas, solicita mejoras y sigue cada caso desde el primer mensaje hasta la solución.",
+    "features_title": "Todo lo que necesita un equipo de soporte",
+    "features_lead": "Un conjunto de herramientas enfocado para recopilar, organizar y resolver las consultas de los clientes.",
+    "features": {
+      "issues": {
+        "title": "Seguimiento de incidencias",
+        "text": "Informa de problemas y solicita mejoras. Cada incidencia tiene un tipo, estado, producto, etiquetas, descripción en markdown, comentarios y un historial completo."
+      },
+      "workflow": {
+        "title": "Flujo de trabajo configurable",
+        "text": "Define tus propios tipos de incidencia, estados, resoluciones y productos para que el helpdesk se adapte a la forma de trabajar de tu equipo."
+      },
+      "access": {
+        "title": "Control de acceso detallado",
+        "text": "Los roles, grupos y permisos deciden quién ve qué. Las incidencias son públicas, visibles para los usuarios registrados o privadas para el informante."
+      },
+      "notifications": {
+        "title": "Notificaciones",
+        "text": "Mantente informado con notificaciones en la aplicación y por correo, configurables por usuario y por evento."
+      },
+      "attachments": {
+        "title": "Archivos adjuntos y búsqueda",
+        "text": "Adjunta archivos a incidencias y comentarios, y encuentra cualquier incidencia rápidamente con la búsqueda integrada y las vistas guardadas."
+      },
+      "security": {
+        "title": "Seguro por diseño",
+        "text": "La autenticación de dos factores, LDAP o SSO (OIDC) opcionales, la protección contra spam y un registro de auditoría mantienen tus datos a salvo."
+      }
+    },
+    "steps_title": "Cómo funciona",
+    "steps": {
+      "register": {
+        "title": "Crea una cuenta",
+        "text": "Regístrate en un minuto o inicia sesión con tu cuenta existente."
+      },
+      "report": {
+        "title": "Informa de una incidencia",
+        "text": "Describe el problema o tu idea, añade capturas de pantalla y elige el producto al que se refiere."
+      },
+      "follow": {
+        "title": "Síguela hasta su resolución",
+        "text": "Recibe avisos de cada comentario y cambio de estado hasta que la incidencia se resuelva."
+      }
+    },
+    "faq_title": "Preguntas frecuentes",
+    "faq": {
+      "what": {
+        "q": "¿Qué es LeweDesk?",
+        "a": "LeweDesk es un sistema web de helpdesk y gestión de tickets para atención al cliente, de Lewe Labs. Los clientes informan de problemas y solicitan mejoras, y el personal de soporte les da seguimiento hasta su resolución."
+      },
+      "who": {
+        "q": "¿Para quién es?",
+        "a": "Para proveedores de software y equipos de servicio que quieren un lugar central y estructurado para las consultas de los clientes, las solicitudes de funciones y las conversaciones de soporte."
+      },
+      "languages": {
+        "q": "¿Qué idiomas admite?",
+        "a": "La interfaz está disponible en inglés, alemán, francés y español."
+      },
+      "private": {
+        "q": "¿Quién puede ver mis incidencias?",
+        "a": "Cada incidencia es pública, visible solo para los usuarios registrados o privada para la persona que la informó. Los comentarios internos permanecen ocultos para los informantes."
+      }
+    },
+    "cta_title": "¿Listo para empezar?",
+    "cta_text": "Inicia sesión para informar de una incidencia o crea una cuenta gratuita en un minuto.",
+    "about": "Acerca de",
+    "search": "Buscar",
+    "search_placeholder": "Buscar incidencias, p. ej. error de inicio de sesión",
+    "recent_title": "Incidencias actualizadas recientemente",
+    "view_all": "Ver todas las incidencias",
+    "loading": "Cargando...",
+    "no_issues": "Aún no hay incidencias públicas.",
+    "load_error": "No se pudieron cargar las incidencias.",
+    "status_title": "Estado",
+    "report_title": "¿No encontraste una respuesta?",
+    "report_text": "Inicia sesión para informar de una incidencia o solicitar una mejora, o crea una cuenta gratuita en un minuto.",
+    "learn_more": "Más información sobre LeweDesk",
+    "browse_product": "Productos",
+    "browse_type": "Tipos",
+    "highlights": {
+      "track": "Sigue cada informe desde el primer mensaje hasta la solución",
+      "notify": "Recibe avisos de comentarios y cambios de estado",
+      "private": "Incidencias públicas, solo para registrados o privadas"
+    }
+  },
+  "license": {
+    "banner": {
+      "link": "Ajustes de licencia",
+      "trial": "Esta instalación de LeweDesk no tiene licencia. Dejará de funcionar en {days} días.",
+      "trial_expired": "Esta instalación de LeweDesk no tiene licencia y el periodo de prueba ha finalizado. Solo los administradores pueden iniciar sesión.",
+      "expired": "La licencia ha caducado. Solo los administradores pueden iniciar sesión.",
+      "blocked": "La licencia ha sido bloqueada. Solo los administradores pueden iniciar sesión.",
+      "pending": "La licencia aún no se ha activado.",
+      "unregistered": "La licencia es válida, pero este dominio no está registrado en ella.",
+      "invalid": "La clave de licencia no es válida.",
+      "expiring": "La licencia caduca en {days} días.",
+      "expiring_today": "La licencia caduca hoy."
+    }
+  }
+}

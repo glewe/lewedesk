@@ -1,0 +1,18 @@
+# HTML pages reference hashed JS/CSS files that change with every build, so browsers must
+# revalidate them. Otherwise a cached page can point to files that no longer exist.
+<IfModule mod_headers.c>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>
+
+# Never serve configuration, installer state, database scripts or logs
+<FilesMatch "^(\.env.*|install\.lock|\.housekeeping|.*\.sql|.*\.log|stderr)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>

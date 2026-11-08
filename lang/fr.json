@@ -1,0 +1,1179 @@
+{
+  "app_name": "LeweDesk",
+  "dashboard": "Tableau de bord",
+  "dashboard_page": {
+    "no_access": "Vous n'êtes pas autorisé à voir les tickets, il n'y a donc encore rien à afficher ici.",
+    "load_error": "Le tableau de bord n'a pas pu être chargé.",
+    "tiles": {
+      "open": "Tickets ouverts",
+      "assigned": "Qui me sont assignés",
+      "unassigned": "Non assignés",
+      "resolved": "Résolus (7 jours)"
+    },
+    "lists": {
+      "reported": "Signalés par moi",
+      "assigned": "Qui me sont assignés",
+      "watching": "Suivis",
+      "empty": "Aucun ticket ouvert.",
+      "view_all": "Tout afficher",
+      "more": "{count} au total"
+    },
+    "charts": {
+      "created_vs_resolved": "Créés vs résolus (30 derniers jours)",
+      "created": "Créés",
+      "resolved": "Résolus",
+      "by_category": "Tickets par catégorie de statut",
+      "by_type": "Tickets par type",
+      "by_product": "Tickets par produit",
+      "no_product": "Aucun produit",
+      "issues": "Tickets",
+      "empty": "Aucun ticket pour le moment."
+    },
+    "activity": {
+      "title": "Activité récente",
+      "empty": "Aucune activité sur vos tickets pour le moment."
+    }
+  },
+  "sidebar": {
+    "dashboard": "Tableau de bord",
+    "administration": "Administration",
+    "management": "Système",
+    "settings": "Paramètres",
+    "users": "Utilisateurs",
+    "roles": "Rôles",
+    "groups": "Groupes",
+    "permissions": "Permissions",
+    "issues": "Tickets",
+    "issue_types": "Types de ticket",
+    "products": "Produits",
+    "resolutions": "Résolutions",
+    "status": "Statut",
+    "status_categories": "Catégories de statut",
+    "tags": "Étiquettes",
+    "issues_title": "Tickets",
+    "all_issues": "Tous les tickets",
+    "create_issue": "Créer un ticket",
+    "my_issues": "Mes tickets",
+    "assigned_to_me": "Qui me sont assignés",
+    "unassigned": "Non assignés",
+    "open": "Ouverts",
+    "waiting": "En attente",
+    "in_progress": "En cours",
+    "done": "Terminés",
+    "deleted_issues": "Supprimés"
+  },
+  "header": {
+    "search": "Rechercher...",
+    "ldap_active": "L'authentification LDAP est active",
+    "sso_active": "L'authentification SSO (authentification unique) est active",
+    "notifications": "Notifications",
+    "profile": "Profil",
+    "logout": "Déconnexion",
+    "settings": "Paramètres",
+    "help": "Aide",
+    "manual": "Manuel d'utilisation",
+    "about": "À propos",
+    "privacy": "Politique de confidentialité",
+    "imprint": "Mentions légales",
+    "login": "Connexion"
+  },
+  "about": {
+    "title": "À propos de Lewe<strong>Desk</strong>",
+    "tagline": "Système de gestion de tickets Lewe",
+    "version": "Version",
+    "copyright": "Copyright",
+    "issues": "Tickets",
+    "issues_link": "Tickets GitHub",
+    "documentation": "Documentation",
+    "credits": "Remerciements à :",
+    "release_info": "Informations de version",
+    "release": "Version",
+    "issue": "Ticket",
+    "bugfixes": "Corrections de bugs",
+    "improvements": "Améliorations",
+    "features": "Nouvelles fonctionnalités",
+    "removals": "Fonctionnalités retirées",
+    "load_error": "Les informations de version n'ont pas pu être chargées."
+  },
+  "footer": {
+    "powered_by": "Propulsé par"
+  },
+  "settings": {
+    "title": "Paramètres système",
+    "tabs": {
+      "general": "Général",
+      "system": "Système",
+      "theme": "Thème",
+      "issues": "Configuration des tickets",
+      "license": "Licence"
+    },
+    "fields": {
+      "application_url": "URL de l'application",
+      "application_url_desc": "Saisissez ici l'URL complète de l'application. Elle sera utilisée dans les e-mails de notification.",
+      "application_name": "Nom de l'application",
+      "application_name_desc": "Saisissez ici un titre pour l'application. Il est utilisé à plusieurs endroits, par exemple dans l'en-tête HTML, le menu et les autres pages où le titre est mentionné.",
+      "application_manual": "Manuel de l'application",
+      "application_manual_desc": "Le manuel d'utilisation est rédigé en anglais et disponible sur le site Lewe Gitbook. Si vous avez rédigé votre propre manuel, saisissez ici le lien. Il sera affiché dans le menu Aide tant que le champ n'est pas vide.",
+      "html_description": "Description HTML",
+      "html_description_desc": "Saisissez ici une description de l'application. Elle sera utilisée dans l'en-tête HTML pour les moteurs de recherche.",
+      "html_keywords": "Mots-clés HTML",
+      "html_keywords_desc": "Saisissez ici les mots-clés de l'application. Ils seront utilisés dans l'en-tête HTML pour les moteurs de recherche.",
+      "default_language": "Langue par défaut",
+      "default_language_desc": "Sélectionnez ici la langue par défaut. Les utilisateurs peuvent changer de langue dans l'interface.",
+      "alert_show": "Afficher les alertes",
+      "alert_show_desc": "Sélectionnez les types d'alertes (messages toast) à afficher.",
+      "alert_autoclose_info": "Fermer automatiquement les alertes d'information",
+      "alert_autoclose_info_desc": "Indiquez si les alertes d'information doivent se fermer automatiquement après le nombre de millisecondes indiqué ci-dessous.",
+      "alert_autoclose_success": "Fermer automatiquement les alertes de succès",
+      "alert_autoclose_success_desc": "Indiquez si les alertes de succès doivent se fermer automatiquement après le nombre de millisecondes indiqué ci-dessous.",
+      "alert_autoclose_warning": "Fermer automatiquement les alertes d'avertissement",
+      "alert_autoclose_warning_desc": "Indiquez si les alertes d'avertissement doivent se fermer automatiquement après le nombre de millisecondes indiqué ci-dessous.",
+      "alert_autoclose_error": "Fermer automatiquement les alertes d'erreur",
+      "alert_autoclose_error_desc": "Indiquez si les alertes d'erreur doivent se fermer automatiquement après le nombre de millisecondes indiqué ci-dessous.",
+      "alert_autoclose_delay": "Délai de fermeture automatique des alertes",
+      "alert_autoclose_delay_desc": "Saisissez le nombre de millisecondes après lequel les types d'alertes sélectionnés ci-dessus se ferment automatiquement (p. ex. 4000 = 4 secondes).",
+      "timezone": "Fuseau horaire",
+      "timezone_desc": "Sélectionnez ici le fuseau horaire par défaut.",
+      "matomo_analytics": "Matomo Analytics",
+      "matomo_analytics_desc": "L'application prend en charge Matomo Analytics. Si vous souhaitez suivre les accès à votre instance, cochez cette case et saisissez ci-dessous l'URL de Matomo et l'ID du site.",
+      "matomo_url": "URL de Matomo",
+      "matomo_url_desc": "Si vous avez activé Matomo Analytics, saisissez l'URL où votre serveur Matomo est hébergé.",
+      "matomo_siteid": "ID de site Matomo",
+      "matomo_siteid_desc": "Si vous avez activé Matomo Analytics, saisissez ici l'ID de site Matomo.",
+      "disable_search_engines": "Désactiver les moteurs de recherche",
+      "disable_search_engines_desc": "Lorsque cette option est activée, les robots des moteurs de recherche ont pour instruction de ne pas indexer les pages de ce site LeweDesk. Les pages publiques (page d'accueil, À propos, Politique de confidentialité et Mentions légales) contiennent des balises SEO fixes et ne sont pas concernées.",
+      "disable_caching": "Désactiver la mise en cache",
+      "disable_caching_desc": "Dans certains environnements serveur-client, des effets de cache indésirables peuvent se produire. Lorsque cette option est activée, LeweDesk envoie au serveur web des instructions de non-mise en cache qui peuvent aider.",
+      "debug_mode": "Mode débogage",
+      "debug_mode_desc": "Lorsque cette option est activée, des informations de débogage sont affichées dans la console du navigateur.",
+      "under_maintenance": "En maintenance",
+      "under_maintenance_desc": "Lorsque cette option est activée, l'application passe en mode maintenance. Seuls les administrateurs peuvent accéder à l'application.",
+      "force_2fa": "Imposer l'authentification à deux facteurs",
+      "force_2fa_desc": "Oblige les utilisateurs à configurer une authentification à deux facteurs, par exemple via Google ou Microsoft Authenticator. Si un utilisateur n'a pas encore configuré la 2FA, il sera redirigé vers une page de configuration de la 2FA après la connexion normale.",
+      "audit_retention_days": "Conservation du journal d'audit (jours)",
+      "audit_retention_days_desc": "Indiquez après combien de jours les entrées du journal d'audit sont supprimées. Saisissez 0 pour les conserver indéfiniment.",
+      "color_mode": "Mode de couleur",
+      "color_mode_desc": "Sélectionnez le mode de couleur par défaut de l'application.",
+      "font": "Police",
+      "font_desc": "Sélectionnez la police à utiliser pour l'application.",
+      "issue_key_prefix": "Préfixe de la clé de ticket",
+      "issue_key_prefix_desc": "Saisissez le préfixe de la clé de ticket. Les tickets sont affichés sous la forme PRÉFIXE-123 (p. ex. LD-123). Le préfixe ne peut plus être modifié dès qu'un premier ticket existe.",
+      "support_email": "E-mail du support",
+      "support_email_desc": "Saisissez ici l'adresse e-mail de votre équipe de support. Un message est envoyé à cette adresse lors de la création d'un ticket.",
+      "attachment_max_size": "Taille maximale d'une pièce jointe (Mo)",
+      "attachment_max_size_desc": "Saisissez la taille maximale d'une pièce jointe ou d'une image intégrée, en mégaoctets. Les paramètres PHP upload_max_filesize et post_max_size de votre serveur web doivent autoriser cette taille.",
+      "attachment_max_count": "Nombre maximal de pièces jointes par ticket",
+      "attachment_max_count_desc": "Saisissez le nombre maximal de pièces jointes d'un ticket. Les images intégrées dans les commentaires et les descriptions comptent comme des pièces jointes.",
+      "attachment_max_total_size": "Taille totale maximale des pièces jointes par ticket (Mo)",
+      "attachment_max_total_size_desc": "Saisissez la taille totale maximale de toutes les pièces jointes d'un ticket, en mégaoctets.",
+      "rate_limit_issues": "Tickets par heure",
+      "rate_limit_issues_desc": "Saisissez combien de tickets un utilisateur peut créer par heure. Les agents et les administrateurs ne sont pas limités. Saisissez 0 pour désactiver la limite.",
+      "rate_limit_comments": "Commentaires par heure",
+      "rate_limit_comments_desc": "Saisissez combien de commentaires un utilisateur peut ajouter par heure. Les agents et les administrateurs ne sont pas limités. Saisissez 0 pour désactiver la limite.",
+      "notification_retention_days": "Conservation des notifications (jours)",
+      "notification_retention_days_desc": "Indiquez après combien de jours les notifications dans l'application sont supprimées.",
+      "notification_poll_interval": "Intervalle de vérification des notifications (secondes)",
+      "notification_poll_interval_desc": "Indiquez à quelle fréquence le navigateur vérifie la présence de nouvelles notifications.",
+      "temp_upload_cleanup_hours": "Nettoyage des envois temporaires (heures)",
+      "temp_upload_cleanup_hours_desc": "Les images envoyées lors de la rédaction d'un nouveau ticket sont supprimées après ce nombre d'heures si le ticket n'a jamais été enregistré.",
+      "lic_expiry_warning": "Avertissement d'expiration (jours)",
+      "lic_expiry_warning_desc": "Indiquez combien de jours avant l'expiration de la licence les administrateurs sont avertis par une bannière sur chaque page. Saisissez 0 pour ne pas avertir."
+    },
+    "actions": {
+      "save": "Enregistrer les paramètres",
+      "saving": "Enregistrement..."
+    },
+    "messages": {
+      "success": "Les paramètres système ont été enregistrés avec succès.",
+      "error": "Une erreur s'est produite lors de l'enregistrement des paramètres système.",
+      "load_error": "Échec du chargement des paramètres système depuis le serveur."
+    },
+    "license": {
+      "key": "Clé de licence",
+      "key_desc": "Saisissez la clé de licence que vous avez reçue et cliquez sur Enregistrer la clé. Après l'enregistrement de la clé, cliquez sur Activer pour enregistrer ce domaine auprès du serveur de licences.",
+      "save_key": "Enregistrer la clé",
+      "activate": "Activer la licence",
+      "activate_desc": "Active la licence pour cette installation et enregistre son domaine auprès du serveur de licences. Une licence encore en attente devient active. Si le nombre maximal d'installations est atteint, l'enregistrement le plus ancien est remplacé.",
+      "activate_btn": "Activer",
+      "deregister": "Désenregistrer le domaine",
+      "deregister_desc": "Retire le domaine de cette installation de la licence, p. ex. avant de déplacer LeweDesk vers un autre serveur. La place devient libre pour une autre installation.",
+      "deregister_btn": "Désenregistrer",
+      "confirm_deregister": "Retirer ce domaine de la licence ? La licence ne sera plus valable pour cette installation tant que vous ne l'aurez pas enregistrée à nouveau.",
+      "refresh": "Vérifier la licence",
+      "refresh_desc": "Demande au serveur de licences l'état actuel de la licence. Cela se produit automatiquement toutes les 30 minutes.",
+      "refresh_btn": "Vérifier maintenant",
+      "product": "Produit",
+      "license_key": "Clé de licence",
+      "customer": "Client",
+      "company": "Entreprise",
+      "expiry": "Date d'expiration",
+      "days_left": "{days} jours restants",
+      "activations": "Installations enregistrées",
+      "activations_value": "{used} sur {max}",
+      "domain": "Domaine de cette installation",
+      "last_check": "Dernière vérification",
+      "server_error": "Le dernier contact avec le serveur de licences a échoué",
+      "not_configured": "La connexion au serveur de licences n'est pas configurée : LICENSE_SERVER ou LICENSE_SECRET est absent du fichier .env.",
+      "state": {
+        "active": "Active",
+        "trial": "Essai",
+        "pending": "En attente",
+        "expired": "Expirée",
+        "blocked": "Bloquée",
+        "unregistered": "Non enregistrée",
+        "unavailable": "Indisponible",
+        "invalid": "Invalide",
+        "trial_expired": "Essai terminé"
+      },
+      "status": {
+        "active": {
+          "title": "Licence active",
+          "subject": "Votre licence est valable pour cette installation.",
+          "help": ""
+        },
+        "trial": {
+          "title": "Aucune licence - période d'essai",
+          "subject": "Cette installation de LeweDesk n'est pas sous licence. Elle cessera de fonctionner dans {days} jours.",
+          "help": "Saisissez votre clé de licence ci-dessous et activez-la."
+        },
+        "trial_expired": {
+          "title": "Aucune licence - période d'essai terminée",
+          "subject": "Cette installation de LeweDesk n'est pas sous licence et la période d'essai est terminée. Seuls les administrateurs peuvent se connecter.",
+          "help": "Saisissez votre clé de licence ci-dessous et activez-la."
+        },
+        "pending": {
+          "title": "Licence en attente",
+          "subject": "Votre licence n'a pas encore été activée.",
+          "help": "Cliquez sur Activer pour activer la licence pour cette installation."
+        },
+        "expired": {
+          "title": "Licence expirée",
+          "subject": "Votre licence a expiré. Seuls les administrateurs peuvent se connecter.",
+          "help": "Veuillez renouveler votre licence ou contacter le fournisseur."
+        },
+        "blocked": {
+          "title": "Licence bloquée",
+          "subject": "Votre licence a été bloquée. Seuls les administrateurs peuvent se connecter.",
+          "help": "Veuillez contacter le fournisseur."
+        },
+        "unregistered": {
+          "title": "Domaine non enregistré",
+          "subject": "La licence est valide, mais ce domaine n'y est pas enregistré.",
+          "help": "Cliquez sur Activer pour enregistrer ce domaine."
+        },
+        "invalid": {
+          "title": "Licence invalide",
+          "subject": "La clé de licence est inconnue du serveur de licences.",
+          "help": "Vérifiez la clé et enregistrez-la à nouveau, ou contactez le fournisseur."
+        },
+        "unavailable": {
+          "title": "Serveur de licences indisponible",
+          "subject": "L'état de la licence n'a pas pu être déterminé car le serveur de licences est injoignable. LeweDesk continue de fonctionner avec le dernier état connu.",
+          "help": "La licence est vérifiée à nouveau automatiquement."
+        }
+      },
+      "messages": {
+        "load_error": "Échec du chargement de la licence depuis le serveur.",
+        "error": "L'action sur la licence a échoué.",
+        "done_key": "La clé de licence a été enregistrée.",
+        "done_activate": "La licence a été activée.",
+        "done_deregister": "Le domaine a été désenregistré.",
+        "done_refresh": "La licence a été vérifiée.",
+        "key_removed": "La clé de licence a été supprimée.",
+        "license_expired": "La licence a expiré.",
+        "license_blocked": "La licence est bloquée.",
+        "license_not_found": "La clé de licence est inconnue.",
+        "domain_not_activated": "La licence n'est pas activée pour ce domaine.",
+        "invalid_request": "La clé de licence est absente ou trop longue.",
+        "no_key": "Il n'y a pas de clé de licence. Saisissez et enregistrez d'abord une clé.",
+        "unavailable": "Le serveur de licences est injoignable. Veuillez réessayer plus tard.",
+        "invalid_secret": "Le serveur de licences a refusé le secret du produit. Vérifiez LICENSE_SECRET dans le fichier .env.",
+        "product_inactive": "Le produit est désactivé sur le serveur de licences.",
+        "rate_limited": "Trop de requêtes vers le serveur de licences. Veuillez patienter un instant.",
+        "invalid_domain": "Le domaine de cette installation n'est pas valide pour le serveur de licences.",
+        "https_required": "Le serveur de licences doit être joint via HTTPS. Vérifiez LICENSE_SERVER dans le fichier .env."
+      }
+    }
+  },
+  "lookups": {
+    "issue_types": {
+      "bug": "Bug",
+      "improvement": "Amélioration",
+      "feature": "Fonctionnalité",
+      "question": "Question",
+      "license": "Licence",
+      "task": "Tâche"
+    },
+    "status_categories": {
+      "open": "Ouvert",
+      "waiting": "En attente",
+      "in_progress": "En cours",
+      "done": "Terminé"
+    },
+    "status": {
+      "open": "Ouvert",
+      "waiting_for_agent": "En attente de l'agent",
+      "waiting_for_customer": "En attente du client",
+      "pending": "En suspens",
+      "on_hold": "Suspendu",
+      "resolved": "Résolu",
+      "closed": "Fermé"
+    },
+    "resolutions": {
+      "completed": "Terminé",
+      "fixed": "Corrigé",
+      "answered": "Répondu",
+      "expired": "Expiré",
+      "duplicate": "Doublon",
+      "wont_do": "Ne sera pas fait",
+      "not_reproducible": "Non reproductible"
+    }
+  },
+  "lookup_pages": {
+    "shared": {
+      "preview_desc": "Voici comment l'enregistrement est affiché dans les listes et sur les tickets.",
+      "icon_desc": "Classe Bootstrap Icons, p. ex. bi-bug. Laissez vide pour ne pas avoir d'icône.",
+      "color_desc": "Couleur de l'icône et du texte.",
+      "text_color_desc": "Couleur du texte de l'étiquette.",
+      "background_color_desc": "Couleur d'arrière-plan. Elle est affichée avec de la transparence afin de fonctionner en mode clair et en mode sombre.",
+      "tag_background_color_desc": "Couleur d'arrière-plan de l'étiquette.",
+      "sort_order_desc": "Position dans les listes et les menus déroulants (le plus petit en premier). Laissez vide pour placer un nouvel enregistrement à la fin.",
+      "active_desc": "Les enregistrements inactifs ne peuvent pas être sélectionnés pour de nouveaux tickets mais restent sur les tickets existants."
+    },
+    "issue_types": {
+      "title": "Types de ticket",
+      "add_title": "Ajouter un type de ticket",
+      "edit_title": "Modifier le type de ticket",
+      "name_desc": "Nom unique du type de ticket (50 caractères max.).",
+      "description_desc": "Courte description de l'utilité du type de ticket.",
+      "confirm_delete": "Supprimer les types de ticket sélectionnés ? Cette action est irréversible.",
+      "messages": {
+        "created": "Le type de ticket a été créé.",
+        "updated": "Le type de ticket a été mis à jour.",
+        "deleted": "Les types de ticket sélectionnés ont été supprimés.",
+        "load_error": "Échec du chargement des types de ticket depuis le serveur.",
+        "save_error": "Le type de ticket n'a pas pu être enregistré.",
+        "delete_error": "Les types de ticket sélectionnés n'ont pas pu être supprimés.",
+        "not_found": "Le type de ticket est introuvable."
+      }
+    },
+    "status_categories": {
+      "title": "Catégories de statut",
+      "add_title": "Ajouter une catégorie de statut",
+      "edit_title": "Modifier la catégorie de statut",
+      "name_desc": "Le nom d'une catégorie de statut système est verrouillé.",
+      "description_desc": "Courte description de l'utilité de la catégorie de statut.",
+      "confirm_delete": "Supprimer les catégories de statut sélectionnées ? Cette action est irréversible.",
+      "messages": {
+        "created": "La catégorie de statut a été créée.",
+        "updated": "La catégorie de statut a été mise à jour.",
+        "deleted": "Les catégories de statut sélectionnées ont été supprimées.",
+        "load_error": "Échec du chargement des catégories de statut depuis le serveur.",
+        "save_error": "La catégorie de statut n'a pas pu être enregistrée.",
+        "delete_error": "Les catégories de statut sélectionnées n'ont pas pu être supprimées.",
+        "not_found": "La catégorie de statut est introuvable."
+      },
+      "intro": "Les catégories de statut regroupent les statuts et pilotent les vues rapides de la liste des tickets. Ce sont des enregistrements système : vous pouvez modifier leur description, leur icône et leurs couleurs."
+    },
+    "status": {
+      "title": "Statut",
+      "add_title": "Ajouter un statut",
+      "edit_title": "Modifier le statut",
+      "name_desc": "Nom unique du statut (50 caractères max.).",
+      "description_desc": "Courte description de l'utilité du statut.",
+      "confirm_delete": "Supprimer les statuts sélectionnés ? Cette action est irréversible.",
+      "messages": {
+        "created": "Le statut a été créé.",
+        "updated": "Le statut a été mis à jour.",
+        "deleted": "Les statuts sélectionnés ont été supprimés.",
+        "load_error": "Échec du chargement des statuts depuis le serveur.",
+        "save_error": "Le statut n'a pas pu être enregistré.",
+        "delete_error": "Les statuts sélectionnés n'ont pas pu être supprimés.",
+        "not_found": "Le statut est introuvable."
+      },
+      "category_desc": "La catégorie à laquelle appartient le statut. Les catégories regroupent les statuts dans les listes de tickets."
+    },
+    "resolutions": {
+      "title": "Résolutions",
+      "add_title": "Ajouter une résolution",
+      "edit_title": "Modifier la résolution",
+      "name_desc": "Nom unique de la résolution (50 caractères max.).",
+      "description_desc": "Courte description de l'utilité de la résolution.",
+      "confirm_delete": "Supprimer les résolutions sélectionnées ? Cette action est irréversible.",
+      "messages": {
+        "created": "La résolution a été créée.",
+        "updated": "La résolution a été mise à jour.",
+        "deleted": "Les résolutions sélectionnées ont été supprimées.",
+        "load_error": "Échec du chargement des résolutions depuis le serveur.",
+        "save_error": "La résolution n'a pas pu être enregistrée.",
+        "delete_error": "Les résolutions sélectionnées n'ont pas pu être supprimées.",
+        "not_found": "La résolution est introuvable."
+      }
+    },
+    "products": {
+      "title": "Produits",
+      "add_title": "Ajouter un produit",
+      "edit_title": "Modifier le produit",
+      "name_desc": "Nom unique du produit (50 caractères max.).",
+      "description_desc": "Courte description de l'utilité du produit.",
+      "confirm_delete": "Supprimer les produits sélectionnés ? Ils sont retirés des tickets. Cette action est irréversible.",
+      "messages": {
+        "created": "Le produit a été créé.",
+        "updated": "Le produit a été mis à jour.",
+        "deleted": "Les produits sélectionnés ont été supprimés.",
+        "load_error": "Échec du chargement des produits depuis le serveur.",
+        "save_error": "Le produit n'a pas pu être enregistré.",
+        "delete_error": "Les produits sélectionnés n'ont pas pu être supprimés.",
+        "not_found": "Le produit est introuvable."
+      }
+    },
+    "tags": {
+      "title": "Étiquettes",
+      "add_title": "Ajouter une étiquette",
+      "edit_title": "Modifier l'étiquette",
+      "name_desc": "Nom unique de l'étiquette (50 caractères max.).",
+      "confirm_delete": "Supprimer les étiquettes sélectionnées ? Elles sont retirées des tickets. Cette action est irréversible.",
+      "messages": {
+        "created": "L'étiquette a été créée.",
+        "updated": "L'étiquette a été mise à jour.",
+        "deleted": "Les étiquettes sélectionnées ont été supprimées.",
+        "load_error": "Échec du chargement des étiquettes depuis le serveur.",
+        "save_error": "L'étiquette n'a pas pu être enregistrée.",
+        "delete_error": "Les étiquettes sélectionnées n'ont pas pu être supprimées.",
+        "not_found": "L'étiquette est introuvable."
+      }
+    }
+  },
+  "common": {
+    "success": "Succès",
+    "error": "Erreur",
+    "enabled": "Activé",
+    "disabled": "Désactivé",
+    "light": "Mode clair",
+    "dark": "Mode sombre",
+    "auto": "Par défaut du système",
+    "info": "Information",
+    "warning": "Avertissement",
+    "name": "Nom",
+    "description": "Description",
+    "color": "Couleur",
+    "icon": "Icône",
+    "users": "Utilisateurs",
+    "actions": "Actions",
+    "add": "Ajouter",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "saving": "Enregistrement...",
+    "back": "Retour",
+    "confirm": "Confirmer",
+    "yes_delete": "Oui, supprimer",
+    "permission_denied": "Vous n'avez pas la permission d'ouvrir cette page.",
+    "background_color": "Couleur d'arrière-plan",
+    "text_color": "Couleur du texte",
+    "colors": "Couleurs",
+    "category": "Catégorie",
+    "sort_order": "Ordre de tri",
+    "active": "Actif",
+    "yes": "Oui",
+    "no": "Non",
+    "preview": "Aperçu",
+    "system_record": "Enregistrement système",
+    "system_record_notice": "Ceci est un enregistrement système. Son nom est verrouillé et il ne peut être ni supprimé ni désactivé. Vous pouvez modifier la description, l'icône et les couleurs.",
+    "system_record_no_delete": "Les enregistrements système ne peuvent pas être supprimés.",
+    "replacement": "Remplacement",
+    "replacement_needed": "L'enregistrement sélectionné est utilisé par {count} ticket(s). Choisissez l'enregistrement que ces tickets doivent recevoir à la place :",
+    "replacement_needed_many": "Les enregistrements sélectionnés sont utilisés par {count} ticket(s). Choisissez l'enregistrement que ces tickets doivent recevoir à la place :",
+    "replacement_none": "Il n'existe aucun autre enregistrement actif pouvant le remplacer."
+  },
+  "datatables": {
+    "search": "Rechercher :",
+    "lengthMenu": "Afficher _MENU_ entrées",
+    "info": "Affichage de _START_ à _END_ sur _TOTAL_ entrées",
+    "infoEmpty": "Aucune entrée",
+    "infoFiltered": "(filtré à partir de _MAX_ entrées)",
+    "emptyTable": "Aucune entrée disponible",
+    "zeroRecords": "Aucune entrée correspondante trouvée",
+    "first": "Premier",
+    "previous": "Précédent",
+    "next": "Suivant",
+    "last": "Dernier",
+    "selected_one": "1 sélectionné",
+    "selected_many": "%d sélectionnés",
+    "processing": "Chargement..."
+  },
+  "users": {
+    "title": "Utilisateurs",
+    "edit_title": "Modifier l'utilisateur",
+    "add_title": "Ajouter un utilisateur",
+    "username": "Nom d'utilisateur",
+    "full_name": "Nom",
+    "email": "E-mail",
+    "first_name": "Prénom",
+    "last_name": "Nom de famille",
+    "password": "Mot de passe",
+    "roles": "Rôles",
+    "groups": "Groupes",
+    "username_desc": "Le nom d'utilisateur ne peut pas être modifié.",
+    "username_add_desc": "3 à 50 caractères : lettres, chiffres, tiret bas, point et tiret. Avec LDAP, il s'agit du nom d'utilisateur LDAP. Il ne peut pas être modifié ultérieurement.",
+    "password_add_desc": "Mot de passe initial de l'utilisateur (au moins 8 caractères).",
+    "password_ldap_note": "Cet utilisateur se connecte avec son mot de passe LDAP. LeweDesk n'enregistre aucun mot de passe pour lui, il n'y a donc rien à modifier ici.",
+    "password_sso_note": "Cet utilisateur se connecte via SSO (authentification unique). LeweDesk n'enregistre aucun mot de passe utilisable pour lui, il n'y a donc rien à modifier ici.",
+    "password_sso_add_note": "L'authentification SSO est active : l'utilisateur se connecte via le fournisseur d'identité. Aucun mot de passe n'est défini ici.",
+    "password_ldap_add_note": "L'authentification LDAP est active : l'utilisateur se connecte avec son mot de passe LDAP. Aucun mot de passe n'est défini ici.",
+    "email_desc": "Adresse e-mail de l'utilisateur. Elle doit être unique.",
+    "first_name_desc": "Prénom de l'utilisateur.",
+    "last_name_desc": "Nom de famille de l'utilisateur.",
+    "password_desc": "Saisissez un nouveau mot de passe pour le modifier (au moins 8 caractères). Laissez vide pour conserver le mot de passe actuel.",
+    "roles_desc": "Rôles attribués à l'utilisateur. Maintenez Ctrl (Cmd) pour en sélectionner plusieurs.",
+    "groups_desc": "Groupes auxquels appartient l'utilisateur. Maintenez Ctrl (Cmd) pour en sélectionner plusieurs.",
+    "tabs": {
+      "account": "Compte",
+      "avatar": "Avatar"
+    },
+    "twofa": {
+      "column": "2FA",
+      "title": "Authentification à deux facteurs",
+      "desc": "Indique si l'utilisateur a configuré l'authentification à deux facteurs. Réinitialisez-la si l'utilisateur a perdu son appareil ; il devra alors la configurer à nouveau (à la prochaine connexion si la 2FA est obligatoire).",
+      "enabled": "Activée",
+      "disabled": "Non configurée",
+      "reset_button": "Réinitialiser la 2FA",
+      "reset_title": "Réinitialiser la 2FA",
+      "reset_text": "Réinitialiser l'authentification à deux facteurs de {user} ? L'utilisateur pourra se connecter avec le mot de passe uniquement (ou devra configurer à nouveau la 2FA si elle est obligatoire).",
+      "messages": {
+        "reset": "L'authentification à deux facteurs a été réinitialisée.",
+        "reset_error": "L'authentification à deux facteurs n'a pas pu être réinitialisée."
+      }
+    },
+    "confirm_delete": "Supprimer les utilisateurs sélectionnés ? Cette action est irréversible.",
+    "participation": {
+      "issues_one": "1 ticket",
+      "issues_other": "{count} tickets",
+      "single": "Cet utilisateur participe à {issues}. Son nom sera remplacé par « {deleted} ».",
+      "multiple": "Ces utilisateurs participent à des tickets :",
+      "multiple_confirm": "Les noms seront remplacés par « {deleted} »."
+    },
+    "messages": {
+      "updated": "L'utilisateur a été mis à jour.",
+      "created": "L'utilisateur a été créé.",
+      "deleted": "Les utilisateurs sélectionnés ont été supprimés.",
+      "load_error": "Échec du chargement des utilisateurs depuis le serveur.",
+      "save_error": "L'utilisateur n'a pas pu être enregistré.",
+      "delete_error": "Les utilisateurs sélectionnés n'ont pas pu être supprimés.",
+      "not_found": "L'utilisateur est introuvable."
+    }
+  },
+  "roles": {
+    "title": "Rôles",
+    "add_title": "Ajouter un rôle",
+    "edit_title": "Modifier le rôle",
+    "breadcrumb": "Rôles",
+    "name_desc": "Nom unique du rôle (50 caractères max.).",
+    "description_desc": "Courte description de l'utilité du rôle.",
+    "color_desc": "Couleur utilisée pour afficher le rôle.",
+    "icon_desc": "Classe Bootstrap Icons, p. ex. bi-person. Laissez vide pour ne pas avoir d'icône.",
+    "confirm_delete": "Supprimer les rôles sélectionnés ? Cette action est irréversible.",
+    "messages": {
+      "created": "Le rôle a été créé.",
+      "updated": "Le rôle a été mis à jour.",
+      "deleted": "Les rôles sélectionnés ont été supprimés.",
+      "load_error": "Échec du chargement des rôles depuis le serveur.",
+      "save_error": "Le rôle n'a pas pu être enregistré.",
+      "delete_error": "Les rôles sélectionnés n'ont pas pu être supprimés.",
+      "not_found": "Le rôle est introuvable."
+    }
+  },
+  "groups": {
+    "title": "Groupes",
+    "add_title": "Ajouter un groupe",
+    "edit_title": "Modifier le groupe",
+    "breadcrumb": "Groupes",
+    "name_desc": "Nom unique du groupe (50 caractères max.).",
+    "description_desc": "Courte description du groupe.",
+    "color_desc": "Couleur utilisée pour afficher le groupe.",
+    "icon_desc": "Classe Bootstrap Icons, p. ex. bi-people. Laissez vide pour ne pas avoir d'icône.",
+    "confirm_delete": "Supprimer les groupes sélectionnés ? Cette action est irréversible.",
+    "messages": {
+      "created": "Le groupe a été créé.",
+      "updated": "Le groupe a été mis à jour.",
+      "deleted": "Les groupes sélectionnés ont été supprimés.",
+      "load_error": "Échec du chargement des groupes depuis le serveur.",
+      "save_error": "Le groupe n'a pas pu être enregistré.",
+      "delete_error": "Les groupes sélectionnés n'ont pas pu être supprimés.",
+      "not_found": "Le groupe est introuvable."
+    }
+  },
+  "permissions": {
+    "title": "Permissions",
+    "add_title": "Ajouter une permission",
+    "edit_title": "Modifier la permission",
+    "breadcrumb": "Permissions",
+    "roles": "Rôles",
+    "groups": "Groupes",
+    "name_desc": "Nom unique de la permission (50 caractères max.). Caractères autorisés : a-z, A-Z, 0-9, _ et -.",
+    "description_desc": "Courte description de ce que la permission autorise.",
+    "roles_desc": "Rôles auxquels cette permission est accordée. Maintenez Ctrl (Cmd) pour en sélectionner plusieurs.",
+    "groups_desc": "Groupes auxquels cette permission est accordée. Maintenez Ctrl (Cmd) pour en sélectionner plusieurs.",
+    "confirm_delete": "Supprimer les permissions sélectionnées ? Cette action est irréversible.",
+    "messages": {
+      "created": "La permission a été créée.",
+      "updated": "La permission a été mise à jour.",
+      "deleted": "Les permissions sélectionnées ont été supprimées.",
+      "load_error": "Échec du chargement des permissions depuis le serveur.",
+      "save_error": "La permission n'a pas pu être enregistrée.",
+      "delete_error": "Les permissions sélectionnées n'ont pas pu être supprimées.",
+      "not_found": "La permission est introuvable.",
+      "invalid_name": "Le nom ne peut contenir que les caractères a-z, A-Z, 0-9, _ et -."
+    }
+  },
+  "profile": {
+    "title": "Mon profil",
+    "sso_note": "Votre compte utilise le SSO (authentification unique). Votre mot de passe est géré par votre fournisseur d'identité et ne peut pas être modifié ici.",
+    "ldap_note": "Votre compte utilise l'authentification LDAP. Votre mot de passe est géré en dehors de LeweDesk et ne peut pas être modifié ici.",
+    "tabs": {
+      "profile": "Profil",
+      "avatar": "Avatar",
+      "notifications": "Notifications",
+      "options": "Options",
+      "twofa": "2FA"
+    },
+    "options": {
+      "language": "Langue",
+      "language_desc": "Choisissez la langue de l'interface. Par défaut du système utilise la langue définie par l'administrateur.",
+      "language_default": "Par défaut du système",
+      "status_row_color": "Afficher la couleur d'arrière-plan du statut",
+      "status_row_color_desc": "Colore l'arrière-plan des lignes des tableaux de tickets selon le statut du ticket.",
+      "saved": "Vos options ont été enregistrées.",
+      "load_error": "Vos options n'ont pas pu être chargées.",
+      "save_error": "Vos options n'ont pas pu être enregistrées."
+    },
+    "twofa": {
+      "description": "LeweDesk vous permet de configurer une authentification à deux facteurs, par exemple avec Google ou Microsoft Authenticator sur votre appareil mobile.<br>Cliquez sur le bouton ci-dessous pour démarrer la configuration. (Cela ne peut être fait que par l'utilisateur lui-même.)",
+      "setup_button": "Configurer la 2FA",
+      "enabled": "L'authentification à deux facteurs est activée pour votre compte.",
+      "disable_button": "Désactiver la 2FA",
+      "mandatory_note": "Notez que la 2FA est obligatoire. Si vous la désactivez ici, vous devrez la configurer à nouveau lors de votre prochaine connexion.",
+      "disable_title": "Désactiver la 2FA",
+      "disable_text": "Saisissez votre mot de passe pour désactiver l'authentification à deux facteurs.",
+      "password": "Mot de passe",
+      "messages": {
+        "enabled": "L'authentification à deux facteurs est maintenant activée.",
+        "disabled": "L'authentification à deux facteurs a été désactivée.",
+        "wrong_password": "Le mot de passe est incorrect.",
+        "disable_error": "L'authentification à deux facteurs n'a pas pu être désactivée."
+      }
+    },
+    "password_desc": "Saisissez un nouveau mot de passe pour le modifier (au moins 8 caractères). Laissez vide pour conserver votre mot de passe actuel.",
+    "current_password": "Mot de passe actuel",
+    "current_password_desc": "Requis pour modifier votre mot de passe.",
+    "confirm_password": "Confirmer le nouveau mot de passe",
+    "confirm_password_desc": "Répétez le nouveau mot de passe.",
+    "avatar_current": "Avatar actuel",
+    "avatar_current_desc": "Cette image est affichée dans la barre de navigation supérieure.",
+    "avatar_none": "Aucun avatar sélectionné.",
+    "avatar_upload": "Envoyer le vôtre",
+    "avatar_upload_desc": "PNG, JPG, GIF ou WEBP, jusqu'à 1 Mo. L'image est affichée en cercle, une image carrée convient donc le mieux.",
+    "avatar_upload_btn": "Envoyer",
+    "avatar_samples": "Avatars d'exemple",
+    "avatar_samples_desc": "Cliquez sur une image pour l'utiliser comme avatar.",
+    "messages": {
+      "updated": "Votre profil a été mis à jour.",
+      "avatar_updated": "Votre avatar a été mis à jour.",
+      "load_error": "Votre profil n'a pas pu être chargé.",
+      "save_error": "Votre profil n'a pas pu être enregistré.",
+      "avatar_error": "Votre avatar n'a pas pu être enregistré.",
+      "passwords_mismatch": "Les mots de passe ne correspondent pas.",
+      "file_too_large": "L'image ne doit pas dépasser 1 Mo.",
+      "no_file": "Veuillez d'abord choisir une image."
+    }
+  },
+  "maintenance": {
+    "banner": "Le mode maintenance est actif. Seuls les administrateurs peuvent utiliser l'application."
+  },
+  "tags": {
+    "input": {
+      "label": "Étiquettes",
+      "placeholder": "Saisissez pour rechercher des étiquettes...",
+      "max": "{max} étiquettes au maximum",
+      "remove": "Retirer l'étiquette {name}",
+      "create": "Créer l'étiquette « {name} »",
+      "results": "{count} suggestions"
+    },
+    "create": {
+      "title": "Créer une étiquette",
+      "confirm": "L'étiquette « {name} » n'existe pas encore. Voulez-vous la créer ?",
+      "submit": "Créer l'étiquette"
+    },
+    "messages": {
+      "create_error": "L'étiquette n'a pas pu être créée."
+    }
+  },
+  "issues": {
+    "unassigned": "Non assigné",
+    "deleted_user": "Utilisateur supprimé",
+    "fields": {
+      "type": "Type",
+      "status_category": "Catégorie de statut",
+      "summary": "Résumé",
+      "description": "Description",
+      "product": "Produit",
+      "version": "Version",
+      "access": "Accès",
+      "resolution": "Résolution",
+      "tags": "Étiquettes",
+      "watchers": "Observateurs"
+    },
+    "columns": {
+      "id": "Ticket",
+      "summary": "Résumé",
+      "reporter": "Rapporteur",
+      "assignee": "Assigné à",
+      "created": "Créé",
+      "updated": "Mis à jour",
+      "status": "Statut"
+    },
+    "access": {
+      "public": "Public",
+      "registered": "Utilisateurs inscrits",
+      "reporter": "Rapporteur uniquement"
+    },
+    "access_desc": {
+      "public": "Tout le monde peut voir le ticket, y compris les visiteurs non connectés.",
+      "registered": "Tous les utilisateurs connectés peuvent voir le ticket.",
+      "reporter": "Seuls vous et l'équipe de support pouvez voir le ticket."
+    },
+    "views": {
+      "all": "Tous les tickets",
+      "mine": "Mes tickets",
+      "assigned": "Qui me sont assignés",
+      "unassigned": "Tickets non assignés",
+      "open": "Tickets ouverts",
+      "waiting": "Tickets en attente",
+      "in_progress": "Tickets en cours",
+      "done": "Tickets terminés",
+      "deleted": "Tickets supprimés"
+    },
+    "list": {
+      "empty": "Aucun ticket trouvé."
+    },
+    "filters": {
+      "all_status": "Tous les statuts",
+      "all_status_categories": "Toutes les catégories de statut",
+      "all_types": "Tous les types",
+      "all_products": "Tous les produits",
+      "all_assignees": "Tous les assignés",
+      "all_reporters": "Tous les rapporteurs",
+      "all_tags": "Toutes les étiquettes",
+      "search_results": "Résultats de recherche pour « {term} »",
+      "participant": "Participant : {name}",
+      "reset": "Réinitialiser les filtres"
+    },
+    "create": {
+      "title": "Créer un ticket",
+      "type_desc": "De quel type de ticket s'agit-il ?",
+      "type_placeholder": "Sélectionnez un type...",
+      "type_required": "Veuillez sélectionner un type.",
+      "summary_desc": "Un titre court sur une ligne (200 caractères max.).",
+      "summary_required": "Veuillez saisir un résumé.",
+      "description_desc": "Décrivez le ticket aussi précisément que possible : que s'est-il passé, qu'attendiez-vous et comment pouvons-nous le reproduire ?",
+      "description_required": "Veuillez saisir une description.",
+      "tags_desc": "Les étiquettes aident à trouver et à regrouper les tickets (facultatif). Saisissez pour rechercher parmi les étiquettes existantes.",
+      "product_desc": "Le produit concerné par le ticket (facultatif).",
+      "no_product": "Aucun produit",
+      "version_desc": "La version du produit dans laquelle le problème survient (facultatif).",
+      "access_desc": "Qui peut voir ce ticket. L'équipe de support peut toujours le voir.",
+      "submit": "Créer le ticket"
+    },
+    "edit": {
+      "title": "Modifier le ticket",
+      "submit": "Enregistrer les modifications",
+      "status_desc": "Le statut peut être défini librement. Un statut de la catégorie Terminé nécessite une résolution.",
+      "resolution_desc": "Pourquoi le ticket est terminé. Obligatoire pour un statut de la catégorie Terminé.",
+      "resolution_placeholder": "Sélectionnez une résolution...",
+      "resolution_required": "Veuillez sélectionner une résolution.",
+      "assignee_desc": "Seuls les utilisateurs ayant le rôle Agent peuvent être assignés.",
+      "watchers_desc": "Qui est informé des modifications de ce ticket. Maintenez Ctrl (Cmd sur Mac) pour en sélectionner plusieurs. Seuls les utilisateurs pouvant voir le ticket sont listés.",
+      "access_desc": "Qui peut voir ce ticket. Les observateurs qui perdent l'accès sont retirés.",
+      "load_error": "Le ticket n'a pas pu être chargé.",
+      "no_permission": "Vous n'êtes pas autorisé à modifier ce ticket.",
+      "save_error": "Le ticket n'a pas pu être enregistré.",
+      "saved": "Le ticket {key} a été mis à jour.",
+      "unchanged": "Rien n'a été modifié."
+    },
+    "detail": {
+      "loading": "Chargement...",
+      "back": "Retour à la liste",
+      "properties": "Propriétés",
+      "deleted": "Supprimé"
+    },
+    "messages": {
+      "load_error": "Les tickets n'ont pas pu être chargés.",
+      "not_found": "Le ticket n'existe pas ou vous n'êtes pas autorisé à le voir.",
+      "create_error": "Le ticket n'a pas pu être créé.",
+      "created": "Le ticket {key} a été créé.",
+      "saved": "Le ticket {key} a été mis à jour."
+    }
+  },
+  "markdown": {
+    "write": "Écrire",
+    "preview": "Aperçu",
+    "nothing_to_preview": "Rien à prévisualiser.",
+    "help": "Markdown est pris en charge. Les clés de ticket comme {key} sont liées automatiquement.",
+    "toolbar": "Mise en forme",
+    "bold": "Gras",
+    "italic": "Italique",
+    "code": "Code",
+    "link": "Lien",
+    "bullet_list": "Liste à puces",
+    "numbered_list": "Liste numérotée",
+    "quote": "Citation",
+    "link_text": "texte du lien",
+    "image": "Insérer une image",
+    "existing_image": "Insérer une image existante de ce ticket",
+    "no_existing_images": "Aucune image n'est encore jointe à ce ticket.",
+    "help_images": "Collez ou déposez des images dans le texte pour les joindre.",
+    "image_removed": "Image supprimée",
+    "image_type": "Seules les images (gif, jpg, png) peuvent être insérées dans le texte."
+  },
+  "comments": {
+    "title": "Commentaires",
+    "order_newest": "Les plus récents d'abord",
+    "order_oldest": "Les plus anciens d'abord",
+    "order_label": "Ordre des commentaires",
+    "empty": "Aucun commentaire pour le moment.",
+    "internal": "Interne",
+    "edited": "modifié",
+    "edited_on": "Modifié le {date}",
+    "deleted": "Commentaire supprimé",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "form": {
+      "title": "Ajouter un commentaire",
+      "body_desc": "Rédigez votre commentaire.",
+      "body_required": "Veuillez saisir un commentaire.",
+      "internal": "Commentaire interne",
+      "internal_desc": "Seule l'équipe de support peut voir un commentaire interne.",
+      "submit": "Ajouter le commentaire",
+      "respond": "Répondre avec un commentaire",
+      "login_hint": "Veuillez vous connecter pour ajouter un commentaire.",
+      "blocked_closed": "Ce ticket est fermé et n'accepte plus de commentaires.",
+      "blocked_deleted": "Ce ticket est supprimé et n'accepte plus de commentaires."
+    },
+    "delete_confirm": {
+      "title": "Supprimer le commentaire",
+      "text": "Voulez-vous supprimer ce commentaire ? Il est remplacé par une note indiquant qu'un commentaire a été supprimé."
+    },
+    "messages": {
+      "load_error": "Les commentaires n'ont pas pu être chargés.",
+      "added": "Votre commentaire a été ajouté.",
+      "add_error": "Le commentaire n'a pas pu être ajouté.",
+      "saved": "Le commentaire a été enregistré.",
+      "save_error": "Le commentaire n'a pas pu être enregistré.",
+      "deleted": "Le commentaire a été supprimé.",
+      "delete_error": "Le commentaire n'a pas pu être supprimé.",
+      "order_error": "L'ordre des commentaires n'a pas pu être enregistré."
+    }
+  },
+  "actions": {
+    "menu": "Actions",
+    "names": {
+      "edit": "Modifier",
+      "respond": "Répondre",
+      "resolve": "Résoudre",
+      "close": "Fermer",
+      "reopen": "Rouvrir",
+      "assign": "Assigner",
+      "assign_me": "M'assigner",
+      "watch": "Suivre le ticket",
+      "unwatch": "Ne plus suivre le ticket",
+      "change_access": "Modifier l'accès",
+      "delete": "Supprimer le ticket",
+      "restore": "Restaurer le ticket"
+    },
+    "fields": {
+      "comment": "Commentaire",
+      "comment_optional": "Commentaire (facultatif)",
+      "resolution": "Résolution",
+      "assignee": "Assigné à",
+      "access": "Accès",
+      "internal": "Commentaire interne",
+      "internal_desc": "Seule l'équipe de support peut voir un commentaire interne. Un commentaire interne ne modifie pas le statut."
+    },
+    "placeholders": {
+      "resolution": "Sélectionnez une résolution...",
+      "assignee": "Sélectionnez un agent...",
+      "access": "Sélectionnez le nouvel accès..."
+    },
+    "unassign": "Non assigné",
+    "modal": {
+      "respond": {
+        "title": "Répondre",
+        "text": "Votre réponse est ajoutée sous forme de commentaire. Le statut change pour indiquer qui doit répondre ensuite.",
+        "submit": "Répondre"
+      },
+      "resolve": {
+        "title": "Résoudre le ticket",
+        "text": "Sélectionnez comment le ticket a été résolu. Le statut passe à Résolu.",
+        "submit": "Résoudre"
+      },
+      "reopen": {
+        "title": "Rouvrir le ticket",
+        "text": "Indiquez pourquoi le ticket est rouvert. Le statut passe à Ouvert et la résolution est effacée.",
+        "submit": "Rouvrir"
+      },
+      "assign": {
+        "title": "Assigner le ticket",
+        "text": "Sélectionnez l'agent qui prend en charge le ticket.",
+        "submit": "Assigner"
+      },
+      "change_access": {
+        "title": "Modifier l'accès",
+        "text": "Qui peut voir ce ticket ? Les observateurs qui perdent l'accès sont retirés.",
+        "text_reporter": "Vous pouvez uniquement restreindre l'accès à votre ticket, pas l'élargir à nouveau. Les observateurs qui perdent l'accès sont retirés.",
+        "submit": "Modifier l'accès"
+      },
+      "delete": {
+        "title": "Supprimer le ticket",
+        "text": "Le ticket est masqué pour tout le monde sauf l'équipe de support. Il peut être restauré ultérieurement. Supprimer ce ticket ?",
+        "submit": "Oui, supprimer"
+      }
+    },
+    "validation": {
+      "comment_required": "Veuillez saisir un commentaire.",
+      "resolution_required": "Veuillez sélectionner une résolution.",
+      "assignee_required": "Veuillez sélectionner un agent.",
+      "access_required": "Veuillez sélectionner le nouvel accès."
+    },
+    "done": {
+      "respond": "Votre réponse a été ajoutée.",
+      "resolve": "Le ticket a été résolu.",
+      "close": "Le ticket a été fermé.",
+      "reopen": "Le ticket a été rouvert.",
+      "assign": "Le ticket a été assigné.",
+      "assign_me": "Le ticket vous est assigné.",
+      "watch": "Vous suivez maintenant ce ticket.",
+      "unwatch": "Vous ne suivez plus ce ticket.",
+      "change_access": "L'accès a été modifié.",
+      "delete": "Le ticket a été supprimé.",
+      "restore": "Le ticket a été restauré."
+    },
+    "error": "L'action n'a pas pu être effectuée.",
+    "load_error": "La liste des agents n'a pas pu être chargée."
+  },
+  "history": {
+    "title": "Historique",
+    "empty": "Aucun historique pour le moment.",
+    "none": "(aucun)",
+    "sort_newest": "Les plus récents d'abord (cliquez pour les plus anciens d'abord)",
+    "sort_oldest": "Les plus anciens d'abord (cliquez pour les plus récents d'abord)",
+    "columns": {
+      "when": "Quand",
+      "who": "Qui",
+      "what": "Quoi",
+      "from": "De",
+      "to": "À"
+    },
+    "events": {
+      "issue_created": "a créé le ticket",
+      "comment_added": "a ajouté un commentaire",
+      "comment_added_internal": "a ajouté un commentaire interne",
+      "comment_edited": "a modifié un commentaire",
+      "comment_edited_internal": "a modifié un commentaire interne",
+      "comment_deleted": "a supprimé un commentaire",
+      "comment_deleted_internal": "a supprimé un commentaire interne",
+      "field_changed": "a modifié {field}",
+      "unknown": "a effectué une modification",
+      "issue_deleted": "a supprimé le ticket",
+      "issue_restored": "a restauré le ticket",
+      "attachment_added": "a ajouté la pièce jointe {name}",
+      "attachment_deleted": "a supprimé la pièce jointe {name}"
+    },
+    "fields": {
+      "tags": "Étiquettes",
+      "type": "Type",
+      "status": "Statut",
+      "resolution": "Résolution",
+      "assignee": "Assigné à",
+      "access": "Accès",
+      "summary": "Résumé",
+      "description": "Description",
+      "product": "Produit",
+      "version": "Version"
+    },
+    "load_error": "L'historique n'a pas pu être chargé."
+  },
+  "attachments": {
+    "title": "Pièces jointes",
+    "create_desc": "Joignez des fichiers au ticket. Ils sont enregistrés avec le ticket.",
+    "empty": "Aucune pièce jointe.",
+    "add": "Ajouter une pièce jointe",
+    "limits": "Autorisés : {types}. {size} au maximum par fichier, {count} fichiers et {total} au total (les images dans le texte comptent).",
+    "inline": "Image dans le texte",
+    "delete": "Supprimer",
+    "blocked_closed": "Ce ticket est fermé et n'accepte plus de pièces jointes.",
+    "blocked_deleted": "Ce ticket est supprimé et n'accepte plus de pièces jointes.",
+    "delete_confirm": {
+      "title": "Supprimer la pièce jointe",
+      "text": "Voulez-vous supprimer la pièce jointe « {name} » ?",
+      "inline_warning": "Cette pièce jointe est affichée comme image dans la description ou dans un commentaire. L'image est remplacée par la note « Image supprimée »."
+    },
+    "messages": {
+      "added": "La pièce jointe « {name} » a été ajoutée.",
+      "add_error": "La pièce jointe n'a pas pu être ajoutée.",
+      "deleted": "La pièce jointe a été supprimée.",
+      "delete_error": "La pièce jointe n'a pas pu être supprimée.",
+      "load_error": "Les pièces jointes n'ont pas pu être chargées.",
+      "download_error": "La pièce jointe n'a pas pu être téléchargée."
+    }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "unread": "{count} notification(s) non lue(s)",
+    "mark_all_read": "Tout marquer comme lu",
+    "empty": "Aucune notification.",
+    "settings": "Paramètres de notification",
+    "someone": "Quelqu'un",
+    "events": {
+      "issue_created": "{actor} a créé le ticket",
+      "issue_assigned": "{actor} a assigné le ticket à {assignee}",
+      "issue_unassigned": "{actor} a retiré l'assignation du ticket",
+      "status_changed": "{actor} a changé le statut en {status}",
+      "comment_added": "{actor} a ajouté un commentaire",
+      "comment_added_internal": "{actor} a ajouté un commentaire interne"
+    },
+    "prefs": {
+      "description": "Choisissez pour chaque événement si vous recevez un e-mail et si vous recevez une notification dans la barre supérieure. Vous n'êtes informé que des tickets que vous pouvez voir.",
+      "event": "Événement",
+      "email": "E-mail",
+      "in_app": "Dans l'application",
+      "events": {
+        "issue_created": {
+          "title": "Ticket créé",
+          "desc": "Un nouveau ticket a été créé (rapporteurs et agents)."
+        },
+        "issue_assigned": {
+          "title": "Ticket assigné",
+          "desc": "Un ticket que vous avez signalé, suivez ou traitez a été assigné ou son assignation a été retirée."
+        },
+        "status_changed": {
+          "title": "Statut modifié",
+          "desc": "Le statut d'un ticket que vous avez signalé, suivez ou traitez a changé."
+        },
+        "comment_added": {
+          "title": "Commentaire ajouté",
+          "desc": "Un commentaire a été ajouté à un ticket que vous avez signalé, suivez ou traitez."
+        }
+      },
+      "saved": "Vos paramètres de notification ont été enregistrés.",
+      "load_error": "Vos paramètres de notification n'ont pas pu être chargés.",
+      "save_error": "Vos paramètres de notification n'ont pas pu être enregistrés.",
+      "own_actions": "Me notifier de mes propres actions",
+      "own_actions_desc": "Me notifier aussi des tickets que j'ai créés et des modifications que j'ai effectuées moi-même."
+    }
+  },
+  "landing": {
+    "login": "Connexion",
+    "register": "S'inscrire",
+    "issues": "Tickets",
+    "hero_title": "Le support client, <span class=\"text-primary hero-shimmer\">organisé</span>",
+    "hero_lead": "LeweDesk est le système de helpdesk et de gestion de tickets de Lewe Labs. Signalez des problèmes, demandez des améliorations et suivez chaque cas du premier message jusqu'à la solution.",
+    "features_title": "Tout ce dont une équipe de support a besoin",
+    "features_lead": "Un ensemble ciblé d'outils pour collecter, organiser et résoudre les demandes des clients.",
+    "features": {
+      "issues": {
+        "title": "Suivi des tickets",
+        "text": "Signalez des problèmes et demandez des améliorations. Chaque ticket a un type, un statut, un produit, des étiquettes, une description en markdown, des commentaires et un historique complet."
+      },
+      "workflow": {
+        "title": "Flux de travail configurable",
+        "text": "Définissez vos propres types de ticket, statuts, résolutions et produits pour que le helpdesk suive le fonctionnement de votre équipe."
+      },
+      "access": {
+        "title": "Contrôle d'accès précis",
+        "text": "Les rôles, groupes et permissions déterminent qui voit quoi. Les tickets sont publics, visibles par les utilisateurs inscrits ou privés pour le rapporteur."
+      },
+      "notifications": {
+        "title": "Notifications",
+        "text": "Restez informé grâce aux notifications dans l'application et par e-mail, configurables par utilisateur et par événement."
+      },
+      "attachments": {
+        "title": "Pièces jointes et recherche",
+        "text": "Joignez des fichiers aux tickets et aux commentaires, et retrouvez rapidement n'importe quel ticket grâce à la recherche intégrée et aux vues enregistrées."
+      },
+      "security": {
+        "title": "Sécurisé dès la conception",
+        "text": "L'authentification à deux facteurs, LDAP ou SSO (OIDC) en option, la protection anti-spam et un journal d'audit protègent vos données."
+      }
+    },
+    "steps_title": "Comment ça marche",
+    "steps": {
+      "register": {
+        "title": "Créez un compte",
+        "text": "Inscrivez-vous en une minute ou connectez-vous avec votre compte existant."
+      },
+      "report": {
+        "title": "Signalez un ticket",
+        "text": "Décrivez le problème ou votre idée, ajoutez des captures d'écran et choisissez le produit concerné."
+      },
+      "follow": {
+        "title": "Suivez-le jusqu'à la résolution",
+        "text": "Soyez informé de chaque commentaire et de chaque changement de statut jusqu'à la résolution du ticket."
+      }
+    },
+    "faq_title": "Questions fréquentes",
+    "faq": {
+      "what": {
+        "q": "Qu'est-ce que LeweDesk ?",
+        "a": "LeweDesk est un système web de helpdesk et de gestion de tickets pour le support client, développé par Lewe Labs. Les clients signalent des problèmes et demandent des améliorations, et le personnel du support les suit jusqu'à leur résolution."
+      },
+      "who": {
+        "q": "À qui s'adresse-t-il ?",
+        "a": "Aux éditeurs de logiciels et aux équipes de service qui souhaitent un endroit central et structuré pour les signalements des clients, les demandes de fonctionnalités et les échanges avec le support."
+      },
+      "languages": {
+        "q": "Quelles langues sont prises en charge ?",
+        "a": "L'interface est disponible en anglais, allemand, français et espagnol."
+      },
+      "private": {
+        "q": "Qui peut voir mes tickets ?",
+        "a": "Chaque ticket est soit public, soit visible uniquement par les utilisateurs inscrits, soit privé pour la personne qui l'a signalé. Les commentaires internes restent masqués pour les rapporteurs."
+      }
+    },
+    "cta_title": "Prêt à commencer ?",
+    "cta_text": "Connectez-vous pour signaler un ticket ou créez un compte gratuit en une minute.",
+    "about": "À propos",
+    "search": "Rechercher",
+    "search_placeholder": "Rechercher des tickets, p. ex. erreur de connexion",
+    "recent_title": "Tickets récemment mis à jour",
+    "view_all": "Afficher tous les tickets",
+    "loading": "Chargement...",
+    "no_issues": "Il n'y a pas encore de tickets publics.",
+    "load_error": "Les tickets n'ont pas pu être chargés.",
+    "status_title": "Statut",
+    "report_title": "Vous n'avez pas trouvé de réponse ?",
+    "report_text": "Connectez-vous pour signaler un ticket ou demander une amélioration, ou créez un compte gratuit en une minute.",
+    "learn_more": "En savoir plus sur LeweDesk",
+    "browse_product": "Produits",
+    "browse_type": "Types",
+    "highlights": {
+      "track": "Suivez chaque signalement du premier message à la solution",
+      "notify": "Soyez informé des commentaires et des changements de statut",
+      "private": "Tickets publics, réservés aux inscrits ou privés"
+    }
+  },
+  "license": {
+    "banner": {
+      "link": "Paramètres de licence",
+      "trial": "Cette installation de LeweDesk n'est pas sous licence. Elle cessera de fonctionner dans {days} jours.",
+      "trial_expired": "Cette installation de LeweDesk n'est pas sous licence et la période d'essai est terminée. Seuls les administrateurs peuvent se connecter.",
+      "expired": "La licence a expiré. Seuls les administrateurs peuvent se connecter.",
+      "blocked": "La licence a été bloquée. Seuls les administrateurs peuvent se connecter.",
+      "pending": "La licence n'a pas encore été activée.",
+      "unregistered": "La licence est valide, mais ce domaine n'y est pas enregistré.",
+      "invalid": "La clé de licence est invalide.",
+      "expiring": "La licence expire dans {days} jours.",
+      "expiring_today": "La licence expire aujourd'hui."
+    }
+  }
+}

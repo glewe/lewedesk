@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>License Expired - LeweDesk</title>
+  <link rel="icon" href="favicon.ico">
+  <!-- Standalone page: no application scripts or styles, so it also works while the app is locked. -->
+  <style>
+    :root {
+      --bg: #f0f2f5;
+      --card: #ffffff;
+      --text: #212631;
+      --muted: #6b7785;
+      --primary: #5856d6;
+      --border: #d8dbe0;
+      --warning: #f9b115;
+      --warning-bg: #fff6df;
+      --danger: #e55353;
+      --danger-bg: #fde8e8;
+    }
+    :root[data-theme="dark"] {
+      --bg: #1b1e25;
+      --card: #252a33;
+      --text: #e3e5e8;
+      --muted: #9aa3ae;
+      --primary: #7b79e6;
+      --border: #3a4150;
+      --warning-bg: #3a3320;
+      --danger-bg: #3d2528;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      line-height: 1.5;
+    }
+    .card {
+      width: 100%;
+      max-width: 560px;
+      padding: 32px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    }
+    .brand { text-align: center; margin-bottom: 20px; }
+    .brand svg { width: 56px; height: 56px; color: var(--primary); }
+    .brand div { margin-top: 4px; font-size: 1.25rem; }
+    .panel {
+      padding: 16px 20px;
+      border: 1px solid var(--warning);
+      border-left-width: 6px;
+      border-radius: 8px;
+      background: var(--warning-bg);
+    }
+    .panel.danger { border-color: var(--danger); background: var(--danger-bg); }
+    h1 { margin: 0 0 8px; font-size: 1.4rem; }
+    .badge {
+      display: inline-block;
+      margin-left: 8px;
+      padding: 2px 10px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #fff;
+      vertical-align: middle;
+      background: var(--warning);
+      border-radius: 999px;
+    }
+    .danger .badge { background: var(--danger); }
+    hr { border: 0; border-top: 1px solid var(--border); margin: 12px 0; }
+    p { margin: 0 0 8px; }
+    .help { font-style: italic; color: var(--muted); }
+    table { width: 100%; margin-top: 12px; border-collapse: collapse; }
+    th { width: 35%; padding: 4px 8px 4px 0; text-align: left; font-weight: 600; vertical-align: top; }
+    td { padding: 4px 0; }
+    .actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+    .btn {
+      padding: 8px 16px;
+      font: inherit;
+      color: var(--text);
+      text-decoration: none;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .btn-primary { color: #fff; background: var(--primary); border-color: var(--primary); }
+    .btn:hover { opacity: 0.85; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="brand">
+      <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M0 4.5A1.5 1.5 0 0 1 1.5 3h13A1.5 1.5 0 0 1 16 4.5V6a.5.5 0 0 1-.5.5 1.5 1.5 0 0 0 0 3 .5.5 0 0 1 .5.5v1.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 11.5V10a.5.5 0 0 1 .5-.5 1.5 1.5 0 1 0 0-3A.5.5 0 0 1 0 6zM5 5v6h1V5zm3 0v6h1V5z"/></svg>
+      <div>Lewe<strong>Desk</strong></div>
+    </div>
+    <section class="panel" id="panel">
+      <h1><span id="title">License Expired</span><span class="badge" id="badge">Expired</span></h1>
+      <hr>
+      <p><strong id="message">The license of this installation has expired. Only administrators can log in.</strong></p>
+      <p class="help" id="help">Please renew the license, or contact the vendor.</p>
+      <table id="details"></table>
+    </section>
+    <div class="actions">
+      <button type="button" class="btn" id="retry">Check again</button>
+      <a href="login.html" class="btn btn-primary" id="admin-login">Administrator login</a>
+    </div>
+  </main>
+  <script>
+    (function () {
+      var texts = {
+        en: {
+          pageTitle: 'License Expired',
+          retry: 'Check again',
+          login: 'Administrator login',
+          product: 'Product',
+          expiry: 'Expiry date',
+          states: {
+            expired: { title: 'License expired', badge: 'Expired', message: 'The license of this installation has expired. Only administrators can log in.', help: 'Please renew the license, or contact the vendor.', level: 'warning' },
+            blocked: { title: 'License blocked', badge: 'Blocked', message: 'The license of this installation has been blocked. Only administrators can log in.', help: 'Please contact the vendor.', level: 'warning' },
+            trial_expired: { title: 'Trial period over', badge: 'Unlicensed', message: 'This installation of LeweDesk is unlicensed and the trial period is over. Only administrators can log in.', help: 'An administrator can enter a license key on the License tab of the system settings.', level: 'danger' }
+          }
+        },
+        de: {
+          pageTitle: 'Lizenz abgelaufen',
+          retry: 'Erneut prüfen',
+          login: 'Administrator-Anmeldung',
+          product: 'Produkt',
+          expiry: 'Ablaufdatum',
+          states: {
+            expired: { title: 'Lizenz abgelaufen', badge: 'Abgelaufen', message: 'Die Lizenz dieser Installation ist abgelaufen. Nur Administratoren können sich anmelden.', help: 'Bitte verlängern Sie die Lizenz oder wenden Sie sich an den Hersteller.', level: 'warning' },
+            blocked: { title: 'Lizenz gesperrt', badge: 'Gesperrt', message: 'Die Lizenz dieser Installation wurde gesperrt. Nur Administratoren können sich anmelden.', help: 'Bitte wenden Sie sich an den Hersteller.', level: 'warning' },
+            trial_expired: { title: 'Testphase beendet', badge: 'Nicht lizenziert', message: 'Diese Installation von LeweDesk ist nicht lizenziert und die Testphase ist beendet. Nur Administratoren können sich anmelden.', help: 'Ein Administrator kann auf dem Tab Lizenz der Systemeinstellungen einen Lizenzschlüssel eingeben.', level: 'danger' }
+          }
+        }
+      };
+
+      function stored(key) {
+        try { return localStorage.getItem(key); } catch (e) { return null; }
+      }
+
+      // Language: the user's choice in the app, otherwise the browser language
+      var lang = stored('leti_lang') || (navigator.language || 'en').slice(0, 2);
+      var t = texts[lang] || texts.en;
+      document.documentElement.lang = texts[lang] ? lang : 'en';
+      document.getElementById('retry').textContent = t.retry;
+      document.getElementById('admin-login').textContent = t.login;
+      document.title = t.pageTitle + ' - LeweDesk';
+
+      // Theme: the user's choice in the app (light, dark, auto), otherwise the system setting
+      var theme = stored('theme');
+      var dark = theme === 'dark' || ((!theme || theme === 'auto') && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      if (dark) document.documentElement.setAttribute('data-theme', 'dark');
+
+      function cell(row, text) {
+        row.appendChild(document.createElement('td')).textContent = text;
+      }
+
+      // Shows the state of the license (the texts are fixed here; only the product and the date come from the server)
+      function render(license) {
+        var state = t.states[license.state] ? license.state : 'expired';
+        var s = t.states[state];
+        document.getElementById('title').textContent = s.title;
+        document.getElementById('badge').textContent = s.badge;
+        document.getElementById('message').textContent = s.message;
+        document.getElementById('help').textContent = s.help;
+        document.getElementById('panel').className = 'panel ' + (s.level === 'danger' ? 'danger' : '');
+
+        var table = document.getElementById('details');
+        table.textContent = '';
+        var rows = [];
+        if (license.product) rows.push([t.product, license.product]);
+        if (license.expiry && state !== 'trial_expired') rows.push([t.expiry, license.expiry]);
+        rows.forEach(function (item) {
+          var tr = table.appendChild(document.createElement('tr'));
+          tr.appendChild(document.createElement('th')).textContent = item[0];
+          cell(tr, item[1]);
+        });
+      }
+
+      // Return to the application as soon as the license is valid again
+      function check() {
+        fetch('api/license/public?t=' + Date.now())
+          .then(function (response) { return response.json(); })
+          .then(function (result) {
+            if (result.status !== 'success') return;
+            if (!result.data.locked) {
+              window.location.replace('dashboard.html');
+              return;
+            }
+            render(result.data);
+          })
+          .catch(function () { /* keep the texts that are shown */ });
+      }
+
+      render({ state: 'expired' });
+      document.getElementById('retry').addEventListener('click', check);
+      check();
+    })();
+  </script>
+</body>
+</html>

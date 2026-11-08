@@ -1,0 +1,1179 @@
+{
+  "app_name": "LeweDesk",
+  "dashboard": "Dashboard",
+  "dashboard_page": {
+    "no_access": "You are not allowed to view issues, so there is nothing to show here yet.",
+    "load_error": "The dashboard could not be loaded.",
+    "tiles": {
+      "open": "Open issues",
+      "assigned": "Assigned to me",
+      "unassigned": "Unassigned",
+      "resolved": "Resolved (7 days)"
+    },
+    "lists": {
+      "reported": "Reported by me",
+      "assigned": "Assigned to me",
+      "watching": "Watching",
+      "empty": "No open issues.",
+      "view_all": "View all",
+      "more": "{count} in total"
+    },
+    "charts": {
+      "created_vs_resolved": "Created vs Resolved (last 30 days)",
+      "created": "Created",
+      "resolved": "Resolved",
+      "by_category": "Issues by Status Category",
+      "by_type": "Issues by Type",
+      "by_product": "Issues per Product",
+      "no_product": "No product",
+      "issues": "Issues",
+      "empty": "No issues yet."
+    },
+    "activity": {
+      "title": "Recent Activity",
+      "empty": "No activity on your issues yet."
+    }
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "administration": "Administration",
+    "management": "System",
+    "settings": "Settings",
+    "users": "Users",
+    "roles": "Roles",
+    "groups": "Groups",
+    "permissions": "Permissions",
+    "issues": "Issues",
+    "issue_types": "Issue Types",
+    "products": "Products",
+    "resolutions": "Resolutions",
+    "status": "Status",
+    "status_categories": "Status Categories",
+    "tags": "Tags",
+    "issues_title": "Issues",
+    "all_issues": "All issues",
+    "create_issue": "Create issue",
+    "my_issues": "My issues",
+    "assigned_to_me": "Assigned to me",
+    "unassigned": "Unassigned",
+    "open": "Open",
+    "waiting": "Waiting",
+    "in_progress": "In progress",
+    "done": "Done",
+    "deleted_issues": "Deleted"
+  },
+  "header": {
+    "search": "Search...",
+    "ldap_active": "LDAP authentication is active",
+    "sso_active": "SSO (single sign-on) authentication is active",
+    "notifications": "Notifications",
+    "profile": "Profile",
+    "logout": "Logout",
+    "settings": "Settings",
+    "help": "Help",
+    "manual": "User Manual",
+    "about": "About",
+    "privacy": "Privacy Policy",
+    "imprint": "Imprint",
+    "login": "Login"
+  },
+  "about": {
+    "title": "About Lewe<strong>Desk</strong>",
+    "tagline": "Lewe Ticket Management System",
+    "version": "Version",
+    "copyright": "Copyright",
+    "issues": "Issues",
+    "issues_link": "GitHub Issues",
+    "documentation": "Documentation",
+    "credits": "Credits go to:",
+    "release_info": "Release Information",
+    "release": "Release",
+    "issue": "Issue",
+    "bugfixes": "Bugfixes",
+    "improvements": "Improvements",
+    "features": "New features",
+    "removals": "Retired features",
+    "load_error": "The release information could not be loaded."
+  },
+  "footer": {
+    "powered_by": "Powered by"
+  },
+  "settings": {
+    "title": "System Settings",
+    "tabs": {
+      "general": "General",
+      "system": "System",
+      "theme": "Theme",
+      "issues": "Issue Config",
+      "license": "License"
+    },
+    "fields": {
+      "application_url": "Application URL",
+      "application_url_desc": "Enter the full application URL here. It will be used in notification emails.",
+      "application_name": "Application Name",
+      "application_name_desc": "Enter an application title here. It is used at several locations, e.g. the HTML header, menu and other pages where the title is referenced.",
+      "application_manual": "Application Manual",
+      "application_manual_desc": "The user manual is maintained in English and is available at the Lewe Gitbook site. If you have written your own manual, enter the link here. It will be displayed in the Help menu as long as the field is not empty.",
+      "html_description": "HTML Description",
+      "html_description_desc": "Enter an application description here. It will be used in the HTML header for search engines.",
+      "html_keywords": "HTML Keywords",
+      "html_keywords_desc": "Enter application keywords here. It will be used in the HTML header for search engines.",
+      "default_language": "Default Language",
+      "default_language_desc": "Select the default language here. Users can switch languages in the UI.",
+      "alert_show": "Show Alerts",
+      "alert_show_desc": "Select what type of alerts (toast messages) will be shown.",
+      "alert_autoclose_info": "Close Info Alerts Automatically",
+      "alert_autoclose_info_desc": "Select whether Info alerts shall be automatically closed after the amount of milliseconds specified below.",
+      "alert_autoclose_success": "Close Success Alerts Automatically",
+      "alert_autoclose_success_desc": "Select whether Success alerts shall be automatically closed after the amount of milliseconds specified below.",
+      "alert_autoclose_warning": "Close Warning Alerts Automatically",
+      "alert_autoclose_warning_desc": "Select whether Warning alerts shall be automatically closed after the amount of milliseconds specified below.",
+      "alert_autoclose_error": "Close Error Alerts Automatically",
+      "alert_autoclose_error_desc": "Select whether Error alerts shall be automatically closed after the amount of milliseconds specified below.",
+      "alert_autoclose_delay": "Alert Autoclose Delay",
+      "alert_autoclose_delay_desc": "Enter the amount of milliseconds after which alerts the selected alert types above shall be automatically closed (e.g. 4000 = 4 seconds).",
+      "timezone": "Timezone",
+      "timezone_desc": "Select the default timezone here.",
+      "matomo_analytics": "Matomo Analytics",
+      "matomo_analytics_desc": "The application supports Matomo Analytics. If you want to track access to your instance, you can check this box and enter your Matomo URL and SiteId below.",
+      "matomo_url": "Matomo URL",
+      "matomo_url_desc": "If you enabled the Matomo Analytics feature, enter the URL where your Matomo server is hosted.",
+      "matomo_siteid": "Matomo Site ID",
+      "matomo_siteid_desc": "If you enabled the Matomo Analytics feature, enter the Matomo Site ID here.",
+      "disable_search_engines": "Disable Search Engines",
+      "disable_search_engines_desc": "With this switch on, search engine robots are instructed not to index the pages of this LeweDesk website. The public pages (landing page, About, Privacy Policy and Imprint) carry fixed SEO tags and are not affected.",
+      "disable_caching": "Disable Caching",
+      "disable_caching_desc": "In some server-client environments you might experience unwanted caching effects. With this option activated, LeweDesk sends No-caching instructions to the web server that might help.",
+      "debug_mode": "Debug Mode",
+      "debug_mode_desc": "With this switch on, debugging information is displayed in the browser console.",
+      "under_maintenance": "Under Maintenance",
+      "under_maintenance_desc": "With this switch on, the application is put into maintenance mode. Only administrators can access the application.",
+      "force_2fa": "Force Two Factor Authentication",
+      "force_2fa_desc": "Forces users to setup a two factor authentication, e.g. via Google or Microsoft Authenticator. If a user has not setup 2FA yet, he will be redirected to a Setup 2FA page after regular login.",
+      "audit_retention_days": "Audit Log Retention (Days)",
+      "audit_retention_days_desc": "Enter after how many days audit log entries are deleted. Enter 0 to keep them forever.",
+      "color_mode": "Color Mode",
+      "color_mode_desc": "Select the default color mode of the application.",
+      "font": "Font",
+      "font_desc": "Select the font to use for the application.",
+      "issue_key_prefix": "Issue Key Prefix",
+      "issue_key_prefix_desc": "Enter the prefix of the issue key. Issues are displayed as PREFIX-123 (e.g. LD-123). The prefix cannot be changed anymore once the first issue exists.",
+      "support_email": "Support Email",
+      "support_email_desc": "Enter the email address of your support team here. A message is sent to this address when an issue is created.",
+      "attachment_max_size": "Maximum Attachment Size (MB)",
+      "attachment_max_size_desc": "Enter the maximum size of a single attachment or inline image in megabytes. The PHP settings upload_max_filesize and post_max_size of your web server must allow this size.",
+      "attachment_max_count": "Maximum Attachments per Issue",
+      "attachment_max_count_desc": "Enter the maximum number of attachments of an issue. Inline images in comments and descriptions count as attachments.",
+      "attachment_max_total_size": "Maximum Total Attachment Size per Issue (MB)",
+      "attachment_max_total_size_desc": "Enter the maximum total size of all attachments of an issue in megabytes.",
+      "rate_limit_issues": "Issues per Hour",
+      "rate_limit_issues_desc": "Enter how many issues a user may create per hour. Agents and Administrators are not limited. Enter 0 to switch the limit off.",
+      "rate_limit_comments": "Comments per Hour",
+      "rate_limit_comments_desc": "Enter how many comments a user may add per hour. Agents and Administrators are not limited. Enter 0 to switch the limit off.",
+      "notification_retention_days": "Notification Retention (Days)",
+      "notification_retention_days_desc": "Enter after how many days in-app notifications are deleted.",
+      "notification_poll_interval": "Notification Poll Interval (Seconds)",
+      "notification_poll_interval_desc": "Enter how often the browser checks for new notifications.",
+      "temp_upload_cleanup_hours": "Temporary Upload Cleanup (Hours)",
+      "temp_upload_cleanup_hours_desc": "Images that were uploaded while writing a new issue are deleted after this many hours if the issue was never saved.",
+      "lic_expiry_warning": "Expiry Warning (Days)",
+      "lic_expiry_warning_desc": "Enter how many days before the license expires administrators are warned with a banner on every page. Enter 0 for no warning."
+    },
+    "actions": {
+      "save": "Save Settings",
+      "saving": "Saving..."
+    },
+    "messages": {
+      "success": "The system settings were saved successfully.",
+      "error": "An error occurred while saving the system settings.",
+      "load_error": "Failed to load system settings from the server."
+    },
+    "license": {
+      "key": "License Key",
+      "key_desc": "Enter the license key you received and click Save Key. After saving the key, click Activate to register this domain with the license server.",
+      "save_key": "Save Key",
+      "activate": "Activate License",
+      "activate_desc": "Activates the license for this installation and registers its domain with the license server. A license that is still pending becomes active. If the maximum number of installations is reached, the oldest registration is replaced.",
+      "activate_btn": "Activate",
+      "deregister": "Deregister Domain",
+      "deregister_desc": "Removes the domain of this installation from the license, e.g. before you move LeweDesk to another server. The place becomes free for another installation.",
+      "deregister_btn": "Deregister",
+      "confirm_deregister": "Remove this domain from the license? The license will no longer be valid for this installation until you register it again.",
+      "refresh": "Check License",
+      "refresh_desc": "Asks the license server for the current state of the license. This happens automatically every 30 minutes.",
+      "refresh_btn": "Check Now",
+      "product": "Product",
+      "license_key": "License key",
+      "customer": "Customer",
+      "company": "Company",
+      "expiry": "Expiry date",
+      "days_left": "{days} days left",
+      "activations": "Registered installations",
+      "activations_value": "{used} of {max}",
+      "domain": "Domain of this installation",
+      "last_check": "Last check",
+      "server_error": "Last contact with the license server failed",
+      "not_configured": "The connection to the license server is not set up: LICENSE_SERVER or LICENSE_SECRET is missing in the .env file.",
+      "state": {
+        "active": "Active",
+        "trial": "Trial",
+        "pending": "Pending",
+        "expired": "Expired",
+        "blocked": "Blocked",
+        "unregistered": "Not registered",
+        "unavailable": "Unavailable",
+        "invalid": "Invalid",
+        "trial_expired": "Trial over"
+      },
+      "status": {
+        "active": {
+          "title": "License active",
+          "subject": "Your license is valid for this installation.",
+          "help": ""
+        },
+        "trial": {
+          "title": "No license - trial period",
+          "subject": "This installation of LeweDesk is unlicensed. It will stop working in {days} days.",
+          "help": "Enter your license key below and activate it."
+        },
+        "trial_expired": {
+          "title": "No license - trial period over",
+          "subject": "This installation of LeweDesk is unlicensed and the trial period is over. Only administrators can log in.",
+          "help": "Enter your license key below and activate it."
+        },
+        "pending": {
+          "title": "License pending",
+          "subject": "Your license has not been activated yet.",
+          "help": "Click Activate to activate the license for this installation."
+        },
+        "expired": {
+          "title": "License expired",
+          "subject": "Your license has expired. Only administrators can log in.",
+          "help": "Please renew your license, or contact the vendor."
+        },
+        "blocked": {
+          "title": "License blocked",
+          "subject": "Your license has been blocked. Only administrators can log in.",
+          "help": "Please contact the vendor."
+        },
+        "unregistered": {
+          "title": "Domain not registered",
+          "subject": "The license is valid, but this domain is not registered with it.",
+          "help": "Click Activate to register this domain."
+        },
+        "invalid": {
+          "title": "License invalid",
+          "subject": "The license key is unknown to the license server.",
+          "help": "Check the key and save it again, or contact the vendor."
+        },
+        "unavailable": {
+          "title": "License server unavailable",
+          "subject": "The state of the license could not be determined because the license server could not be reached. LeweDesk keeps working with the last known state.",
+          "help": "The license is checked again automatically."
+        }
+      },
+      "messages": {
+        "load_error": "Failed to load the license from the server.",
+        "error": "The license action failed.",
+        "done_key": "The license key was saved.",
+        "done_activate": "The license was activated.",
+        "done_deregister": "The domain was deregistered.",
+        "done_refresh": "The license was checked.",
+        "key_removed": "The license key was removed.",
+        "license_expired": "The license has expired.",
+        "license_blocked": "The license is blocked.",
+        "license_not_found": "The license key is unknown.",
+        "domain_not_activated": "The license is not activated for this domain.",
+        "invalid_request": "The license key is missing or too long.",
+        "no_key": "There is no license key. Enter and save a key first.",
+        "unavailable": "The license server could not be reached. Please try again later.",
+        "invalid_secret": "The license server refused the product secret. Check LICENSE_SECRET in the .env file.",
+        "product_inactive": "The product is switched off on the license server.",
+        "rate_limited": "Too many requests to the license server. Please wait a moment.",
+        "invalid_domain": "The domain of this installation is not valid for the license server.",
+        "https_required": "The license server must be reached over HTTPS. Check LICENSE_SERVER in the .env file."
+      }
+    }
+  },
+  "lookups": {
+    "issue_types": {
+      "bug": "Bug",
+      "improvement": "Improvement",
+      "feature": "Feature",
+      "question": "Question",
+      "license": "License",
+      "task": "Task"
+    },
+    "status_categories": {
+      "open": "Open",
+      "waiting": "Waiting",
+      "in_progress": "In progress",
+      "done": "Done"
+    },
+    "status": {
+      "open": "Open",
+      "waiting_for_agent": "Waiting for agent",
+      "waiting_for_customer": "Waiting for customer",
+      "pending": "Pending",
+      "on_hold": "On hold",
+      "resolved": "Resolved",
+      "closed": "Closed"
+    },
+    "resolutions": {
+      "completed": "Completed",
+      "fixed": "Fixed",
+      "answered": "Answered",
+      "expired": "Expired",
+      "duplicate": "Duplicate",
+      "wont_do": "Won't do",
+      "not_reproducible": "Not reproducible"
+    }
+  },
+  "lookup_pages": {
+    "shared": {
+      "preview_desc": "This is how the record is displayed in lists and on issues.",
+      "icon_desc": "Bootstrap Icons class, e.g. bi-bug. Leave empty for no icon.",
+      "color_desc": "Color of the icon and the text.",
+      "text_color_desc": "Color of the tag text.",
+      "background_color_desc": "Background color. It is displayed with transparency so that it works in light and dark mode.",
+      "tag_background_color_desc": "Background color of the tag.",
+      "sort_order_desc": "Position in lists and drop-down menus (lowest first). Leave empty to put a new record at the end.",
+      "active_desc": "Inactive records cannot be selected for new issues but stay on existing issues."
+    },
+    "issue_types": {
+      "title": "Issue Types",
+      "add_title": "Add Issue Type",
+      "edit_title": "Edit Issue Type",
+      "name_desc": "Unique name of the issue type (max. 50 characters).",
+      "description_desc": "Short description of what the issue type is for.",
+      "confirm_delete": "Delete the selected issue types? This cannot be undone.",
+      "messages": {
+        "created": "The issue type was created.",
+        "updated": "The issue type was updated.",
+        "deleted": "The selected issue types were deleted.",
+        "load_error": "Failed to load issue types from the server.",
+        "save_error": "The issue type could not be saved.",
+        "delete_error": "The selected issue types could not be deleted.",
+        "not_found": "The issue type was not found."
+      }
+    },
+    "status_categories": {
+      "title": "Status Categories",
+      "add_title": "Add Status Category",
+      "edit_title": "Edit Status Category",
+      "name_desc": "The name of a system status category is locked.",
+      "description_desc": "Short description of what the status category is for.",
+      "confirm_delete": "Delete the selected status categories? This cannot be undone.",
+      "messages": {
+        "created": "The status category was created.",
+        "updated": "The status category was updated.",
+        "deleted": "The selected status categories were deleted.",
+        "load_error": "Failed to load status categories from the server.",
+        "save_error": "The status category could not be saved.",
+        "delete_error": "The selected status categories could not be deleted.",
+        "not_found": "The status category was not found."
+      },
+      "intro": "The status categories group the status and drive the quick views of the issue list. They are system records: you can change their description, icon and colors."
+    },
+    "status": {
+      "title": "Status",
+      "add_title": "Add Status",
+      "edit_title": "Edit Status",
+      "name_desc": "Unique name of the status (max. 50 characters).",
+      "description_desc": "Short description of what the status is for.",
+      "confirm_delete": "Delete the selected status? This cannot be undone.",
+      "messages": {
+        "created": "The status was created.",
+        "updated": "The status was updated.",
+        "deleted": "The selected status were deleted.",
+        "load_error": "Failed to load status from the server.",
+        "save_error": "The status could not be saved.",
+        "delete_error": "The selected status could not be deleted.",
+        "not_found": "The status was not found."
+      },
+      "category_desc": "The category the status belongs to. Categories group the status in the issue lists."
+    },
+    "resolutions": {
+      "title": "Resolutions",
+      "add_title": "Add Resolution",
+      "edit_title": "Edit Resolution",
+      "name_desc": "Unique name of the resolution (max. 50 characters).",
+      "description_desc": "Short description of what the resolution is for.",
+      "confirm_delete": "Delete the selected resolutions? This cannot be undone.",
+      "messages": {
+        "created": "The resolution was created.",
+        "updated": "The resolution was updated.",
+        "deleted": "The selected resolutions were deleted.",
+        "load_error": "Failed to load resolutions from the server.",
+        "save_error": "The resolution could not be saved.",
+        "delete_error": "The selected resolutions could not be deleted.",
+        "not_found": "The resolution was not found."
+      }
+    },
+    "products": {
+      "title": "Products",
+      "add_title": "Add Product",
+      "edit_title": "Edit Product",
+      "name_desc": "Unique name of the product (max. 50 characters).",
+      "description_desc": "Short description of what the product is for.",
+      "confirm_delete": "Delete the selected products? They are removed from the issues. This cannot be undone.",
+      "messages": {
+        "created": "The product was created.",
+        "updated": "The product was updated.",
+        "deleted": "The selected products were deleted.",
+        "load_error": "Failed to load products from the server.",
+        "save_error": "The product could not be saved.",
+        "delete_error": "The selected products could not be deleted.",
+        "not_found": "The product was not found."
+      }
+    },
+    "tags": {
+      "title": "Tags",
+      "add_title": "Add Tag",
+      "edit_title": "Edit Tag",
+      "name_desc": "Unique name of the tag (max. 50 characters).",
+      "confirm_delete": "Delete the selected tags? They are removed from the issues. This cannot be undone.",
+      "messages": {
+        "created": "The tag was created.",
+        "updated": "The tag was updated.",
+        "deleted": "The selected tags were deleted.",
+        "load_error": "Failed to load tags from the server.",
+        "save_error": "The tag could not be saved.",
+        "delete_error": "The selected tags could not be deleted.",
+        "not_found": "The tag was not found."
+      }
+    }
+  },
+  "common": {
+    "success": "Success",
+    "error": "Error",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "light": "Light Mode",
+    "dark": "Dark Mode",
+    "auto": "System Default",
+    "info": "Info",
+    "warning": "Warning",
+    "name": "Name",
+    "description": "Description",
+    "color": "Color",
+    "icon": "Icon",
+    "users": "Users",
+    "actions": "Actions",
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "saving": "Saving...",
+    "back": "Back",
+    "confirm": "Confirm",
+    "yes_delete": "Yes, delete",
+    "permission_denied": "You do not have permission to open this page.",
+    "background_color": "Background color",
+    "text_color": "Text color",
+    "colors": "Colors",
+    "category": "Category",
+    "sort_order": "Sort order",
+    "active": "Active",
+    "yes": "Yes",
+    "no": "No",
+    "preview": "Preview",
+    "system_record": "System record",
+    "system_record_notice": "This is a system record. Its name is locked, and it cannot be deleted or deactivated. You can change the description, icon and colors.",
+    "system_record_no_delete": "System records cannot be deleted.",
+    "replacement": "Replacement",
+    "replacement_needed": "The selected record is used by {count} issue(s). Choose the record these issues should get instead:",
+    "replacement_needed_many": "The selected records are used by {count} issue(s). Choose the record these issues should get instead:",
+    "replacement_none": "There is no other active record that can replace it."
+  },
+  "datatables": {
+    "search": "Search:",
+    "lengthMenu": "Show _MENU_ entries",
+    "info": "Showing _START_ to _END_ of _TOTAL_ entries",
+    "infoEmpty": "No entries",
+    "infoFiltered": "(filtered from _MAX_ entries)",
+    "emptyTable": "No entries available",
+    "zeroRecords": "No matching entries found",
+    "first": "First",
+    "previous": "Previous",
+    "next": "Next",
+    "last": "Last",
+    "selected_one": "1 selected",
+    "selected_many": "%d selected",
+    "processing": "Loading..."
+  },
+  "users": {
+    "title": "Users",
+    "edit_title": "Edit User",
+    "add_title": "Add User",
+    "username": "Username",
+    "full_name": "Name",
+    "email": "Email",
+    "first_name": "First name",
+    "last_name": "Last name",
+    "password": "Password",
+    "roles": "Roles",
+    "groups": "Groups",
+    "username_desc": "The username cannot be changed.",
+    "username_add_desc": "3-50 characters: letters, digits, underscore, dot and hyphen. With LDAP this is the LDAP username. It cannot be changed later.",
+    "password_add_desc": "Initial password of the user (at least 8 characters).",
+    "password_ldap_note": "This user logs in with the LDAP password. LeweDesk stores no password for it, so there is nothing to change here.",
+    "password_sso_note": "This user signs in with SSO (single sign-on). LeweDesk stores no usable password for it, so there is nothing to change here.",
+    "password_sso_add_note": "SSO authentication is active: the user signs in with the Identity Provider. No password is set here.",
+    "password_ldap_add_note": "LDAP authentication is active: the user logs in with the LDAP password. No password is set here.",
+    "email_desc": "Email address of the user. It must be unique.",
+    "first_name_desc": "First name of the user.",
+    "last_name_desc": "Last name of the user.",
+    "password_desc": "Enter a new password to change it (at least 8 characters). Leave empty to keep the current password.",
+    "roles_desc": "Roles assigned to the user. Hold Ctrl (Cmd) to select several.",
+    "groups_desc": "Groups the user belongs to. Hold Ctrl (Cmd) to select several.",
+    "tabs": {
+      "account": "Account",
+      "avatar": "Avatar"
+    },
+    "twofa": {
+      "column": "2FA",
+      "title": "Two factor authentication",
+      "desc": "Whether the user has set up two factor authentication. Reset it if the user lost the device; the user then has to set it up again (at next login if 2FA is mandatory).",
+      "enabled": "Enabled",
+      "disabled": "Not set up",
+      "reset_button": "Reset 2FA",
+      "reset_title": "Reset 2FA",
+      "reset_text": "Reset two factor authentication for {user}? The user can log in with the password only (or has to set 2FA up again if it is mandatory).",
+      "messages": {
+        "reset": "Two factor authentication was reset.",
+        "reset_error": "Two factor authentication could not be reset."
+      }
+    },
+    "confirm_delete": "Delete the selected users? This cannot be undone.",
+    "participation": {
+      "issues_one": "1 issue",
+      "issues_other": "{count} issues",
+      "single": "This user is participant in {issues}. The name will be replaced with \"{deleted}\".",
+      "multiple": "These users are participants in issues:",
+      "multiple_confirm": "The names will be replaced with \"{deleted}\"."
+    },
+    "messages": {
+      "updated": "The user was updated.",
+      "created": "The user was created.",
+      "deleted": "The selected users were deleted.",
+      "load_error": "Failed to load users from the server.",
+      "save_error": "The user could not be saved.",
+      "delete_error": "The selected users could not be deleted.",
+      "not_found": "The user was not found."
+    }
+  },
+  "roles": {
+    "title": "Roles",
+    "add_title": "Add Role",
+    "edit_title": "Edit Role",
+    "breadcrumb": "Roles",
+    "name_desc": "Unique name of the role (max. 50 characters).",
+    "description_desc": "Short description of what the role is for.",
+    "color_desc": "Color used to display the role.",
+    "icon_desc": "Bootstrap Icons class, e.g. bi-person. Leave empty for no icon.",
+    "confirm_delete": "Delete the selected roles? This cannot be undone.",
+    "messages": {
+      "created": "The role was created.",
+      "updated": "The role was updated.",
+      "deleted": "The selected roles were deleted.",
+      "load_error": "Failed to load roles from the server.",
+      "save_error": "The role could not be saved.",
+      "delete_error": "The selected roles could not be deleted.",
+      "not_found": "The role was not found."
+    }
+  },
+  "groups": {
+    "title": "Groups",
+    "add_title": "Add Group",
+    "edit_title": "Edit Group",
+    "breadcrumb": "Groups",
+    "name_desc": "Unique name of the group (max. 50 characters).",
+    "description_desc": "Short description of the group.",
+    "color_desc": "Color used to display the group.",
+    "icon_desc": "Bootstrap Icons class, e.g. bi-people. Leave empty for no icon.",
+    "confirm_delete": "Delete the selected groups? This cannot be undone.",
+    "messages": {
+      "created": "The group was created.",
+      "updated": "The group was updated.",
+      "deleted": "The selected groups were deleted.",
+      "load_error": "Failed to load groups from the server.",
+      "save_error": "The group could not be saved.",
+      "delete_error": "The selected groups could not be deleted.",
+      "not_found": "The group was not found."
+    }
+  },
+  "permissions": {
+    "title": "Permissions",
+    "add_title": "Add Permission",
+    "edit_title": "Edit Permission",
+    "breadcrumb": "Permissions",
+    "roles": "Roles",
+    "groups": "Groups",
+    "name_desc": "Unique name of the permission (max. 50 characters). Allowed characters: a-z, A-Z, 0-9, _ and -.",
+    "description_desc": "Short description of what the permission allows.",
+    "roles_desc": "Roles that are granted this permission. Hold Ctrl (Cmd) to select several.",
+    "groups_desc": "Groups that are granted this permission. Hold Ctrl (Cmd) to select several.",
+    "confirm_delete": "Delete the selected permissions? This cannot be undone.",
+    "messages": {
+      "created": "The permission was created.",
+      "updated": "The permission was updated.",
+      "deleted": "The selected permissions were deleted.",
+      "load_error": "Failed to load permissions from the server.",
+      "save_error": "The permission could not be saved.",
+      "delete_error": "The selected permissions could not be deleted.",
+      "not_found": "The permission was not found.",
+      "invalid_name": "The name may only contain the characters a-z, A-Z, 0-9, _ and -."
+    }
+  },
+  "profile": {
+    "title": "My Profile",
+    "sso_note": "Your account uses SSO (single sign-on). Your password is managed by your Identity Provider and cannot be changed here.",
+    "ldap_note": "Your account uses LDAP authentication. Your password is managed outside of LeweDesk and cannot be changed here.",
+    "tabs": {
+      "profile": "Profile",
+      "avatar": "Avatar",
+      "notifications": "Notifications",
+      "options": "Options",
+      "twofa": "2FA"
+    },
+    "options": {
+      "language": "Language",
+      "language_desc": "Choose the language of the user interface. System default uses the language set by the administrator.",
+      "language_default": "System default",
+      "status_row_color": "Show status background color",
+      "status_row_color_desc": "Colors the row background of issue tables according to the issue's status.",
+      "saved": "Your options were saved.",
+      "load_error": "Your options could not be loaded.",
+      "save_error": "Your options could not be saved."
+    },
+    "twofa": {
+      "description": "LeweDesk allows you to set up a second factor authentication, e.g. using Google or Microsoft Authenticator on your mobile device.<br>Click the button below to start the onboarding process. (This can only be done by the user himself.)",
+      "setup_button": "Set up 2FA",
+      "enabled": "Two factor authentication is enabled for your account.",
+      "disable_button": "Disable 2FA",
+      "mandatory_note": "Note, that 2FA is mandatory. If you disable it here you will be forced to onboard again at next login.",
+      "disable_title": "Disable 2FA",
+      "disable_text": "Enter your password to disable two factor authentication.",
+      "password": "Password",
+      "messages": {
+        "enabled": "Two factor authentication is now enabled.",
+        "disabled": "Two factor authentication was disabled.",
+        "wrong_password": "The password is not correct.",
+        "disable_error": "Two factor authentication could not be disabled."
+      }
+    },
+    "password_desc": "Enter a new password to change it (at least 8 characters). Leave empty to keep your current password.",
+    "current_password": "Current password",
+    "current_password_desc": "Required to change your password.",
+    "confirm_password": "Confirm new password",
+    "confirm_password_desc": "Repeat the new password.",
+    "avatar_current": "Current avatar",
+    "avatar_current_desc": "This image is shown in the top navigation bar.",
+    "avatar_none": "No avatar selected.",
+    "avatar_upload": "Upload your own",
+    "avatar_upload_desc": "PNG, JPG, GIF or WEBP, up to 1 MB. The image is shown as a circle, so a square image works best.",
+    "avatar_upload_btn": "Upload",
+    "avatar_samples": "Sample avatars",
+    "avatar_samples_desc": "Click an image to use it as your avatar.",
+    "messages": {
+      "updated": "Your profile was updated.",
+      "avatar_updated": "Your avatar was updated.",
+      "load_error": "Your profile could not be loaded.",
+      "save_error": "Your profile could not be saved.",
+      "avatar_error": "Your avatar could not be saved.",
+      "passwords_mismatch": "The passwords do not match.",
+      "file_too_large": "The image must not be larger than 1 MB.",
+      "no_file": "Please choose an image first."
+    }
+  },
+  "maintenance": {
+    "banner": "Maintenance mode is active. Only administrators can use the application."
+  },
+  "tags": {
+    "input": {
+      "label": "Tags",
+      "placeholder": "Type to search tags...",
+      "max": "At most {max} tags",
+      "remove": "Remove tag {name}",
+      "create": "Create tag \"{name}\"",
+      "results": "{count} suggestions"
+    },
+    "create": {
+      "title": "Create tag",
+      "confirm": "The tag \"{name}\" does not exist yet. Do you want to create it?",
+      "submit": "Create tag"
+    },
+    "messages": {
+      "create_error": "The tag could not be created."
+    }
+  },
+  "issues": {
+    "unassigned": "Unassigned",
+    "deleted_user": "Deleted user",
+    "fields": {
+      "type": "Type",
+      "status_category": "Status Category",
+      "summary": "Summary",
+      "description": "Description",
+      "product": "Product",
+      "version": "Version",
+      "access": "Access",
+      "resolution": "Resolution",
+      "tags": "Tags",
+      "watchers": "Watchers"
+    },
+    "columns": {
+      "id": "Issue",
+      "summary": "Summary",
+      "reporter": "Reporter",
+      "assignee": "Assignee",
+      "created": "Created",
+      "updated": "Updated",
+      "status": "Status"
+    },
+    "access": {
+      "public": "Public",
+      "registered": "Registered",
+      "reporter": "Reporter only"
+    },
+    "access_desc": {
+      "public": "Everybody can see the issue, visitors who are not logged in included.",
+      "registered": "All logged in users can see the issue.",
+      "reporter": "Only you and the support team can see the issue."
+    },
+    "views": {
+      "all": "All issues",
+      "mine": "My issues",
+      "assigned": "Assigned to me",
+      "unassigned": "Unassigned issues",
+      "open": "Open issues",
+      "waiting": "Waiting issues",
+      "in_progress": "Issues in progress",
+      "done": "Done issues",
+      "deleted": "Deleted issues"
+    },
+    "list": {
+      "empty": "No issues found."
+    },
+    "filters": {
+      "all_status": "All status",
+      "all_status_categories": "All status categories",
+      "all_types": "All types",
+      "all_products": "All products",
+      "all_assignees": "All assignees",
+      "all_reporters": "All reporters",
+      "all_tags": "All tags",
+      "search_results": "Search results for \"{term}\"",
+      "participant": "Participant: {name}",
+      "reset": "Reset filters"
+    },
+    "create": {
+      "title": "Create issue",
+      "type_desc": "What kind of issue is it?",
+      "type_placeholder": "Select a type...",
+      "type_required": "Please select a type.",
+      "summary_desc": "A short title in one line (up to 200 characters).",
+      "summary_required": "Please enter a summary.",
+      "description_desc": "Describe the issue as precisely as you can: what happened, what did you expect, and how can we reproduce it?",
+      "description_required": "Please enter a description.",
+      "tags_desc": "Tags help to find and group issues (optional). Type to search the existing tags.",
+      "product_desc": "The product the issue is about (optional).",
+      "no_product": "No product",
+      "version_desc": "The version of the product the issue occurs in (optional).",
+      "access_desc": "Who may see this issue. The support team can always see it.",
+      "submit": "Create issue"
+    },
+    "edit": {
+      "title": "Edit issue",
+      "submit": "Save changes",
+      "status_desc": "The status can be set freely. A status of the category Done needs a resolution.",
+      "resolution_desc": "Why the issue is done. Required for a status of the category Done.",
+      "resolution_placeholder": "Select a resolution...",
+      "resolution_required": "Please select a resolution.",
+      "assignee_desc": "Only users with the role Agent can be assigned.",
+      "watchers_desc": "Who is told about changes to this issue. Hold Ctrl (Cmd on Mac) to select several. Only users who can see the issue are listed.",
+      "access_desc": "Who may see this issue. Watchers who lose access are removed.",
+      "load_error": "The issue could not be loaded.",
+      "no_permission": "You are not allowed to edit this issue.",
+      "save_error": "The issue could not be saved.",
+      "saved": "Issue {key} was updated.",
+      "unchanged": "Nothing was changed."
+    },
+    "detail": {
+      "loading": "Loading...",
+      "back": "Back to list",
+      "properties": "Properties",
+      "deleted": "Deleted"
+    },
+    "messages": {
+      "load_error": "The issues could not be loaded.",
+      "not_found": "The issue does not exist, or you are not allowed to see it.",
+      "create_error": "The issue could not be created.",
+      "created": "Issue {key} was created.",
+      "saved": "Issue {key} was updated."
+    }
+  },
+  "markdown": {
+    "write": "Write",
+    "preview": "Preview",
+    "nothing_to_preview": "Nothing to preview.",
+    "help": "Markdown is supported. Issue keys like {key} are linked automatically.",
+    "toolbar": "Formatting",
+    "bold": "Bold",
+    "italic": "Italic",
+    "code": "Code",
+    "link": "Link",
+    "bullet_list": "Bulleted list",
+    "numbered_list": "Numbered list",
+    "quote": "Quote",
+    "link_text": "link text",
+    "image": "Insert image",
+    "existing_image": "Insert an existing image of this issue",
+    "no_existing_images": "No images attached to this issue yet.",
+    "help_images": "Paste or drop images into the text to attach them.",
+    "image_removed": "Image removed",
+    "image_type": "Only images (gif, jpg, png) can be inserted into the text."
+  },
+  "comments": {
+    "title": "Comments",
+    "order_newest": "Newest first",
+    "order_oldest": "Oldest first",
+    "order_label": "Order of the comments",
+    "empty": "No comments yet.",
+    "internal": "Internal",
+    "edited": "edited",
+    "edited_on": "Edited on {date}",
+    "deleted": "Comment deleted",
+    "edit": "Edit",
+    "delete": "Delete",
+    "form": {
+      "title": "Add a comment",
+      "body_desc": "Write your comment.",
+      "body_required": "Please enter a comment.",
+      "internal": "Internal comment",
+      "internal_desc": "Only the support team can see an internal comment.",
+      "submit": "Add comment",
+      "respond": "Respond with comment",
+      "login_hint": "Please log in to add a comment.",
+      "blocked_closed": "This issue is closed and takes no more comments.",
+      "blocked_deleted": "This issue is deleted and takes no more comments."
+    },
+    "delete_confirm": {
+      "title": "Delete comment",
+      "text": "Do you want to delete this comment? It is replaced by a note that a comment was deleted."
+    },
+    "messages": {
+      "load_error": "The comments could not be loaded.",
+      "added": "Your comment was added.",
+      "add_error": "The comment could not be added.",
+      "saved": "The comment was saved.",
+      "save_error": "The comment could not be saved.",
+      "deleted": "The comment was deleted.",
+      "delete_error": "The comment could not be deleted.",
+      "order_error": "The order of the comments could not be saved."
+    }
+  },
+  "actions": {
+    "menu": "Actions",
+    "names": {
+      "edit": "Edit",
+      "respond": "Respond",
+      "resolve": "Resolve",
+      "close": "Close",
+      "reopen": "Reopen",
+      "assign": "Assign",
+      "assign_me": "Assign to me",
+      "watch": "Watch issue",
+      "unwatch": "Unwatch issue",
+      "change_access": "Change access",
+      "delete": "Delete issue",
+      "restore": "Restore issue"
+    },
+    "fields": {
+      "comment": "Comment",
+      "comment_optional": "Comment (optional)",
+      "resolution": "Resolution",
+      "assignee": "Assignee",
+      "access": "Access",
+      "internal": "Internal comment",
+      "internal_desc": "Only the support team can see an internal comment. An internal comment does not change the status."
+    },
+    "placeholders": {
+      "resolution": "Select a resolution...",
+      "assignee": "Select an Agent...",
+      "access": "Select the new access..."
+    },
+    "unassign": "Unassigned",
+    "modal": {
+      "respond": {
+        "title": "Respond",
+        "text": "Your response is added as a comment. The status changes to show who is expected to answer next.",
+        "submit": "Respond"
+      },
+      "resolve": {
+        "title": "Resolve issue",
+        "text": "Select how the issue was resolved. The status changes to Resolved.",
+        "submit": "Resolve"
+      },
+      "reopen": {
+        "title": "Reopen issue",
+        "text": "Say why the issue is reopened. The status changes to Open and the resolution is cleared.",
+        "submit": "Reopen"
+      },
+      "assign": {
+        "title": "Assign issue",
+        "text": "Select the Agent who takes care of the issue.",
+        "submit": "Assign"
+      },
+      "change_access": {
+        "title": "Change access",
+        "text": "Who may see this issue? Watchers who lose access are removed.",
+        "text_reporter": "You can only restrict the access of your issue, not widen it again. Watchers who lose access are removed.",
+        "submit": "Change access"
+      },
+      "delete": {
+        "title": "Delete issue",
+        "text": "The issue is hidden from everybody but the support team. It can be restored later. Delete this issue?",
+        "submit": "Yes, delete"
+      }
+    },
+    "validation": {
+      "comment_required": "Please enter a comment.",
+      "resolution_required": "Please select a resolution.",
+      "assignee_required": "Please select an Agent.",
+      "access_required": "Please select the new access."
+    },
+    "done": {
+      "respond": "Your response was added.",
+      "resolve": "The issue was resolved.",
+      "close": "The issue was closed.",
+      "reopen": "The issue was reopened.",
+      "assign": "The issue was assigned.",
+      "assign_me": "The issue is assigned to you.",
+      "watch": "You watch this issue now.",
+      "unwatch": "You do not watch this issue any more.",
+      "change_access": "The access was changed.",
+      "delete": "The issue was deleted.",
+      "restore": "The issue was restored."
+    },
+    "error": "The action could not be performed.",
+    "load_error": "The list of Agents could not be loaded."
+  },
+  "history": {
+    "title": "History",
+    "empty": "No history yet.",
+    "none": "(none)",
+    "sort_newest": "Newest first (click for oldest first)",
+    "sort_oldest": "Oldest first (click for newest first)",
+    "columns": {
+      "when": "When",
+      "who": "Who",
+      "what": "What",
+      "from": "From",
+      "to": "To"
+    },
+    "events": {
+      "issue_created": "created the issue",
+      "comment_added": "added a comment",
+      "comment_added_internal": "added an internal comment",
+      "comment_edited": "edited a comment",
+      "comment_edited_internal": "edited an internal comment",
+      "comment_deleted": "deleted a comment",
+      "comment_deleted_internal": "deleted an internal comment",
+      "field_changed": "changed {field}",
+      "unknown": "made a change",
+      "issue_deleted": "deleted the issue",
+      "issue_restored": "restored the issue",
+      "attachment_added": "added the attachment {name}",
+      "attachment_deleted": "deleted the attachment {name}"
+    },
+    "fields": {
+      "tags": "Tags",
+      "type": "Type",
+      "status": "Status",
+      "resolution": "Resolution",
+      "assignee": "Assignee",
+      "access": "Access",
+      "summary": "Summary",
+      "description": "Description",
+      "product": "Product",
+      "version": "Version"
+    },
+    "load_error": "The history could not be loaded."
+  },
+  "attachments": {
+    "title": "Attachments",
+    "create_desc": "Attach files to the issue. They are saved with the issue.",
+    "empty": "No attachments.",
+    "add": "Add attachment",
+    "limits": "Allowed: {types}. At most {size} per file, {count} files and {total} in total (images in the text count).",
+    "inline": "Image in text",
+    "delete": "Delete",
+    "blocked_closed": "This issue is closed and takes no more attachments.",
+    "blocked_deleted": "This issue is deleted and takes no more attachments.",
+    "delete_confirm": {
+      "title": "Delete attachment",
+      "text": "Do you want to delete the attachment \"{name}\"?",
+      "inline_warning": "This attachment is shown as an image in the description or in a comment. The image is replaced by the note \"Image removed\"."
+    },
+    "messages": {
+      "added": "The attachment \"{name}\" was added.",
+      "add_error": "The attachment could not be added.",
+      "deleted": "The attachment was deleted.",
+      "delete_error": "The attachment could not be deleted.",
+      "load_error": "The attachments could not be loaded.",
+      "download_error": "The attachment could not be downloaded."
+    }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "unread": "{count} unread notification(s)",
+    "mark_all_read": "Mark all as read",
+    "empty": "No notifications.",
+    "settings": "Notification settings",
+    "someone": "Someone",
+    "events": {
+      "issue_created": "{actor} created the issue",
+      "issue_assigned": "{actor} assigned the issue to {assignee}",
+      "issue_unassigned": "{actor} unassigned the issue",
+      "status_changed": "{actor} changed the status to {status}",
+      "comment_added": "{actor} added a comment",
+      "comment_added_internal": "{actor} added an internal comment"
+    },
+    "prefs": {
+      "description": "Choose per event whether you get an email and whether you get a notification in the top bar. You only hear about issues you may see.",
+      "event": "Event",
+      "email": "Email",
+      "in_app": "In-app",
+      "events": {
+        "issue_created": {
+          "title": "Issue created",
+          "desc": "A new issue was created (reporters and Agents)."
+        },
+        "issue_assigned": {
+          "title": "Issue assigned",
+          "desc": "An issue you reported, watch or work on was assigned or unassigned."
+        },
+        "status_changed": {
+          "title": "Status changed",
+          "desc": "The status of an issue you reported, watch or work on changed."
+        },
+        "comment_added": {
+          "title": "Comment added",
+          "desc": "A comment was added to an issue you reported, watch or work on."
+        }
+      },
+      "saved": "Your notification settings were saved.",
+      "load_error": "Your notification settings could not be loaded.",
+      "save_error": "Your notification settings could not be saved.",
+      "own_actions": "Notify me on my own actions",
+      "own_actions_desc": "Also notify me about issues I created and changes I made myself."
+    }
+  },
+  "landing": {
+    "login": "Login",
+    "register": "Register",
+    "issues": "Issues",
+    "hero_title": "Customer support, <span class=\"text-primary hero-shimmer\">organized</span>",
+    "hero_lead": "LeweDesk is the helpdesk and ticket management system by Lewe Labs. Report issues, request improvements and follow every case from the first message to the solution.",
+    "features_title": "Everything a support team needs",
+    "features_lead": "A focused set of tools to collect, organize and resolve customer reports.",
+    "features": {
+      "issues": {
+        "title": "Issue tracking",
+        "text": "Report issues and request improvements. Every issue has a type, status, product, tags, markdown description, comments and a full history."
+      },
+      "workflow": {
+        "title": "Configurable workflow",
+        "text": "Define your own issue types, statuses, resolutions and products so the helpdesk follows the way your team works."
+      },
+      "access": {
+        "title": "Fine-grained access control",
+        "text": "Roles, groups and permissions decide who sees what. Issues are public, visible to registered users or private to the reporter."
+      },
+      "notifications": {
+        "title": "Notifications",
+        "text": "Stay informed with in-app and email notifications, set up per user and per event."
+      },
+      "attachments": {
+        "title": "Attachments and search",
+        "text": "Attach files to issues and comments, and find any issue quickly with the built-in search and saved views."
+      },
+      "security": {
+        "title": "Secure by design",
+        "text": "Two-factor authentication, optional LDAP or SSO (OIDC), spam protection and an audit log keep your data safe."
+      }
+    },
+    "steps_title": "How it works",
+    "steps": {
+      "register": {
+        "title": "Create an account",
+        "text": "Register in a minute, or sign in with your existing account."
+      },
+      "report": {
+        "title": "Report an issue",
+        "text": "Describe the problem or your idea, add screenshots and pick the product it concerns."
+      },
+      "follow": {
+        "title": "Follow it to resolution",
+        "text": "Get notified about every comment and status change until the issue is resolved."
+      }
+    },
+    "faq_title": "Frequently asked questions",
+    "faq": {
+      "what": {
+        "q": "What is LeweDesk?",
+        "a": "LeweDesk is a web-based customer support helpdesk and ticket management system by Lewe Labs. Customers report issues and request improvements, and support staff track them to resolution."
+      },
+      "who": {
+        "q": "Who is it for?",
+        "a": "Software vendors and service teams that want a structured, central place for customer reports, feature requests and support conversations."
+      },
+      "languages": {
+        "q": "Which languages does it support?",
+        "a": "The interface is available in English, German, French and Spanish."
+      },
+      "private": {
+        "q": "Who can see my issues?",
+        "a": "Each issue is either public, visible to registered users only, or private to the person who reported it. Internal comments stay hidden from reporters."
+      }
+    },
+    "cta_title": "Ready to get started?",
+    "cta_text": "Sign in to report an issue or create a free account in a minute.",
+    "about": "About",
+    "search": "Search",
+    "search_placeholder": "Search issues, e.g. login error",
+    "recent_title": "Recently updated issues",
+    "view_all": "View all issues",
+    "loading": "Loading...",
+    "no_issues": "There are no public issues yet.",
+    "load_error": "The issues could not be loaded.",
+    "status_title": "Status",
+    "report_title": "Didn't find an answer?",
+    "report_text": "Sign in to report an issue or request an improvement, or create a free account in a minute.",
+    "learn_more": "Learn more about LeweDesk",
+    "browse_product": "Products",
+    "browse_type": "Types",
+    "highlights": {
+      "track": "Track every report from first message to solution",
+      "notify": "Get notified about comments and status changes",
+      "private": "Public, registered-only or private issues"
+    }
+  },
+  "license": {
+    "banner": {
+      "link": "License settings",
+      "trial": "This installation of LeweDesk is unlicensed. It will stop working in {days} days.",
+      "trial_expired": "This installation of LeweDesk is unlicensed and the trial period is over. Only administrators can log in.",
+      "expired": "The license has expired. Only administrators can log in.",
+      "blocked": "The license has been blocked. Only administrators can log in.",
+      "pending": "The license has not been activated yet.",
+      "unregistered": "The license is valid, but this domain is not registered with it.",
+      "invalid": "The license key is invalid.",
+      "expiring": "The license expires in {days} days.",
+      "expiring_today": "The license expires today."
+    }
+  }
+}

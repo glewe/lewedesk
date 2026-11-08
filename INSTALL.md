@@ -1,6 +1,6 @@
 # Installing LeweDesk
 
-This guide takes you from the downloaded files to a running LeweDesk. The user and administrator manual is on GitBook: https://lewe.gitbook.io/leti
+This guide takes you from the downloaded files to a running LeweDesk. The user and administrator manual is on GitBook: https://lewe.gitbook.io/lewedesk
 
 ## Requirements
 

@@ -26,7 +26,7 @@ See **[INSTALL.md](INSTALL.md)**: requirements, creating the database, copying t
 
 ## Documentation
 
-The user and administrator manual is on GitBook: https://lewe.gitbook.io/leti
+The user and administrator manual is on GitBook: https://lewe.gitbook.io/lewedesk
 
 ## Support and issues
 

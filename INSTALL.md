@@ -93,7 +93,7 @@ The folder needs `AllowOverride All` (or at least `FileInfo`, `Limit` and `Optio
 * `api/.htaccess` hands every request below `/api/` to `api/index.php` and passes the `Authorization` header on to PHP.
 * The root `.htaccess` blocks `.env`, `install.lock` and `*.sql`. `db/` and `uploads/` are blocked as a whole.
 
-On some hosts the rewrite rule in `api/.htaccess` needs a `RewriteBase` with the URL path of the `api` folder, for example `RewriteBase /desk/api/`. Add it as the first line.
+On some hosts the rewrite rule in `api/.htaccess` needs a `RewriteBase` with the URL path of the `api` folder, for example `RewriteBase /desk/api/`. The installer checks `your-address/api/test` at the end and adds the line itself when `api/.htaccess` is writable; otherwise add it by hand as the first line.
 
 ### nginx
 

@@ -103,6 +103,53 @@ function guessUrl(): string
 
 //---------------------------------------------------------------------------
 /**
+ * Finds out whether the API is reachable through its short URL (api/test needs the rewrite rule of api/.htaccess).
+ * Some hosts only apply that rule with a RewriteBase; then the installer adds it.
+ *
+ * @param string $root   The installation folder
+ * @param string $appUrl The address of LeweDesk
+ *
+ * @return string A sentence for the result page, empty if everything is fine
+ */
+function checkRewrite(string $root, string $appUrl): string
+{
+  $probe = static function (string $url): ?int {
+    if (!function_exists('curl_init')) {
+      return null;
+    }
+    $ch = curl_init($url);
+    curl_setopt_array($ch, [CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 6, CURLOPT_CONNECTTIMEOUT => 4, CURLOPT_FOLLOWLOCATION => true, CURLOPT_SSL_VERIFYPEER => false, CURLOPT_SSL_VERIFYHOST => 0]);
+    $body = curl_exec($ch);
+    $code = $body === false ? null : (int)curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+    curl_close($ch);
+
+    return $code;
+  };
+
+  $status = $probe($appUrl . '/api/test');
+  if ($status === null) {
+    return 'The installer could not check the API address from the server. Open <code>' . h($appUrl) . '/api/test</code> in the browser: it must answer with "API is online". If it gives a 404, see "Troubleshooting" in INSTALL.md (RewriteBase).';
+  }
+  if ($status === 200) {
+    return '';
+  }
+
+  $htaccess = $root . '/api/.htaccess';
+  $base = rtrim((string)(parse_url($appUrl, PHP_URL_PATH) ?? ''), '/') . '/api/';
+  $content = is_readable($htaccess) ? (string)file_get_contents($htaccess) : '';
+  if ($status === 404 && $content !== '' && !str_contains($content, 'RewriteBase') && is_writable($htaccess)) {
+    file_put_contents($htaccess, 'RewriteBase ' . $base . "\n" . $content, LOCK_EX);
+    if ($probe($appUrl . '/api/test') === 200) {
+      return '';
+    }
+    file_put_contents($htaccess, $content, LOCK_EX);
+  }
+
+  return 'The API is not reachable at <code>' . h($appUrl) . '/api/test</code> (HTTP ' . h($status) . '). The usual cause is that the web server ignores <code>api/.htaccess</code> (<code>AllowOverride</code>) or needs <code>RewriteBase ' . h($base) . '</code> as its first line. See "Troubleshooting" in INSTALL.md.';
+}
+
+//---------------------------------------------------------------------------
+/**
  * Runs an SQL file with several statements and reports the first error.
  *
  * @param PDO    $pdo  The connection (exceptions on)
@@ -406,7 +453,8 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
       }
 
       file_put_contents($lockFile, "Installed " . date('c') . "\n");
-      $done = ['admin' => $adminNote, 'adminDefault' => $adminDefault, 'samples' => $sampleDone, 'mail' => $in['mail_host'] !== '' || $envKept, 'envKept' => $envKept];
+      $apiNote = checkRewrite($root, $in['app_url']);
+      $done = ['admin' => $adminNote, 'adminDefault' => $adminDefault, 'samples' => $sampleDone, 'mail' => $in['mail_host'] !== '' || $envKept, 'envKept' => $envKept, 'api' => $apiNote];
     } catch (Throwable $e) {
       $errors[] = 'The installation stopped: ' . $e->getMessage();
     }
@@ -417,6 +465,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
 // Result
 if ($done !== null) {
   $body = '<div class="alert good"><strong>LeweDesk is installed.</strong></div><div class="card"><h2>Next steps</h2><ol>'
+    . ($done['api'] !== '' ? '<li class="bad"><strong>The API check failed.</strong> ' . $done['api'] . '</li>' : '')
     . '<li>' . $done['admin'] . '</li>'
     . ($done['adminDefault'] ? '<li class="bad"><strong>Change the administrator password right after your first login</strong> (profile page). The initial password is public knowledge.</li>' : '')
     . '<li><strong>Delete <code>install.php</code></strong> from the server (button below). It is locked by <code>install.lock</code>, but it does not belong on a production server.</li>'

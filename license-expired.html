@@ -149,7 +149,7 @@
       }
 
       // Language: the user's choice in the app, otherwise the browser language
-      var lang = stored('leti_lang') || (navigator.language || 'en').slice(0, 2);
+      var lang = stored('ldsk_lang') || (navigator.language || 'en').slice(0, 2);
       var t = texts[lang] || texts.en;
       document.documentElement.lang = texts[lang] ? lang : 'en';
       document.getElementById('retry').textContent = t.retry;

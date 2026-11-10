@@ -167,7 +167,7 @@ DELETE FROM settings WHERE `key` IN ('system_name', 'technical_email', 'default_
 
 -- Default values of the system settings (existing values are kept; keep in sync with src/js/defaults.js)
 INSERT IGNORE INTO settings (`key`, `value`) VALUES
-('application_url', 'https://leti.lewe.com'),
+('application_url', 'https://desk.lewe.com'),
 ('application_name', 'LeweDesk'),
 ('application_manual', 'https://lewe.gitbook.io/lewedesk'),
 ('html_description', 'LeweDesk - The web based Lewe Ticket Management application'),

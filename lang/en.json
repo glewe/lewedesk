@@ -105,7 +105,8 @@
       "system": "System",
       "theme": "Theme",
       "issues": "Issue Config",
-      "license": "License"
+      "license": "License",
+      "provider": "Provider"
     },
     "fields": {
       "application_url": "Application URL",
@@ -177,7 +178,15 @@
       "temp_upload_cleanup_hours": "Temporary Upload Cleanup (Hours)",
       "temp_upload_cleanup_hours_desc": "Images that were uploaded while writing a new issue are deleted after this many hours if the issue was never saved.",
       "lic_expiry_warning": "Expiry Warning (Days)",
-      "lic_expiry_warning_desc": "Enter how many days before the license expires administrators are warned with a banner on every page. Enter 0 for no warning."
+      "lic_expiry_warning_desc": "Enter how many days before the license expires administrators are warned with a banner on every page. Enter 0 for no warning.",
+      "provider_contact": "Contact",
+      "provider_contact_desc": "Name and address of the provider, one line each. Shown as controller in the privacy policy and as provider in the imprint.",
+      "provider_phone": "Phone",
+      "provider_phone_desc": "Phone number of the provider in international format, e.g. +49 6105 123456. Leave empty to hide it.",
+      "provider_email": "Email",
+      "provider_email_desc": "Email address of the provider. Leave empty to hide it.",
+      "provider_website": "Website",
+      "provider_website_desc": "Website of the provider, starting with http:// or https://. Leave empty to hide it."
     },
     "actions": {
       "save": "Save Settings",
@@ -754,6 +763,15 @@
       "done": "Done issues",
       "deleted": "Deleted issues"
     },
+    "bulk": {
+      "restore": "Restore",
+      "yes_restore": "Yes, restore",
+      "confirm_delete": "Delete the {count} selected issue(s)? They are moved to the deleted issues and can be restored.",
+      "confirm_restore": "Restore the {count} selected issue(s)?",
+      "done_delete": "{count} issue(s) deleted.",
+      "done_restore": "{count} issue(s) restored.",
+      "failed": "{count} issue(s) could not be changed."
+    },
     "list": {
       "empty": "No issues found."
     },
@@ -767,7 +785,8 @@
       "all_tags": "All tags",
       "search_results": "Search results for \"{term}\"",
       "participant": "Participant: {name}",
-      "reset": "Reset filters"
+      "reset": "Reset filters",
+      "hide_closed": "Hide closed"
     },
     "create": {
       "title": "Create issue",
@@ -786,6 +805,7 @@
       "submit": "Create issue"
     },
     "edit": {
+      "status_changed": "Status changed.",
       "title": "Edit issue",
       "submit": "Save changes",
       "status_desc": "The status can be set freely. A status of the category Done needs a resolution.",

@@ -104,6 +104,7 @@ class SettingsValidator
       'issue_key_prefix', 'support_email', 'attachment_max_size', 'attachment_max_count', 'attachment_max_total_size',
       'rate_limit_issues', 'rate_limit_comments', 'notification_retention_days', 'notification_poll_interval',
       'temp_upload_cleanup_hours', 'audit_retention_days', 'lic_expiry_warning',
+      'provider_contact', 'provider_phone', 'provider_email', 'provider_website',
     ], true);
   }
 
@@ -146,8 +147,28 @@ class SettingsValidator
       'audit_retention_days' => self::integer($value, 0, 3650),
       // Days before the license expires to warn the administrators; 0 = no warning
       'lic_expiry_warning' => self::integer($value, 0, 365),
+      // Provider (controller / imprint); all four may be empty
+      'provider_contact' => self::maxLength($value, 500),
+      'provider_phone' => $value === '' ? null : self::phone($value),
+      'provider_email' => $value === '' ? null : (strlen($value) <= 255 && filter_var($value, FILTER_VALIDATE_EMAIL) !== false ? null : 'must be a valid email address'),
+      'provider_website' => $value === '' ? null : self::url($value),
       default => 'is not supported',
     };
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Checks for an international phone number: a leading + and the country code, then 6 to 14 more digits
+   * (E.164 allows 15 digits in total). Spaces, dots, dashes, slashes and parentheses are allowed as separators.
+   */
+  private static function phone(string $value): ?string
+  {
+    $digits = preg_replace('/\D/', '', $value);
+    if (strlen($value) <= 30 && preg_match('/^\+[1-9][0-9 ().\/-]*$/', $value) && strlen($digits) >= 7 && strlen($digits) <= 15) {
+      return null;
+    }
+
+    return 'must be an international phone number, e.g. +49 6105 123456';
   }
 
   //---------------------------------------------------------------------------

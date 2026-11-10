@@ -105,7 +105,8 @@
       "system": "Système",
       "theme": "Thème",
       "issues": "Configuration des tickets",
-      "license": "Licence"
+      "license": "Licence",
+      "provider": "Fournisseur"
     },
     "fields": {
       "application_url": "URL de l'application",
@@ -177,7 +178,15 @@
       "temp_upload_cleanup_hours": "Nettoyage des envois temporaires (heures)",
       "temp_upload_cleanup_hours_desc": "Les images envoyées lors de la rédaction d'un nouveau ticket sont supprimées après ce nombre d'heures si le ticket n'a jamais été enregistré.",
       "lic_expiry_warning": "Avertissement d'expiration (jours)",
-      "lic_expiry_warning_desc": "Indiquez combien de jours avant l'expiration de la licence les administrateurs sont avertis par une bannière sur chaque page. Saisissez 0 pour ne pas avertir."
+      "lic_expiry_warning_desc": "Indiquez combien de jours avant l'expiration de la licence les administrateurs sont avertis par une bannière sur chaque page. Saisissez 0 pour ne pas avertir.",
+      "provider_contact": "Contact",
+      "provider_contact_desc": "Nom et adresse du fournisseur, un élément par ligne. Affiché comme responsable du traitement dans la politique de confidentialité et comme éditeur dans les mentions légales.",
+      "provider_phone": "Téléphone",
+      "provider_phone_desc": "Numéro de téléphone du fournisseur au format international, p. ex. +49 6105 123456. Laissez vide pour le masquer.",
+      "provider_email": "E-mail",
+      "provider_email_desc": "Adresse e-mail du fournisseur. Laissez vide pour la masquer.",
+      "provider_website": "Site web",
+      "provider_website_desc": "Site web du fournisseur, commençant par http:// ou https://. Laissez vide pour le masquer."
     },
     "actions": {
       "save": "Enregistrer les paramètres",
@@ -754,6 +763,15 @@
       "done": "Tickets terminés",
       "deleted": "Tickets supprimés"
     },
+    "bulk": {
+      "restore": "Restaurer",
+      "yes_restore": "Oui, restaurer",
+      "confirm_delete": "Supprimer les {count} tickets sélectionnés ? Ils sont déplacés vers les tickets supprimés et peuvent être restaurés.",
+      "confirm_restore": "Restaurer les {count} tickets sélectionnés ?",
+      "done_delete": "{count} ticket(s) supprimé(s).",
+      "done_restore": "{count} ticket(s) restauré(s).",
+      "failed": "{count} ticket(s) n'ont pas pu être modifiés."
+    },
     "list": {
       "empty": "Aucun ticket trouvé."
     },
@@ -767,7 +785,8 @@
       "all_tags": "Toutes les étiquettes",
       "search_results": "Résultats de recherche pour « {term} »",
       "participant": "Participant : {name}",
-      "reset": "Réinitialiser les filtres"
+      "reset": "Réinitialiser les filtres",
+      "hide_closed": "Masquer les fermées"
     },
     "create": {
       "title": "Créer un ticket",
@@ -786,6 +805,7 @@
       "submit": "Créer le ticket"
     },
     "edit": {
+      "status_changed": "Statut modifié.",
       "title": "Modifier le ticket",
       "submit": "Enregistrer les modifications",
       "status_desc": "Le statut peut être défini librement. Un statut de la catégorie Terminé nécessite une résolution.",

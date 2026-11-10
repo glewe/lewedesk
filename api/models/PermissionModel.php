@@ -86,6 +86,19 @@ class PermissionModel
 
   //---------------------------------------------------------------------------
   /**
+   * Gets the id of the Administrator role.
+   *
+   * @return int|null
+   */
+  public function administratorRoleId(): ?int
+  {
+    $id = $this->db->query("SELECT id FROM roles WHERE name = 'Administrator'")->fetchColumn();
+
+    return $id === false ? null : (int)$id;
+  }
+
+  //---------------------------------------------------------------------------
+  /**
    * Creates a permission including the role and group assignments, in one transaction.
    *
    * @param array $data name, description, role_ids, group_ids

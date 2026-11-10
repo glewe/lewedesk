@@ -105,7 +105,8 @@
       "system": "System",
       "theme": "Design",
       "issues": "Issue-Konfiguration",
-      "license": "Lizenz"
+      "license": "Lizenz",
+      "provider": "Anbieter"
     },
     "fields": {
       "application_url": "Anwendungs-URL",
@@ -177,7 +178,15 @@
       "temp_upload_cleanup_hours": "Bereinigung temporärer Uploads (Stunden)",
       "temp_upload_cleanup_hours_desc": "Bilder, die beim Schreiben eines neuen Issues hochgeladen wurden, werden nach dieser Anzahl Stunden gelöscht, falls das Issue nie gespeichert wurde.",
       "lic_expiry_warning": "Ablaufwarnung (Tage)",
-      "lic_expiry_warning_desc": "Geben Sie ein, wie viele Tage vor Ablauf der Lizenz Administratoren auf jeder Seite durch ein Banner gewarnt werden. Geben Sie 0 ein, um nicht zu warnen."
+      "lic_expiry_warning_desc": "Geben Sie ein, wie viele Tage vor Ablauf der Lizenz Administratoren auf jeder Seite durch ein Banner gewarnt werden. Geben Sie 0 ein, um nicht zu warnen.",
+      "provider_contact": "Kontakt",
+      "provider_contact_desc": "Name und Anschrift des Anbieters, je Zeile eine Angabe. Wird in der Datenschutzerklärung als Verantwortlicher und im Impressum als Anbieter angezeigt.",
+      "provider_phone": "Telefon",
+      "provider_phone_desc": "Telefonnummer des Anbieters im internationalen Format, z. B. +49 6105 123456. Leer lassen, um sie auszublenden.",
+      "provider_email": "E-Mail",
+      "provider_email_desc": "E-Mail-Adresse des Anbieters. Leer lassen, um sie auszublenden.",
+      "provider_website": "Website",
+      "provider_website_desc": "Website des Anbieters, beginnend mit http:// oder https://. Leer lassen, um sie auszublenden."
     },
     "actions": {
       "save": "Einstellungen speichern",
@@ -754,6 +763,15 @@
       "done": "Erledigte Issues",
       "deleted": "Gelöschte Issues"
     },
+    "bulk": {
+      "restore": "Wiederherstellen",
+      "yes_restore": "Ja, wiederherstellen",
+      "confirm_delete": "Die {count} ausgewählten Issues löschen? Sie werden zu den gelöschten Issues verschoben und können wiederhergestellt werden.",
+      "confirm_restore": "Die {count} ausgewählten Issues wiederherstellen?",
+      "done_delete": "{count} Issue(s) gelöscht.",
+      "done_restore": "{count} Issue(s) wiederhergestellt.",
+      "failed": "{count} Issue(s) konnten nicht geändert werden."
+    },
     "list": {
       "empty": "Keine Issues gefunden."
     },
@@ -767,7 +785,8 @@
       "all_tags": "Alle Tags",
       "search_results": "Suchergebnisse für \"{term}\"",
       "participant": "Beteiligt: {name}",
-      "reset": "Filter zurücksetzen"
+      "reset": "Filter zurücksetzen",
+      "hide_closed": "Geschlossene ausblenden"
     },
     "create": {
       "title": "Issue erstellen",
@@ -786,6 +805,7 @@
       "submit": "Issue erstellen"
     },
     "edit": {
+      "status_changed": "Status geändert.",
       "title": "Issue bearbeiten",
       "submit": "Änderungen speichern",
       "status_desc": "Der Status kann frei gesetzt werden. Ein Status der Kategorie Erledigt braucht eine Lösung.",

@@ -204,7 +204,15 @@ INSERT IGNORE INTO settings (`key`, `value`) VALUES
 ('temp_upload_cleanup_hours', '24'),
 ('force_2fa', 'false'),
 ('lic_expiry_warning', '30'),
-('audit_retention_days', '365');
+('audit_retention_days', '365'),
+('provider_contact', 'Lewe Labs
+George Lewe (CEO)
+Am Bahnhof 1
+64546 Mörfelden-Walldorf
+Germany'),
+('provider_phone', ''),
+('provider_email', 'info@lewe.com'),
+('provider_website', 'https://lewe.com');
 
 -- Roles Table
 CREATE TABLE IF NOT EXISTS roles (

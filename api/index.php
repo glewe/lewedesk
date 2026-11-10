@@ -557,6 +557,8 @@ try {
         $settings['ldap_active'] = $ldap->isEnabled();
         // Same for single sign-on (OIDC_YES in .env): the login page shows the SSO button
         $settings['oidc_active'] = $oidc->isEnabled();
+        // Not stored either: the issue key prefix is locked once an issue exists (the settings page disables the field)
+        $settings['issue_key_locked'] = $issueModel->countAll() > 0;
         echo json_encode(['status' => 'success', 'data' => $settings]);
       }
       break;

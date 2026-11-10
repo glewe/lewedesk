@@ -1,5 +1,20 @@
 [
   {
+    "version": "1.0.1",
+    "date": "2026-11-09",
+    "info": "Improvement release.",
+    "bugfixes": [],
+    "features": [
+      { "summary": "Allow changing status in issue view", "issue": "https://desk.lewe.com/issue.html?id=117" },
+      { "summary": "Allow bulk deleting issues in issue view", "issue": "https://desk.lewe.com/issue.html?id=116" }
+    ],
+    "improvements": [
+      { "summary": "Set default issue access to `Reporter only`", "issue": "https://desk.lewe.com/issue.html?id=118" },
+      { "summary": "Show Bootstrap icons in dropdown via search", "issue": "https://desk.lewe.com/issue.html?id=119" }
+    ],
+    "removals": []
+  },
+  {
     "version": "1.0.0",
     "date": "2026-11-01",
     "info": "Initial release.",

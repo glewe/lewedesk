@@ -26,6 +26,11 @@ INSERT IGNORE INTO users (username, password, email, first_name, last_name) VALU
 ('cyeager', '$2y$12$0awXW/.hfWsSzXSBsw3wW.NmEYKGmDJfb552Iu77OTdCKz/x63nlC', 'cyeager@yourserver.com', 'Chuck', 'Yeager'),
 ('galileo', '$2y$12$0awXW/.hfWsSzXSBsw3wW.NmEYKGmDJfb552Iu77OTdCKz/x63nlC', 'galileo@yourserver.com', 'Galileo', 'Galilei');
 
+-- Avatars of the sample users: the images are part of the distribution (uploads/avatar/<username>.png).
+-- Only users without an avatar are touched, so a changed avatar survives running the script again.
+UPDATE users SET avatar = CONCAT('upload/', username, '.png')
+WHERE avatar IS NULL AND username IN ('inewton', 'athene', 'alupin', 'einstein', 'jmarple', 'sherlock', 'mcurie', 'zeuss', 'hermes', 'richthofen', 'aearheart', 'cyeager', 'galileo');
+
 INSERT IGNORE INTO `groups` (name, description, color, icon) VALUES
 ('Pilots', 'Everything that flies.', '#3399ff', 'bi-airplane'),
 ('Mythology', 'Gods, heroes and legendary creatures.', '#1b9e3e', 'bi-lightning'),

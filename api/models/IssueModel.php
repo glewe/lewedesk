@@ -892,6 +892,11 @@ class IssueModel
       $params['f_status_category_id'] = $filters['status_category_id'];
     }
 
+    // Hide closed issues (not when a status is chosen explicitly)
+    if (!empty($filters['hide_closed']) && !isset($filters['status_id'])) {
+      $conditions[] = "(s.`key` IS NULL OR s.`key` <> 'closed')";
+    }
+
     if (isset($filters['assignee_id'])) {
       if ($filters['assignee_id'] === 'none') {
         $conditions[] = 'i.assignee_id IS NULL';

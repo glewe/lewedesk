@@ -23,11 +23,11 @@
   <meta name="robots" content="noindex, nofollow">
 
 
-  <script type="module" crossorigin src="./assets/js/settings-QwlSzCMh.js"></script>
-  <link rel="modulepreload" crossorigin href="./assets/js/fonts-BBofFgIY.js">
-  <link rel="modulepreload" crossorigin href="./assets/js/lookups-C_5IjfOa.js">
-  <link rel="modulepreload" crossorigin href="./assets/js/main-CYcTZv5e.js">
-  <link rel="stylesheet" crossorigin href="./assets/css/fonts-Bkfm3jnF.css">
+  <script type="module" crossorigin src="./assets/js/settings-QJN058rq.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/js/fonts-B8V7-e6F.js">
+  <link rel="modulepreload" crossorigin href="./assets/js/lookups-DCBYELDL.js">
+  <link rel="modulepreload" crossorigin href="./assets/js/main-DDKXavPK.js">
+  <link rel="stylesheet" crossorigin href="./assets/css/fonts-Dzfg6Fbe.css">
 </head>
 <body>
   <div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
@@ -360,6 +360,9 @@
           </li>
           <li class="nav-item" role="presentation">
             <button class="nav-link" id="issues-tab" data-bs-toggle="tab" data-bs-target="#issues" type="button" role="tab" aria-controls="issues" aria-selected="false" data-i18n="settings.tabs.issues">Issue Config</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="provider-tab" data-bs-toggle="tab" data-bs-target="#provider" type="button" role="tab" aria-controls="provider" aria-selected="false" data-i18n="settings.tabs.provider">Provider</button>
           </li>
           <li class="nav-item" role="presentation">
             <button class="nav-link" id="license-tab" data-bs-toggle="tab" data-bs-target="#license" type="button" role="tab" aria-controls="license" aria-selected="false" data-i18n="settings.tabs.license">License</button>
@@ -759,6 +762,45 @@
               </div>
             </div>
 
+            <!-- Provider Tab -->
+            <div class="tab-pane fade" id="provider" role="tabpanel" aria-labelledby="provider-tab">
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.provider_contact">Contact</span>
+                  <p class="form-description" data-i18n="settings.fields.provider_contact_desc">Name and address of the provider.</p>
+                </div>
+                <div class="form-content">
+                  <textarea class="form-control" name="provider_contact" id="provider_contact" rows="5" maxlength="500"></textarea>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.provider_phone">Phone</span>
+                  <p class="form-description" data-i18n="settings.fields.provider_phone_desc">Phone number of the provider.</p>
+                </div>
+                <div class="form-content">
+                  <input type="tel" class="form-control" name="provider_phone" id="provider_phone" maxlength="30" pattern="\+[1-9][0-9 \(\)\.\/\-]*">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.provider_email">Email</span>
+                  <p class="form-description" data-i18n="settings.fields.provider_email_desc">Email address of the provider.</p>
+                </div>
+                <div class="form-content">
+                  <input type="email" class="form-control" name="provider_email" id="provider_email" maxlength="255">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.provider_website">Website</span>
+                  <p class="form-description" data-i18n="settings.fields.provider_website_desc">Website of the provider.</p>
+                </div>
+                <div class="form-content">
+                  <input type="url" class="form-control" name="provider_website" id="provider_website" maxlength="255">
+                </div>
+              </div>
+            </div>
 
             <!-- License Tab -->
             <div class="tab-pane fade" id="license" role="tabpanel" aria-labelledby="license-tab">
@@ -847,7 +889,7 @@
       <div class="container-fluid h-100 d-flex align-items-center">
         <div class="flex-fill">&copy; 2026 by <a href="https://lewe.com" class="text-decoration-none">Lewe Labs</a>.</div>
         <div class="flex-fill text-center"><a href="privacy.html" class="text-decoration-none" data-i18n="header.privacy">Privacy Policy</a> &middot; <a href="imprint.html" class="text-decoration-none" data-i18n="header.imprint">Imprint</a></div>
-        <div class="flex-fill text-end">Powered by <i class="bi bi-ticket-perforated logo-gradient mx-1" aria-hidden="true"></i>Lewe<strong>Desk</strong> 1.0.0</div>
+        <div class="flex-fill text-end">Powered by <i class="bi bi-ticket-perforated logo-gradient mx-1" aria-hidden="true"></i>Lewe<strong>Desk</strong> 1.0.1.126</div>
       </div>
     </footer>
   </div>

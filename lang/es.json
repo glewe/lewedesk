@@ -105,7 +105,8 @@
       "system": "Sistema",
       "theme": "Tema",
       "issues": "Configuración de incidencias",
-      "license": "Licencia"
+      "license": "Licencia",
+      "provider": "Proveedor"
     },
     "fields": {
       "application_url": "URL de la aplicación",
@@ -177,7 +178,15 @@
       "temp_upload_cleanup_hours": "Limpieza de subidas temporales (horas)",
       "temp_upload_cleanup_hours_desc": "Las imágenes subidas mientras se redacta una nueva incidencia se eliminan pasadas estas horas si la incidencia nunca se guardó.",
       "lic_expiry_warning": "Aviso de caducidad (días)",
-      "lic_expiry_warning_desc": "Introduce cuántos días antes de que caduque la licencia se avisa a los administradores con un banner en cada página. Introduce 0 para no avisar."
+      "lic_expiry_warning_desc": "Introduce cuántos días antes de que caduque la licencia se avisa a los administradores con un banner en cada página. Introduce 0 para no avisar.",
+      "provider_contact": "Contacto",
+      "provider_contact_desc": "Nombre y dirección del proveedor, un dato por línea. Se muestra como responsable en la política de privacidad y como proveedor en el aviso legal.",
+      "provider_phone": "Teléfono",
+      "provider_phone_desc": "Número de teléfono del proveedor en formato internacional, p. ej. +49 6105 123456. Déjalo vacío para ocultarlo.",
+      "provider_email": "Correo electrónico",
+      "provider_email_desc": "Dirección de correo del proveedor. Déjalo vacío para ocultarlo.",
+      "provider_website": "Sitio web",
+      "provider_website_desc": "Sitio web del proveedor, que empiece por http:// o https://. Déjalo vacío para ocultarlo."
     },
     "actions": {
       "save": "Guardar ajustes",
@@ -754,6 +763,15 @@
       "done": "Incidencias finalizadas",
       "deleted": "Incidencias eliminadas"
     },
+    "bulk": {
+      "restore": "Restaurar",
+      "yes_restore": "Sí, restaurar",
+      "confirm_delete": "¿Eliminar las {count} incidencias seleccionadas? Se mueven a las incidencias eliminadas y se pueden restaurar.",
+      "confirm_restore": "¿Restaurar las {count} incidencias seleccionadas?",
+      "done_delete": "{count} incidencia(s) eliminada(s).",
+      "done_restore": "{count} incidencia(s) restaurada(s).",
+      "failed": "No se pudieron modificar {count} incidencia(s)."
+    },
     "list": {
       "empty": "No se encontraron incidencias."
     },
@@ -767,7 +785,8 @@
       "all_tags": "Todas las etiquetas",
       "search_results": "Resultados de búsqueda de «{term}»",
       "participant": "Participante: {name}",
-      "reset": "Restablecer filtros"
+      "reset": "Restablecer filtros",
+      "hide_closed": "Ocultar cerradas"
     },
     "create": {
       "title": "Crear incidencia",
@@ -786,6 +805,7 @@
       "submit": "Crear incidencia"
     },
     "edit": {
+      "status_changed": "Estado cambiado.",
       "title": "Editar incidencia",
       "submit": "Guardar cambios",
       "status_desc": "El estado se puede establecer libremente. Un estado de la categoría Finalizada necesita una resolución.",

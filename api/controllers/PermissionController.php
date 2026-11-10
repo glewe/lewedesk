@@ -217,10 +217,18 @@ class PermissionController
       return 'A permission with this name already exists';
     }
 
+    $roleIds = $this->model->existingIds('roles', $this->ids($input['role_ids'] ?? []));
+    // The Administrator role always holds every permission: Administrators bypass the permission
+    // checks, and keeping the assignment complete avoids surprises when permissions are reviewed.
+    $administratorRoleId = $this->model->administratorRoleId();
+    if ($administratorRoleId !== null && !in_array($administratorRoleId, $roleIds, true)) {
+      $roleIds[] = $administratorRoleId;
+    }
+
     return [
       'name' => $name,
       'description' => $description,
-      'role_ids' => $this->model->existingIds('roles', $this->ids($input['role_ids'] ?? [])),
+      'role_ids' => $roleIds,
       'group_ids' => $this->model->existingIds('groups', $this->ids($input['group_ids'] ?? [])),
     ];
   }

@@ -715,6 +715,10 @@ class IssueController
       }
     }
 
+    if (isset($_GET['hide_closed']) && $_GET['hide_closed'] === '1') {
+      $filters['hide_closed'] = true;
+    }
+
     if (isset($_GET['assignee_id']) && $_GET['assignee_id'] !== '') {
       if ($_GET['assignee_id'] === 'none') {
         $filters['assignee_id'] = 'none';

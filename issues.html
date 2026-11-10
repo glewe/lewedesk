@@ -23,14 +23,16 @@
   <meta name="robots" content="noindex, nofollow">
 
 
-  <script type="module" crossorigin src="./assets/js/issues-CGUJ0A0o.js"></script>
-  <link rel="modulepreload" crossorigin href="./assets/js/fonts-BBofFgIY.js">
+  <script type="module" crossorigin src="./assets/js/issues-DOr9cqsh.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/js/fonts-B8V7-e6F.js">
   <link rel="modulepreload" crossorigin href="./assets/js/dataTables.bootstrap5.min-CXK73DxY.js">
-  <link rel="modulepreload" crossorigin href="./assets/js/lookups-C_5IjfOa.js">
-  <link rel="modulepreload" crossorigin href="./assets/js/main-CYcTZv5e.js">
-  <link rel="modulepreload" crossorigin href="./assets/js/issue-ui-Bnuo5sWr.js">
-  <link rel="stylesheet" crossorigin href="./assets/css/fonts-Bkfm3jnF.css">
+  <link rel="modulepreload" crossorigin href="./assets/js/select.bootstrap5.min-Cs5d0pye.js">
+  <link rel="modulepreload" crossorigin href="./assets/js/lookups-DCBYELDL.js">
+  <link rel="modulepreload" crossorigin href="./assets/js/main-DDKXavPK.js">
+  <link rel="modulepreload" crossorigin href="./assets/js/issue-ui-C5rluTbM.js">
+  <link rel="stylesheet" crossorigin href="./assets/css/fonts-Dzfg6Fbe.css">
   <link rel="stylesheet" crossorigin href="./assets/css/dataTables.bootstrap5-DPJPQY3S.css">
+  <link rel="stylesheet" crossorigin href="./assets/css/select.bootstrap5-BE_31OFy.css">
 </head>
 <body>
   <div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
@@ -344,7 +346,11 @@
 <div class="card mb-4">
   <div class="card-header d-flex justify-content-between align-items-center">
     <span id="issue-list-title">Issues</span>
-    <a href="issue-add.html" class="btn btn-primary" data-permission="create_issue"><i class="bi bi-plus-lg me-1"></i><span data-i18n="sidebar.create_issue">Create issue</span></a>
+    <div class="d-flex gap-2">
+      <button type="button" class="btn btn-outline-danger" id="bulk-delete-btn" data-permission="delete_issue" disabled><i class="bi bi-trash me-1"></i><span data-i18n="common.delete">Delete</span></button>
+      <button type="button" class="btn btn-outline-secondary d-none" id="bulk-restore-btn" data-permission="delete_issue" disabled><i class="bi bi-arrow-90deg-left me-1"></i><span data-i18n="issues.bulk.restore">Restore</span></button>
+      <a href="issue-add.html" class="btn btn-primary" data-permission="create_issue"><i class="bi bi-plus-lg me-1"></i><span data-i18n="sidebar.create_issue">Create issue</span></a>
+    </div>
   </div>
   <div class="card-body">
     <form id="issue-filters" class="row g-2 mb-3" novalidate>
@@ -377,6 +383,12 @@
         <select id="filter-tag" class="form-select form-select-sm" name="tag_id"></select>
       </div>
       <div class="col-6 col-md-4 col-xl-auto d-flex align-items-end">
+        <div class="form-check form-switch mb-1 text-nowrap">
+          <input class="form-check-input" type="checkbox" role="switch" id="filter-hide-closed" checked>
+          <label class="form-check-label small" for="filter-hide-closed" data-i18n="issues.filters.hide_closed">Hide closed</label>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-xl-auto d-flex align-items-end">
         <button type="button" class="btn btn-outline-secondary btn-sm w-100" id="filter-reset"><i class="bi bi-x-lg me-1"></i><span data-i18n="issues.filters.reset">Reset filters</span></button>
       </div>
     </form>
@@ -384,6 +396,7 @@
     <table id="issue-table" class="table table-hover align-middle w-100">
       <thead>
         <tr>
+          <th id="select-column" data-permission="delete_issue"></th>
           <th class="text-center"><span class="visually-hidden" data-i18n="issues.fields.type">Type</span></th>
           <th data-i18n="issues.columns.id">Issue</th>
           <th data-i18n="issues.columns.summary">Summary</th>
@@ -398,6 +411,22 @@
   </div>
 </div>
 
+<div class="modal fade" id="bulk-modal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="bulk-modal-title" data-i18n="common.delete">Delete</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="bulk-modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-i18n="common.cancel">Cancel</button>
+        <button type="button" class="btn btn-danger" id="bulk-confirm-btn" data-i18n="common.yes_delete">Yes, delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
       </div>
     </div>
@@ -405,7 +434,7 @@
       <div class="container-fluid h-100 d-flex align-items-center">
         <div class="flex-fill">&copy; 2026 by <a href="https://lewe.com" class="text-decoration-none">Lewe Labs</a>.</div>
         <div class="flex-fill text-center"><a href="privacy.html" class="text-decoration-none" data-i18n="header.privacy">Privacy Policy</a> &middot; <a href="imprint.html" class="text-decoration-none" data-i18n="header.imprint">Imprint</a></div>
-        <div class="flex-fill text-end">Powered by <i class="bi bi-ticket-perforated logo-gradient mx-1" aria-hidden="true"></i>Lewe<strong>Desk</strong> 1.0.0</div>
+        <div class="flex-fill text-end">Powered by <i class="bi bi-ticket-perforated logo-gradient mx-1" aria-hidden="true"></i>Lewe<strong>Desk</strong> 1.0.1.126</div>
       </div>
     </footer>
   </div>

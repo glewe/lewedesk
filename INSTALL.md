@@ -118,7 +118,7 @@ Serve the site over HTTPS.
 ## Upgrading
 
 1. Back up the database and the folder (`.env` and `uploads/` are the parts you cannot get back).
-2. Copy the new files over the old ones. Keep `.env`, `uploads/` and `install.lock` (they are not part of the download).
+2. Copy the new files over the old ones. Keep `.env`, `uploads/` and `install.lock` (the download only contains the avatar images of the sample users in `uploads/avatar/`).
 3. Update the database structure. Either on the command line: `php api/setup_db.php`, or in the browser: delete `install.lock`, open `install.php`, enter the database settings (they are prefilled from `.env`), tick **Use the existing database** and run it. Your `.env` and your data are kept. Delete `install.php` afterwards.
 4. Read `CHANGELOG.md` for changes that need your attention.
 

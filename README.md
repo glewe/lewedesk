@@ -67,13 +67,17 @@ The **ready to run application**: the built frontend, the PHP API, the database 
 | `.env.example` | All configuration keys with comments |
 | `INSTALL.md`, `CHANGELOG.md` | Installation guide and release notes |
 
+## Product Page
+
+Check the product page at: https://lewedesk.lewe.com
+
 ## Documentation
 
 The user and administrator manual is on GitBook: https://lewe.gitbook.io/lewedesk
 
 ## Support and issues
 
-Please report bugs and ideas at https://github.com/glewe/lewedesk/issues
+Please report bugs and ideas at https://desk.lewe.com
 
 ## License
 

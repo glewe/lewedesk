@@ -2,16 +2,28 @@
 
 All notable changes of LeweDesk. The newest version is first.
 
-## 1.0.2 (2026-11-xx)
+## 1.0.3 (2026-11-14)
 
 Improvement release.
 
 ### Features
 
+- Allow custom branding (https://desk.lewe.com/issue.html?id=122)
+
+### Improvements
+
+- Allow edit reporter on issue edit page (https://desk.lewe.com/issue.html?id=123)
+
+## 1.0.2 (2026-11-11)
+
+Feature release.
+
+### Features
+
 - Add setting to disable user self-registration
 - Add license features
-- Add priorities feature
-- Add SLA feature
+- Add priorities feature (https://desk.lewe.com/issue.html?id=121)
+- Add SLA feature (https://desk.lewe.com/issue.html?id=122)
 
 ## 1.0.1 (2026-11-09)
 

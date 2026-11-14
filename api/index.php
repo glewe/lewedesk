@@ -549,10 +549,10 @@ try {
   // Reading is open to everybody holding view_issue, anonymous visitors included (the visibility rules decide which
   // issues they get); creating needs a login, setting the tags and editing need edit_issue. The assignable users are
   // listed for the holders of assign_issue or edit_issue (checked by the controller).
-  if (preg_match('#^/issues(?:/(\d+|counts|people|accessible|agents))?(?:/(tags|watchers))?/?$#', $path, $m) && (empty($m[2]) || (isset($m[1]) && ctype_digit($m[1])))) {
+  if (preg_match('#^/issues(?:/(\d+|counts|people|accessible|agents|reporters))?(?:/(tags|watchers))?/?$#', $path, $m) && (empty($m[2]) || (isset($m[1]) && ctype_digit($m[1])))) {
     if (!empty($m[2]) || ($_SERVER['REQUEST_METHOD'] === 'PUT' && isset($m[1]) && ctype_digit($m[1]))) {
       requirePermission($auth, 'edit_issue');
-    } elseif (($m[1] ?? '') === 'agents') {
+    } elseif (in_array($m[1] ?? '', ['agents', 'reporters'], true)) {
       requireUser($auth);
     } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
       if (!$auth->can('view_issue')) {

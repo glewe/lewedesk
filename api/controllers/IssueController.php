@@ -26,9 +26,10 @@ use DateTimeZone;
  *   GET  /issues/people   reporters and assignees of the visible issues (list filters)
  *   GET  /issues/accessible?ids=1,2  which of the issues the viewer may see (id and summary), at most 100
  *   GET  /issues/agents   the users who can be assigned (role Agent; assign_issue)
+ *   GET  /issues/reporters  the users who can be made the reporter (Agents and Administrators)
  *   GET  /issues/{id}     read, with the actions the viewer may use (see IssueActions) and the choices of Change access
  *   PUT  /issues/{id}     edit (the Edit page: edit_issue; any of type_id, priority_id, summary, description, access, product_id, version,
- *                         tag_ids and, with change_issue_status, status_id and resolution_id, with assign_issue, assignee_id)
+ *                         tag_ids and, with change_issue_status, status_id and resolution_id, with assign_issue, assignee_id, as Agent or Administrator, reporter_id and watcher_ids)
  *   PUT  /issues/{id}/tags  replace the tags of an issue ({"tag_ids": [1, 2]})
  *
  * Authorization on the route level (view_issue to read, create_issue to create) is done by the
@@ -111,6 +112,11 @@ class IssueController
       return;
     }
 
+    if ($param === 'reporters') {
+      $method === 'GET' ? $this->reporters() : $this->fail(405, 'Method not allowed');
+      return;
+    }
+
     if ($param === 'accessible') {
       $method === 'GET' ? $this->accessible() : $this->fail(405, 'Method not allowed');
       return;
@@ -176,6 +182,20 @@ class IssueController
     }
 
     $this->respond(['status' => 'success', 'data' => $this->model->agents()]);
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Lists the users who can be made the reporter of an issue (every user). For Agents and Administrators.
+   */
+  private function reporters(): void
+  {
+    if (!$this->canManageWatchers()) {
+      $this->fail(403, 'Only an Agent or an Administrator can change the reporter');
+      return;
+    }
+
+    $this->respond(['status' => 'success', 'data' => $this->model->reporters()]);
   }
 
   //---------------------------------------------------------------------------
@@ -308,6 +328,22 @@ class IssueController
       return 'Priority does not exist or is not active';
     }
 
+    // The reporter can be changed by Agents and Administrators (the same roles that manage the watchers)
+    $reporterId = isset($issue['reporter']['id']) ? (int)$issue['reporter']['id'] : null;
+    if (array_key_exists('reporter_id', $input)) {
+      if (!$this->canManageWatchers()) {
+        return ['error' => [403, 'Only an Agent or an Administrator can change the reporter']];
+      }
+      $newReporter = $this->lookupId($input['reporter_id']);
+      if ($newReporter === null || !$this->model->userExists($newReporter)) {
+        return 'Reporter must be an existing user';
+      }
+      if ($newReporter !== $reporterId) {
+        $changes['reporter_id'] = $newReporter;
+        $reporterId = $newReporter;
+      }
+    }
+
     if (array_key_exists('assignee_id', $input)) {
       if (!$this->visibility->hasPermission('assign_issue')) {
         return ['error' => [403, 'Permission required: assign_issue']];
@@ -336,7 +372,7 @@ class IssueController
       }
       // Whatever the access will be after this edit
       $access = $changes['access'] ?? $issue['access'];
-      $allowed = array_column($this->model->watcherCandidates($access, isset($issue['reporter']['id']) ? (int)$issue['reporter']['id'] : null), 'id');
+      $allowed = array_column($this->model->watcherCandidates($access, $reporterId), 'id');
       if (array_diff($ids, $allowed) !== []) {
         return 'Only users who can see the issue can watch it';
       }

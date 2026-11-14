@@ -465,7 +465,7 @@ class IssueModel
   public function lockIssue(array $facts): array
   {
     $stmt = $this->db->prepare(
-      'SELECT type_id, status_id, resolution_id, priority_id, product_id, assignee_id, access, version, summary, description, deleted_at
+      'SELECT type_id, status_id, resolution_id, priority_id, product_id, assignee_id, reporter_id, access, version, summary, description, deleted_at
          FROM issues WHERE id = :id FOR UPDATE'
     );
     $stmt->execute(['id' => $facts['id']]);
@@ -578,6 +578,35 @@ class IssueModel
     );
 
     return array_map(fn(array $u): array => self::userFields((int)$u['id'], $u['username'], $u['first_name'], $u['last_name'], $u['avatar']), $stmt->fetchAll());
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Lists the users who can be made the reporter of an issue: every user.
+   *
+   * @return array User fields (no email address)
+   */
+  public function reporters(): array
+  {
+    $stmt = $this->db->query('SELECT id, username, first_name, last_name, avatar FROM users ORDER BY username');
+
+    return array_map(fn(array $u): array => self::userFields((int)$u['id'], $u['username'], $u['first_name'], $u['last_name'], $u['avatar']), $stmt->fetchAll());
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Tells whether a user exists.
+   *
+   * @param int $userId The user id
+   *
+   * @return bool
+   */
+  public function userExists(int $userId): bool
+  {
+    $stmt = $this->db->prepare('SELECT COUNT(*) FROM users WHERE id = :id');
+    $stmt->execute(['id' => $userId]);
+
+    return (int)$stmt->fetchColumn() > 0;
   }
 
   //---------------------------------------------------------------------------
@@ -759,6 +788,13 @@ class IssueModel
         $log[] = ['assignee', $this->userLabel($row['assignee_id'] === null ? null : (int)$row['assignee_id']), $this->userLabel($changes['assignee_id'])];
       }
 
+      // Reporter
+      if (array_key_exists('reporter_id', $changes) && ($row['reporter_id'] === null ? null : (int)$row['reporter_id']) !== $changes['reporter_id']) {
+        $sets[] = 'reporter_id = :reporter_id';
+        $params['reporter_id'] = $changes['reporter_id'];
+        $log[] = ['reporter', $this->userLabel($row['reporter_id'] === null ? null : (int)$row['reporter_id']), $this->userLabel($changes['reporter_id'])];
+      }
+
       // Text fields. The description can be long, so the history only says that it changed. The comparison is
       // done here because the database collation ignores case and accents.
       foreach (['summary' => true, 'version' => true, 'access' => true, 'description' => false] as $field => $keepValues) {
@@ -787,7 +823,11 @@ class IssueModel
       if (isset($params['assignee_id'])) {
         $this->addWatcher($id, $params['assignee_id']);
       }
-      if ($watchersSet || (isset($params['access']) && array_search($params['access'], IssueActions::ACCESS_ORDER, true) > array_search($row['access'], IssueActions::ACCESS_ORDER, true))) {
+      // The new reporter follows the issue, like the reporter of a new issue
+      if (isset($params['reporter_id'])) {
+        $this->addWatcher($id, $params['reporter_id']);
+      }
+      if ($watchersSet || isset($params['reporter_id']) || (isset($params['access']) && array_search($params['access'], IssueActions::ACCESS_ORDER, true) > array_search($row['access'], IssueActions::ACCESS_ORDER, true))) {
         $this->removeWatchersWithoutAccess($id);
       }
 

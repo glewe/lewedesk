@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Models\CustomViewModel;
 use App\Models\UserModel;
 use App\Services\AuditLog;
 use App\Services\AuthPolicy;
@@ -26,6 +27,7 @@ class UserController
   private ?int $actorId;
   private AuditLog $audit;
   private ?AuthPolicy $ldap;
+  private ?CustomViewModel $customViews;
 
   //---------------------------------------------------------------------------
   /**
@@ -36,9 +38,11 @@ class UserController
    * @param array     $protectedUsernames Usernames that cannot be deleted
    * @param int|null  $actorId            The logged in user who makes the requests (for the history of the issues)
    * @param AuthPolicy|null $ldap         Tells who authenticates against LDAP or OIDC (no password for those users)
+   * @param CustomViewModel|null $customViews Removes the private custom views of deleted users
    */
-  public function __construct(UserModel $model, AuditLog $audit, array $protectedUsernames = [], ?int $actorId = null, ?AuthPolicy $ldap = null)
+  public function __construct(UserModel $model, AuditLog $audit, array $protectedUsernames = [], ?int $actorId = null, ?AuthPolicy $ldap = null, ?CustomViewModel $customViews = null)
   {
+    $this->customViews = $customViews;
     $this->ldap = $ldap;
     $this->audit = $audit;
     $this->model = $model;
@@ -236,6 +240,11 @@ class UserController
     $deleted = $this->audit->transaction(function () use ($ids): int {
       // The entries hold the name and email of the account: afterwards it is gone
       $users = array_filter(array_map(fn(int $id): ?array => $this->model->get($id), $ids));
+      // The private custom views go with their owners (the shared ones stay, without an owner)
+      foreach ($this->customViews?->privateOf($ids) ?? [] as $view) {
+        $this->audit->log('customview.deleted', null, 'customview', $view['id'], $view['name'], ['shared' => false, 'filters' => (array)$view['filters']]);
+      }
+      $this->customViews?->deletePrivateOf($ids);
       $count = $this->model->deleteMany($ids);
       foreach ($users as $user) {
         $this->audit->log('user.deleted', null, 'user', (int)$user['id'], (string)$user['username'], ['email' => $user['email']]);

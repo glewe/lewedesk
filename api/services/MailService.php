@@ -83,10 +83,13 @@ class MailService
    * @param string $subject Subject line
    * @param string $html    HTML body
    * @param string $text    Plain text body
+   * @param array  $options Optional headers: message_id (a value from newMessageId()), in_reply_to (a message id),
+   *                        references (message ids, oldest first) and reply_to (an address), so that mail programs
+   *                        thread the mails of an issue and answers reach the support mailbox
    *
    * @return bool True if the server accepted the message
    */
-  public function send(string $to, string $subject, string $html, string $text): bool
+  public function send(string $to, string $subject, string $html, string $text, array $options = []): bool
   {
     $this->lastError = '';
     try {
@@ -105,7 +108,7 @@ class MailService
       $this->command('MAIL FROM:<' . $this->from . '>', [250]);
       $this->command('RCPT TO:<' . $to . '>', [250, 251]);
       $this->command('DATA', [354]);
-      $message = $this->buildMessage($to, $subject, $html, $text);
+      $message = $this->buildMessage($to, $subject, $html, $text, $options);
       // Dot-stuff lines starting with "." and terminate the data section
       $message = preg_replace('/^\./m', '..', $message);
       $this->write($message . "\r\n.");
@@ -125,6 +128,43 @@ class MailService
 
   //---------------------------------------------------------------------------
   /**
+   * Creates a Message-ID for a mail that will be sent, so that it can be stored before the mail is sent.
+   *
+   * @return string With the angle brackets, e.g. <3f9a...@example.com>
+   */
+  public function newMessageId(): string
+  {
+    return '<' . bin2hex(random_bytes(12)) . '@' . $this->domain() . '>';
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Gives the domain of the sender address.
+   *
+   * @return string
+   */
+  private function domain(): string
+  {
+    return substr(strrchr($this->from, '@') ?: '@localhost', 1);
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Makes a message id safe for a header: one id in angle brackets, no line breaks or spaces.
+   *
+   * @param string $id The id, with or without angle brackets
+   *
+   * @return string Empty if nothing usable is left
+   */
+  private static function headerId(string $id): string
+  {
+    $id = preg_replace('/[^\x21-\x7e]|[<>]/', '', $id) ?? '';
+
+    return $id === '' ? '' : '<' . $id . '>';
+  }
+
+  //---------------------------------------------------------------------------
+  /**
    * Tells whether an address belongs to the sample data domain (@yourserver.com).
    *
    * @param string $address Email address
@@ -133,7 +173,10 @@ class MailService
    */
   private static function isSampleAddress(string $address): bool
   {
-    return str_ends_with(strtolower(trim($address)), '@yourserver.com');
+    $address = strtolower(trim($address));
+
+    // The domain .invalid is reserved for addresses that do not exist (RFC 6761): the account "Email requester" has one
+    return str_ends_with($address, '@yourserver.com') || str_ends_with($address, '.invalid');
   }
 
   //---------------------------------------------------------------------------
@@ -178,13 +221,13 @@ class MailService
    * @param string $subject Subject line
    * @param string $html    HTML body
    * @param string $text    Plain text body
+   * @param array  $options Optional headers (see send())
    *
    * @return string The message with CRLF line endings
    */
-  private function buildMessage(string $to, string $subject, string $html, string $text): string
+  private function buildMessage(string $to, string $subject, string $html, string $text, array $options = []): string
   {
     $boundary = 'b_' . bin2hex(random_bytes(12));
-    $domain = substr(strrchr($this->from, '@') ?: '@localhost', 1);
     $fromName = '=?UTF-8?B?' . base64_encode($this->fromName) . '?=';
 
     $headers = [
@@ -192,10 +235,29 @@ class MailService
       "To: <$to>",
       'Subject: =?UTF-8?B?' . base64_encode(str_replace(["\r", "\n"], ' ', $subject)) . '?=',
       'Date: ' . date('r'),
-      'Message-ID: <' . bin2hex(random_bytes(12)) . "@$domain>",
+      'Message-ID: ' . (self::headerId((string)($options['message_id'] ?? '')) ?: $this->newMessageId()),
+      // Tells other mail systems not to answer with out-of-office replies and the like (no mail loops)
+      'Auto-Submitted: auto-generated',
+      'X-Auto-Response-Suppress: All',
       'MIME-Version: 1.0',
       "Content-Type: multipart/alternative; boundary=\"$boundary\"",
     ];
+
+    $replyTo = trim((string)($options['reply_to'] ?? ''));
+    if ($replyTo !== '' && filter_var($replyTo, FILTER_VALIDATE_EMAIL) !== false && strcasecmp($replyTo, $this->from) !== 0) {
+      $headers[] = "Reply-To: <$replyTo>";
+    }
+    $inReplyTo = self::headerId((string)($options['in_reply_to'] ?? ''));
+    if ($inReplyTo !== '') {
+      $headers[] = "In-Reply-To: $inReplyTo";
+    }
+    $references = array_values(array_filter(array_map(
+      static fn($id): string => self::headerId((string)$id),
+      (array)($options['references'] ?? [])
+    )));
+    if ($references !== []) {
+      $headers[] = 'References: ' . implode(' ', $references);
+    }
 
     $part = static fn (string $type, string $body): string =>
       "--$boundary\r\nContent-Type: $type; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n"

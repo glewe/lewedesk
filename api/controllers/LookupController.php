@@ -10,7 +10,7 @@ use App\Services\AuditLog;
 //---------------------------------------------------------------------------
 /**
  * REST controller for the issue lookup tables (issue types, status categories, status, resolutions,
- * products and tags). The structure of a lookup is described by a definition of App\Config\Lookups.
+ * priorities, products and tags). The structure of a lookup is described by a definition of App\Config\Lookups.
  *
  *   GET    /{lookup}            list (?q=term&limit=10 searches the names, for smart fill)
  *   POST   /{lookup}            create
@@ -19,7 +19,7 @@ use App\Services\AuditLog;
  *   DELETE /{lookup}/{id}       delete
  *   POST   /{lookup}/delete     delete many ({"ids": [1, 2]})
  *
- * Deleting a type, status or resolution that issues use needs "replacement_id" in the body: the issues
+ * Deleting a type, status, resolution or priority that issues use needs "replacement_id" in the body: the issues
  * get that record instead (409 with replacement_required otherwise).
  *
  * Records with a key are protected system records: they cannot be deleted, deactivated or renamed.
@@ -38,6 +38,7 @@ class LookupController
     'status_categories' => 'status_category',
     'status' => 'status',
     'resolutions' => 'resolution',
+    'priorities' => 'priority',
     'products' => 'product',
     'tags' => 'tag',
   ];
@@ -45,20 +46,24 @@ class LookupController
   private LookupModel $model;
   private AuditLog $audit;
   private array $definition;
+  private $deleteGuard;
 
   //---------------------------------------------------------------------------
   /**
    * Constructor.
    *
-   * @param LookupModel $model      The model
-   * @param AuditLog    $audit      The audit log
-   * @param array       $definition The definition of the lookup (see App\Config\Lookups)
+   * @param LookupModel   $model       The model
+   * @param AuditLog      $audit       The audit log
+   * @param array         $definition  The definition of the lookup (see App\Config\Lookups)
+   * @param callable|null $deleteGuard fn(string $table, int[] $ids): ?string, gives the reason why the records cannot be
+   *                                   deleted (for example, SLA policies use them), or null
    */
-  public function __construct(LookupModel $model, AuditLog $audit, array $definition)
+  public function __construct(LookupModel $model, AuditLog $audit, array $definition, ?callable $deleteGuard = null)
   {
     $this->model = $model;
     $this->audit = $audit;
     $this->definition = $definition;
+    $this->deleteGuard = $deleteGuard;
   }
 
   //---------------------------------------------------------------------------
@@ -211,6 +216,12 @@ class LookupController
       }
     }
 
+    $blocked = $this->deleteGuard === null ? null : ($this->deleteGuard)($this->definition['table'], $ids);
+    if ($blocked !== null) {
+      $this->respond(['status' => 'error', 'code' => 'in_use', 'message' => $blocked], 409);
+      return;
+    }
+
     // Issues that hold a type, status or resolution move to the replacement the caller chose
     [$replacementId, $error] = $this->replacementFor($ids);
     if ($error !== null) {
@@ -241,7 +252,7 @@ class LookupController
 
   //---------------------------------------------------------------------------
   /**
-   * Determines the replacement for records that issues use (types, status, resolutions). The request
+   * Determines the replacement for records that issues use (types, status, resolutions, priorities). The request
    * body carries it as "replacement_id". Without a replacement the answer is 409 with
    * replacement_required and the number of issues (in_use), so that the client can ask the user.
    * Products and tags need none: the issues just lose them.

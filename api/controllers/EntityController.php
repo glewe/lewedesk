@@ -26,6 +26,7 @@ class EntityController
   private AuditLog $audit;
   private string $label;
   private array $protectedNames;
+  private $deleteGuard;
 
   //---------------------------------------------------------------------------
   /**
@@ -35,13 +36,16 @@ class EntityController
    * @param AuditLog    $audit          The audit log
    * @param string      $label          Singular label used in messages (e.g. "Role")
    * @param array       $protectedNames Names that can be neither deleted nor renamed
+   * @param callable|null $deleteGuard  fn(int[] $ids): ?string, gives the reason why the records cannot be deleted (for
+   *                                    example, SLA policies use them), or null
    */
-  public function __construct(EntityModel $model, AuditLog $audit, string $label, array $protectedNames = [])
+  public function __construct(EntityModel $model, AuditLog $audit, string $label, array $protectedNames = [], ?callable $deleteGuard = null)
   {
     $this->model = $model;
     $this->audit = $audit;
     $this->label = $label;
     $this->protectedNames = $protectedNames;
+    $this->deleteGuard = $deleteGuard;
   }
 
   //---------------------------------------------------------------------------
@@ -158,6 +162,12 @@ class EntityController
         $this->fail(409, "{$this->label} \"{$entity['name']}\" is a system entry and cannot be deleted");
         return;
       }
+    }
+
+    $blocked = $this->deleteGuard === null ? null : ($this->deleteGuard)($ids);
+    if ($blocked !== null) {
+      $this->respond(['status' => 'error', 'code' => 'in_use', 'message' => $blocked], 409);
+      return;
     }
 
     $deleted = $this->audit->transaction(function () use ($ids): int {

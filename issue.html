@@ -23,25 +23,26 @@
   <meta name="robots" content="noindex, nofollow">
 
 
-  <script type="module" crossorigin src="./assets/js/issue-Dw4qPslt.js"></script>
-  <link rel="modulepreload" crossorigin href="./assets/js/fonts-B8V7-e6F.js">
-  <link rel="modulepreload" crossorigin href="./assets/js/lookups-DCBYELDL.js">
-  <link rel="modulepreload" crossorigin href="./assets/js/main-DDKXavPK.js">
-  <link rel="modulepreload" crossorigin href="./assets/js/issue-ui-C5rluTbM.js">
+  <script type="module" crossorigin src="./assets/js/issue-COkh-5Vp.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/js/fonts-dgFHIs4h.js">
+  <link rel="modulepreload" crossorigin href="./assets/js/branding-Syy4B4te.js">
+  <link rel="modulepreload" crossorigin href="./assets/js/main-CAI9vjJw.js">
+  <link rel="modulepreload" crossorigin href="./assets/js/issue-ui-BOnRPkZO.js">
   <link rel="modulepreload" crossorigin href="./assets/js/purify.es-BGCr_sdL.js">
-  <link rel="modulepreload" crossorigin href="./assets/js/markdown-editor-BuiL54yD.js">
-  <link rel="modulepreload" crossorigin href="./assets/js/issue-history-CpVqnky_.js">
-  <link rel="stylesheet" crossorigin href="./assets/css/fonts-Dzfg6Fbe.css">
+  <link rel="modulepreload" crossorigin href="./assets/js/markdown-editor-B4OiCHuo.js">
+  <link rel="modulepreload" crossorigin href="./assets/js/issue-history-CjKgs5Bs.js">
+  <link rel="modulepreload" crossorigin href="./assets/js/sla-ui-DbtdFU8m.js">
+  <link rel="stylesheet" crossorigin href="./assets/css/fonts-CZR4NW46.css">
 </head>
 <body>
   <div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
     <div class="sidebar-brand d-none d-md-flex">
-      <i class="bi bi-ticket-perforated me-2 logo-gradient fs-4"></i>
-      <span class="sidebar-brand-full">Lewe<strong>Desk</strong></span>
+      <i class="bi bi-ticket-perforated me-2 logo-gradient fs-4" data-brand-icon></i>
+      <span class="sidebar-brand-full" data-brand-title>My<strong>Desk</strong></span>
       <span class="sidebar-brand-narrow"></span>
     </div>
     <div class="sidebar-mobile-bar d-md-none">
-      <span><i class="bi bi-ticket-perforated me-2 logo-gradient fs-4"></i>Lewe<strong>Desk</strong></span>
+      <span><i class="bi bi-ticket-perforated me-2 logo-gradient fs-4" data-brand-icon></i><span data-brand-title>My<strong>Desk</strong></span></span>
       <button class="sidebar-close" id="sidebar-close" type="button" aria-label="Close menu"><i class="bi bi-x-lg"></i></button>
     </div>
     <ul class="sidebar-nav">
@@ -52,7 +53,7 @@
       </li>
       <li class="nav-title" data-public data-i18n="sidebar.issues_title">Issues</li>
       <li class="nav-item" data-permission="create_issue">
-        <a class="nav-link" href="issue-add.html">
+        <a class="nav-link" href="issue-add.html" data-license-limit="issues">
           <i class="nav-icon bi bi-plus-circle"></i> <span class="nav-text" data-i18n="sidebar.create_issue">Create issue</span>
         </a>
       </li>
@@ -96,18 +97,28 @@
           <i class="nav-icon bi bi-check-circle" data-category="done"></i> <span class="nav-text" data-i18n="sidebar.done">Done</span> <span class="nav-count d-none" data-count="done"></span>
         </a>
       </li>
+      <li class="nav-item" data-permission="view_sla" data-license-feature="sla">
+        <a class="nav-link" href="issues.html?view=sla_breached">
+          <i class="nav-icon bi bi-x-octagon text-danger"></i> <span class="nav-text" data-i18n="sidebar.sla_breached">SLA breached</span> <span class="nav-count d-none" data-count="sla_breached"></span>
+        </a>
+      </li>
+      <li class="nav-item" data-permission="view_sla" data-license-feature="sla">
+        <a class="nav-link" href="sla-reports.html">
+          <i class="nav-icon bi bi-graph-up"></i> <span class="nav-text" data-i18n="sidebar.sla_report">SLA report</span>
+        </a>
+      </li>
       <li class="nav-item" data-permission="delete_issue">
         <a class="nav-link" href="issues.html?view=deleted">
           <i class="nav-icon bi bi-trash"></i> <span class="nav-text" data-i18n="sidebar.deleted_issues">Deleted</span> <span class="nav-count d-none" data-count="deleted"></span>
         </a>
       </li>
-      <li class="nav-title" data-permission-any="view_audit_log manage_settings manage_users manage_roles manage_groups manage_permissions manage_issue_types manage_status manage_status_categories manage_resolutions manage_products manage_tags" data-i18n="sidebar.administration">Administration</li>
+      <li class="nav-title" data-permission-any="view_audit_log manage_settings manage_users manage_roles manage_groups manage_permissions manage_issue_types manage_status manage_status_categories manage_resolutions manage_priorities manage_products manage_tags manage_custom_views manage_sla" data-i18n="sidebar.administration">Administration</li>
       <li class="nav-item nav-group" data-permission-any="view_audit_log manage_settings manage_users manage_roles manage_groups manage_permissions">
         <a class="nav-link nav-group-toggle" href="#">
           <i class="nav-icon bi bi-shield-lock"></i> <span class="nav-text" data-i18n="sidebar.management">System</span>
         </a>
         <ul class="nav-group-items">
-          <li class="nav-item" data-permission="view_audit_log">
+          <li class="nav-item" data-permission="view_audit_log" data-license-feature="audit_log">
             <a class="nav-link" href="audit-log.html">
               <i class="nav-icon bi bi-journal-text"></i> <span class="nav-text">Audit Log</span>
             </a>
@@ -139,14 +150,24 @@
           </li>
         </ul>
       </li>
-      <li class="nav-item nav-group" data-permission-any="manage_issue_types manage_status manage_status_categories manage_resolutions manage_products manage_tags">
+      <li class="nav-item nav-group" data-permission-any="manage_issue_types manage_status manage_status_categories manage_resolutions manage_priorities manage_products manage_tags manage_custom_views manage_sla">
         <a class="nav-link nav-group-toggle" href="#">
           <i class="nav-icon bi bi-ticket-detailed"></i> <span class="nav-text" data-i18n="sidebar.issues">Issues</span>
         </a>
         <ul class="nav-group-items">
+          <li class="nav-item" data-permission="manage_custom_views" data-license-feature="custom_views">
+            <a class="nav-link" href="custom-views.html">
+              <i class="nav-icon bi bi-bookmarks"></i> <span class="nav-text" data-i18n="sidebar.custom_views">Custom Views</span>
+            </a>
+          </li>
           <li class="nav-item" data-permission="manage_issue_types">
             <a class="nav-link" href="issue-types.html">
               <i class="nav-icon bi bi-bug"></i> <span class="nav-text" data-i18n="sidebar.issue_types">Issue Types</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_priorities">
+            <a class="nav-link" href="priorities.html">
+              <i class="nav-icon bi bi-exclamation-diamond"></i> <span class="nav-text" data-i18n="sidebar.priorities">Priorities</span>
             </a>
           </li>
           <li class="nav-item" data-permission="manage_products">
@@ -157,6 +178,11 @@
           <li class="nav-item" data-permission="manage_resolutions">
             <a class="nav-link" href="resolutions.html">
               <i class="nav-icon bi bi-check2-circle"></i> <span class="nav-text" data-i18n="sidebar.resolutions">Resolutions</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_sla" data-license-feature="sla">
+            <a class="nav-link" href="sla-setup.html">
+              <i class="nav-icon bi bi-stopwatch"></i> <span class="nav-text" data-i18n="sidebar.sla_setup">SLA Setup</span>
             </a>
           </li>
           <li class="nav-item" data-permission="manage_status">
@@ -186,7 +212,7 @@
           <i class="bi bi-list fs-4"></i>
         </button>
         <a class="header-brand d-md-none" href="#">
-          <i class="bi bi-ticket-perforated logo-gradient fs-4"></i>
+          <i class="bi bi-ticket-perforated logo-gradient fs-4" data-brand-icon></i>
         </a>
         <form class="d-none d-md-flex ms-auto me-4" id="header-search-form" role="search">
           <div class="input-group">
@@ -336,10 +362,6 @@
         <div class="alert alert-warning d-none" id="maintenance-banner" role="alert">
           <i class="bi bi-cone-striped me-2"></i> <span data-i18n="maintenance.banner">Maintenance mode is active. Only administrators can use the application.</span>
         </div>
-        <div class="alert alert-info d-none" id="license-trial-banner" role="alert">
-          <i class="bi bi-key me-2"></i> <span id="license-trial-text"></span>
-          <a href="settings.html#license" class="alert-link ms-1 d-none" id="license-trial-link" data-i18n="license.banner.link">License settings</a>
-        </div>
         <div class="alert alert-warning d-none" id="license-expiry-banner" role="alert">
           <i class="bi bi-key me-2"></i> <span id="license-expiry-text"></span>
           <a href="settings.html#license" class="alert-link ms-1" data-i18n="license.banner.link">License settings</a>
@@ -446,6 +468,8 @@
           <dl class="issue-properties mb-0">
             <dt data-i18n="issues.fields.type">Type</dt>
             <dd id="prop-type"></dd>
+            <dt data-i18n="issues.fields.priority">Priority</dt>
+            <dd id="prop-priority"></dd>
             <dt data-i18n="issues.columns.status">Status</dt>
             <dd id="prop-status"></dd>
             <dt data-i18n="issues.fields.resolution">Resolution</dt>
@@ -458,6 +482,8 @@
             <dd id="prop-access"></dd>
             <dt data-i18n="issues.columns.reporter">Reporter</dt>
             <dd id="prop-reporter"></dd>
+            <dt id="prop-source-label" class="d-none" data-i18n="issues.fields.source">Source</dt>
+            <dd id="prop-source" class="d-none"></dd>
             <dt data-i18n="issues.columns.assignee">Assignee</dt>
             <dd id="prop-assignee"></dd>
             <dt data-i18n="issues.fields.tags">Tags</dt>
@@ -471,6 +497,12 @@
           </dl>
         </div>
       </div>
+
+      <!-- SLA timers: only for the holders of view_sla, and only when the issue has timers (issue-detail.js shows it) -->
+      <section class="card mb-4 d-none" id="issue-sla" aria-labelledby="issue-sla-title">
+        <div class="card-header" id="issue-sla-title" data-i18n="sla.panel.title">Service level (SLA)</div>
+        <div class="card-body" id="issue-sla-body" aria-live="polite"></div>
+      </section>
     </div>
   </div>
 </div>
@@ -491,6 +523,36 @@
         <button type="button" class="btn btn-primary" id="status-resolution-confirm" data-i18n="common.save">Save</button>
       </div>
     </div>
+  </div>
+</div>
+
+<div class="modal" id="sla-override-modal" tabindex="-1" aria-labelledby="sla-override-title" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <form class="modal-content" id="sla-override-form" novalidate>
+      <div class="modal-header">
+        <h5 class="modal-title" id="sla-override-title" data-i18n="sla.panel.override_title">Change the due time</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-body-secondary" id="sla-override-metric"></p>
+        <div class="mb-3">
+          <label for="sla-override-due" class="form-label" data-i18n="sla.panel.new_due">New due time</label>
+          <input type="datetime-local" class="form-control" id="sla-override-due" required>
+          <div class="form-text" data-i18n="sla.panel.new_due_desc">In your time zone. The clock keeps its pauses and the business hours of the policy.</div>
+          <div class="invalid-feedback" id="sla-override-due-invalid" data-i18n="sla.panel.due_required">Please enter a due time.</div>
+        </div>
+        <div>
+          <label for="sla-override-reason" class="form-label" data-i18n="sla.panel.reason">Reason</label>
+          <input type="text" class="form-control" id="sla-override-reason" maxlength="255" required autocomplete="off">
+          <div class="form-text" data-i18n="sla.panel.reason_desc">Required. It is written to the history of the issue.</div>
+          <div class="invalid-feedback" data-i18n="sla.panel.reason_required">Please enter a reason (one line, up to 255 characters).</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-i18n="common.cancel">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="sla-override-submit" data-i18n="common.save">Save</button>
+      </div>
+    </form>
   </div>
 </div>
 
@@ -587,7 +649,7 @@
       <div class="container-fluid h-100 d-flex align-items-center">
         <div class="flex-fill">&copy; 2026 by <a href="https://lewe.com" class="text-decoration-none">Lewe Labs</a>.</div>
         <div class="flex-fill text-center"><a href="privacy.html" class="text-decoration-none" data-i18n="header.privacy">Privacy Policy</a> &middot; <a href="imprint.html" class="text-decoration-none" data-i18n="header.imprint">Imprint</a></div>
-        <div class="flex-fill text-end">Powered by <i class="bi bi-ticket-perforated logo-gradient mx-1" aria-hidden="true"></i>Lewe<strong>Desk</strong> 1.0.1.126</div>
+        <div class="flex-fill text-end">Powered by <i class="bi bi-ticket-perforated logo-gradient mx-1" aria-hidden="true"></i>Lewe<strong>Desk</strong> 1.0.2.181</div>
       </div>
     </footer>
   </div>

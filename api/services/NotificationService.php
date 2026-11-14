@@ -19,6 +19,8 @@ use PDO;
  *   issue_assigned  Email and in-app: reporter, assignee, watchers
  *   status_changed  Email and in-app: reporter, assignee, watchers
  *   comment_added   Email and in-app: reporter, assignee, watchers
+ *   sla_at_risk     Email and in-app: the people notifySla() is given (assignee, watchers, escalation; see SlaNotifier)
+ *   sla_breached    Email and in-app: the same
  *
  * One action sends one combined message per recipient (Resolve = comment + status change is one message), and the
  * acting user is part of the recipients like everybody else; the message names them. A recipient only gets what
@@ -36,6 +38,8 @@ class NotificationService
   public const ASSIGNED = 'issue_assigned';
   public const STATUS = 'status_changed';
   public const COMMENT = 'comment_added';
+  public const SLA_AT_RISK = 'sla_at_risk';
+  public const SLA_BREACHED = 'sla_breached';
 
   /** The events in the order a combined message lists them */
   private const ORDER = [self::CREATED, self::ASSIGNED, self::STATUS, self::COMMENT];
@@ -103,6 +107,32 @@ class NotificationService
 
   //---------------------------------------------------------------------------
   /**
+   * Announces that an SLA timer of an issue is at risk or breached (called by SlaNotifier, once per timer and event).
+   * Only people who may see the issue and hold view_sla hear about it (SLA data is for the staff), each on the channels
+   * they kept on for the event. The mails cannot be answered (an answer would not be a comment), and the in-app entry and
+   * the mail carry no comment text. A failure is written to the PHP error log, it never reaches the caller.
+   *
+   * @param int    $issueId The issue
+   * @param string $event   SLA_AT_RISK or SLA_BREACHED
+   * @param string $metric  first_response or resolution
+   * @param int    $dueAt   The due time of the timer (Unix time)
+   * @param int[]  $userIds The people to tell (nobody who is not in the list is told)
+   *
+   * @return int The number of people who got a mail or an in-app notification
+   */
+  public function notifySla(int $issueId, string $event, string $metric, int $dueAt, array $userIds): int
+  {
+    try {
+      return $this->deliverSla($issueId, $event, $metric, $dueAt, $userIds);
+    } catch (\Throwable $e) {
+      error_log(sprintf('SLA notification for issue %d failed: %s', $issueId, $e->getMessage()));
+
+      return 0;
+    }
+  }
+
+  //---------------------------------------------------------------------------
+  /**
    * Housekeeping: deletes the notifications past the retention period and the old mails of the queue.
    *
    * @return array{notifications: int, mails: int} What was deleted
@@ -138,7 +168,8 @@ class NotificationService
       'assignee' => $issue['assignee'],
       'internal' => $internal && in_array(self::COMMENT, $events, true),
     ];
-    $mailIssue = ['id' => $issueId, 'key' => $this->config->issueKey($issueId), 'summary' => $issue['summary']];
+    $mailIssue = ['id' => $issueId, 'key' => $this->config->issueKey($issueId), 'summary' => $issue['summary'],
+      'priority_key' => $issue['priority_key'], 'priority_name' => $issue['priority_name']];
 
     // The recipients with their channels
     $targets = [];
@@ -185,7 +216,7 @@ class NotificationService
           $this->notifications->insert($userId, $issueId, $actorId, $wanted[0], $this->storedData($content), $content['internal'] && in_array(self::COMMENT, $wanted, true));
         } elseif (filter_var($user['email'], FILTER_VALIDATE_EMAIL) !== false) {
           [$subject, $html, $text] = $this->mail->build($mailIssue, $content, $this->greetingName($user));
-          $this->outbox->queue($user['email'], $subject, $html, $text);
+          $this->outbox->queue($user['email'], $subject, $html, $text, $issueId, !empty($content['internal']));
           $mailed[strtolower($user['email'])] = true;
         }
       }
@@ -194,10 +225,68 @@ class NotificationService
     // The support team hears about every new issue (not covered by user settings)
     if (in_array(self::CREATED, $events, true) && !isset($mailed[strtolower($this->config->supportEmail())])) {
       [$subject, $html, $text] = $this->mail->build($mailIssue, ['events' => [self::CREATED]] + $message, 'Support');
-      $this->outbox->queue($this->config->supportEmail(), $subject, $html, $text);
+      $this->outbox->queue($this->config->supportEmail(), $subject, $html, $text, $issueId);
     }
 
     $this->notifications->purgeExpired($this->config->notificationRetentionDays());
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Creates the notifications and queues the emails of an SLA event.
+   *
+   * @param int    $issueId The issue
+   * @param string $event   SLA_AT_RISK or SLA_BREACHED
+   * @param string $metric  first_response or resolution
+   * @param int    $dueAt   The due time (Unix time)
+   * @param int[]  $userIds The people to tell
+   *
+   * @return int The number of people told
+   */
+  private function deliverSla(int $issueId, string $event, string $metric, int $dueAt, array $userIds): int
+  {
+    $issue = $this->issue($issueId);
+    if ($issue === null || $issue['deleted_at'] !== null || !in_array($event, [self::SLA_AT_RISK, self::SLA_BREACHED], true)) {
+      return 0;
+    }
+
+    $content = [
+      'events' => [$event],
+      'actor' => '',
+      'status_key' => $issue['status_key'],
+      'status_name' => $issue['status_name'],
+      'assignee' => $issue['assignee'],
+      'internal' => false,
+      'no_reply' => true,
+      'sla_metric' => $metric,
+      'sla_due' => $dueAt,
+    ];
+    $mailIssue = ['id' => $issueId, 'key' => $this->config->issueKey($issueId), 'summary' => $issue['summary'],
+      'priority_key' => $issue['priority_key'], 'priority_name' => $issue['priority_name']];
+
+    $users = $this->users(array_values(array_unique(array_map('intval', $userIds))));
+    $preferences = $this->preferences->forUsers(array_keys($users));
+    $told = 0;
+    foreach ($users as $userId => $user) {
+      if (!$this->maySee($user, $issue) || !$this->auth->hasPermission($user, 'view_sla')) {
+        continue;
+      }
+      $channels = $preferences[$userId][$event];
+      $reached = false;
+      if ($channels['in_app']) {
+        $this->notifications->insert($userId, $issueId, null, $event, ['events' => [$event], 'sla_metric' => $metric, 'sla_due' => $dueAt], false);
+        $reached = true;
+      }
+      if ($channels['email'] && filter_var($user['email'], FILTER_VALIDATE_EMAIL) !== false) {
+        [$subject, $html, $text] = $this->mail->build($mailIssue, $content, $this->greetingName($user));
+        // An answer to an SLA mail, if it is read at all, is an internal comment: the mail is for the staff
+        $this->outbox->queue($user['email'], $subject, $html, $text, $issueId, true);
+        $reached = true;
+      }
+      $told += $reached ? 1 : 0;
+    }
+
+    return $told;
   }
 
   //---------------------------------------------------------------------------
@@ -211,10 +300,11 @@ class NotificationService
   private function issue(int $issueId): ?array
   {
     $stmt = $this->db->prepare(
-      "SELECT i.reporter_id, i.assignee_id, i.access, i.summary, i.deleted_at, s.`key` AS status_key, s.name AS status_name,
+      "SELECT i.reporter_id, i.assignee_id, i.access, i.summary, i.deleted_at, s.`key` AS status_key, s.name AS status_name, pr.`key` AS priority_key, pr.name AS priority_name,
               u.username, u.first_name, u.last_name
          FROM issues i
          JOIN `status` s ON s.id = i.status_id
+         LEFT JOIN priorities pr ON pr.id = i.priority_id
          LEFT JOIN users u ON u.id = i.assignee_id
         WHERE i.id = :id"
     );
@@ -231,6 +321,8 @@ class NotificationService
       'deleted_at' => $row['deleted_at'],
       'status_key' => $row['status_key'],
       'status_name' => $row['status_name'],
+      'priority_key' => $row['priority_key'],
+      'priority_name' => $row['priority_name'],
       'assignee' => $row['assignee_id'] === null ? null : IssueModel::userFields((int)$row['assignee_id'], $row['username'], $row['first_name'], $row['last_name'], null)['display_name'],
     ];
   }

@@ -47,6 +47,7 @@ require_once __DIR__ . '/services/OidcService.php';
 require_once __DIR__ . '/services/AuthPolicy.php';
 require_once __DIR__ . '/services/Totp.php';
 require_once __DIR__ . '/services/LicenseService.php';
+require_once __DIR__ . '/services/LicenseFeatures.php';
 require_once __DIR__ . '/controllers/LicenseController.php';
 require_once __DIR__ . '/services/SecretVault.php';
 require_once __DIR__ . '/services/QrCode.php';
@@ -59,6 +60,9 @@ require_once __DIR__ . '/models/AttachmentModel.php';
 require_once __DIR__ . '/controllers/AttachmentController.php';
 require_once __DIR__ . '/models/PreferenceModel.php';
 require_once __DIR__ . '/controllers/PreferenceController.php';
+require_once __DIR__ . '/utils/MailInConfig.php';
+require_once __DIR__ . '/services/InboundMailService.php';
+require_once __DIR__ . '/controllers/MailInController.php';
 require_once __DIR__ . '/services/MailOutbox.php';
 require_once __DIR__ . '/services/NotificationMail.php';
 require_once __DIR__ . '/models/NotificationPreferenceModel.php';
@@ -70,6 +74,17 @@ require_once __DIR__ . '/models/DashboardModel.php';
 require_once __DIR__ . '/controllers/DashboardController.php';
 require_once __DIR__ . '/models/AuditLogModel.php';
 require_once __DIR__ . '/controllers/AuditLogController.php';
+require_once __DIR__ . '/models/CustomViewModel.php';
+require_once __DIR__ . '/controllers/CustomViewController.php';
+require_once __DIR__ . '/services/SlaCalculator.php';
+require_once __DIR__ . '/models/SlaCalendarModel.php';
+require_once __DIR__ . '/models/SlaPolicyModel.php';
+require_once __DIR__ . '/controllers/SlaController.php';
+require_once __DIR__ . '/models/SlaReportModel.php';
+require_once __DIR__ . '/controllers/SlaReportController.php';
+require_once __DIR__ . '/services/SlaService.php';
+require_once __DIR__ . '/services/SlaNotifier.php';
+require_once __DIR__ . '/controllers/IssueSlaController.php';
 
 use App\Utils\EnvLoader;
 use App\Utils\SettingsValidator;
@@ -81,6 +96,7 @@ use App\Services\MailService;
 use App\Models\PasswordResetModel;
 use App\Models\SettingsModel;
 use App\Services\LicenseService;
+use App\Services\LicenseFeatures;
 use App\Controllers\LicenseController;
 use App\Models\EntityModel;
 use App\Controllers\EntityController;
@@ -96,6 +112,12 @@ use App\Models\IssueModel;
 use App\Models\IssueWorkflowModel;
 use App\Controllers\AttachmentController;
 use App\Controllers\AuditLogController;
+use App\Controllers\CustomViewController;
+use App\Controllers\SlaController;
+use App\Controllers\SlaReportController;
+use App\Controllers\IssueSlaController;
+use App\Services\SlaNotifier;
+use App\Services\SlaService;
 use App\Controllers\DashboardController;
 use App\Controllers\CommentController;
 use App\Controllers\HistoryController;
@@ -106,6 +128,10 @@ use App\Controllers\PreferenceController;
 use App\Models\AttachmentModel;
 use App\Models\AuditLogModel;
 use App\Models\CommentModel;
+use App\Models\CustomViewModel;
+use App\Models\SlaCalendarModel;
+use App\Models\SlaReportModel;
+use App\Models\SlaPolicyModel;
 use App\Models\DashboardModel;
 use App\Models\HistoryModel;
 use App\Models\NotificationModel;
@@ -120,6 +146,11 @@ use App\Services\AuthPolicy;
 use App\Services\LdapService;
 use App\Services\OidcService;
 use App\Services\MailOutbox;
+use App\Controllers\MailInController;
+use App\Models\MailInboxModel;
+use App\Services\InboundMailService;
+use App\Utils\MailInConfig;
+use App\Utils\MailInSettings;
 use App\Services\NotificationMail;
 use App\Services\NotificationService;
 use App\Services\QrCode;
@@ -187,6 +218,10 @@ try {
 
   // The license (LeweLic); nothing is sent to the license server until the status is asked for
   $license = new LicenseService($settingsModel, $audit, $_ENV, $allSettings);
+  // What the license allows (the limited mode switches features off and caps the number of issues and users)
+  $licenseFeatures = new LicenseFeatures($license);
+  // The limited mode of the license starts no new SLA timers (the ones that exist keep being updated)
+  SlaService::$timersEnabled = $licenseFeatures->allows('sla');
 
   // Ask browsers and proxies not to cache API responses (disable_caching)
   if (($allSettings['disable_caching'] ?? 'false') === 'true') {
@@ -231,7 +266,13 @@ try {
 
   // Two factor authentication (the key is only needed once somebody sets up or uses 2FA)
   $totp = new Totp();
-  $twoFactor = new TwoFactorService($pdo, new SecretVault($_ENV['TWOFA_ENCRYPTION_KEY'] ?? null), $totp, $allSettings);
+  // Without a license (limited mode) nobody has to set up 2FA: force_2fa keeps its value but has no effect
+  $twoFactor = new TwoFactorService(
+    $pdo,
+    new SecretVault($_ENV['TWOFA_ENCRYPTION_KEY'] ?? null),
+    $totp,
+    $licenseFeatures->allows('two_fa_setup') ? $allSettings : ['force_2fa' => 'false'] + $allSettings
+  );
 
   // The issue code asks these for who may see what and for the issue settings
   $issueConfig = new IssueConfig($allSettings);
@@ -243,9 +284,14 @@ try {
   $authThrottle = new AuthThrottle($pdo, $_ENV);
 
   // Notifications: in-app messages are saved with the action, the emails are queued and sent after the response
-  $mailOutbox = new MailOutbox($pdo, new MailService((string)($allSettings['application_name'] ?? '')));
+  // Email-to-ticket (MAILIN_* in .env, license): when answers are read, the mails carry the "reply above this line"
+  // marker and the Reply-To of the mailbox
+  $mailIn = new MailInConfig($_ENV);
+  $mailInActive = $mailIn->isEnabled() && $licenseFeatures->allows('mail_in');
+  $mailOutbox = new MailOutbox($pdo, new MailService((string)($allSettings['application_name'] ?? '')), $mailInActive ? $mailIn->replyAddress() : '');
   $notificationModel = new NotificationModel($pdo, $visibility, $issueConfig);
   $notificationPreferences = new NotificationPreferenceModel($pdo);
+  $notificationMail = new NotificationMail((string)($allSettings['application_name'] ?? ''), NotificationMail::baseUrl($allSettings), (string)($allSettings['default_language'] ?? 'en'), $mailInActive);
   $notifier = new NotificationService(
     $pdo,
     $auth,
@@ -253,14 +299,16 @@ try {
     $notificationModel,
     $notificationPreferences,
     $mailOutbox,
-    new NotificationMail((string)($allSettings['application_name'] ?? ''), NotificationMail::baseUrl($allSettings), (string)($allSettings['default_language'] ?? 'en'))
+    $notificationMail
   );
+  // Reads the support mailbox when it is due (MAILIN_YES in .env, license); does nothing when the feature is off
+  $mailInbound = InboundMailService::create($pdo, $allSettings, $_ENV, $notifier, $notificationMail, $mailOutbox, $audit, static fn(): bool => $licenseFeatures->allows('mail_in'), static fn(): bool => $authPolicy->isEnabled(), dirname(__DIR__));
   $attachmentModel = new AttachmentModel($pdo, $visibility, $audit);
   $attachmentStorage = new AttachmentStorage(dirname(__DIR__) . '/uploads/attachments');
 
   // No cron job needed: after the response the periodic cleanup runs when it is due (mail retry, retention, old uploads)
-  $housekeeping = new Housekeeping($mailOutbox, $notifier, $attachmentModel, $attachmentStorage, $issueConfig, $audit, dirname(__DIR__) . '/uploads/.housekeeping');
-  register_shutdown_function(static function () use ($mailOutbox, $housekeeping): void {
+  $housekeeping = new Housekeeping($mailOutbox, $notifier, $attachmentModel, $attachmentStorage, $issueConfig, $audit, dirname(__DIR__) . '/uploads/.housekeeping', new MailInboxModel($pdo), new SlaNotifier($pdo, $notifier));
+  register_shutdown_function(static function () use ($mailOutbox, $housekeeping, $mailInbound): void {
     // Under PHP-FPM the client gets the response now; the mail server is talked to afterwards
     ignore_user_abort(true);
     if (function_exists('fastcgi_finish_request')) {
@@ -274,10 +322,23 @@ try {
     } catch (\Throwable $e) {
       error_log('Housekeeping failed: ' . $e->getMessage());
     }
+    try {
+      $mailInbound->runIfDue();
+    } catch (\Throwable $e) {
+      error_log('Email to ticket failed: ' . $e->getMessage());
+    }
   });
 
   // The attachment files are served by the attachment endpoint after the access check, never from this folder
   $attachmentController = new AttachmentController($attachmentModel, $attachmentStorage, $issueModel, $issueActions, $visibility, $issueConfig);
+
+  // A type, status, priority, product or group that an SLA policy uses cannot be deleted: the answer names the policies
+  $slaPolicies = new SlaPolicyModel($pdo);
+  $slaDeleteGuard = static function (string $table, array $ids) use ($slaPolicies): ?string {
+    $names = $slaPolicies->usedBy($table, $ids);
+
+    return $names === [] ? null : 'It is used by the SLA policies: ' . implode(', ', $names);
+  };
 
   // Roles and groups (REST style: /roles, /roles/12, /roles/delete)
   if (preg_match('#^/(roles|groups)(?:/(\d+|delete))?/?$#', $path, $m)) {
@@ -289,12 +350,12 @@ try {
     }
     $controller = $m[1] === 'roles'
       ? new EntityController(new EntityModel($pdo, 'roles', 'user_role', 'role_id'), $audit, 'Role', ['Administrator', 'Agent', 'User', 'Public'])
-      : new EntityController(new EntityModel($pdo, 'groups', 'user_group', 'group_id'), $audit, 'Group');
+      : new EntityController(new EntityModel($pdo, 'groups', 'user_group', 'group_id'), $audit, 'Group', [], static fn(array $ids): ?string => $slaDeleteGuard('groups', $ids));
     $controller->handle($_SERVER['REQUEST_METHOD'], $m[2] ?? null);
     exit;
   }
 
-  // Issue lookups (REST style: /issue-types, /status, /resolutions, /products, /tags, /status-categories)
+  // Issue lookups (REST style: /issue-types, /status, /resolutions, /priorities, /products, /tags, /status-categories)
   if (preg_match('#^/(' . implode('|', Lookups::slugs()) . ')(?:/(\d+|delete))?/?$#', $path, $m)) {
     $definition = Lookups::get($m[1]);
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -307,7 +368,7 @@ try {
     } else {
       requirePermission($auth, $definition['permission']);
     }
-    (new LookupController(new LookupModel($pdo, $definition), $audit, $definition))->handle($_SERVER['REQUEST_METHOD'], $m[2] ?? null);
+    (new LookupController(new LookupModel($pdo, $definition), $audit, $definition, $slaDeleteGuard))->handle($_SERVER['REQUEST_METHOD'], $m[2] ?? null);
     exit;
   }
 
@@ -389,6 +450,13 @@ try {
     exit;
   }
 
+  // Administration of Email-to-ticket (GET /mailin/status, POST /mailin/test, POST /mailin/run)
+  if (preg_match('#^/mailin/(status|test|run)/?$#', $path, $m)) {
+    requirePermission($auth, 'manage_settings');
+    (new MailInController($mailInbound, $mailIn, new MailInSettings($allSettings), new MailInboxModel($pdo), $issueConfig))->handle($_SERVER['REQUEST_METHOD'], $m[1]);
+    exit;
+  }
+
   // The license (GET /license/public needs no login, everything else needs manage_settings)
   if (preg_match('#^/license(?:/(public|key|activate|deregister|refresh))?/?$#', $path, $m)) {
     if (!LicenseController::isPublic($m[1] ?? null)) {
@@ -402,6 +470,69 @@ try {
   if (preg_match('#^/preferences/?$#', $path)) {
     $current = requireUser($auth);
     (new PreferenceController(new PreferenceModel($pdo)))->handle($_SERVER['REQUEST_METHOD'], (int)$current['id']);
+    exit;
+  }
+
+  // Runs the housekeeping now (POST /housekeeping; the button on the System tab of the settings). Needs manage_settings. It does what
+  // runs after a response every five minutes anyway: sends the mails, tells about SLA timers, deletes what is past its retention.
+  if (preg_match('#^/housekeeping/?$#', $path)) {
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+      sendError(405, 'Method not allowed');
+    }
+    requirePermission($auth, 'manage_settings');
+    $done = $housekeeping->runNow();
+    if ($done === null) {
+      sendError(409, 'The housekeeping is running already. Try again in a moment.');
+    }
+    $audit->log('housekeeping.run', null, null, null, null, null, $done);
+    echo json_encode(['status' => 'success', 'message' => 'Housekeeping done', 'data' => $done]);
+    exit;
+  }
+
+  // The SLA report (GET /sla/reports, also as CSV with format=csv). Needs view_sla (not manage_sla); off in the limited mode of the license.
+  if (preg_match('#^/sla/reports/?$#', $path)) {
+    requirePermission($auth, 'view_sla');
+    requireLicensedFeature($licenseFeatures, 'sla');
+    (new SlaReportController(new SlaReportModel($pdo, $visibility, $issueConfig)))->handle($_SERVER['REQUEST_METHOD']);
+    exit;
+  }
+
+  // SLA configuration (GET, POST /sla/calendars|holidays|policies, GET, PUT, DELETE /sla/calendars|holidays|policies/12).
+  // Needs manage_sla; off in the limited mode of the license (the configuration is kept).
+  if (preg_match('#^/sla/(calendars|holidays|policies|apply)(?:/(\d+))?/?$#', $path, $m)) {
+    requirePermission($auth, 'manage_sla');
+    requireLicensedFeature($licenseFeatures, 'sla');
+    (new SlaController(new SlaCalendarModel($pdo), $slaPolicies, $audit, new SlaService($pdo)))->handle($_SERVER['REQUEST_METHOD'], $m[1], isset($m[2]) ? (int)$m[2] : null);
+    exit;
+  }
+
+  // Custom views of the issue list (GET, POST /custom-views, GET, PUT, DELETE /custom-views/12; GET /custom-views?scope=own|all).
+  // A login is required; own views need no permission, the list of all views and the views of others need manage_custom_views.
+  // Off in the limited mode of the license (the saved views are kept).
+  if (preg_match('#^/custom-views(?:/(\d+))?/?$#', $path, $m)) {
+    $current = requireUser($auth);
+    requireLicensedFeature($licenseFeatures, 'custom_views');
+    $scope = isset($_GET['scope']) && is_string($_GET['scope']) ? $_GET['scope'] : null;
+    if ($scope === 'all') {
+      requirePermission($auth, 'manage_custom_views');
+    }
+    (new CustomViewController(new CustomViewModel($pdo), $audit))->handle(
+      $_SERVER['REQUEST_METHOD'],
+      (int)$current['id'],
+      $auth->can('manage_custom_views'),
+      isset($m[1]) ? (int)$m[1] : null,
+      $scope
+    );
+    exit;
+  }
+
+  // The due time of an SLA timer of an issue (PUT /issues/12/sla/first_response). Needs manage_sla, and view_sla as well because
+  // the answer is the timer (a role that has only manage_sla must not get SLA data of issues); off in the limited mode of the license.
+  if (preg_match('#^/issues/(\d+)/sla/(first_response|resolution)/?$#', $path, $m)) {
+    requirePermission($auth, 'view_sla');
+    requirePermission($auth, 'manage_sla');
+    requireLicensedFeature($licenseFeatures, 'sla');
+    (new IssueSlaController($issueModel, $visibility, new SlaService($pdo), $audit, $pdo))->handle($_SERVER['REQUEST_METHOD'], (int)$m[1], $m[2]);
     exit;
   }
 
@@ -429,6 +560,10 @@ try {
       }
     } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
       requirePermission($auth, 'create_issue');
+      // Limited mode of the license: no new issues beyond the limit (editing and deleting stay possible)
+      if (empty($m[1]) && $licenseFeatures->reached('issues', $issueModel->countActive())) {
+        sendLicenseLimit(LicenseFeatures::limitMessage('issues'));
+      }
     }
     (new IssueController($issueModel, $visibility, $issueActions, $attachmentModel, $rateLimiter, $notifier))->handle($_SERVER['REQUEST_METHOD'], $m[1] ?? null, $m[2] ?? null);
     exit;
@@ -439,6 +574,8 @@ try {
   if (preg_match('#^/audit-log(?:/(\d+|export))?/?$#', $path, $m)) {
     requirePermission($auth, 'view_audit_log');
     requireAdmin($auth);
+    // Off in the limited mode of the license (the entries are still written)
+    requireLicensedFeature($licenseFeatures, 'audit_log');
     (new AuditLogController(new AuditLogModel($pdo, (string)($allSettings['timezone'] ?? 'UTC')), $audit))->handle($_SERVER['REQUEST_METHOD'], $m[1] ?? null);
     exit;
   }
@@ -465,7 +602,11 @@ try {
   // Users (REST style: /users, /users/12, /users/delete)
   if (preg_match('#^/users(?:/(\d+|delete))?/?$#', $path, $m)) {
     requirePermission($auth, 'manage_users');
-    (new UserController($userModel, $audit, ['admin'], (int)$auth->currentUser()['id'], $authPolicy))->handle($_SERVER['REQUEST_METHOD'], $m[1] ?? null);
+    // Limited mode of the license: no new users beyond the limit (editing, deactivating and deleting stay possible)
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($m[1]) && $licenseFeatures->reached('users', $userModel->countExceptAdmin())) {
+      sendLicenseLimit(LicenseFeatures::limitMessage('users'));
+    }
+    (new UserController($userModel, $audit, ['admin'], (int)$auth->currentUser()['id'], $authPolicy, new CustomViewModel($pdo)))->handle($_SERVER['REQUEST_METHOD'], $m[1] ?? null);
     exit;
   }
 
@@ -506,6 +647,11 @@ try {
           http_response_code(400);
           echo json_encode(['status' => 'error', 'message' => implode('; ', $errors), 'errors' => $errors]);
           break;
+        }
+
+        // Limited mode of the license: forcing 2FA cannot be switched on (a value that is already set is kept)
+        if (!$licenseFeatures->allows('two_fa_setup') && isset($clean['force_2fa']) && ($clean['force_2fa'] === true || $clean['force_2fa'] === 'true') && ($allSettings['force_2fa'] ?? 'false') !== 'true') {
+          sendLicenseLimit(LicenseFeatures::MESSAGE_FEATURE);
         }
 
         // The prefix is part of every issue key that was handed out, so it stays once an issue exists
@@ -552,9 +698,14 @@ try {
           }
         }
         // Not stored: the state of the license (no key) for the banners, the login page and the redirects
-        $settings['license'] = $license->publicState();
+        $settings['license'] = $license->publicState() + $licenseFeatures->summary(
+          static fn(): int => $issueModel->countActive(),
+          static fn(): int => $userModel->countExceptAdmin()
+        );
         // Not a stored setting: the pages hide the password features and show the LDAP hint (LDAP_YES in .env)
         $settings['ldap_active'] = $ldap->isEnabled();
+        // Not a stored setting: Email to ticket is on (MAILIN_YES in .env and the license); the issue list shows its filter
+        $settings['mailin_active'] = $mailInActive;
         // Same for single sign-on (OIDC_YES in .env): the login page shows the SSO button
         $settings['oidc_active'] = $oidc->isEnabled();
         // Not stored either: the issue key prefix is locked once an issue exists (the settings page disables the field)
@@ -588,7 +739,9 @@ try {
     case '/auth/2fa/setup':
     case '/auth/2fa/enable':
     case '/auth/2fa/begin':
-      (new TwoFactorController($twoFactor, $auth, $userModel, $totp, new QrCode(), $audit, $ldap, $oidc))->handleAuth($_SERVER['REQUEST_METHOD'], basename($path));
+      $twoFactorController = new TwoFactorController($twoFactor, $auth, $userModel, $totp, new QrCode(), $audit, $ldap, $oidc);
+      $twoFactorController->allowEnrolment($licenseFeatures->allows('two_fa_setup'));
+      $twoFactorController->handleAuth($_SERVER['REQUEST_METHOD'], basename($path));
       break;
 
     case '/auth/logout':
@@ -624,7 +777,11 @@ try {
 
     case '/auth/register':
       throttleAuth($authThrottle, AuthThrottle::REGISTER, true);
-      handleRegister($userModel, $audit, $authPolicy);
+      // Limited mode of the license: no self-registration, whatever the system setting says
+      if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$licenseFeatures->allows('self_register')) {
+        sendLicenseLimit(LicenseFeatures::MESSAGE_FEATURE);
+      }
+      handleRegister($userModel, $audit, $authPolicy, ($allSettings['allow_registration'] ?? 'true') !== 'false');
       break;
 
     case '/auth/reset-password':
@@ -661,14 +818,22 @@ try {
  * @param UserModel $userModel The user model
  * @param AuditLog  $audit     The audit log
  * @param AuthPolicy $ldap     Tells whether LDAP or OIDC is active
+ * @param bool      $allowed   False when an administrator turned off self-registration (setting allow_registration)
  *
  * @return void
  */
-function handleRegister(UserModel $userModel, AuditLog $audit, AuthPolicy $ldap): void
+function handleRegister(UserModel $userModel, AuditLog $audit, AuthPolicy $ldap, bool $allowed = true): void
 {
   if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     echo json_encode(['status' => 'error', 'message' => 'Method not allowed']);
+    return;
+  }
+
+  // The administrator manages the users manually
+  if (!$allowed) {
+    http_response_code(403);
+    echo json_encode(['status' => 'error', 'message' => 'Registration is disabled. Ask an administrator for an account.']);
     return;
   }
 
@@ -1292,6 +1457,37 @@ function sendError(int $status, string $message): never
   http_response_code($status);
   echo json_encode(['status' => 'error', 'message' => $message]);
   exit;
+}
+
+//---------------------------------------------------------------------------
+/**
+ * Ends the request with 402 and the code license_limit: the license does not allow it (limited mode).
+ *
+ * @param string $message The message
+ *
+ * @return never
+ */
+function sendLicenseLimit(string $message): never
+{
+  http_response_code(402);
+  echo json_encode(['status' => 'error', 'code' => 'license_limit', 'message' => $message]);
+  exit;
+}
+
+//---------------------------------------------------------------------------
+/**
+ * Ends the request with 402 unless the license allows the feature.
+ *
+ * @param LicenseFeatures $features The license features
+ * @param string          $feature  One of LicenseFeatures::SWITCHED
+ *
+ * @return void
+ */
+function requireLicensedFeature(LicenseFeatures $features, string $feature): void
+{
+  if (!$features->allows($feature)) {
+    sendLicenseLimit(LicenseFeatures::MESSAGE_FEATURE);
+  }
 }
 
 //---------------------------------------------------------------------------

@@ -22,8 +22,11 @@ class SettingsValidator
     'alert_show_info', 'alert_show_success', 'alert_show_warning', 'alert_show_error',
     'alert_autoclose_info', 'alert_autoclose_success', 'alert_autoclose_warning', 'alert_autoclose_error',
     'matomo_analytics', 'disable_search_engines', 'disable_caching', 'debug_mode', 'under_maintenance',
-    'force_2fa',
+    'force_2fa', 'allow_registration', 'mailin_send_confirmation', 'mailin_trust_sender',
   ];
+
+  private const ACCESS_VALUES = ['public', 'registered', 'reporter'];
+  private const UNKNOWN_SENDER_POLICIES = ['reject', 'create_user', 'anonymous'];
 
   //---------------------------------------------------------------------------
   /**
@@ -83,7 +86,10 @@ class SettingsValidator
       // Whole numbers are stored without leading zeros ("007" -> "7")
       'attachment_max_size', 'attachment_max_count', 'attachment_max_total_size', 'rate_limit_issues',
       'rate_limit_comments', 'notification_retention_days', 'notification_poll_interval',
-      'temp_upload_cleanup_hours', 'audit_retention_days', 'lic_expiry_warning' => (string)(int)$value,
+      'temp_upload_cleanup_hours', 'audit_retention_days', 'lic_expiry_warning', 'admin_page_size',
+      'mailin_poll_interval', 'mailin_max_mails_per_run', 'mailin_max_body_size', 'mailin_hourly_limit' => (string)(int)$value,
+      'mailin_default_type', 'mailin_default_product' => $value === '' ? '' : (string)(int)$value,
+      'mailin_allowed_domains', 'mailin_blocked_domains' => implode(', ', self::domainList($value)),
       default => $value,
     };
   }
@@ -104,7 +110,12 @@ class SettingsValidator
       'issue_key_prefix', 'support_email', 'attachment_max_size', 'attachment_max_count', 'attachment_max_total_size',
       'rate_limit_issues', 'rate_limit_comments', 'notification_retention_days', 'notification_poll_interval',
       'temp_upload_cleanup_hours', 'audit_retention_days', 'lic_expiry_warning',
-      'provider_contact', 'provider_phone', 'provider_email', 'provider_website',
+      'provider_contact', 'provider_phone', 'provider_email', 'provider_website', 'admin_page_size',
+      'mailin_poll_interval', 'mailin_default_type', 'mailin_default_product', 'mailin_default_access',
+      'mailin_unknown_sender', 'mailin_max_mails_per_run', 'mailin_max_body_size', 'mailin_hourly_limit',
+      'mailin_allowed_domains', 'mailin_blocked_domains',
+      'index_brand_icon', 'index_brand_title', 'index_hero_title_left', 'index_hero_title_right', 'index_hero_subtitle',
+      'index_copyright_company', 'index_copyright_url',
     ], true);
   }
 
@@ -147,11 +158,31 @@ class SettingsValidator
       'audit_retention_days' => self::integer($value, 0, 3650),
       // Days before the license expires to warn the administrators; 0 = no warning
       'lic_expiry_warning' => self::integer($value, 0, 365),
+      // Rows per page of the administration (system configuration) lists
+      'admin_page_size' => self::integer($value, 1, 100),
       // Provider (controller / imprint); all four may be empty
       'provider_contact' => self::maxLength($value, 500),
       'provider_phone' => $value === '' ? null : self::phone($value),
       'provider_email' => $value === '' ? null : (strlen($value) <= 255 && filter_var($value, FILTER_VALIDATE_EMAIL) !== false ? null : 'must be a valid email address'),
       'provider_website' => $value === '' ? null : self::url($value),
+      // Email to ticket (_docs/EMAIL_TO_TICKET.md); the credentials are in .env, not here
+      'mailin_poll_interval' => self::integer($value, 60, 86400),
+      // Empty = the first active issue type; whether the id exists is checked when a mail is turned into an issue
+      'mailin_default_type', 'mailin_default_product' => $value === '' ? null : self::integer($value, 1, null),
+      'mailin_default_access' => in_array($value, self::ACCESS_VALUES, true) ? null : 'must be one of ' . implode(', ', self::ACCESS_VALUES),
+      'mailin_unknown_sender' => in_array($value, self::UNKNOWN_SENDER_POLICIES, true) ? null : 'must be one of ' . implode(', ', self::UNKNOWN_SENDER_POLICIES),
+      'mailin_max_mails_per_run' => self::integer($value, 1, 200),
+      // Kilobytes of text taken from one mail; the rest is cut off
+      'mailin_max_body_size' => self::integer($value, 1, 4096),
+      // Mails per hour that may become issues or comments in total; 0 = no limit
+      'mailin_hourly_limit' => self::integer($value, 0, 10000),
+      'mailin_allowed_domains', 'mailin_blocked_domains' => self::domains($value),
+      // Index page (docs/INDEX_PAGE.md); all of them may be empty = the default look
+      'index_brand_icon' => $value === '' || preg_match('/^bi-[a-z0-9-]{1,60}$/', $value) ? null : 'must be a Bootstrap Icons class such as bi-headset',
+      'index_brand_title' => self::maxLength($value, 50),
+      'index_hero_title_left', 'index_hero_title_right', 'index_copyright_company' => self::maxLength($value, 100),
+      'index_hero_subtitle' => self::maxLength($value, 300),
+      'index_copyright_url' => $value === '' ? null : self::url($value),
       default => 'is not supported',
     };
   }
@@ -205,6 +236,43 @@ class SettingsValidator
     $candidate = preg_match('#^https?://#i', $value) ? $value : 'https://' . $value;
 
     return filter_var($candidate, FILTER_VALIDATE_URL) ? null : 'must be a valid URL';
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Splits a list of domains (separated by comma, semicolon, space or line break) and lower-cases it.
+   *
+   * @param string $value The list
+   *
+   * @return string[] The domains without duplicates, as typed otherwise
+   */
+  private static function domainList(string $value): array
+  {
+    $parts = preg_split('/[\s,;]+/', strtolower($value), -1, PREG_SPLIT_NO_EMPTY) ?: [];
+
+    return array_values(array_unique(array_map(static fn(string $d): string => ltrim($d, '@'), $parts)));
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Checks a list of domains, e.g. "example.com, partner.org".
+   *
+   * @param string $value The list; empty is valid
+   *
+   * @return string|null An error message or null if the list is valid
+   */
+  private static function domains(string $value): ?string
+  {
+    if (strlen($value) > 2000) {
+      return 'must not be longer than 2000 characters';
+    }
+    foreach (self::domainList($value) as $domain) {
+      if (!preg_match('/^(?=.{1,253}$)([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/', $domain)) {
+        return "contains an invalid domain: $domain";
+      }
+    }
+
+    return null;
   }
 
   //---------------------------------------------------------------------------

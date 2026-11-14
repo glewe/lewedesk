@@ -1,5 +1,20 @@
 [
   {
+    "version": "1.0.2",
+    "date": "2026-11-xx",
+    "info": "Improvement release.",
+    "bugfixes": [],
+    "features": [
+      { "summary": "Add setting to disable user self-registration", "issue": "" },
+      { "summary": "Add license features", "issue": "" },
+      { "summary": "Add priorities feature", "issue": "" },
+      { "summary": "Add SLA feature", "issue": "" }
+    ],
+    "improvements": [
+    ],
+    "removals": []
+  },
+  {
     "version": "1.0.1",
     "date": "2026-11-09",
     "info": "Improvement release.",

@@ -14,10 +14,14 @@ use DateTimeImmutable;
  *
  * The state is cached in the settings table (lic_*) and checked again every 30 minutes. When the license server cannot
  * be reached, the last known state stays in force (fail-open) and the next try follows after five minutes. Without a
- * license key the installation runs as a trial for seven days.
+ * license key the installation runs as a trial for 14 days.
  *
  * Statuses: active, pending, expired, blocked, invalid, unregistered, trial, trial_expired, unavailable.
- * Locked are expired, blocked and trial_expired only.
+ *
+ * Modes (see mode()): "full" (valid license), "grace" (trial, or 14 days after the license went missing, invalid or
+ * expired: everything works, administrators see a banner) and "limited" (after that, and at once for a blocked license:
+ * see LicenseFeatures). The application is only locked (isLocked(), administrators only) when LICENSE_LOCK=1 is set in
+ * the .env file.
  */
 class LicenseService
 {
@@ -28,7 +32,13 @@ class LicenseService
   public const RETRY_INTERVAL = 300;
 
   /** Length of the trial period without a license key */
-  public const TRIAL_DAYS = 7;
+  public const TRIAL_DAYS = 14;
+
+  /** Length of the grace period after the license became invalid or expired */
+  public const GRACE_DAYS = 14;
+
+  /** Statuses whose grace period starts with the first check that returned them (setting lic_grace_start) */
+  private const GRACE_FROM_CHECK = ['invalid', 'unregistered', 'pending'];
 
   /** Statuses that lock the application for everybody but the administrators */
   private const LOCKED = ['expired', 'blocked', 'trial_expired'];
@@ -96,13 +106,125 @@ class LicenseService
 
   //---------------------------------------------------------------------------
   /**
-   * Tells whether the application is locked (expired or blocked license, or the trial is over).
+   * Tells whether the application is locked (expired or blocked license, or the trial is over). Only when the lock is
+   * switched on in the .env file (LICENSE_LOCK=1); otherwise the limited mode applies (see mode()).
    *
    * @return bool
    */
   public function isLocked(): bool
   {
-    return in_array($this->status(), self::LOCKED, true);
+    return $this->lockEnabled() && in_array($this->status(), self::LOCKED, true);
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Tells whether the lock is switched on (LICENSE_LOCK in the .env file, off by default).
+   *
+   * @return bool
+   */
+  public function lockEnabled(): bool
+  {
+    return in_array(strtolower(trim((string)($this->env['LICENSE_LOCK'] ?? ''))), ['1', 'true', 'yes', 'on'], true);
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Gets the mode the installation runs in.
+   *
+   * @return string full (valid license), grace (trial or grace period: everything works, a banner warns the
+   *                administrators) or limited (see LicenseFeatures)
+   */
+  public function mode(): string
+  {
+    return $this->phase()['mode'];
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Gets the reason for the grace period or the limited mode.
+   *
+   * @return string missing, invalid, unregistered, pending, expired or blocked; '' in the full mode
+   */
+  public function reason(): string
+  {
+    return $this->phase()['reason'];
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Gets the days left of the grace period (the trial counts as one).
+   *
+   * @return int 0 = ends today; also 0 outside of the grace period
+   */
+  public function graceDaysLeft(): int
+  {
+    return $this->phase()['days'];
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Works out the mode, the reason and the days left of the grace period from the status.
+   *
+   * @return array{mode: string, reason: string, days: int}
+   */
+  private function phase(): array
+  {
+    $status = $this->status();
+    switch ($status) {
+      case 'trial':
+        return ['mode' => 'grace', 'reason' => 'missing', 'days' => $this->trialDaysLeft()];
+      case 'trial_expired':
+        return ['mode' => 'limited', 'reason' => 'missing', 'days' => 0];
+      case 'blocked':
+        // Blocking is done on purpose: no grace period
+        return ['mode' => 'limited', 'reason' => 'blocked', 'days' => 0];
+      case 'expired':
+        // The 14 days run from the day after the expiry date (derived from the license data: nothing to store, cannot
+        // be reset). Without an expiry date they run from the first check, like the others.
+        $toExpiry = $this->daysToExpiry();
+        $left = $toExpiry === null ? $this->daysSinceFirstCheck() : min(self::GRACE_DAYS, self::GRACE_DAYS + $toExpiry);
+        break;
+      case 'invalid':
+      case 'unregistered':
+      case 'pending':
+        $left = $this->daysSinceFirstCheck();
+        break;
+      default:
+        // active, and unavailable (the license server cannot be reached: fail-open)
+        return ['mode' => 'full', 'reason' => '', 'days' => 0];
+    }
+
+    return ['mode' => $left >= 0 ? 'grace' : 'limited', 'reason' => $status, 'days' => max(0, $left)];
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Gets the days left of a grace period that started with the first check that returned the status.
+   *
+   * @return int 1 or more while the grace period runs; -1 when it is over
+   */
+  private function daysSinceFirstCheck(): int
+  {
+    $end = $this->graceStart() + self::GRACE_DAYS * 86400;
+
+    return time() < $end ? (int)ceil(($end - time()) / 86400) : -1;
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Gets the start of the grace period; the first call sets it (see apply(): it is cleared when the license is active).
+   *
+   * @return int Unix time
+   */
+  private function graceStart(): int
+  {
+    $start = (int)($this->cache['lic_grace_start'] ?? 0);
+    if ($start <= 0) {
+      $start = time();
+      $this->store(['lic_grace_start' => (string)$start]);
+    }
+
+    return $start;
   }
 
   //---------------------------------------------------------------------------
@@ -169,16 +291,20 @@ class LicenseService
   /**
    * Gets the state that anybody may see (no key, no personal data).
    *
-   * @return array{state: string, locked: bool, trial_days_left: int, days_to_expiry: int|null, product: string, expiry: string|null}
+   * @return array{state: string, mode: string, reason: string, grace_days_left: int, locked: bool, trial_days_left: int, days_to_expiry: int|null, product: string, expiry: string|null}
    */
   public function publicState(): array
   {
     $state = $this->status();
     $license = $this->license();
+    $phase = $this->phase();
 
     return [
       'state' => $state,
-      'locked' => in_array($state, self::LOCKED, true),
+      'mode' => $phase['mode'],
+      'reason' => $phase['reason'],
+      'grace_days_left' => $phase['mode'] === 'grace' ? $phase['days'] : 0,
+      'locked' => $this->isLocked(),
       'trial_days_left' => $state === 'trial' ? $this->trialDaysLeft() : 0,
       'days_to_expiry' => $this->daysToExpiry(),
       'product' => (string)($license['product'] ?? ($this->env['LICENSE_ITEM'] ?? 'LeweDesk')),
@@ -408,6 +534,15 @@ class LicenseService
     // An error answer carries no license data: keep what is known about the same key
     $license = is_array($body['license'] ?? null) ? $body['license'] : (($data['license']['key'] ?? null) === $this->key() ? ($data['license'] ?? []) : []);
     $old = $this->cache['lic_status'] ?? '';
+    if ($new === 'active') {
+      // A valid license ends the grace period; the next lapse starts a new one
+      if (($this->cache['lic_grace_start'] ?? '') !== '') {
+        $this->store(['lic_grace_start' => '']);
+      }
+    } elseif (in_array($new, self::GRACE_FROM_CHECK, true)) {
+      // The grace period starts with the first check that returned the status
+      $this->graceStart();
+    }
     $this->store([
       'lic_status' => $new,
       'lic_checked_at' => (string)time(),

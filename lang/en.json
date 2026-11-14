@@ -32,6 +32,12 @@
     "activity": {
       "title": "Recent Activity",
       "empty": "No activity on your issues yet."
+    },
+    "sla": {
+      "breached": "SLA breached",
+      "at_risk": "SLA at risk",
+      "compliance": "SLA compliance",
+      "days": "last {days} days"
     }
   },
   "sidebar": {
@@ -47,9 +53,12 @@
     "issue_types": "Issue Types",
     "products": "Products",
     "resolutions": "Resolutions",
+    "priorities": "Priorities",
     "status": "Status",
     "status_categories": "Status Categories",
     "tags": "Tags",
+    "custom_views": "Custom Views",
+    "sla_setup": "SLA Setup",
     "issues_title": "Issues",
     "all_issues": "All issues",
     "create_issue": "Create issue",
@@ -60,7 +69,9 @@
     "waiting": "Waiting",
     "in_progress": "In progress",
     "done": "Done",
-    "deleted_issues": "Deleted"
+    "deleted_issues": "Deleted",
+    "sla_breached": "SLA breached",
+    "sla_report": "SLA report"
   },
   "header": {
     "search": "Search...",
@@ -104,9 +115,11 @@
       "general": "General",
       "system": "System",
       "theme": "Theme",
+      "index_page": "Index Page",
       "issues": "Issue Config",
       "license": "License",
-      "provider": "Provider"
+      "provider": "Provider",
+      "mailin": "Email to Ticket"
     },
     "fields": {
       "application_url": "Application URL",
@@ -149,14 +162,32 @@
       "debug_mode_desc": "With this switch on, debugging information is displayed in the browser console.",
       "under_maintenance": "Under Maintenance",
       "under_maintenance_desc": "With this switch on, the application is put into maintenance mode. Only administrators can access the application.",
+      "allow_registration": "Allow User Self-Registration",
+      "allow_registration_desc": "Lets visitors create their own account on the registration page. Turn this off to manage users manually; administrators can still create users.",
       "force_2fa": "Force Two Factor Authentication",
       "force_2fa_desc": "Forces users to setup a two factor authentication, e.g. via Google or Microsoft Authenticator. If a user has not setup 2FA yet, he will be redirected to a Setup 2FA page after regular login.",
       "audit_retention_days": "Audit Log Retention (Days)",
       "audit_retention_days_desc": "Enter after how many days audit log entries are deleted. Enter 0 to keep them forever.",
+      "admin_page_size": "Administration page size",
+      "admin_page_size_desc": "Defines how many rows are shown per page on system configuration pages.",
       "color_mode": "Color Mode",
       "color_mode_desc": "Select the default color mode of the application.",
       "font": "Font",
       "font_desc": "Select the font to use for the application.",
+      "index_brand_icon": "Navbar Icon",
+      "index_brand_icon_desc": "Bootstrap Icons class shown in the navbar and the sidebar, e.g. bi-headset. Leave empty for the default icon.",
+      "index_brand_title": "Navbar Title",
+      "index_brand_title_desc": "Title shown in the navbar and the sidebar. Leave empty for the default title.",
+      "index_hero_title_left": "Hero Title (left)",
+      "index_hero_title_left_desc": "Left part of the hero title, shown in the normal text color. Leave a part empty to keep the default for it.",
+      "index_hero_title_right": "Hero Title (right)",
+      "index_hero_title_right_desc": "Right part of the hero title, shown highlighted.",
+      "index_hero_subtitle": "Hero Subtitle",
+      "index_hero_subtitle_desc": "Text below the hero title. Leave empty for the default text.",
+      "index_copyright_company": "Copyright Company",
+      "index_copyright_company_desc": "Company name in the footer copyright line. The year is added automatically. Leave empty for the default.",
+      "index_copyright_url": "Copyright Link",
+      "index_copyright_url_desc": "Optional web address (http or https) the company name links to. Without it the name is shown as plain text.",
       "issue_key_prefix": "Issue Key Prefix",
       "issue_key_prefix_desc": "Enter the prefix of the issue key. Issues are displayed as PREFIX-123 (e.g. LD-123). The prefix cannot be changed anymore once the first issue exists.",
       "support_email": "Support Email",
@@ -186,7 +217,31 @@
       "provider_email": "Email",
       "provider_email_desc": "Email address of the provider. Leave empty to hide it.",
       "provider_website": "Website",
-      "provider_website_desc": "Website of the provider, starting with http:// or https://. Leave empty to hide it."
+      "provider_website_desc": "Website of the provider, starting with http:// or https://. Leave empty to hide it.",
+      "mailin_poll_interval": "Check Interval (Seconds)",
+      "mailin_poll_interval_desc": "How often the mailbox is read, at the earliest. Reading happens after a request to the application, so it needs some traffic.",
+      "mailin_default_type": "Issue Type",
+      "mailin_default_type_desc": "Type of the issues that are made from mails.",
+      "mailin_default_product": "Product",
+      "mailin_default_product_desc": "Product of the issues that are made from mails.",
+      "mailin_default_access": "Access",
+      "mailin_default_access_desc": "Who can see the issues that are made from mails. \"Reporter only\" is the safe choice: the sender and the support team.",
+      "mailin_unknown_sender": "Unknown Senders",
+      "mailin_unknown_sender_desc": "What happens with mails from addresses that no user has. Both ways other than \"Reject\" need the proof of the mail server that the sender owns the address.",
+      "mailin_send_confirmation": "Confirmation Mail",
+      "mailin_send_confirmation_desc": "Send the sender of a mail the issue key when an issue was made from it.",
+      "mailin_trust_sender": "Trust the Sender Address",
+      "mailin_trust_sender_desc": "Accept the address of a user without the proof of the mail server (SPF, DKIM, DMARC). Never for support staff and administrators. Only for a mailbox that receives mails from inside.",
+      "mailin_max_mails_per_run": "Mails per Check",
+      "mailin_max_mails_per_run_desc": "The most mails that are handled in one check. The others wait for the next one.",
+      "mailin_max_body_size": "Largest Text (KB)",
+      "mailin_max_body_size_desc": "The text of a mail is cut off after this size.",
+      "mailin_hourly_limit": "Mails per Hour",
+      "mailin_hourly_limit_desc": "The most mails that may become issues or comments within an hour. The others wait in the mailbox. 0 means no limit.",
+      "mailin_allowed_domains": "Allowed Sender Domains",
+      "mailin_allowed_domains_desc": "Only mails from these domains are handled (one per line or separated by commas, subdomains included). Empty: every domain.",
+      "mailin_blocked_domains": "Blocked Sender Domains",
+      "mailin_blocked_domains_desc": "Mails from these domains are always rejected."
     },
     "actions": {
       "save": "Save Settings",
@@ -242,12 +297,12 @@
         },
         "trial": {
           "title": "No license - trial period",
-          "subject": "This installation of LeweDesk is unlicensed. It will stop working in {days} days.",
+          "subject": "This installation of LeweDesk is unlicensed. The trial period ends in {days} days; after that LeweDesk runs with limits.",
           "help": "Enter your license key below and activate it."
         },
         "trial_expired": {
           "title": "No license - trial period over",
-          "subject": "This installation of LeweDesk is unlicensed and the trial period is over. Only administrators can log in.",
+          "subject": "This installation of LeweDesk is unlicensed and the trial period is over. LeweDesk runs with limits.",
           "help": "Enter your license key below and activate it."
         },
         "pending": {
@@ -257,12 +312,12 @@
         },
         "expired": {
           "title": "License expired",
-          "subject": "Your license has expired. Only administrators can log in.",
+          "subject": "Your license has expired. After a grace period of 14 days LeweDesk runs with limits.",
           "help": "Please renew your license, or contact the vendor."
         },
         "blocked": {
           "title": "License blocked",
-          "subject": "Your license has been blocked. Only administrators can log in.",
+          "subject": "Your license has been blocked. LeweDesk runs with limits.",
           "help": "Please contact the vendor."
         },
         "unregistered": {
@@ -302,6 +357,65 @@
         "invalid_domain": "The domain of this installation is not valid for the license server.",
         "https_required": "The license server must be reached over HTTPS. Check LICENSE_SERVER in the .env file."
       }
+    },
+    "mailin": {
+      "off_env_title": "Off",
+      "off_env": "Email to Ticket is not switched on. Set MAILIN_YES=1 and the mailbox (MAILIN_HOST, and the login, which defaults to MAIL_USER and MAIL_PASS) in the .env file of the installation.",
+      "off_license_title": "Off: license",
+      "off_license": "Email to Ticket is switched on in the .env file, but the license does not allow it at the moment. The mails stay in the mailbox.",
+      "on_title": "On",
+      "on": "Mails to the mailbox are turned into issues and comments.",
+      "mailbox": "Mailbox",
+      "folders": "Folders",
+      "folders_value": "read: {inbox}, handled: {processed}, rejected: {rejected}",
+      "auth_servers": "Trusted mail server",
+      "auth_none": "none set (MAILIN_AUTH_SERVER): only the setting \"Trust the Sender Address\" lets users in, support staff cannot send mails",
+      "last_run": "Last check",
+      "never_run": "There was no check yet.",
+      "last_result": "{issues} issue(s), {comments} comment(s), {rejected} rejected, {errors} failed",
+      "limited": "The limit per hour was reached; the other mails wait in the mailbox.",
+      "mailbox_error": "The mailbox could not be read: {error}",
+      "counts": "Last 24 hours",
+      "test": "Test Connection",
+      "testing": "Testing...",
+      "test_desc": "Logs in to the mailbox and looks at it. Nothing is changed.",
+      "test_ok": "Connected. {folders} folder(s), {inbox} mail(s) in the inbox, {unseen} unseen.",
+      "test_missing": "The folder(s) {names} do not exist yet; the first check creates them.",
+      "test_failed": "The connection failed: {error}",
+      "pickup_run": "Pick Up Now",
+      "pickup_running": "Picking up...",
+      "pickup_run_desc": "Reads the mailbox now instead of waiting for the next check. The interval starts again from this moment.",
+      "pickup_run_ok": "Done. {issues} issue(s), {comments} comment(s), {rejected} rejected, {errors} failed.",
+      "pickup_run_busy": "Another check is working on the mailbox at this moment. Try again in a moment.",
+      "pickup_run_failed": "The mailbox could not be picked up: {error}",
+      "log": "Latest Mails",
+      "log_empty": "No mail was read yet.",
+      "col_time": "When",
+      "col_from": "From",
+      "col_subject": "Subject",
+      "col_result": "Result",
+      "col_details": "Details",
+      "result_issue": "Issue",
+      "result_comment": "Comment",
+      "result_rejected": "Rejected",
+      "result_error": "Failed",
+      "attempts": "{count} tries",
+      "first_type": "The first active type",
+      "no_product": "None",
+      "policy_reject": "Reject",
+      "policy_create_user": "Make an account",
+      "policy_anonymous": "Anonymous (account \"Email requester\")",
+      "load_error": "The state of Email to Ticket could not be loaded.",
+      "options_error": "The lists could not be loaded; the setting is left as it is."
+    },
+    "housekeeping": {
+      "title": "Housekeeping",
+      "desc": "Sends the waiting emails, tells about SLA timers that are at risk or breached, and deletes what is past its retention period. It runs by itself every five minutes; here you can run it now.",
+      "run": "Run housekeeping now",
+      "running": "Running...",
+      "finished": "The housekeeping was run.",
+      "done": "Done: {sent} email(s) sent, {notifications} notification(s), {mails} old email(s), {uploads} temporary upload(s) and {audit} audit log entries deleted; SLA: {breached} breached and {at_risk} at risk timer(s) announced.",
+      "error": "The housekeeping could not be run."
     }
   },
   "lookups": {
@@ -327,6 +441,12 @@
       "on_hold": "On hold",
       "resolved": "Resolved",
       "closed": "Closed"
+    },
+    "priorities": {
+      "critical": "Critical",
+      "high": "High",
+      "normal": "Normal",
+      "low": "Low"
     },
     "resolutions": {
       "completed": "Completed",
@@ -401,6 +521,23 @@
         "not_found": "The status was not found."
       },
       "category_desc": "The category the status belongs to. Categories group the status in the issue lists."
+    },
+    "priorities": {
+      "title": "Priorities",
+      "add_title": "Add Priority",
+      "edit_title": "Edit Priority",
+      "name_desc": "Unique name of the priority (max. 50 characters).",
+      "description_desc": "Short description of what the priority means.",
+      "confirm_delete": "Delete the selected priorities? This cannot be undone.",
+      "messages": {
+        "created": "The priority was created.",
+        "updated": "The priority was updated.",
+        "deleted": "The selected priorities were deleted.",
+        "load_error": "Failed to load priorities from the server.",
+        "save_error": "The priority could not be saved.",
+        "delete_error": "The selected priorities could not be deleted.",
+        "not_found": "The priority was not found."
+      }
     },
     "resolutions": {
       "title": "Resolutions",
@@ -645,7 +782,8 @@
       "avatar": "Avatar",
       "notifications": "Notifications",
       "options": "Options",
-      "twofa": "2FA"
+      "twofa": "2FA",
+      "custom_views": "Custom Views"
     },
     "options": {
       "language": "Language",
@@ -700,6 +838,26 @@
   "maintenance": {
     "banner": "Maintenance mode is active. Only administrators can use the application."
   },
+  "custom_views": {
+    "title": "Custom Views",
+    "admin_description": "All saved views of the issue list of all users. Shared views of deleted users stay without an owner.",
+    "admin_empty": "There are no custom views yet.",
+    "description": "Your saved views of the issue list. Create a view on the issues page with \"Save view\".",
+    "empty": "You have no custom views yet.",
+    "shared_column": "Visibility",
+    "updated_column": "Updated",
+    "actions_column": "Actions",
+    "owner_column": "Owner",
+    "shared_badge": "Shared",
+    "private_badge": "Private",
+    "deleted_user": "(deleted user)",
+    "edit_title": "Edit view",
+    "stale_removed": "Some filter settings of this view are not available anymore and were removed. Save the view to update it.",
+    "name_exists": "You already have a view with this name.",
+    "confirm_delete": "Delete the view \"{name}\"? This cannot be undone.",
+    "deleted": "The view was deleted.",
+    "delete_error": "The view could not be deleted."
+  },
   "tags": {
     "input": {
       "label": "Tags",
@@ -724,6 +882,7 @@
     "fields": {
       "type": "Type",
       "status_category": "Status Category",
+      "priority": "Priority",
       "summary": "Summary",
       "description": "Description",
       "product": "Product",
@@ -731,7 +890,9 @@
       "access": "Access",
       "resolution": "Resolution",
       "tags": "Tags",
-      "watchers": "Watchers"
+      "watchers": "Watchers",
+      "source": "Source",
+      "requester": "Sender"
     },
     "columns": {
       "id": "Issue",
@@ -740,7 +901,8 @@
       "assignee": "Assignee",
       "created": "Created",
       "updated": "Updated",
-      "status": "Status"
+      "status": "Status",
+      "sla": "SLA"
     },
     "access": {
       "public": "Public",
@@ -761,7 +923,8 @@
       "waiting": "Waiting issues",
       "in_progress": "Issues in progress",
       "done": "Done issues",
-      "deleted": "Deleted issues"
+      "deleted": "Deleted issues",
+      "sla_breached": "SLA breached issues"
     },
     "bulk": {
       "restore": "Restore",
@@ -779,18 +942,37 @@
       "all_status": "All status",
       "all_status_categories": "All status categories",
       "all_types": "All types",
+      "all_priorities": "All priorities",
       "all_products": "All products",
       "all_assignees": "All assignees",
       "all_reporters": "All reporters",
       "all_tags": "All tags",
+      "n_selected": "{count} selected",
       "search_results": "Search results for \"{term}\"",
       "participant": "Participant: {name}",
       "reset": "Reset filters",
-      "hide_closed": "Hide closed"
+      "all_sources": "All sources"
+    },
+    "custom_views": {
+      "save_button": "Save view",
+      "select_placeholder": "Select view",
+      "select_label": "Select a custom view",
+      "save_title": "Save view",
+      "name": "Name",
+      "name_required": "Please enter a name (up to 100 characters).",
+      "shared": "Share with all registered users",
+      "shared_desc": "Other registered users can select this view. Only you can change it.",
+      "overwrite_confirm": "You already have a view named \"{name}\". Overwrite it with the current filters?",
+      "overwrite": "Overwrite",
+      "saved": "The view was saved.",
+      "save_error": "The view could not be saved.",
+      "load_error": "The view could not be loaded.",
+      "stale": "Your custom view contains filter settings that are not available anymore. Please update your custom view in your profile."
     },
     "create": {
       "title": "Create issue",
       "type_desc": "What kind of issue is it?",
+      "priority_desc": "How urgent the issue is. New issues start with Normal.",
       "type_placeholder": "Select a type...",
       "type_required": "Please select a type.",
       "summary_desc": "A short title in one line (up to 200 characters).",
@@ -833,6 +1015,11 @@
       "create_error": "The issue could not be created.",
       "created": "Issue {key} was created.",
       "saved": "Issue {key} was updated."
+    },
+    "source": {
+      "email": "Email",
+      "web": "Web",
+      "email_title": "Made from an email"
     }
   },
   "markdown": {
@@ -1010,16 +1197,21 @@
       "attachment_deleted": "deleted the attachment {name}"
     },
     "fields": {
+      "sla_first_response": "SLA due time of the first response",
+      "sla_resolution": "SLA due time of the resolution",
       "tags": "Tags",
       "type": "Type",
       "status": "Status",
+      "priority": "Priority",
       "resolution": "Resolution",
       "assignee": "Assignee",
       "access": "Access",
       "summary": "Summary",
       "description": "Description",
       "product": "Product",
-      "version": "Version"
+      "version": "Version",
+      "sla_breached_first_response": "SLA breach: first response (due time)",
+      "sla_breached_resolution": "SLA breach: resolution (due time)"
     },
     "load_error": "The history could not be loaded."
   },
@@ -1060,7 +1252,9 @@
       "issue_unassigned": "{actor} unassigned the issue",
       "status_changed": "{actor} changed the status to {status}",
       "comment_added": "{actor} added a comment",
-      "comment_added_internal": "{actor} added an internal comment"
+      "comment_added_internal": "{actor} added an internal comment",
+      "sla_at_risk": "SLA at risk: {metric} is due {due}",
+      "sla_breached": "SLA breached: {metric} was due {due}"
     },
     "prefs": {
       "description": "Choose per event whether you get an email and whether you get a notification in the top bar. You only hear about issues you may see.",
@@ -1083,6 +1277,14 @@
         "comment_added": {
           "title": "Comment added",
           "desc": "A comment was added to an issue you reported, watch or work on."
+        },
+        "sla_at_risk": {
+          "title": "SLA at risk",
+          "desc": "An SLA target of an issue you work on or watch is close to its due time (support team only)."
+        },
+        "sla_breached": {
+          "title": "SLA breached",
+          "desc": "An SLA target of an issue you work on or watch was missed, or of an issue your policy escalates to you (support team only)."
         }
       },
       "saved": "Your notification settings were saved.",
@@ -1096,7 +1298,7 @@
     "login": "Login",
     "register": "Register",
     "issues": "Issues",
-    "hero_title": "Customer support, <span class=\"text-primary hero-shimmer\">organized</span>",
+    "hero_title": "My Company <span class=\"text-primary hero-shimmer\">Customer Support</span>",
     "hero_lead": "LeweDesk is the helpdesk and ticket management system by Lewe Labs. Report issues, request improvements and follow every case from the first message to the solution.",
     "features_title": "Everything a support team needs",
     "features_lead": "A focused set of tools to collect, organize and resolve customer reports.",
@@ -1185,15 +1387,253 @@
   "license": {
     "banner": {
       "link": "License settings",
-      "trial": "This installation of LeweDesk is unlicensed. It will stop working in {days} days.",
-      "trial_expired": "This installation of LeweDesk is unlicensed and the trial period is over. Only administrators can log in.",
-      "expired": "The license has expired. Only administrators can log in.",
-      "blocked": "The license has been blocked. Only administrators can log in.",
-      "pending": "The license has not been activated yet.",
-      "unregistered": "The license is valid, but this domain is not registered with it.",
-      "invalid": "The license key is invalid.",
+      "reason": {
+        "missing": "missing",
+        "invalid": "invalid",
+        "unregistered": "not registered for this domain",
+        "pending": "not activated yet",
+        "expired": "expired",
+        "blocked": "blocked"
+      },
+      "grace": "Your LeweDesk license is {reason}. Your grace period ends in {days} days.",
+      "grace_one": "Your LeweDesk license is {reason}. Your grace period ends in 1 day.",
+      "grace_today": "Your LeweDesk license is {reason}. Your grace period ends today.",
+      "limited": "Your LeweDesk license is {reason}. LeweDesk runs in limited mode: no more than {issues} issues and {users} users can be created, and 2FA setup, the Audit Log, Custom Views and self-registration are off. Activate a valid license to remove the limits.",
       "expiring": "The license expires in {days} days.",
       "expiring_today": "The license expires today."
+    },
+    "feature_off": "This feature is currently disabled due to an invalid license.",
+    "limit_reached": {
+      "issues": "Limit reached: without a valid license no more than {max} issues can be created.",
+      "users": "Limit reached: without a valid license no more than {max} users can be created."
+    }
+  },
+  "sla": {
+    "tabs": {
+      "policies": "Policies",
+      "calendars": "Calendars"
+    },
+    "metric": {
+      "first_response": "First response",
+      "resolution": "Resolution"
+    },
+    "unit": {
+      "minutes": "Minutes",
+      "hours": "Hours",
+      "days": "Days"
+    },
+    "unit_short": {
+      "minutes": "min",
+      "hours": "h",
+      "days": "d"
+    },
+    "weekday": {
+      "1": "Monday",
+      "2": "Tuesday",
+      "3": "Wednesday",
+      "4": "Thursday",
+      "5": "Friday",
+      "6": "Saturday",
+      "7": "Sunday"
+    },
+    "weekday_short": {
+      "1": "Mon",
+      "2": "Tue",
+      "3": "Wed",
+      "4": "Thu",
+      "5": "Fri",
+      "6": "Sat",
+      "7": "Sun"
+    },
+    "policies": {
+      "title": "SLA policies",
+      "intro": "A policy sets how fast issues must get a first response and be resolved. The policies with conditions are tried in the order of the sort order, and the first one that matches an issue applies. The default policy (no conditions) applies to all other issues.",
+      "add_title": "Add SLA policy",
+      "edit_title": "Edit SLA policy",
+      "confirm_delete": "Delete the selected policy? A policy that has timers of issues cannot be deleted; deactivate it instead.",
+      "default": "Default",
+      "any": "Any",
+      "around_the_clock": "Around the clock (24/7)",
+      "conditions": "Conditions",
+      "calendar": "Calendar",
+      "targets": "Targets",
+      "warning_short": "Warning",
+      "no_targets": "No targets",
+      "name_desc": "Unique name of the policy (max. 100 characters).",
+      "description_desc": "Short description of when the policy applies.",
+      "conditions_desc": "The policy applies to issues that match all conditions you set. Leave a condition on \"Any\" to ignore it.",
+      "group": "Reporter group",
+      "default_notice": "A policy without conditions is the default policy for all issues no other policy matches. There can be only one.",
+      "calendar_desc": "The opening hours in which the clock runs. Without a calendar the clock runs around the clock.",
+      "targets_desc": "How long the team has for the first response and the resolution, counted in working time of the calendar. Leave a field empty for no target.",
+      "targets_hint": "A day is 24 hours of working time. The row \"All other priorities\" applies to every priority that has no row of its own.",
+      "other_priorities": "All other priorities",
+      "unit": "Unit",
+      "warning": "Warning threshold",
+      "warning_desc": "The share of the target after which an issue is marked as at risk.",
+      "pause_statuses": "Statuses that stop the clock",
+      "pause_statuses_desc": "The clock does not run while an issue has one of these statuses (for example while it waits for the customer).",
+      "sort_order_desc": "Policies with a lower number are tried first. Leave empty to put a new policy last. The default policy has no place in the order: it applies when no other policy matches.",
+      "active_desc": "Only active policies apply to issues.",
+      "messages": {
+        "load_error": "The SLA policies could not be loaded from the server.",
+        "not_found": "The SLA policy was not found.",
+        "created": "The SLA policy was created.",
+        "updated": "The SLA policy was updated.",
+        "deleted": "The SLA policy was deleted.",
+        "save_error": "The SLA policy could not be saved.",
+        "delete_error": "The SLA policy could not be deleted.",
+        "target_invalid": "A target must be a whole number of minutes (at least 1)."
+      },
+      "apply": "Apply to open issues",
+      "apply_confirm": "Start the SLA timers of all open issues that have none, with the policies as they are now? The clock of such a timer starts when the issue was created, so it can be breached at once. Issues that have timers are not changed.",
+      "apply_yes": "Yes, start timers",
+      "apply_result": "The timers were started for {issues} issue(s) ({timers} timers).",
+      "apply_error": "The timers could not be started.",
+      "escalation": "Escalation",
+      "escalation_desc": "Who is told when a target of this policy is breached, besides the assignee and the watchers. Only people who may see the issue and the SLA data get the message.",
+      "escalation_user": "User",
+      "escalation_group": "Group",
+      "escalation_none": "Nobody"
+    },
+    "calendars": {
+      "title": "SLA calendars",
+      "intro": "A calendar tells when the clock of an SLA runs: the opening hours of each weekday in a time zone. Holidays stop the clock for the whole day.",
+      "add_title": "Add SLA calendar",
+      "edit_title": "Edit SLA calendar",
+      "confirm_delete": "Delete the selected calendar with its opening hours and holidays? A calendar that a policy uses cannot be deleted.",
+      "timezone": "Time zone",
+      "hours": "Opening hours",
+      "holidays": "Holidays",
+      "policies": "Policies",
+      "closed": "Closed",
+      "name_desc": "Unique name of the calendar (max. 100 characters).",
+      "description_desc": "Short description, for example the team or the location.",
+      "timezone_desc": "The time zone of the opening hours. Daylight saving time is taken into account.",
+      "hours_desc": "The times when the clock runs. A day can have several ranges (for example a lunch break). An end of 00:00 means the end of the day.",
+      "copy_monday": "Copy Monday to Tuesday-Friday",
+      "from": "From",
+      "until": "Until",
+      "remove_range": "Remove range",
+      "add_range": "Add range",
+      "messages": {
+        "load_error": "The SLA calendars could not be loaded from the server.",
+        "not_found": "The SLA calendar was not found.",
+        "created": "The SLA calendar was created. You can add holidays now.",
+        "updated": "The SLA calendar was updated.",
+        "deleted": "The SLA calendar was deleted.",
+        "save_error": "The SLA calendar could not be saved.",
+        "delete_error": "The SLA calendar could not be deleted.",
+        "range_incomplete": "Every range needs a start and an end time."
+      }
+    },
+    "holidays": {
+      "title": "Holidays",
+      "intro": "The clock does not run on these days.",
+      "save_first": "Save the calendar first, then you can add holidays.",
+      "from": "From",
+      "to": "To",
+      "recurring": "Every year",
+      "add": "Add holiday",
+      "import": "Import",
+      "import_label": "Import from a calendar file (.ics)",
+      "import_hint": "Every event of the file becomes a holiday; yearly events are set to \"Every year\". Holidays the calendar already has are skipped.",
+      "none": "No holidays yet.",
+      "to_hint": "Leave \"To\" empty for a single day. \"Every year\" repeats the days every year.",
+      "messages": {
+        "load_error": "The holidays could not be loaded from the server.",
+        "created": "The holiday was added.",
+        "updated": "The holiday was updated.",
+        "deleted": "The holiday was deleted.",
+        "save_error": "The holiday could not be saved.",
+        "delete_error": "The holiday could not be deleted.",
+        "import_done": "Import finished: {added} added, {skipped} skipped (already there), {failed} failed.",
+        "import_none": "The file contains no holidays.",
+        "import_too_large": "The file is too large (1 MB at most).",
+        "import_error": "The file could not be read."
+      }
+    },
+    "state": {
+      "on_track": "On track",
+      "at_risk": "At risk",
+      "breached": "Breached",
+      "paused": "Paused",
+      "met": "Met",
+      "cancelled": "Cancelled"
+    },
+    "filter": {
+      "label": "SLA",
+      "all": "All SLA states",
+      "breached": "Breached",
+      "at_risk": "At risk",
+      "due_today": "Due today",
+      "on_track": "On track",
+      "paused": "Paused"
+    },
+    "panel": {
+      "title": "Service level (SLA)",
+      "override_title": "Change the due time",
+      "new_due": "New due time",
+      "new_due_desc": "In your time zone. The clock keeps its pauses and the business hours of the policy.",
+      "due_required": "Please enter a due time.",
+      "reason": "Reason",
+      "reason_desc": "Required. It is written to the history of the issue.",
+      "reason_required": "Please enter a reason (one line, up to 255 characters).",
+      "in_time": "in time",
+      "late_by": "late by {time}",
+      "met_at": "Met {time}",
+      "left": "{time} left",
+      "over": "{time} over",
+      "clock_stopped": "clock stopped",
+      "in": "due in {time}",
+      "overdue": "overdue by {time}",
+      "due": "Due",
+      "policy": "Policy",
+      "target": "target",
+      "overridden": "Due time changed by hand",
+      "change_due": "Change due time",
+      "changed": "The due time was changed.",
+      "change_error": "The due time could not be changed."
+    },
+    "report": {
+      "title": "SLA report",
+      "intro": "How well the SLA targets were met in a period: compliance, average and median times, and the timers that were breached.",
+      "from": "From",
+      "to": "To",
+      "group_by": "Group by",
+      "show": "Show",
+      "group": {
+        "policy": "Policy",
+        "product": "Product",
+        "assignee": "Assignee",
+        "priority": "Priority"
+      },
+      "export_summary": "Export summary (CSV)",
+      "export_breached": "Export breached (CSV)",
+      "export_error": "The report could not be exported.",
+      "load_error": "The report could not be loaded.",
+      "rule": "A timer counts in the period in which it was met or, if it is still open, in which it became overdue. Compliance is the share met in time; an open timer that is overdue counts against it.",
+      "compliance": "Compliance",
+      "timers": "Timers",
+      "met_in_time": "In time",
+      "breached": "Breached",
+      "avg": "Average",
+      "median": "Median",
+      "all": "All",
+      "by": "By {group}",
+      "empty": "No timers in this period.",
+      "breached_title": "Breached timers",
+      "no_breached": "No breached timers in this period.",
+      "truncated": "The newest {shown} of {total}. The export has more.",
+      "issue": "Issue",
+      "metric": "Metric",
+      "policy": "Policy",
+      "assignee": "Assignee",
+      "target": "Target",
+      "outcome": "Outcome",
+      "overrun": "Over by",
+      "met": "met",
+      "open": "open"
     }
   }
 }

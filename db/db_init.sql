@@ -203,8 +203,29 @@ INSERT IGNORE INTO settings (`key`, `value`) VALUES
 ('notification_poll_interval', '60'),
 ('temp_upload_cleanup_hours', '24'),
 ('force_2fa', 'false'),
+('allow_registration', 'true'),
 ('lic_expiry_warning', '30'),
 ('audit_retention_days', '365'),
+('admin_page_size', '20'),
+('index_brand_icon', ''),
+('index_brand_title', ''),
+('index_hero_title_left', ''),
+('index_hero_title_right', ''),
+('index_hero_subtitle', ''),
+('index_copyright_company', ''),
+('index_copyright_url', ''),
+('mailin_poll_interval', '300'),
+('mailin_default_type', ''),
+('mailin_default_product', ''),
+('mailin_default_access', 'reporter'),
+('mailin_unknown_sender', 'reject'),
+('mailin_max_mails_per_run', '20'),
+('mailin_max_body_size', '256'),
+('mailin_hourly_limit', '100'),
+('mailin_allowed_domains', ''),
+('mailin_blocked_domains', ''),
+('mailin_send_confirmation', 'true'),
+('mailin_trust_sender', 'false'),
 ('provider_contact', 'Lewe Labs
 George Lewe (CEO)
 Am Bahnhof 1
@@ -333,6 +354,7 @@ INSERT IGNORE INTO permissions (name, description) VALUES
 ('manage_status', 'Open the status pages and manage issue status.'),
 ('manage_status_categories', 'Open the status categories page and edit the status categories.'),
 ('manage_resolutions', 'Open the resolutions pages and manage resolutions.'),
+('manage_priorities', 'Open the priorities pages and manage priorities.'),
 ('manage_products', 'Open the products pages and manage products.'),
 ('manage_tags', 'Open the tags pages and edit or delete tags.');
 
@@ -342,7 +364,7 @@ SELECT p.id, r.id FROM permissions p JOIN roles r
   OR (p.name IN ('create_issue', 'comment_issue', 'view_issue') AND r.name IN ('User', 'Agent', 'Administrator'))
   OR (p.name = 'view_issue' AND r.name = 'Public')
   OR (p.name IN ('view_all_issues', 'view_internal_comments', 'edit_issue', 'assign_issue', 'change_issue_status', 'delete_issue', 'edit_any_comment', 'add_attachment') AND r.name IN ('Agent', 'Administrator'))
-  OR (p.name IN ('manage_issue_types', 'manage_status', 'manage_status_categories', 'manage_resolutions', 'manage_products', 'manage_tags') AND r.name = 'Administrator');
+  OR (p.name IN ('manage_issue_types', 'manage_status', 'manage_status_categories', 'manage_resolutions', 'manage_priorities', 'manage_products', 'manage_tags') AND r.name = 'Administrator');
 
 -- Initial role assignments
 INSERT IGNORE INTO user_role (user_id, role_id)
@@ -450,6 +472,27 @@ INSERT IGNORE INTO resolutions (`key`, name, description, icon, color, backgroun
 ('duplicate', 'Duplicate', 'The issue is a duplicate of an existing issue', 'bi-files', '#f9b115', '#f9b115', 50),
 ('wont_do', 'Won''t do', 'The issue won''t be actioned', 'bi-slash-circle', '#e55353', '#e55353', 60),
 ('not_reproducible', 'Not reproducible', 'The issue can''t be reproduced', 'bi-question-octagon', '#6b7785', '#6b7785', 70);
+
+-- Priorities (managed lookup like the resolutions; the four seed records are protected by their key)
+CREATE TABLE IF NOT EXISTS priorities (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  `key` VARCHAR(50) NULL UNIQUE,
+  name VARCHAR(50) NOT NULL UNIQUE,
+  description VARCHAR(255),
+  icon VARCHAR(50),
+  color VARCHAR(7) NOT NULL DEFAULT '#6b7785',
+  background_color VARCHAR(7) NOT NULL DEFAULT '#6b7785',
+  sort_order INT NOT NULL DEFAULT 0,
+  active TINYINT(1) NOT NULL DEFAULT 1,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+INSERT IGNORE INTO priorities (`key`, name, description, icon, color, background_color, sort_order) VALUES
+('critical', 'Critical', 'The issue blocks work and needs immediate attention', 'bi-circle-fill', '#e55353', '#e55353', 10),
+('high', 'High', 'The issue is important and should be handled soon', 'bi-circle-fill', '#f9b115', '#f9b115', 20),
+('normal', 'Normal', 'The default priority of an issue', 'bi-circle-fill', '#3399ff', '#3399ff', 30),
+('low', 'Low', 'The issue can wait', 'bi-circle-fill', '#6b7785', '#6b7785', 40);
 
 -- Products (user defined, no seed records)
 CREATE TABLE IF NOT EXISTS products (
@@ -724,6 +767,120 @@ CREATE TABLE IF NOT EXISTS mail_outbox (
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------------
+-- Email to ticket (docs: _docs/EMAIL_TO_TICKET.md)
+--
+-- `mail_outbox.message_id` is the Message-ID header of a sent mail and `issue_id` the issue it is about, so that a reply
+-- (In-Reply-To / References) can be matched to the issue; `is_internal` marks mails about an internal comment, which
+-- must never be answered with a public comment. `mail_inbox` has one row per mail that was read from the mailbox
+-- (`message_id` is unique: a mail is never handled twice). `result` says what became of it, `reason` why it was rejected, `attempts` how often a failed mail was tried.
+-- There are no foreign keys to the issue and the comment: the log stays when they are deleted. `issues.source` tells
+-- how an issue was created; `issues.requester_email` is the address of the sender of a mail from somebody who is not a user (policy anonymous), shown to support staff only.
+-- ---------------------------------------------------------------------------
+SET @add_outbox_message_id = (
+  SELECT IF(COUNT(*) = 0, 'ALTER TABLE mail_outbox ADD COLUMN message_id VARCHAR(255) NULL AFTER recipient', 'DO 0')
+  FROM information_schema.columns
+  WHERE table_schema = DATABASE() AND table_name = 'mail_outbox' AND column_name = 'message_id'
+);
+PREPARE add_outbox_message_id_stmt FROM @add_outbox_message_id;
+EXECUTE add_outbox_message_id_stmt;
+DEALLOCATE PREPARE add_outbox_message_id_stmt;
+
+SET @add_outbox_issue_id = (
+  SELECT IF(COUNT(*) = 0, 'ALTER TABLE mail_outbox ADD COLUMN issue_id INT NULL AFTER message_id', 'DO 0')
+  FROM information_schema.columns
+  WHERE table_schema = DATABASE() AND table_name = 'mail_outbox' AND column_name = 'issue_id'
+);
+PREPARE add_outbox_issue_id_stmt FROM @add_outbox_issue_id;
+EXECUTE add_outbox_issue_id_stmt;
+DEALLOCATE PREPARE add_outbox_issue_id_stmt;
+
+SET @add_outbox_is_internal = (
+  SELECT IF(COUNT(*) = 0, 'ALTER TABLE mail_outbox ADD COLUMN is_internal TINYINT(1) NOT NULL DEFAULT 0 AFTER issue_id', 'DO 0')
+  FROM information_schema.columns
+  WHERE table_schema = DATABASE() AND table_name = 'mail_outbox' AND column_name = 'is_internal'
+);
+PREPARE add_outbox_is_internal_stmt FROM @add_outbox_is_internal;
+EXECUTE add_outbox_is_internal_stmt;
+DEALLOCATE PREPARE add_outbox_is_internal_stmt;
+
+SET @add_outbox_message_index = (
+  SELECT IF(COUNT(*) = 0, 'ALTER TABLE mail_outbox ADD INDEX idx_mail_outbox_message (message_id), ADD INDEX idx_mail_outbox_issue (issue_id, recipient)', 'DO 0')
+  FROM information_schema.statistics
+  WHERE table_schema = DATABASE() AND table_name = 'mail_outbox' AND index_name = 'idx_mail_outbox_message'
+);
+PREPARE add_outbox_message_index_stmt FROM @add_outbox_message_index;
+EXECUTE add_outbox_message_index_stmt;
+DEALLOCATE PREPARE add_outbox_message_index_stmt;
+
+CREATE TABLE IF NOT EXISTS mail_inbox (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  message_id VARCHAR(255) NOT NULL,
+  from_address VARCHAR(255) NOT NULL DEFAULT '',
+  subject VARCHAR(255) NOT NULL DEFAULT '',
+  result ENUM('issue', 'comment', 'rejected', 'error') NOT NULL,
+  reason VARCHAR(255) NULL,
+  attempts TINYINT UNSIGNED NOT NULL DEFAULT 1,
+  issue_id INT NULL,
+  comment_id INT NULL,
+  received_at DATETIME NULL,
+  processed_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY uq_mail_inbox_message (message_id),
+  INDEX idx_mail_inbox_processed (processed_at),
+  INDEX idx_mail_inbox_result (result, processed_at),
+  INDEX idx_mail_inbox_issue (issue_id)
+) ENGINE=InnoDB;
+
+SET @add_inbox_attempts = (
+  SELECT IF(COUNT(*) = 0, 'ALTER TABLE mail_inbox ADD COLUMN attempts TINYINT UNSIGNED NOT NULL DEFAULT 1 AFTER reason', 'DO 0')
+  FROM information_schema.columns
+  WHERE table_schema = DATABASE() AND table_name = 'mail_inbox' AND column_name = 'attempts'
+);
+PREPARE add_inbox_attempts_stmt FROM @add_inbox_attempts;
+EXECUTE add_inbox_attempts_stmt;
+DEALLOCATE PREPARE add_inbox_attempts_stmt;
+
+SET @add_issue_source = (
+  SELECT IF(COUNT(*) = 0, 'ALTER TABLE issues ADD COLUMN source ENUM(''web'', ''email'') NOT NULL DEFAULT ''web'' AFTER access', 'DO 0')
+  FROM information_schema.columns
+  WHERE table_schema = DATABASE() AND table_name = 'issues' AND column_name = 'source'
+);
+PREPARE add_issue_source_stmt FROM @add_issue_source;
+EXECUTE add_issue_source_stmt;
+DEALLOCATE PREPARE add_issue_source_stmt;
+
+SET @add_issue_requester = (
+  SELECT IF(COUNT(*) = 0, 'ALTER TABLE issues ADD COLUMN requester_email VARCHAR(255) NULL AFTER source', 'DO 0')
+  FROM information_schema.columns
+  WHERE table_schema = DATABASE() AND table_name = 'issues' AND column_name = 'requester_email'
+);
+PREPARE add_issue_requester_stmt FROM @add_issue_requester;
+EXECUTE add_issue_requester_stmt;
+DEALLOCATE PREPARE add_issue_requester_stmt;
+
+-- Priority of an issue (mandatory; Normal for existing issues and for issues created without one). The column is added
+-- empty, filled with Normal, and only then made NOT NULL with its foreign key (ON DELETE RESTRICT: the API reassigns the
+-- issues first), so the steps are safe on a database with issues and can run again.
+SET @add_issue_priority = (
+  SELECT IF(COUNT(*) = 0, 'ALTER TABLE issues ADD COLUMN priority_id INT NULL AFTER resolution_id', 'DO 0')
+  FROM information_schema.columns
+  WHERE table_schema = DATABASE() AND table_name = 'issues' AND column_name = 'priority_id'
+);
+PREPARE add_issue_priority_stmt FROM @add_issue_priority;
+EXECUTE add_issue_priority_stmt;
+DEALLOCATE PREPARE add_issue_priority_stmt;
+
+UPDATE issues SET priority_id = (SELECT id FROM priorities WHERE `key` = 'normal') WHERE priority_id IS NULL;
+
+SET @require_issue_priority = (
+  SELECT IF(COUNT(*) = 0, 'DO 0', 'ALTER TABLE issues MODIFY COLUMN priority_id INT NOT NULL, ADD INDEX idx_issues_priority (priority_id), ADD CONSTRAINT fk_issues_priority FOREIGN KEY (priority_id) REFERENCES priorities(id) ON DELETE RESTRICT')
+  FROM information_schema.columns
+  WHERE table_schema = DATABASE() AND table_name = 'issues' AND column_name = 'priority_id' AND is_nullable = 'YES'
+);
+PREPARE require_issue_priority_stmt FROM @require_issue_priority;
+EXECUTE require_issue_priority_stmt;
+DEALLOCATE PREPARE require_issue_priority_stmt;
+
+-- ---------------------------------------------------------------------------
 -- Audit log (see _docs/AUDITLOG.md; App\Services\AuditLog)
 --
 -- System wide log of who did what and when: logins, account and configuration changes, security events. Regular issue
@@ -766,6 +923,223 @@ INSERT IGNORE INTO permission_role (permission_id, role_id)
 SELECT p.id, r.id FROM permissions p JOIN roles r
   ON p.name = 'view_audit_log' AND r.name = 'Administrator';
 
+-- ---------------------------------------------------------------------------
+-- Custom views of the issue list (see _docs/VIEWS.md): a saved combination of the filters of the issue list.
+-- `filters` holds JSON with the keys status_id, status_category_id, type_id, product_id, assignee_id, reporter_id and
+-- tag_id, each an array of ids as strings (assignee_id may contain "none"). The ids are not foreign keys: an id of a
+-- deleted record is ignored when the view is applied. `shared` = 1 shows the view to all logged in users.
+-- `owner_id` uses ON DELETE SET NULL: when a user is deleted, the model removes the private views of that user first,
+-- the shared views stay without an owner. The name is unique per owner (case-insensitive); the model checks that,
+-- because a unique key would not cover the views without an owner.
+-- ---------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS custom_views (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  owner_id INT NULL,
+  name VARCHAR(100) NOT NULL,
+  shared TINYINT(1) NOT NULL DEFAULT 0,
+  filters TEXT NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_custom_views_owner (owner_id, name),
+  INDEX idx_custom_views_shared (shared),
+  FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE SET NULL
+) ENGINE=InnoDB;
+
+-- Permission to open the custom views page and to edit or delete the custom views of other users (Administrator role).
+-- Users manage their own custom views without a permission.
+INSERT IGNORE INTO permissions (name, description) VALUES
+('manage_custom_views', 'Open the custom views page and edit or delete the custom views of all users.');
+
+INSERT IGNORE INTO permission_role (permission_id, role_id)
+SELECT p.id, r.id FROM permissions p JOIN roles r
+  ON p.name = 'manage_custom_views' AND r.name = 'Administrator';
+
+-- ---------------------------------------------------------------------------
+-- SLA (see _docs/SLA.md): business hours calendars, policies with targets and the timers of the issues.
+--
+-- Calendars: `timezone` is an IANA name (checked by the API). `sla_calendar_hours` has one row per range of opening
+-- hours (`weekday` 1 = Monday ... 7 = Sunday; `end_time` may be 24:00:00); a weekday without a row is closed.
+-- `sla_holidays` days are closed; `recurring` repeats the range every year. A policy without calendar runs 24/7.
+-- Policies: the condition columns are NULL for "any". At most one policy has no condition at all (the default
+-- policy; the API checks it). The values of a condition cannot be deleted while a policy uses them (ON DELETE
+-- RESTRICT; the API names the policies before it gets that far). `sla_policy_targets.priority_id` NULL is the
+-- target for every priority that has no row of its own.
+-- Timers: one row per issue, metric and period (a reopened issue starts period 2 of the resolution and keeps the
+-- result of period 1). The times are TIMESTAMP columns: the application writes them with FROM_UNIXTIME()
+-- and reads them with UNIX_TIMESTAMP(), so the time zone of PHP does not matter. `due_at` is a copy of the
+-- calculated due time (for sorting and the escalation job); it is NULL while the clock is stopped. The periods in
+-- which the clock was stopped (pause for a waiting status, cancel for a deleted issue) are in `issue_sla_stops`.
+-- ---------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS sla_calendars (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL UNIQUE,
+  description VARCHAR(255),
+  timezone VARCHAR(64) NOT NULL DEFAULT 'UTC',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS sla_calendar_hours (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  calendar_id INT NOT NULL,
+  weekday TINYINT UNSIGNED NOT NULL,
+  start_time TIME NOT NULL,
+  end_time TIME NOT NULL,
+  INDEX idx_sla_hours_calendar (calendar_id, weekday),
+  FOREIGN KEY (calendar_id) REFERENCES sla_calendars(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS sla_holidays (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  calendar_id INT NOT NULL,
+  name VARCHAR(100) NOT NULL,
+  date_from DATE NOT NULL,
+  date_to DATE NOT NULL,
+  recurring TINYINT(1) NOT NULL DEFAULT 0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_sla_holidays_calendar (calendar_id, date_from),
+  FOREIGN KEY (calendar_id) REFERENCES sla_calendars(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS sla_policies (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL UNIQUE,
+  description VARCHAR(255),
+  active TINYINT(1) NOT NULL DEFAULT 1,
+  sort_order INT NOT NULL DEFAULT 0,
+  calendar_id INT NULL,
+  warning_percent TINYINT UNSIGNED NOT NULL DEFAULT 80,
+  type_id INT NULL,
+  product_id INT NULL,
+  priority_id INT NULL,
+  group_id INT NULL,
+  access ENUM('public', 'registered', 'reporter') NULL,
+  escalation_user_id INT NULL,
+  escalation_group_id INT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_sla_policies_order (active, sort_order),
+  FOREIGN KEY (calendar_id) REFERENCES sla_calendars(id) ON DELETE RESTRICT,
+  FOREIGN KEY (type_id) REFERENCES issue_types(id) ON DELETE RESTRICT,
+  FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE RESTRICT,
+  FOREIGN KEY (priority_id) REFERENCES priorities(id) ON DELETE RESTRICT,
+  FOREIGN KEY (group_id) REFERENCES `groups`(id) ON DELETE RESTRICT,
+  FOREIGN KEY (escalation_user_id) REFERENCES users(id) ON DELETE SET NULL,
+  FOREIGN KEY (escalation_group_id) REFERENCES `groups`(id) ON DELETE SET NULL
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS sla_policy_targets (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  policy_id INT NOT NULL,
+  priority_id INT NULL,
+  metric ENUM('first_response', 'resolution') NOT NULL,
+  minutes INT UNSIGNED NOT NULL,
+  INDEX idx_sla_targets_policy (policy_id, metric),
+  FOREIGN KEY (policy_id) REFERENCES sla_policies(id) ON DELETE CASCADE,
+  FOREIGN KEY (priority_id) REFERENCES priorities(id) ON DELETE RESTRICT
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS sla_policy_pause_statuses (
+  policy_id INT NOT NULL,
+  status_id INT NOT NULL,
+  PRIMARY KEY (policy_id, status_id),
+  INDEX idx_sla_pause_status (status_id),
+  FOREIGN KEY (policy_id) REFERENCES sla_policies(id) ON DELETE CASCADE,
+  FOREIGN KEY (status_id) REFERENCES `status`(id) ON DELETE RESTRICT
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS issue_sla (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  issue_id INT NOT NULL,
+  metric ENUM('first_response', 'resolution') NOT NULL,
+  period SMALLINT UNSIGNED NOT NULL DEFAULT 1,
+  policy_id INT NOT NULL,
+  calendar_id INT NULL,
+  target_minutes INT UNSIGNED NOT NULL,
+  started_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  due_at TIMESTAMP NULL DEFAULT NULL,
+  warn_at TIMESTAMP NULL DEFAULT NULL,
+  met_at TIMESTAMP NULL DEFAULT NULL,
+  achieved_seconds INT UNSIGNED NULL,
+  overridden TINYINT(1) NOT NULL DEFAULT 0,
+  override_reason VARCHAR(255) NULL,
+  at_risk_notified_at TIMESTAMP NULL DEFAULT NULL,
+  breached_notified_at TIMESTAMP NULL DEFAULT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY uq_issue_sla (issue_id, metric, period),
+  INDEX idx_issue_sla_due (met_at, due_at),
+  INDEX idx_issue_sla_policy (policy_id),
+  FOREIGN KEY (issue_id) REFERENCES issues(id) ON DELETE CASCADE,
+  FOREIGN KEY (policy_id) REFERENCES sla_policies(id) ON DELETE RESTRICT,
+  FOREIGN KEY (calendar_id) REFERENCES sla_calendars(id) ON DELETE RESTRICT
+) ENGINE=InnoDB;
+
+-- The timer keeps the calendar it started with and, once it is met, the working time it took (`achieved_seconds`), so a
+-- change of a calendar or a policy never changes the result of a timer that is over. These two columns are added to
+-- databases that had the table before (safe to run again).
+SET @add_issue_sla_columns = (
+  SELECT IF(COUNT(*) = 0,
+    'ALTER TABLE issue_sla ADD COLUMN calendar_id INT NULL AFTER policy_id, ADD COLUMN achieved_seconds INT UNSIGNED NULL AFTER met_at, ADD CONSTRAINT fk_issue_sla_calendar FOREIGN KEY (calendar_id) REFERENCES sla_calendars(id) ON DELETE RESTRICT',
+    'DO 0')
+  FROM information_schema.columns
+  WHERE table_schema = DATABASE() AND table_name = 'issue_sla' AND column_name = 'achieved_seconds'
+);
+PREPARE add_issue_sla_columns_stmt FROM @add_issue_sla_columns;
+EXECUTE add_issue_sla_columns_stmt;
+DEALLOCATE PREPARE add_issue_sla_columns_stmt;
+
+-- `warn_at` is the moment the warning share of the target is used up, stored next to `due_at` (both are written by the
+-- timer service together, NULL while the clock is stopped or the target is met). The issue list compares the two with
+-- NOW() to find breached, at-risk and on-track timers in SQL. Added to databases that had the table before (safe to run
+-- again); the next change of an issue, "Apply to open issues" or a save of a calendar fills it for existing timers.
+SET @add_issue_sla_warn = (
+  SELECT IF(COUNT(*) = 0,
+    'ALTER TABLE issue_sla ADD COLUMN warn_at TIMESTAMP NULL DEFAULT NULL AFTER due_at',
+    'DO 0')
+  FROM information_schema.columns
+  WHERE table_schema = DATABASE() AND table_name = 'issue_sla' AND column_name = 'warn_at'
+);
+PREPARE add_issue_sla_warn_stmt FROM @add_issue_sla_warn;
+EXECUTE add_issue_sla_warn_stmt;
+DEALLOCATE PREPARE add_issue_sla_warn_stmt;
+
+-- The people an SLA breach is escalated to: a user and/or a group (all its members) set in the policy. They hear about
+-- breaches only (the assignee and the watchers who may see SLA data hear about warnings too). A deleted user or group
+-- simply ends the escalation. Added to databases that had the table before (safe to run again).
+SET @add_sla_policy_escalation = (
+  SELECT IF(COUNT(*) = 0,
+    'ALTER TABLE sla_policies ADD COLUMN escalation_user_id INT NULL AFTER access, ADD COLUMN escalation_group_id INT NULL AFTER escalation_user_id, ADD CONSTRAINT fk_sla_policies_escalation_user FOREIGN KEY (escalation_user_id) REFERENCES users(id) ON DELETE SET NULL, ADD CONSTRAINT fk_sla_policies_escalation_group FOREIGN KEY (escalation_group_id) REFERENCES `groups`(id) ON DELETE SET NULL',
+    'DO 0')
+  FROM information_schema.columns
+  WHERE table_schema = DATABASE() AND table_name = 'sla_policies' AND column_name = 'escalation_user_id'
+);
+PREPARE add_sla_policy_escalation_stmt FROM @add_sla_policy_escalation;
+EXECUTE add_sla_policy_escalation_stmt;
+DEALLOCATE PREPARE add_sla_policy_escalation_stmt;
+
+CREATE TABLE IF NOT EXISTS issue_sla_stops (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  issue_sla_id INT NOT NULL,
+  started_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  ended_at TIMESTAMP NULL DEFAULT NULL,
+  reason ENUM('pause', 'cancel') NOT NULL DEFAULT 'pause',
+  INDEX idx_issue_sla_stops (issue_sla_id, started_at),
+  FOREIGN KEY (issue_sla_id) REFERENCES issue_sla(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- Permissions: view_sla (SLA data on issues and in the reports) for Agent and Administrator, manage_sla
+-- (policies, calendars, holidays, changing the due time of an issue) for the Administrator
+INSERT IGNORE INTO permissions (name, description) VALUES
+('view_sla', 'See the SLA targets, due times and states of issues and the SLA reports.'),
+('manage_sla', 'Open the SLA pages, manage SLA policies, calendars and holidays, and change the due time of an issue.');
+
+INSERT IGNORE INTO permission_role (permission_id, role_id)
+SELECT p.id, r.id FROM permissions p JOIN roles r
+  ON (p.name = 'view_sla' AND r.name IN ('Agent', 'Administrator'))
+  OR (p.name = 'manage_sla' AND r.name = 'Administrator');
+
 -- Entries for what exists without an audit trail (created before the audit log, or by a SQL script), taken from the
 -- creation dates of the records. The actor is unknown. They are marked {"backfilled":true}. Safe to run again: a record
 -- that already has its entry is skipped. The protected system records of the issue lookups (with a key) are left out.
@@ -804,6 +1178,11 @@ INSERT INTO audit_log (created_at, event, category, target_type, target_id, targ
 SELECT r.created_at, 'resolution.created', 'config', 'resolution', r.id, r.name, '{"backfilled":true}' FROM resolutions r
 WHERE r.`key` IS NULL
   AND NOT EXISTS (SELECT 1 FROM audit_log a WHERE a.event = 'resolution.created' AND a.target_type = 'resolution' AND a.target_id = r.id);
+
+INSERT INTO audit_log (created_at, event, category, target_type, target_id, target_label, new_value)
+SELECT p.created_at, 'priority.created', 'config', 'priority', p.id, p.name, '{"backfilled":true}' FROM priorities p
+WHERE p.`key` IS NULL
+  AND NOT EXISTS (SELECT 1 FROM audit_log a WHERE a.event = 'priority.created' AND a.target_type = 'priority' AND a.target_id = p.id);
 
 INSERT INTO audit_log (created_at, event, category, target_type, target_id, target_label, new_value)
 SELECT p.created_at, 'product.created', 'config', 'product', p.id, p.name, '{"backfilled":true}' FROM products p

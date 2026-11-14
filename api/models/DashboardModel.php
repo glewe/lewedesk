@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+require_once __DIR__ . '/SlaReportModel.php';
+
 use App\Services\IssueVisibility;
 use App\Utils\IssueConfig;
 use PDO;
@@ -24,6 +26,9 @@ class DashboardModel
 
   /** Events about comments and attachments that users who may not see internal comments do not learn about when internal */
   private const HIDDEN_FOR_INTERNAL = ['comment_edited', 'comment_deleted', 'attachment_added', 'attachment_deleted'];
+
+  /** Number of days of the SLA compliance tile */
+  public const SLA_DAYS = 30;
 
   /** The tables of an issue row with its type, status and status category */
   private const FROM_SQL = 'FROM issues i
@@ -63,7 +68,7 @@ class DashboardModel
     $chart = $this->createdVsResolved();
     $lastWeek = array_slice($chart['resolved'], -7);
 
-    return [
+    $data = [
       'tiles' => $this->tiles($userId) + ['resolved_7d' => array_sum($lastWeek)],
       'lists' => [
         'reported' => $this->issueList('i.reporter_id = :me', $userId),
@@ -81,6 +86,45 @@ class DashboardModel
       'by_type' => $this->byType(),
       'by_product' => $this->byProduct(),
       'activity' => $this->activity($userId),
+    ];
+
+    // The SLA numbers are for the holders of view_sla (and not in the limited mode of the license): nobody else gets the key
+    $sla = $this->sla();
+    if ($sla !== null) {
+      $data['sla'] = $sla;
+    }
+
+    return $data;
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Collects the SLA tiles: the issues that are breached or at risk now, and the compliance of the last days (the rule of
+   * the report: SlaReportModel).
+   *
+   * @return array|null breached, at_risk, days, compliance (percent, null without timers), by_metric; null if the viewer may not see SLA data
+   */
+  private function sla(): ?array
+  {
+    $report = new SlaReportModel($this->db, $this->visibility, $this->config);
+    if (!$report->allowed()) {
+      return null;
+    }
+
+    // The period ends one second after now, so a timer that was met this second counts
+    $now = (int)$this->db->query('SELECT UNIX_TIMESTAMP()')->fetchColumn();
+    $totals = $report->report($now - self::SLA_DAYS * 86400, $now + 1)['totals'];
+    $all = ['total' => 0, 'met_in_time' => 0];
+    foreach ($totals as $stats) {
+      $all['total'] += $stats['total'];
+      $all['met_in_time'] += $stats['met_in_time'];
+    }
+
+    return $report->counts() + [
+      'days' => self::SLA_DAYS,
+      'compliance' => $all['total'] === 0 ? null : round($all['met_in_time'] * 100 / $all['total'], 1),
+      'timers' => $all['total'],
+      'by_metric' => array_map(static fn(array $stats): array => ['total' => $stats['total'], 'met_in_time' => $stats['met_in_time'], 'compliance' => $stats['compliance']], $totals),
     ];
   }
 

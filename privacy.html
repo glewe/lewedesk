@@ -52,20 +52,20 @@
   <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://desk.lewe.com/#organization","name":"Lewe Labs","url":"https://lewe.com","logo":{"@type":"ImageObject","url":"https://desk.lewe.com/assets/img/lewe-labs-icon-114.png","width":114,"height":114},"email":"support@lewe.com","contactPoint":{"@type":"ContactPoint","contactType":"customer support","email":"support@lewe.com","availableLanguage":["English","German"]},"sameAs":["https://github.com/glewe"]},{"@type":"WebSite","@id":"https://desk.lewe.com/#website","name":"LeweDesk","alternateName":"LeweDesk - Lewe Ticket Management","url":"https://desk.lewe.com/","inLanguage":"en","publisher":{"@id":"https://desk.lewe.com/#organization"}},{"@type":"WebPage","@id":"https://desk.lewe.com/privacy.html#webpage","url":"https://desk.lewe.com/privacy.html","name":"Privacy Policy - LeweDesk","description":"The LeweDesk privacy policy explains which personal data the helpdesk processes, why, how long it is stored and which rights you have.","inLanguage":"en","isPartOf":{"@id":"https://desk.lewe.com/#website"},"publisher":{"@id":"https://desk.lewe.com/#organization"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://desk.lewe.com/assets/img/og-image.png","width":1200,"height":630},"breadcrumb":{"@id":"https://desk.lewe.com/privacy.html#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://desk.lewe.com/privacy.html#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://desk.lewe.com/"},{"@type":"ListItem","position":2,"name":"Privacy Policy","item":"https://desk.lewe.com/privacy.html"}]}]}</script>
 
 
-  <script type="module" crossorigin src="./assets/js/fonts-B8V7-e6F.js"></script>
-  <script type="module" crossorigin src="./assets/js/lookups-DCBYELDL.js"></script>
-  <script type="module" crossorigin src="./assets/js/main-DDKXavPK.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/css/fonts-Dzfg6Fbe.css">
+  <script type="module" crossorigin src="./assets/js/fonts-dgFHIs4h.js"></script>
+  <script type="module" crossorigin src="./assets/js/branding-Syy4B4te.js"></script>
+  <script type="module" crossorigin src="./assets/js/main-CAI9vjJw.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/css/fonts-CZR4NW46.css">
 </head>
 <body>
   <div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
     <div class="sidebar-brand d-none d-md-flex">
-      <i class="bi bi-ticket-perforated me-2 logo-gradient fs-4"></i>
-      <span class="sidebar-brand-full">Lewe<strong>Desk</strong></span>
+      <i class="bi bi-ticket-perforated me-2 logo-gradient fs-4" data-brand-icon></i>
+      <span class="sidebar-brand-full" data-brand-title>My<strong>Desk</strong></span>
       <span class="sidebar-brand-narrow"></span>
     </div>
     <div class="sidebar-mobile-bar d-md-none">
-      <span><i class="bi bi-ticket-perforated me-2 logo-gradient fs-4"></i>Lewe<strong>Desk</strong></span>
+      <span><i class="bi bi-ticket-perforated me-2 logo-gradient fs-4" data-brand-icon></i><span data-brand-title>My<strong>Desk</strong></span></span>
       <button class="sidebar-close" id="sidebar-close" type="button" aria-label="Close menu"><i class="bi bi-x-lg"></i></button>
     </div>
     <ul class="sidebar-nav">
@@ -76,7 +76,7 @@
       </li>
       <li class="nav-title" data-public data-i18n="sidebar.issues_title">Issues</li>
       <li class="nav-item" data-permission="create_issue">
-        <a class="nav-link" href="issue-add.html">
+        <a class="nav-link" href="issue-add.html" data-license-limit="issues">
           <i class="nav-icon bi bi-plus-circle"></i> <span class="nav-text" data-i18n="sidebar.create_issue">Create issue</span>
         </a>
       </li>
@@ -120,18 +120,28 @@
           <i class="nav-icon bi bi-check-circle" data-category="done"></i> <span class="nav-text" data-i18n="sidebar.done">Done</span> <span class="nav-count d-none" data-count="done"></span>
         </a>
       </li>
+      <li class="nav-item" data-permission="view_sla" data-license-feature="sla">
+        <a class="nav-link" href="issues.html?view=sla_breached">
+          <i class="nav-icon bi bi-x-octagon text-danger"></i> <span class="nav-text" data-i18n="sidebar.sla_breached">SLA breached</span> <span class="nav-count d-none" data-count="sla_breached"></span>
+        </a>
+      </li>
+      <li class="nav-item" data-permission="view_sla" data-license-feature="sla">
+        <a class="nav-link" href="sla-reports.html">
+          <i class="nav-icon bi bi-graph-up"></i> <span class="nav-text" data-i18n="sidebar.sla_report">SLA report</span>
+        </a>
+      </li>
       <li class="nav-item" data-permission="delete_issue">
         <a class="nav-link" href="issues.html?view=deleted">
           <i class="nav-icon bi bi-trash"></i> <span class="nav-text" data-i18n="sidebar.deleted_issues">Deleted</span> <span class="nav-count d-none" data-count="deleted"></span>
         </a>
       </li>
-      <li class="nav-title" data-permission-any="view_audit_log manage_settings manage_users manage_roles manage_groups manage_permissions manage_issue_types manage_status manage_status_categories manage_resolutions manage_products manage_tags" data-i18n="sidebar.administration">Administration</li>
+      <li class="nav-title" data-permission-any="view_audit_log manage_settings manage_users manage_roles manage_groups manage_permissions manage_issue_types manage_status manage_status_categories manage_resolutions manage_priorities manage_products manage_tags manage_custom_views manage_sla" data-i18n="sidebar.administration">Administration</li>
       <li class="nav-item nav-group" data-permission-any="view_audit_log manage_settings manage_users manage_roles manage_groups manage_permissions">
         <a class="nav-link nav-group-toggle" href="#">
           <i class="nav-icon bi bi-shield-lock"></i> <span class="nav-text" data-i18n="sidebar.management">System</span>
         </a>
         <ul class="nav-group-items">
-          <li class="nav-item" data-permission="view_audit_log">
+          <li class="nav-item" data-permission="view_audit_log" data-license-feature="audit_log">
             <a class="nav-link" href="audit-log.html">
               <i class="nav-icon bi bi-journal-text"></i> <span class="nav-text">Audit Log</span>
             </a>
@@ -163,14 +173,24 @@
           </li>
         </ul>
       </li>
-      <li class="nav-item nav-group" data-permission-any="manage_issue_types manage_status manage_status_categories manage_resolutions manage_products manage_tags">
+      <li class="nav-item nav-group" data-permission-any="manage_issue_types manage_status manage_status_categories manage_resolutions manage_priorities manage_products manage_tags manage_custom_views manage_sla">
         <a class="nav-link nav-group-toggle" href="#">
           <i class="nav-icon bi bi-ticket-detailed"></i> <span class="nav-text" data-i18n="sidebar.issues">Issues</span>
         </a>
         <ul class="nav-group-items">
+          <li class="nav-item" data-permission="manage_custom_views" data-license-feature="custom_views">
+            <a class="nav-link" href="custom-views.html">
+              <i class="nav-icon bi bi-bookmarks"></i> <span class="nav-text" data-i18n="sidebar.custom_views">Custom Views</span>
+            </a>
+          </li>
           <li class="nav-item" data-permission="manage_issue_types">
             <a class="nav-link" href="issue-types.html">
               <i class="nav-icon bi bi-bug"></i> <span class="nav-text" data-i18n="sidebar.issue_types">Issue Types</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_priorities">
+            <a class="nav-link" href="priorities.html">
+              <i class="nav-icon bi bi-exclamation-diamond"></i> <span class="nav-text" data-i18n="sidebar.priorities">Priorities</span>
             </a>
           </li>
           <li class="nav-item" data-permission="manage_products">
@@ -181,6 +201,11 @@
           <li class="nav-item" data-permission="manage_resolutions">
             <a class="nav-link" href="resolutions.html">
               <i class="nav-icon bi bi-check2-circle"></i> <span class="nav-text" data-i18n="sidebar.resolutions">Resolutions</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_sla" data-license-feature="sla">
+            <a class="nav-link" href="sla-setup.html">
+              <i class="nav-icon bi bi-stopwatch"></i> <span class="nav-text" data-i18n="sidebar.sla_setup">SLA Setup</span>
             </a>
           </li>
           <li class="nav-item" data-permission="manage_status">
@@ -210,7 +235,7 @@
           <i class="bi bi-list fs-4"></i>
         </button>
         <a class="header-brand d-md-none" href="#">
-          <i class="bi bi-ticket-perforated logo-gradient fs-4"></i>
+          <i class="bi bi-ticket-perforated logo-gradient fs-4" data-brand-icon></i>
         </a>
         <form class="d-none d-md-flex ms-auto me-4" id="header-search-form" role="search">
           <div class="input-group">
@@ -360,10 +385,6 @@
         <div class="alert alert-warning d-none" id="maintenance-banner" role="alert">
           <i class="bi bi-cone-striped me-2"></i> <span data-i18n="maintenance.banner">Maintenance mode is active. Only administrators can use the application.</span>
         </div>
-        <div class="alert alert-info d-none" id="license-trial-banner" role="alert">
-          <i class="bi bi-key me-2"></i> <span id="license-trial-text"></span>
-          <a href="settings.html#license" class="alert-link ms-1 d-none" id="license-trial-link" data-i18n="license.banner.link">License settings</a>
-        </div>
         <div class="alert alert-warning d-none" id="license-expiry-banner" role="alert">
           <i class="bi bi-key me-2"></i> <span id="license-expiry-text"></span>
           <a href="settings.html#license" class="alert-link ms-1" data-i18n="license.banner.link">License settings</a>
@@ -377,7 +398,7 @@
 <div class="card mb-4 privacy-policy" data-lang="en">
   <div class="card-header"><i class="bi bi-shield-lock me-3"></i><h1 class="fs-6 fw-normal m-0 d-inline">Privacy Policy</h1></div>
   <div class="card-body">
-    <p class="text-body-secondary">Last updated: 1 November 2026</p>
+    <p class="text-body-secondary">Last updated: 12 November 2026</p>
     <p>This policy explains which personal data LeweDesk (Lewe Ticket Management) processes when you visit or use this installation, why this is done, on which legal basis, and which rights you have under the General Data Protection Regulation (GDPR).</p>
 
     <h5 class="mt-4">1. Controller</h5>
@@ -408,7 +429,7 @@
     <em>Legal basis:</em> Art. 6 (1) (b) and (f) GDPR.</p>
 
     <h6 class="mt-3">3.4 Issues, comments, attachments and history</h6>
-    <p>Content you enter (issues, comments, attached files) is stored together with your user reference and timestamps. The activity history of an issue records who changed what and when. Depending on the access level of an issue (Public, Registered, Reporter) and on their permissions, other users, agents and administrators can see this content and your name. Issues marked Public can be seen by anonymous visitors. <strong>Please do not enter personal data of third parties or sensitive data (Art. 9 GDPR) into issues unless it is necessary.</strong><br>
+    <p>Content you enter (issues, comments, attached files) is stored together with your user reference and timestamps. The activity history of an issue records who changed what and when. Depending on the access level of an issue (Public, Registered, Reporter) and on their permissions, other users, agents and administrators can see this content and your name. Issues marked Public can be seen by anonymous visitors. If you save a filter combination as a custom view, its name and filter settings are stored with your user reference; a view you share is visible to all registered users together with your name. Your private custom views are deleted with your account, shared ones stay without your name. <strong>Please do not enter personal data of third parties or sensitive data (Art. 9 GDPR) into issues unless it is necessary.</strong><br>
     <em>Legal basis:</em> Art. 6 (1) (b) and (f) GDPR.</p>
 
     <h6 class="mt-3">3.5 Notifications and emails</h6>
@@ -423,10 +444,15 @@
     <p>The operator can optionally enable the web analytics tool Matomo in the system settings. If it is enabled, your visit (pages viewed, approximate location, browser and device type) is recorded by the Matomo installation configured by the operator. Matomo is hosted at IONOS in Germany on the basis of consent under Art. 6 (1) (a) GDPR or legitimate interest under Art. 6 (1) (f) GDPR.</p>
 
     <h6 class="mt-3">3.8 Audit log</h6>
-    <p>LeweDesk keeps an audit log of security-relevant and administrative actions: logins and logouts, failed logins for existing accounts, password changes and resets, events of the two factor authentication, changes to user accounts, roles, groups, permissions and system settings, the deletion and restoration of issues, the deletion of attachments, requests that were denied for lack of permission, and exports of the log itself. An entry contains the time, the user name and user number of the person who acted, the action, the object it concerned (for example the user name of an account) and, for changes, the old and new values. Passwords, secrets and tokens are never stored; where such a value is part of a change, it is replaced by asterisks. The entry also contains your IP address in shortened form &ndash; the last block of an IPv4 address is set to 0 and an IPv6 address is cut to its first 48 bits, so that it can no longer be assigned to a single device &ndash; and your browser identification.<br>
+    <p>LeweDesk keeps an audit log of security-relevant and administrative actions: logins and logouts, failed logins for existing accounts, password changes and resets, events of the two factor authentication, changes to user accounts, roles, groups, permissions and system settings, the deletion and restoration of issues, the deletion of attachments, the creation, change and deletion of custom views, requests that were denied for lack of permission, and exports of the log itself. An entry contains the time, the user name and user number of the person who acted, the action, the object it concerned (for example the user name of an account) and, for changes, the old and new values. Passwords, secrets and tokens are never stored; where such a value is part of a change, it is replaced by asterisks. The entry also contains your IP address in shortened form &ndash; the last block of an IPv4 address is set to 0 and an IPv6 address is cut to its first 48 bits, so that it can no longer be assigned to a single device &ndash; and your browser identification.<br>
     Ordinary work on issues (creating, commenting, changing the status) is not recorded here; it is documented in the activity history of the issue (section 3.4). Failed logins with unknown user names are not recorded, and neither is the mere viewing of data. The entries cannot be changed, and only administrators can view and export the log.<br>
     <em>Purpose:</em> traceability and security: detecting and investigating misuse and showing who changed what in the configuration.<br>
     <em>Legal basis:</em> Art. 6 (1) (f) GDPR (legitimate interest in the security and the traceability of the administration of the service).</p>
+
+    <h6 class="mt-3">3.9 License check</h6>
+    <p>LeweDesk needs a license. To check it, the server of this installation (not your browser) contacts the license server of the vendor, Lewe Labs (lewelic.lewe.com), over an encrypted connection: when an administrator saves, activates or deregisters the license key or clicks "Check Now", and automatically about every 30 minutes. <strong>Only the license key, the domain (server name) of this installation and the product name are sent.</strong> No data of users, issues or comments is sent. Like every web server, the license server sees the IP address of the server of this installation and the time of the request. The license server stores the license key, the domain, the time of the activation and of the last check and the status of the license. The license state (status, expiry date, customer and company name of the license) is stored in the settings of this installation.<br>
+    <em>Purpose:</em> checking that the software is licensed and managing the number of installations.<br>
+    <em>Legal basis:</em> Art. 6 (1) (b) and (f) GDPR (fulfilment of the license agreement and legitimate interest in protecting the software against unlicensed use). The data is not personal data of the users of this installation; it can be personal data of the operator if the operator is a natural person.</p>
 
     <h5 class="mt-4">4. Browser storage instead of cookies</h5>
     <p>LeweDesk does not use cookies. It uses the local storage and session storage of your browser. This storage is strictly necessary to provide the service you requested or to remember settings you chose yourself, so no consent is required (section 25 (2) TDDDG). The data stays on your device and is removed when you log out or clear the site data of your browser.</p>
@@ -448,7 +474,7 @@
     <p>Your data is visible to the users of this installation only within the limits of the roles, permissions and issue access levels described above. Beyond that, data is passed on only to service providers who process it on our behalf under a data processing agreement (Art. 28 GDPR), such as the hosting provider and the email provider: IONOS. The administrators of this installation can see the audit log (section 3.8). We do not sell your data and do not pass it on for advertising purposes.</p>
 
     <h5 class="mt-4">6. Transfers to third countries</h5>
-    <p>LeweDesk itself does not transfer data to third countries. Fonts and all other resources are served from this installation. If the hosting or email provider processes data outside the EU/EEA, this happens only on the basis of an adequacy decision or the EU standard contractual clauses (Art. 44 et seq. GDPR).</p>
+    <p>Apart from the license check (section 3.9), LeweDesk itself does not transfer data to third parties or third countries. Fonts and all other resources are served from this installation. If the hosting or email provider processes data outside the EU/EEA, this happens only on the basis of an adequacy decision or the EU standard contractual clauses (Art. 44 et seq. GDPR).</p>
 
     <h5 class="mt-4">7. Retention and deletion</h5>
     <ul>
@@ -491,7 +517,7 @@
 <div class="card mb-4 privacy-policy" data-lang="de">
   <div class="card-header"><i class="bi bi-shield-lock me-3"></i><h1 class="fs-6 fw-normal m-0 d-inline" lang="de">Datenschutzerklärung</h1></div>
   <div class="card-body">
-    <p class="text-body-secondary">Stand: 1. November 2026</p>
+    <p class="text-body-secondary">Stand: 12. November 2026</p>
     <p>Diese Datenschutzerklärung informiert darüber, welche personenbezogenen Daten LeweDesk (Lewe Ticket Management) bei Besuch und Nutzung dieser Installation verarbeitet, zu welchen Zwecken und auf welcher Rechtsgrundlage dies geschieht und welche Rechte Ihnen nach der Datenschutz-Grundverordnung (DSGVO) zustehen.</p>
 
     <h5 class="mt-4">1. Verantwortlicher</h5>
@@ -542,6 +568,11 @@
     <em>Zweck:</em> Nachvollziehbarkeit und Sicherheit: Missbrauch erkennen und untersuchen sowie nachweisen, wer was in der Konfiguration geändert hat.<br>
     <em>Rechtsgrundlage:</em> Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Sicherheit und Nachvollziehbarkeit der Verwaltung des Dienstes).</p>
 
+    <h6 class="mt-3">3.9 Lizenzprüfung</h6>
+    <p>LeweDesk benötigt eine Lizenz. Zur Prüfung kontaktiert der Server dieser Installation (nicht Ihr Browser) den Lizenzserver des Herstellers Lewe Labs (lewelic.lewe.com) über eine verschlüsselte Verbindung: wenn ein Administrator den Lizenzschlüssel speichert, aktiviert oder abmeldet oder auf „Jetzt prüfen“ klickt, sowie automatisch etwa alle 30 Minuten. <strong>Übermittelt werden nur der Lizenzschlüssel, die Domain (Servername) dieser Installation und der Produktname.</strong> Daten von Benutzern, Tickets oder Kommentaren werden nicht übermittelt. Wie jeder Webserver sieht der Lizenzserver die IP-Adresse des Servers dieser Installation und den Zeitpunkt der Anfrage. Der Lizenzserver speichert den Lizenzschlüssel, die Domain, den Zeitpunkt der Aktivierung und der letzten Prüfung sowie den Status der Lizenz. Der Lizenzzustand (Status, Ablaufdatum, Kunden- und Firmenname der Lizenz) wird in den Einstellungen dieser Installation gespeichert.<br>
+    <em>Zweck:</em> Prüfung, dass die Software lizenziert ist, und Verwaltung der Anzahl der Installationen.<br>
+    <em>Rechtsgrundlage:</em> Art. 6 Abs. 1 lit. b und f DSGVO (Erfüllung des Lizenzvertrags und berechtigtes Interesse am Schutz der Software vor unlizenzierter Nutzung). Es handelt sich nicht um personenbezogene Daten der Benutzer dieser Installation; sie können personenbezogene Daten des Betreibers sein, wenn dieser eine natürliche Person ist.</p>
+
     <h5 class="mt-4">4. Browser-Speicher statt Cookies</h5>
     <p>LeweDesk verwendet keine Cookies, sondern den Local Storage und Session Storage Ihres Browsers. Dieser Speicher ist unbedingt erforderlich, um den von Ihnen gewünschten Dienst bereitzustellen oder von Ihnen selbst gewählte Einstellungen zu merken; eine Einwilligung ist daher nicht erforderlich (§ 25 Abs. 2 TDDDG). Die Daten verbleiben auf Ihrem Gerät und werden beim Abmelden oder beim Löschen der Websitedaten in Ihrem Browser entfernt.</p>
     <div class="table-responsive">
@@ -562,7 +593,7 @@
     <p>Ihre Daten sind für die Benutzer dieser Installation nur im Rahmen der oben beschriebenen Rollen, Berechtigungen und Zugriffsstufen sichtbar. Darüber hinaus erhalten nur Dienstleister Daten, die in unserem Auftrag auf Grundlage eines Auftragsverarbeitungsvertrags (Art. 28 DSGVO) tätig sind, etwa der Hosting- und der E-Mail-Anbieter: IONOS. Die Administratoren dieser Installation können das Audit-Log einsehen (Abschnitt 3.8). Wir verkaufen Ihre Daten nicht und geben sie nicht zu Werbezwecken weiter.</p>
 
     <h5 class="mt-4">6. Übermittlung in Drittländer</h5>
-    <p>LeweDesk selbst übermittelt keine Daten in Drittländer. Schriftarten und alle weiteren Ressourcen werden von dieser Installation ausgeliefert. Verarbeitet der Hosting- oder E-Mail-Anbieter Daten außerhalb der EU/des EWR, geschieht dies nur auf Grundlage eines Angemessenheitsbeschlusses oder der EU-Standardvertragsklauseln (Art. 44 ff. DSGVO).</p>
+    <p>Abgesehen von der Lizenzprüfung (Abschnitt 3.9) übermittelt LeweDesk selbst keine Daten an Dritte oder in Drittländer. Schriftarten und alle weiteren Ressourcen werden von dieser Installation ausgeliefert. Verarbeitet der Hosting- oder E-Mail-Anbieter Daten außerhalb der EU/des EWR, geschieht dies nur auf Grundlage eines Angemessenheitsbeschlusses oder der EU-Standardvertragsklauseln (Art. 44 ff. DSGVO).</p>
 
     <h5 class="mt-4">7. Speicherdauer und Löschung</h5>
     <ul>
@@ -607,7 +638,7 @@
       <div class="container-fluid h-100 d-flex align-items-center">
         <div class="flex-fill">&copy; 2026 by <a href="https://lewe.com" class="text-decoration-none">Lewe Labs</a>.</div>
         <div class="flex-fill text-center"><a href="privacy.html" class="text-decoration-none" data-i18n="header.privacy">Privacy Policy</a> &middot; <a href="imprint.html" class="text-decoration-none" data-i18n="header.imprint">Imprint</a></div>
-        <div class="flex-fill text-end">Powered by <i class="bi bi-ticket-perforated logo-gradient mx-1" aria-hidden="true"></i>Lewe<strong>Desk</strong> 1.0.1.126</div>
+        <div class="flex-fill text-end">Powered by <i class="bi bi-ticket-perforated logo-gradient mx-1" aria-hidden="true"></i>Lewe<strong>Desk</strong> 1.0.2.181</div>
       </div>
     </footer>
   </div>

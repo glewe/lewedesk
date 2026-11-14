@@ -23,22 +23,26 @@
   <meta name="robots" content="noindex, nofollow">
 
 
-  <script type="module" crossorigin src="./assets/js/profile-CFHBWhCl.js"></script>
-  <link rel="modulepreload" crossorigin href="./assets/js/fonts-B8V7-e6F.js">
-  <link rel="modulepreload" crossorigin href="./assets/js/lookups-DCBYELDL.js">
-  <link rel="modulepreload" crossorigin href="./assets/js/main-DDKXavPK.js">
-  <link rel="modulepreload" crossorigin href="./assets/js/avatar-panel-C74p-OUy.js">
-  <link rel="stylesheet" crossorigin href="./assets/css/fonts-Dzfg6Fbe.css">
+  <script type="module" crossorigin src="./assets/js/profile-Cd2Ryg6z.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/js/fonts-dgFHIs4h.js">
+  <link rel="modulepreload" crossorigin href="./assets/js/branding-Syy4B4te.js">
+  <link rel="modulepreload" crossorigin href="./assets/js/main-CAI9vjJw.js">
+  <link rel="modulepreload" crossorigin href="./assets/js/avatar-panel-CnrO44cO.js">
+  <link rel="modulepreload" crossorigin href="./assets/js/sla-ui-DbtdFU8m.js">
+  <link rel="modulepreload" crossorigin href="./assets/js/multi-filter-Cyc1Ry13.js">
+  <link rel="modulepreload" crossorigin href="./assets/js/issue-ui-BOnRPkZO.js">
+  <link rel="modulepreload" crossorigin href="./assets/js/custom-views-list-DWOa_33M.js">
+  <link rel="stylesheet" crossorigin href="./assets/css/fonts-CZR4NW46.css">
 </head>
 <body>
   <div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
     <div class="sidebar-brand d-none d-md-flex">
-      <i class="bi bi-ticket-perforated me-2 logo-gradient fs-4"></i>
-      <span class="sidebar-brand-full">Lewe<strong>Desk</strong></span>
+      <i class="bi bi-ticket-perforated me-2 logo-gradient fs-4" data-brand-icon></i>
+      <span class="sidebar-brand-full" data-brand-title>My<strong>Desk</strong></span>
       <span class="sidebar-brand-narrow"></span>
     </div>
     <div class="sidebar-mobile-bar d-md-none">
-      <span><i class="bi bi-ticket-perforated me-2 logo-gradient fs-4"></i>Lewe<strong>Desk</strong></span>
+      <span><i class="bi bi-ticket-perforated me-2 logo-gradient fs-4" data-brand-icon></i><span data-brand-title>My<strong>Desk</strong></span></span>
       <button class="sidebar-close" id="sidebar-close" type="button" aria-label="Close menu"><i class="bi bi-x-lg"></i></button>
     </div>
     <ul class="sidebar-nav">
@@ -49,7 +53,7 @@
       </li>
       <li class="nav-title" data-public data-i18n="sidebar.issues_title">Issues</li>
       <li class="nav-item" data-permission="create_issue">
-        <a class="nav-link" href="issue-add.html">
+        <a class="nav-link" href="issue-add.html" data-license-limit="issues">
           <i class="nav-icon bi bi-plus-circle"></i> <span class="nav-text" data-i18n="sidebar.create_issue">Create issue</span>
         </a>
       </li>
@@ -93,18 +97,28 @@
           <i class="nav-icon bi bi-check-circle" data-category="done"></i> <span class="nav-text" data-i18n="sidebar.done">Done</span> <span class="nav-count d-none" data-count="done"></span>
         </a>
       </li>
+      <li class="nav-item" data-permission="view_sla" data-license-feature="sla">
+        <a class="nav-link" href="issues.html?view=sla_breached">
+          <i class="nav-icon bi bi-x-octagon text-danger"></i> <span class="nav-text" data-i18n="sidebar.sla_breached">SLA breached</span> <span class="nav-count d-none" data-count="sla_breached"></span>
+        </a>
+      </li>
+      <li class="nav-item" data-permission="view_sla" data-license-feature="sla">
+        <a class="nav-link" href="sla-reports.html">
+          <i class="nav-icon bi bi-graph-up"></i> <span class="nav-text" data-i18n="sidebar.sla_report">SLA report</span>
+        </a>
+      </li>
       <li class="nav-item" data-permission="delete_issue">
         <a class="nav-link" href="issues.html?view=deleted">
           <i class="nav-icon bi bi-trash"></i> <span class="nav-text" data-i18n="sidebar.deleted_issues">Deleted</span> <span class="nav-count d-none" data-count="deleted"></span>
         </a>
       </li>
-      <li class="nav-title" data-permission-any="view_audit_log manage_settings manage_users manage_roles manage_groups manage_permissions manage_issue_types manage_status manage_status_categories manage_resolutions manage_products manage_tags" data-i18n="sidebar.administration">Administration</li>
+      <li class="nav-title" data-permission-any="view_audit_log manage_settings manage_users manage_roles manage_groups manage_permissions manage_issue_types manage_status manage_status_categories manage_resolutions manage_priorities manage_products manage_tags manage_custom_views manage_sla" data-i18n="sidebar.administration">Administration</li>
       <li class="nav-item nav-group" data-permission-any="view_audit_log manage_settings manage_users manage_roles manage_groups manage_permissions">
         <a class="nav-link nav-group-toggle" href="#">
           <i class="nav-icon bi bi-shield-lock"></i> <span class="nav-text" data-i18n="sidebar.management">System</span>
         </a>
         <ul class="nav-group-items">
-          <li class="nav-item" data-permission="view_audit_log">
+          <li class="nav-item" data-permission="view_audit_log" data-license-feature="audit_log">
             <a class="nav-link" href="audit-log.html">
               <i class="nav-icon bi bi-journal-text"></i> <span class="nav-text">Audit Log</span>
             </a>
@@ -136,14 +150,24 @@
           </li>
         </ul>
       </li>
-      <li class="nav-item nav-group" data-permission-any="manage_issue_types manage_status manage_status_categories manage_resolutions manage_products manage_tags">
+      <li class="nav-item nav-group" data-permission-any="manage_issue_types manage_status manage_status_categories manage_resolutions manage_priorities manage_products manage_tags manage_custom_views manage_sla">
         <a class="nav-link nav-group-toggle" href="#">
           <i class="nav-icon bi bi-ticket-detailed"></i> <span class="nav-text" data-i18n="sidebar.issues">Issues</span>
         </a>
         <ul class="nav-group-items">
+          <li class="nav-item" data-permission="manage_custom_views" data-license-feature="custom_views">
+            <a class="nav-link" href="custom-views.html">
+              <i class="nav-icon bi bi-bookmarks"></i> <span class="nav-text" data-i18n="sidebar.custom_views">Custom Views</span>
+            </a>
+          </li>
           <li class="nav-item" data-permission="manage_issue_types">
             <a class="nav-link" href="issue-types.html">
               <i class="nav-icon bi bi-bug"></i> <span class="nav-text" data-i18n="sidebar.issue_types">Issue Types</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_priorities">
+            <a class="nav-link" href="priorities.html">
+              <i class="nav-icon bi bi-exclamation-diamond"></i> <span class="nav-text" data-i18n="sidebar.priorities">Priorities</span>
             </a>
           </li>
           <li class="nav-item" data-permission="manage_products">
@@ -154,6 +178,11 @@
           <li class="nav-item" data-permission="manage_resolutions">
             <a class="nav-link" href="resolutions.html">
               <i class="nav-icon bi bi-check2-circle"></i> <span class="nav-text" data-i18n="sidebar.resolutions">Resolutions</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_sla" data-license-feature="sla">
+            <a class="nav-link" href="sla-setup.html">
+              <i class="nav-icon bi bi-stopwatch"></i> <span class="nav-text" data-i18n="sidebar.sla_setup">SLA Setup</span>
             </a>
           </li>
           <li class="nav-item" data-permission="manage_status">
@@ -183,7 +212,7 @@
           <i class="bi bi-list fs-4"></i>
         </button>
         <a class="header-brand d-md-none" href="#">
-          <i class="bi bi-ticket-perforated logo-gradient fs-4"></i>
+          <i class="bi bi-ticket-perforated logo-gradient fs-4" data-brand-icon></i>
         </a>
         <form class="d-none d-md-flex ms-auto me-4" id="header-search-form" role="search">
           <div class="input-group">
@@ -333,10 +362,6 @@
         <div class="alert alert-warning d-none" id="maintenance-banner" role="alert">
           <i class="bi bi-cone-striped me-2"></i> <span data-i18n="maintenance.banner">Maintenance mode is active. Only administrators can use the application.</span>
         </div>
-        <div class="alert alert-info d-none" id="license-trial-banner" role="alert">
-          <i class="bi bi-key me-2"></i> <span id="license-trial-text"></span>
-          <a href="settings.html#license" class="alert-link ms-1 d-none" id="license-trial-link" data-i18n="license.banner.link">License settings</a>
-        </div>
         <div class="alert alert-warning d-none" id="license-expiry-banner" role="alert">
           <i class="bi bi-key me-2"></i> <span id="license-expiry-text"></span>
           <a href="settings.html#license" class="alert-link ms-1" data-i18n="license.banner.link">License settings</a>
@@ -358,6 +383,9 @@
       </li>
       <li class="nav-item" role="presentation">
         <button class="nav-link" id="options-tab" data-bs-toggle="tab" data-bs-target="#options" type="button" role="tab" aria-controls="options" aria-selected="false" data-i18n="profile.tabs.options">Options</button>
+      </li>
+      <li class="nav-item" role="presentation" data-license-feature="custom_views">
+        <button class="nav-link" id="custom-views-tab" data-bs-toggle="tab" data-bs-target="#custom-views" type="button" role="tab" aria-controls="custom-views" aria-selected="false" data-i18n="profile.tabs.custom_views">Custom Views</button>
       </li>
       <li class="nav-item" role="presentation">
         <button class="nav-link" id="twofa-tab" data-bs-toggle="tab" data-bs-target="#twofa" type="button" role="tab" aria-controls="twofa" aria-selected="false" data-i18n="profile.tabs.twofa">2FA</button>
@@ -533,6 +561,22 @@
               <td class="text-center"><div class="form-check form-switch d-inline-block"><input class="form-check-input" type="checkbox" role="switch" data-event="comment_added" data-channel="email" aria-label="Email"></div></td>
               <td class="text-center"><div class="form-check form-switch d-inline-block"><input class="form-check-input" type="checkbox" role="switch" data-event="comment_added" data-channel="in_app" aria-label="In-app"></div></td>
             </tr>
+            <tr data-permission="view_sla" data-license-feature="sla">
+              <td>
+                <span class="fw-semibold" data-i18n="notifications.prefs.events.sla_at_risk.title"></span>
+                <div class="small text-body-secondary" data-i18n="notifications.prefs.events.sla_at_risk.desc"></div>
+              </td>
+              <td class="text-center"><div class="form-check form-switch d-inline-block"><input class="form-check-input" type="checkbox" role="switch" data-event="sla_at_risk" data-channel="email" aria-label="Email"></div></td>
+              <td class="text-center"><div class="form-check form-switch d-inline-block"><input class="form-check-input" type="checkbox" role="switch" data-event="sla_at_risk" data-channel="in_app" aria-label="In-app"></div></td>
+            </tr>
+            <tr data-permission="view_sla" data-license-feature="sla">
+              <td>
+                <span class="fw-semibold" data-i18n="notifications.prefs.events.sla_breached.title"></span>
+                <div class="small text-body-secondary" data-i18n="notifications.prefs.events.sla_breached.desc"></div>
+              </td>
+              <td class="text-center"><div class="form-check form-switch d-inline-block"><input class="form-check-input" type="checkbox" role="switch" data-event="sla_breached" data-channel="email" aria-label="Email"></div></td>
+              <td class="text-center"><div class="form-check form-switch d-inline-block"><input class="form-check-input" type="checkbox" role="switch" data-event="sla_breached" data-channel="in_app" aria-label="In-app"></div></td>
+            </tr>
             </tbody>
           </table>
           <div class="d-flex justify-content-end gap-2 mt-4">
@@ -576,11 +620,31 @@
         </form>
       </div>
 
+      <!-- Custom Views Tab -->
+      <div class="tab-pane fade" id="custom-views" data-license-feature="custom_views" role="tabpanel" aria-labelledby="custom-views-tab">
+        <p class="text-body-secondary" data-i18n="custom_views.description">Your saved views of the issue list. Create a view on the issues page with Save view.</p>
+        <div class="table-responsive">
+          <table class="table align-middle">
+            <thead>
+              <tr>
+                <th data-i18n="common.name">Name</th>
+                <th data-i18n="custom_views.shared_column">Visibility</th>
+                <th data-i18n="custom_views.updated_column">Updated</th>
+                <th><span class="visually-hidden" data-i18n="custom_views.actions_column">Actions</span></th>
+              </tr>
+            </thead>
+            <tbody id="cv-tbody"></tbody>
+          </table>
+        </div>
+        <p class="text-body-secondary d-none" id="cv-empty" data-i18n="custom_views.empty">You have no custom views yet.</p>
+      </div>
+
       <!-- 2FA Tab -->
       <div class="tab-pane fade" id="twofa" role="tabpanel" aria-labelledby="twofa-tab">
         <div id="twofa-off" class="d-none">
           <p data-i18n="profile.twofa.description"></p>
-          <a href="2fa-setup.html" class="btn btn-primary" id="twofa-setup-btn"><i class="bi bi-shield-lock me-1"></i><span data-i18n="profile.twofa.setup_button">Set up 2FA</span></a>
+          <a href="2fa-setup.html" class="btn btn-primary" id="twofa-setup-btn" data-license-feature="two_fa_setup"><i class="bi bi-shield-lock me-1"></i><span data-i18n="profile.twofa.setup_button">Set up 2FA</span></a>
+          <p class="text-warning-emphasis mb-0 d-none" data-license-off="two_fa_setup"><i class="bi bi-key me-1"></i><span data-i18n="license.feature_off">This feature is currently disabled due to an invalid license.</span></p>
         </div>
         <div id="twofa-on" class="d-none">
           <div class="alert alert-success d-flex align-items-center" role="status">
@@ -614,6 +678,89 @@
     </form>
   </div>
 </div>
+
+
+<div class="modal fade" id="cv-edit-modal" tabindex="-1" aria-labelledby="cv-edit-title" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <form class="modal-content" id="cv-edit-form" novalidate>
+      <div class="modal-header">
+        <h5 class="modal-title" id="cv-edit-title" data-i18n="custom_views.edit_title">Edit view</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="cv-edit-name" class="form-label" data-i18n="issues.custom_views.name">Name</label>
+          <input type="text" class="form-control" id="cv-edit-name" maxlength="100" required autocomplete="off">
+          <div class="invalid-feedback" id="cv-edit-name-error" data-i18n="issues.custom_views.name_required">Please enter a name (up to 100 characters).</div>
+        </div>
+        <div class="form-check form-switch mb-3">
+          <input class="form-check-input" type="checkbox" role="switch" id="cv-edit-shared">
+          <label class="form-check-label" for="cv-edit-shared" data-i18n="issues.custom_views.shared">Share with all registered users</label>
+        </div>
+        <div class="alert alert-info py-2 d-none" id="cv-edit-stale" role="status" data-i18n="custom_views.stale_removed"></div>
+        <div class="row g-2">
+          <div class="col-12 col-sm-6">
+            <label for="cv-filter-status-btn" class="form-label small mb-1" data-i18n="issues.columns.status">Status</label>
+            <div id="cv-filter-status"></div>
+          </div>
+          <div class="col-12 col-sm-6">
+            <label for="cv-filter-status-category-btn" class="form-label small mb-1" data-i18n="issues.fields.status_category">Status Category</label>
+            <div id="cv-filter-status-category"></div>
+          </div>
+          <div class="col-12 col-sm-6">
+            <label for="cv-filter-type-btn" class="form-label small mb-1" data-i18n="issues.fields.type">Type</label>
+            <div id="cv-filter-type"></div>
+          </div>
+          <div class="col-12 col-sm-6">
+            <label for="cv-filter-priority-btn" class="form-label small mb-1" data-i18n="issues.fields.priority">Priority</label>
+            <div id="cv-filter-priority"></div>
+          </div>
+          <div class="col-12 col-sm-6">
+            <label for="cv-filter-product-btn" class="form-label small mb-1" data-i18n="issues.fields.product">Product</label>
+            <div id="cv-filter-product"></div>
+          </div>
+          <div class="col-12 col-sm-6">
+            <label for="cv-filter-assignee-btn" class="form-label small mb-1" data-i18n="issues.columns.assignee">Assignee</label>
+            <div id="cv-filter-assignee"></div>
+          </div>
+          <div class="col-12 col-sm-6">
+            <label for="cv-filter-reporter-btn" class="form-label small mb-1" data-i18n="issues.columns.reporter">Reporter</label>
+            <div id="cv-filter-reporter"></div>
+          </div>
+          <div class="col-12 col-sm-6">
+            <label for="cv-filter-tag-btn" class="form-label small mb-1" data-i18n="issues.fields.tags">Tags</label>
+            <div id="cv-filter-tag"></div>
+          </div>
+          <div class="col-12 col-sm-6 d-none" id="cv-filter-sla-col">
+            <label for="cv-filter-sla-btn" class="form-label small mb-1" data-i18n="sla.filter.label">SLA</label>
+            <div id="cv-filter-sla"></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-i18n="common.cancel">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="cv-edit-submit" data-i18n="common.save">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal fade" id="cv-delete-modal" tabindex="-1" aria-labelledby="cv-delete-title" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="cv-delete-title" data-i18n="common.delete">Delete</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="cv-delete-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-i18n="common.cancel">Cancel</button>
+        <button type="button" class="btn btn-danger" id="cv-delete-confirm" data-i18n="common.yes_delete">Yes, delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
       </div>
@@ -622,7 +769,7 @@
       <div class="container-fluid h-100 d-flex align-items-center">
         <div class="flex-fill">&copy; 2026 by <a href="https://lewe.com" class="text-decoration-none">Lewe Labs</a>.</div>
         <div class="flex-fill text-center"><a href="privacy.html" class="text-decoration-none" data-i18n="header.privacy">Privacy Policy</a> &middot; <a href="imprint.html" class="text-decoration-none" data-i18n="header.imprint">Imprint</a></div>
-        <div class="flex-fill text-end">Powered by <i class="bi bi-ticket-perforated logo-gradient mx-1" aria-hidden="true"></i>Lewe<strong>Desk</strong> 1.0.1.126</div>
+        <div class="flex-fill text-end">Powered by <i class="bi bi-ticket-perforated logo-gradient mx-1" aria-hidden="true"></i>Lewe<strong>Desk</strong> 1.0.2.181</div>
       </div>
     </footer>
   </div>

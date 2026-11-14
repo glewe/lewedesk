@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+require_once __DIR__ . '/../services/SlaService.php';
+
 use App\Services\AuditLog;
 use App\Services\IssueHistory;
+use App\Services\SlaService;
 use PDO;
 
 //---------------------------------------------------------------------------
@@ -22,6 +25,7 @@ class IssueWorkflowModel
   private IssueModel $issues;
   private CommentModel $comments;
   private IssueHistory $history;
+  private SlaService $sla;
   private ?AuditLog $audit;
 
   //---------------------------------------------------------------------------
@@ -40,6 +44,7 @@ class IssueWorkflowModel
     $this->issues = $issues;
     $this->comments = $comments;
     $this->history = new IssueHistory($db);
+    $this->sla = new SlaService($db);
   }
 
   //---------------------------------------------------------------------------
@@ -62,6 +67,7 @@ class IssueWorkflowModel
       if ($statusKey !== null) {
         $this->changeStatus($facts, $actorId, $statusKey, null, false);
       }
+      $this->sla->sync($facts['id']);
     });
   }
 
@@ -84,6 +90,7 @@ class IssueWorkflowModel
         $this->comments->insert($facts['id'], $actorId, $body, false);
       }
       $this->changeStatus($facts, $actorId, 'resolved', $resolutionId, false);
+      $this->sla->sync($facts['id']);
     });
   }
 
@@ -101,6 +108,7 @@ class IssueWorkflowModel
     $this->issues->transaction(function () use ($facts, $actorId): void {
       $this->issues->lockIssue($facts);
       $this->changeStatus($facts, $actorId, 'closed', null, true);
+      $this->sla->sync($facts['id']);
     });
   }
 
@@ -120,6 +128,7 @@ class IssueWorkflowModel
       $this->issues->lockIssue($facts);
       $this->comments->insert($facts['id'], $actorId, $body, false);
       $this->changeStatus($facts, $actorId, 'open', null, false);
+      $this->sla->sync($facts['id']);
     });
   }
 
@@ -150,6 +159,7 @@ class IssueWorkflowModel
       if ($assigneeId !== null) {
         $this->issues->addWatcher($facts['id'], $assigneeId);
       }
+      $this->sla->sync($facts['id']);
     });
   }
 
@@ -170,6 +180,7 @@ class IssueWorkflowModel
       $this->db->prepare('UPDATE issues SET access = :access, updated_at = CURRENT_TIMESTAMP WHERE id = :id')->execute(['access' => $access, 'id' => $facts['id']]);
       $this->history->log($facts['id'], $actorId, 'field_changed', 'access', $facts['access'], $access);
       $this->issues->removeWatchersWithoutAccess($facts['id']);
+      $this->sla->sync($facts['id'], true);
     });
   }
 
@@ -195,6 +206,7 @@ class IssueWorkflowModel
       $summary = $this->db->prepare('SELECT summary FROM issues WHERE id = :id');
       $summary->execute(['id' => $facts['id']]);
       $this->audit?->log($deleted ? 'issue.deleted' : 'issue.restored', ['id' => $actorId, 'username' => $this->username($actorId)], 'issue', $facts['id'], (string)$summary->fetchColumn());
+      $this->sla->sync($facts['id']);
     });
   }
 

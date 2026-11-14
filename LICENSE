@@ -1,3 +1,269 @@
+LEWEDESK SOFTWARE LICENSE AGREEMENT
+
+Copyright (c) 2025-2026 Lewe Labs. All rights reserved.
+
+Version of 12 November 2026
+
+PLEASE READ THIS AGREEMENT CAREFULLY. BY INSTALLING, COPYING OR USING LEWEDESK
+YOU AGREE TO BE BOUND BY IT. IF YOU DO NOT AGREE, DO NOT INSTALL OR USE
+LEWEDESK.
+
+
+1. Definitions
+
+"Lewe Labs", "we" and "us" is the licensor of LeweDesk.
+
+"LeweDesk" or the "Software" means the LeweDesk application (the web pages,
+the PHP programs, the database scripts, the installer and the documentation),
+in the form in which we deliver it, including updates we deliver to you.
+
+"You" is the person or organisation that installs or uses the Software.
+
+"Installation" means one copy of the Software running on one web server
+environment with one database.
+
+"License Key" means the key we issue to you for the Software.
+
+"License Server" means the license service of Lewe Labs (LeweLic,
+https://lewelic.lewe.com) that checks License Keys.
+
+"Domain" means the server name of the web server on which an Installation runs
+(for example desk.example.com).
+
+"Users" means the people who log in to or visit your Installation.
+
+
+2. License grant
+
+2.1 Subject to this Agreement and, after the trial period, to a valid License
+Key, we grant you a non-exclusive, non-transferable, non-sublicensable,
+revocable right to install and use the Software for your own business or
+organisation, including to handle the requests of your own customers and
+staff.
+
+2.2 A License Key covers as many Installations as its number of activations
+allows. Each Installation is registered with the License Server by its Domain.
+The number of activations, the term of the license and any further conditions
+are stated in your license confirmation and are shown on the License tab of the
+system settings of your Installation.
+
+2.3 You may make copies of the Software for backup and for test and staging
+environments of your licensed Installation, as long as you do not use them
+productively.
+
+2.4 All rights not expressly granted are reserved.
+
+
+3. Restrictions
+
+You may not, and may not allow anybody else to:
+
+a) sell, rent, lease, lend, sublicense or otherwise distribute the Software or
+   make it available to third parties as a service (for example as a hosted
+   helpdesk for several unrelated customers) without our written permission;
+b) remove or change copyright, license or other proprietary notices;
+c) circumvent, disable or tamper with the license check, the License Key, the
+   activation or the restrictions of the limited mode described in section 5,
+   or use a License Key that was not issued to you;
+d) use one License Key for more Installations than it allows;
+e) reverse engineer, decompile or disassemble the Software, except to the
+   extent that applicable law allows it despite this restriction.
+
+3.1 Source-available, not open source. We deliver the Software in source form
+(the PHP programs, the database scripts and the built web pages), so that you
+can read it, check what it does and install it easily. This does not make it
+open source software. It remains proprietary software, and only this Agreement
+gives you rights to it.
+
+3.2 Changes for your own needs. You may change the Software to fit your own
+needs, for example its configuration, texts, appearance, language files and
+code, as long as you:
+
+a) do not circumvent, disable or tamper with the license check, the License
+   Key, the activation or the restrictions of the limited mode (section 3 c),
+   and do not unlock a feature or remove a limit that your license does not
+   include;
+b) use the changed version only in your own licensed Installations, and do not
+   distribute it or make it available to third parties (section 3 a);
+c) keep the copyright, license and other proprietary notices (section 3 b).
+
+A changed version remains subject to this Agreement. We give no support or
+warranty for changes, and an update from us may overwrite them; keeping your
+changes compatible with updates is your responsibility.
+
+
+4. License Key, activation and term
+
+4.1 The License Key is confidential. You are responsible for its safekeeping.
+Tell us at once if it was lost or misused; we can block it and issue a new one.
+
+4.2 You enter the License Key on the License tab of the system settings and
+click Activate. This registers the Domain of your Installation with the License
+Server. You can remove the registration (Deregister), for example before you
+move the Installation to another Domain.
+
+4.3 The license runs for the term stated in your license confirmation. If it
+has an expiry date, the license ends on that date unless it is renewed.
+
+4.4 We may block a License Key if it is used against this Agreement, if it was
+issued by mistake, or if the fees due for it have not been paid.
+
+
+5. Trial, grace period and limited mode
+
+5.1 Trial. Without a License Key the Software runs for 14 days from its first
+start, with its full functionality.
+
+5.2 Grace period. If the license is missing, invalid, not registered for the
+Domain, not yet activated or expired, the Software keeps its full functionality
+for another 14 days. Administrators of the Installation are shown a warning
+that names the reason and the days left. A blocked License Key has no grace
+period.
+
+5.3 Limited mode. When the trial or the grace period is over, or the License
+Key is blocked, the Software runs in a limited mode until a valid license is
+activated:
+
+a) no more than 50 issues and 20 users (not counting the built-in
+   administrator account) can be created; existing issues and users can still
+   be edited and deleted;
+b) self-registration, the set-up of two factor authentication, the Audit Log
+   (viewing) and the Custom Views are switched off.
+
+Your data is not deleted or changed in the limited mode; the Audit Log is still
+written. As soon as a valid license is activated, all limits are lifted.
+
+5.4 The operator of an Installation may choose, in the configuration file, to
+lock the Software instead, so that after the grace period only administrators
+can log in.
+
+
+6. License check and data sent to the License Server
+
+6.1 To check the license, the Installation contacts the License Server over an
+encrypted connection when the License Key is saved, when you click Activate,
+Deregister or Check Now, and automatically about every 30 minutes (every five
+minutes after a failed check).
+
+6.2 Only these data are sent: the License Key, the Domain and the name of the
+product. The License Server also sees the technical data of every web request
+(the IP address of your web server and the time). No data of your Users, issues
+or comments are sent. The License Server keeps the License Key, the Domain, the
+time of activation and of the last check, and the status of the license.
+
+6.3 If the License Server cannot be reached, the Software keeps working with
+the last known state of the license.
+
+6.4 Your Installation's privacy policy (Help > Privacy Policy) describes this
+data transfer for your Users. You are responsible for the privacy policy of
+your Installation.
+
+
+7. Your data
+
+You remain the owner of all data you and your Users enter into the Software.
+We do not have access to your Installation or your database. You alone are
+responsible for the lawful processing of the personal data of your Users,
+including their information and, where required, their consent, and for
+backups of your data.
+
+
+8. Updates and support
+
+We may offer updates and support as described in your license confirmation or
+on our website. Without such a commitment there is no claim to updates or
+support. Updates are subject to this Agreement.
+
+
+9. Ownership
+
+The Software is protected by copyright. We and our licensors own all rights in
+it, including the name LeweDesk and the logos. This Agreement does not transfer
+any ownership to you.
+
+
+10. Third-party components
+
+The Software contains components from third parties under their own license
+terms, for example Bootstrap and Bootstrap Icons, DataTables, Popper, Chart.js,
+DOMPurify, Marked, web fonts and a design based on CoreUI. These terms apply to
+those components, not this Agreement. The components are listed on the About
+page of the Software (Help > About). The notice of the CoreUI license is
+reproduced at the end of this file.
+
+
+11. Warranty
+
+11.1 The Software is licensed as it is. We warrant that it works essentially as
+described in the documentation. We do not warrant that it is free of errors,
+that it works without interruption, or that it fits your particular purpose.
+Your statutory rights for defects, where they cannot be excluded, are not
+affected.
+
+11.2 You are responsible for the operation, security, backup and updating of
+the server, the database and the Installation.
+
+
+12. Liability
+
+12.1 We are liable without limit for intent and gross negligence, for injury to
+life, body or health, under the Product Liability Act, and where we have given
+a guarantee.
+
+12.2 For slight negligence we are liable only for the breach of an essential
+contractual obligation (an obligation whose fulfilment makes the proper
+performance of the contract possible in the first place and on which you can
+regularly rely), and then only for the typical damage that was foreseeable
+when the contract was made.
+
+12.3 We are not liable for the loss of data to the extent the damage would have
+been avoided by regular, appropriate backups.
+
+12.4 Any further liability is excluded. This also applies to the personal
+liability of our employees and agents.
+
+
+13. Termination
+
+13.1 This Agreement ends when the license ends, or when you stop using the
+Software. You can end it at any time by deleting the Software and all copies.
+
+13.2 We may end this Agreement without notice if you materially breach it, in
+particular sections 3 or 4, and do not stop the breach within 14 days after we
+ask you to.
+
+13.3 When this Agreement ends, you must stop using the Software and delete all
+copies. Sections 3, 9, 11, 12 and 14 continue to apply.
+
+
+14. General
+
+14.1 This Agreement is governed by the laws of the Federal Republic of Germany,
+excluding the UN Convention on Contracts for the International Sale of Goods.
+If you are a merchant, a legal entity under public law or a special fund under
+public law, the courts at our registered office have exclusive jurisdiction.
+Mandatory consumer protection law of your country of residence remains
+unaffected.
+
+14.2 If a provision is or becomes invalid, the rest of this Agreement stays in
+force, and the invalid provision is replaced by the valid provision that comes
+closest to its purpose.
+
+14.3 This Agreement, together with your license confirmation, is the entire
+agreement about the Software. Changes must be in text form. We may change this
+Agreement for future versions of the Software; a change applies to you when you
+install such a version.
+
+14.4 The English text is binding. A translation is for information only.
+
+
+-------------------------------------------------------------------------------
+THIRD-PARTY NOTICE: CoreUI
+-------------------------------------------------------------------------------
+
+The design of the LeweDesk user interface is based on the CoreUI free Bootstrap
+admin template, which is licensed under the MIT License:
+
 The MIT License (MIT)
 
 Copyright (c) 2025 creativeLabs Łukasz Holeczek.

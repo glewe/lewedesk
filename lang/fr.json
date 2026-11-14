@@ -32,6 +32,12 @@
     "activity": {
       "title": "Activité récente",
       "empty": "Aucune activité sur vos tickets pour le moment."
+    },
+    "sla": {
+      "breached": "SLA dépassé",
+      "at_risk": "SLA à risque",
+      "compliance": "Respect du SLA",
+      "days": "{days} derniers jours"
     }
   },
   "sidebar": {
@@ -47,9 +53,12 @@
     "issue_types": "Types de ticket",
     "products": "Produits",
     "resolutions": "Résolutions",
+    "priorities": "Priorités",
     "status": "Statut",
     "status_categories": "Catégories de statut",
     "tags": "Étiquettes",
+    "custom_views": "Vues personnalisées",
+    "sla_setup": "Configuration SLA",
     "issues_title": "Tickets",
     "all_issues": "Tous les tickets",
     "create_issue": "Créer un ticket",
@@ -60,7 +69,9 @@
     "waiting": "En attente",
     "in_progress": "En cours",
     "done": "Terminés",
-    "deleted_issues": "Supprimés"
+    "deleted_issues": "Supprimés",
+    "sla_breached": "SLA non respecté",
+    "sla_report": "Rapport SLA"
   },
   "header": {
     "search": "Rechercher...",
@@ -104,9 +115,11 @@
       "general": "Général",
       "system": "Système",
       "theme": "Thème",
+      "index_page": "Page d'accueil",
       "issues": "Configuration des tickets",
       "license": "Licence",
-      "provider": "Fournisseur"
+      "provider": "Fournisseur",
+      "mailin": "E-mail vers ticket"
     },
     "fields": {
       "application_url": "URL de l'application",
@@ -149,14 +162,32 @@
       "debug_mode_desc": "Lorsque cette option est activée, des informations de débogage sont affichées dans la console du navigateur.",
       "under_maintenance": "En maintenance",
       "under_maintenance_desc": "Lorsque cette option est activée, l'application passe en mode maintenance. Seuls les administrateurs peuvent accéder à l'application.",
+      "allow_registration": "Autoriser l'auto-inscription des utilisateurs",
+      "allow_registration_desc": "Permet aux visiteurs de créer leur propre compte sur la page d'inscription. Désactivez cette option pour gérer les utilisateurs manuellement ; les administrateurs peuvent toujours créer des utilisateurs.",
       "force_2fa": "Imposer l'authentification à deux facteurs",
       "force_2fa_desc": "Oblige les utilisateurs à configurer une authentification à deux facteurs, par exemple via Google ou Microsoft Authenticator. Si un utilisateur n'a pas encore configuré la 2FA, il sera redirigé vers une page de configuration de la 2FA après la connexion normale.",
       "audit_retention_days": "Conservation du journal d'audit (jours)",
       "audit_retention_days_desc": "Indiquez après combien de jours les entrées du journal d'audit sont supprimées. Saisissez 0 pour les conserver indéfiniment.",
+      "admin_page_size": "Taille de page de l'administration",
+      "admin_page_size_desc": "Définit le nombre de lignes affichées par page sur les pages de configuration du système.",
       "color_mode": "Mode de couleur",
       "color_mode_desc": "Sélectionnez le mode de couleur par défaut de l'application.",
       "font": "Police",
       "font_desc": "Sélectionnez la police à utiliser pour l'application.",
+      "index_brand_icon": "Icône de la barre de navigation",
+      "index_brand_icon_desc": "Classe Bootstrap Icons affichée dans la barre de navigation et la barre latérale, p. ex. bi-headset. Laissez vide pour l'icône par défaut.",
+      "index_brand_title": "Titre de la barre de navigation",
+      "index_brand_title_desc": "Titre affiché dans la barre de navigation et la barre latérale. Laissez vide pour le titre par défaut.",
+      "index_hero_title_left": "Titre principal (gauche)",
+      "index_hero_title_left_desc": "Partie gauche du titre principal, dans la couleur de texte normale. Laissez vide pour conserver la valeur par défaut de cette partie.",
+      "index_hero_title_right": "Titre principal (droite)",
+      "index_hero_title_right_desc": "Partie droite du titre principal, mise en évidence.",
+      "index_hero_subtitle": "Sous-titre principal",
+      "index_hero_subtitle_desc": "Texte sous le titre principal. Laissez vide pour le texte par défaut.",
+      "index_copyright_company": "Société du copyright",
+      "index_copyright_company_desc": "Nom de la société dans la ligne de copyright du pied de page. L'année est ajoutée automatiquement. Laissez vide pour la valeur par défaut.",
+      "index_copyright_url": "Lien du copyright",
+      "index_copyright_url_desc": "Adresse web facultative (http ou https) vers laquelle pointe le nom de la société. Sans adresse, le nom est affiché comme texte simple.",
       "issue_key_prefix": "Préfixe de la clé de ticket",
       "issue_key_prefix_desc": "Saisissez le préfixe de la clé de ticket. Les tickets sont affichés sous la forme PRÉFIXE-123 (p. ex. LD-123). Le préfixe ne peut plus être modifié dès qu'un premier ticket existe.",
       "support_email": "E-mail du support",
@@ -186,7 +217,31 @@
       "provider_email": "E-mail",
       "provider_email_desc": "Adresse e-mail du fournisseur. Laissez vide pour la masquer.",
       "provider_website": "Site web",
-      "provider_website_desc": "Site web du fournisseur, commençant par http:// ou https://. Laissez vide pour le masquer."
+      "provider_website_desc": "Site web du fournisseur, commençant par http:// ou https://. Laissez vide pour le masquer.",
+      "mailin_poll_interval": "Intervalle de relevé (secondes)",
+      "mailin_poll_interval_desc": "Fréquence minimale de lecture de la boîte. La lecture a lieu après une requête à l'application : il faut donc un peu d'activité.",
+      "mailin_default_type": "Type de ticket",
+      "mailin_default_type_desc": "Type des tickets créés à partir des e-mails.",
+      "mailin_default_product": "Produit",
+      "mailin_default_product_desc": "Produit des tickets créés à partir des e-mails.",
+      "mailin_default_access": "Accès",
+      "mailin_default_access_desc": "Qui voit les tickets créés à partir des e-mails. « Auteur seulement » est le choix sûr : l'expéditeur et l'équipe de support.",
+      "mailin_unknown_sender": "Expéditeurs inconnus",
+      "mailin_unknown_sender_desc": "Ce qui arrive aux e-mails d'adresses qu'aucun utilisateur n'a. Les deux options autres que « Rejeter » exigent la preuve du serveur de messagerie que l'expéditeur possède l'adresse.",
+      "mailin_send_confirmation": "E-mail de confirmation",
+      "mailin_send_confirmation_desc": "Envoyer à l'expéditeur d'un e-mail la référence du ticket créé à partir de celui-ci.",
+      "mailin_trust_sender": "Faire confiance à l'adresse de l'expéditeur",
+      "mailin_trust_sender_desc": "Accepter l'adresse d'un utilisateur sans la preuve du serveur de messagerie (SPF, DKIM, DMARC). Jamais pour le support et les administrateurs. Seulement pour une boîte qui reçoit des e-mails de l'intérieur.",
+      "mailin_max_mails_per_run": "E-mails par relevé",
+      "mailin_max_mails_per_run_desc": "Le plus grand nombre d'e-mails traités lors d'un relevé. Les autres attendent le suivant.",
+      "mailin_max_body_size": "Texte maximal (Ko)",
+      "mailin_max_body_size_desc": "Le texte d'un e-mail est tronqué au-delà de cette taille.",
+      "mailin_hourly_limit": "E-mails par heure",
+      "mailin_hourly_limit_desc": "Le plus grand nombre d'e-mails pouvant devenir tickets ou commentaires en une heure. Les autres attendent dans la boîte. 0 signifie aucune limite.",
+      "mailin_allowed_domains": "Domaines d'expéditeur autorisés",
+      "mailin_allowed_domains_desc": "Seuls les e-mails de ces domaines sont traités (un par ligne ou séparés par des virgules, sous-domaines inclus). Vide : tous les domaines.",
+      "mailin_blocked_domains": "Domaines d'expéditeur bloqués",
+      "mailin_blocked_domains_desc": "Les e-mails de ces domaines sont toujours rejetés."
     },
     "actions": {
       "save": "Enregistrer les paramètres",
@@ -242,12 +297,12 @@
         },
         "trial": {
           "title": "Aucune licence - période d'essai",
-          "subject": "Cette installation de LeweDesk n'est pas sous licence. Elle cessera de fonctionner dans {days} jours.",
+          "subject": "Cette installation de LeweDesk n'est pas sous licence. La période d'essai se termine dans {days} jours, ensuite LeweDesk fonctionne avec des limites.",
           "help": "Saisissez votre clé de licence ci-dessous et activez-la."
         },
         "trial_expired": {
           "title": "Aucune licence - période d'essai terminée",
-          "subject": "Cette installation de LeweDesk n'est pas sous licence et la période d'essai est terminée. Seuls les administrateurs peuvent se connecter.",
+          "subject": "Cette installation de LeweDesk n'est pas sous licence et la période d'essai est terminée. LeweDesk fonctionne avec des limites.",
           "help": "Saisissez votre clé de licence ci-dessous et activez-la."
         },
         "pending": {
@@ -257,12 +312,12 @@
         },
         "expired": {
           "title": "Licence expirée",
-          "subject": "Votre licence a expiré. Seuls les administrateurs peuvent se connecter.",
+          "subject": "Votre licence a expiré. Après un délai de grâce de 14 jours, LeweDesk fonctionne avec des limites.",
           "help": "Veuillez renouveler votre licence ou contacter le fournisseur."
         },
         "blocked": {
           "title": "Licence bloquée",
-          "subject": "Votre licence a été bloquée. Seuls les administrateurs peuvent se connecter.",
+          "subject": "Votre licence a été bloquée. LeweDesk fonctionne avec des limites.",
           "help": "Veuillez contacter le fournisseur."
         },
         "unregistered": {
@@ -302,6 +357,65 @@
         "invalid_domain": "Le domaine de cette installation n'est pas valide pour le serveur de licences.",
         "https_required": "Le serveur de licences doit être joint via HTTPS. Vérifiez LICENSE_SERVER dans le fichier .env."
       }
+    },
+    "mailin": {
+      "off_env_title": "Désactivé",
+      "off_env": "E-mail vers ticket n'est pas activé. Définissez MAILIN_YES=1 et la boîte (MAILIN_HOST, et l'identifiant, qui est par défaut MAIL_USER et MAIL_PASS) dans le fichier .env de l'installation.",
+      "off_license_title": "Désactivé : licence",
+      "off_license": "E-mail vers ticket est activé dans le fichier .env, mais la licence ne l'autorise pas pour le moment. Les e-mails restent dans la boîte.",
+      "on_title": "Activé",
+      "on": "Les e-mails envoyés à la boîte deviennent des tickets et des commentaires.",
+      "mailbox": "Boîte aux lettres",
+      "folders": "Dossiers",
+      "folders_value": "lus : {inbox}, traités : {processed}, rejetés : {rejected}",
+      "auth_servers": "Serveur de messagerie de confiance",
+      "auth_none": "non défini (MAILIN_AUTH_SERVER) : seul le réglage « Faire confiance à l'adresse de l'expéditeur » admet des utilisateurs, le support ne peut pas envoyer d'e-mails",
+      "last_run": "Dernier relevé",
+      "never_run": "Il n'y a pas encore eu de relevé.",
+      "last_result": "{issues} ticket(s), {comments} commentaire(s), {rejected} rejeté(s), {errors} en échec",
+      "limited": "La limite par heure a été atteinte ; les autres e-mails attendent dans la boîte.",
+      "mailbox_error": "La boîte n'a pas pu être lue : {error}",
+      "counts": "24 dernières heures",
+      "test": "Tester la connexion",
+      "testing": "Test en cours...",
+      "test_desc": "Se connecte à la boîte et la consulte. Rien n'est modifié.",
+      "test_ok": "Connecté. {folders} dossier(s), {inbox} e-mail(s) dans la boîte de réception, {unseen} non lu(s).",
+      "test_missing": "Le ou les dossiers {names} n'existent pas encore ; le premier relevé les crée.",
+      "test_failed": "La connexion a échoué : {error}",
+      "pickup_run": "Relever maintenant",
+      "pickup_running": "Relevé en cours...",
+      "pickup_run_desc": "Lit la boîte tout de suite, sans attendre le prochain relevé. L'intervalle repart à partir de maintenant.",
+      "pickup_run_ok": "Terminé. {issues} ticket(s), {comments} commentaire(s), {rejected} rejeté(s), {errors} échec(s).",
+      "pickup_run_busy": "Un autre relevé travaille sur la boîte en ce moment. Réessayez dans un instant.",
+      "pickup_run_failed": "La boîte n'a pas pu être relevée : {error}",
+      "log": "Derniers e-mails",
+      "log_empty": "Aucun e-mail n'a encore été lu.",
+      "col_time": "Quand",
+      "col_from": "De",
+      "col_subject": "Objet",
+      "col_result": "Résultat",
+      "col_details": "Détails",
+      "result_issue": "Ticket",
+      "result_comment": "Commentaire",
+      "result_rejected": "Rejeté",
+      "result_error": "Échec",
+      "attempts": "{count} essais",
+      "first_type": "Le premier type actif",
+      "no_product": "Aucun",
+      "policy_reject": "Rejeter",
+      "policy_create_user": "Créer un compte",
+      "policy_anonymous": "Anonyme (compte « Email requester »)",
+      "load_error": "L'état d'E-mail vers ticket n'a pas pu être chargé.",
+      "options_error": "Les listes n'ont pas pu être chargées ; le réglage reste inchangé."
+    },
+    "housekeeping": {
+      "title": "Maintenance",
+      "desc": "Envoie les e-mails en attente, signale les minuteurs SLA menacés ou non respectés et supprime ce qui a dépassé sa durée de conservation. Elle s’exécute seule toutes les cinq minutes ; vous pouvez la lancer ici tout de suite.",
+      "run": "Lancer la maintenance maintenant",
+      "running": "En cours...",
+      "finished": "La maintenance a été exécutée.",
+      "done": "Terminé : {sent} e-mail(s) envoyé(s), {notifications} notification(s), {mails} ancien(s) e-mail(s), {uploads} envoi(s) temporaire(s) et {audit} entrées du journal d’audit supprimés ; SLA : {breached} minuteur(s) non respecté(s) et {at_risk} menacé(s) signalés.",
+      "error": "La maintenance n’a pas pu être exécutée."
     }
   },
   "lookups": {
@@ -327,6 +441,12 @@
       "on_hold": "Suspendu",
       "resolved": "Résolu",
       "closed": "Fermé"
+    },
+    "priorities": {
+      "critical": "Critique",
+      "high": "Haute",
+      "normal": "Normale",
+      "low": "Basse"
     },
     "resolutions": {
       "completed": "Terminé",
@@ -401,6 +521,23 @@
         "not_found": "Le statut est introuvable."
       },
       "category_desc": "La catégorie à laquelle appartient le statut. Les catégories regroupent les statuts dans les listes de tickets."
+    },
+    "priorities": {
+      "title": "Priorités",
+      "add_title": "Ajouter une priorité",
+      "edit_title": "Modifier la priorité",
+      "name_desc": "Nom unique de la priorité (50 caractères max.).",
+      "description_desc": "Brève description de ce que signifie la priorité.",
+      "confirm_delete": "Supprimer les priorités sélectionnées ? Cette action est irréversible.",
+      "messages": {
+        "created": "La priorité a été créée.",
+        "updated": "La priorité a été mise à jour.",
+        "deleted": "Les priorités sélectionnées ont été supprimées.",
+        "load_error": "Impossible de charger les priorités depuis le serveur.",
+        "save_error": "La priorité n'a pas pu être enregistrée.",
+        "delete_error": "Les priorités sélectionnées n'ont pas pu être supprimées.",
+        "not_found": "La priorité est introuvable."
+      }
     },
     "resolutions": {
       "title": "Résolutions",
@@ -645,7 +782,8 @@
       "avatar": "Avatar",
       "notifications": "Notifications",
       "options": "Options",
-      "twofa": "2FA"
+      "twofa": "2FA",
+      "custom_views": "Vues personnalisées"
     },
     "options": {
       "language": "Langue",
@@ -700,6 +838,26 @@
   "maintenance": {
     "banner": "Le mode maintenance est actif. Seuls les administrateurs peuvent utiliser l'application."
   },
+  "custom_views": {
+    "title": "Vues personnalisées",
+    "admin_description": "Toutes les vues enregistrées de la liste des tickets de tous les utilisateurs. Les vues partagées d'utilisateurs supprimés restent sans propriétaire.",
+    "admin_empty": "Il n'y a pas encore de vue personnalisée.",
+    "description": "Vos vues enregistrées de la liste des tickets. Créez une vue sur la page des tickets avec « Enregistrer la vue ».",
+    "empty": "Vous n'avez pas encore de vue personnalisée.",
+    "shared_column": "Visibilité",
+    "updated_column": "Modifiée",
+    "actions_column": "Actions",
+    "owner_column": "Propriétaire",
+    "shared_badge": "Partagée",
+    "private_badge": "Privée",
+    "deleted_user": "(utilisateur supprimé)",
+    "edit_title": "Modifier la vue",
+    "stale_removed": "Certains réglages de filtre de cette vue ne sont plus disponibles et ont été retirés. Enregistrez la vue pour la mettre à jour.",
+    "name_exists": "Vous avez déjà une vue portant ce nom.",
+    "confirm_delete": "Supprimer la vue « {name} » ? Cette action est irréversible.",
+    "deleted": "La vue a été supprimée.",
+    "delete_error": "La vue n'a pas pu être supprimée."
+  },
   "tags": {
     "input": {
       "label": "Étiquettes",
@@ -724,6 +882,7 @@
     "fields": {
       "type": "Type",
       "status_category": "Catégorie de statut",
+      "priority": "Priorité",
       "summary": "Résumé",
       "description": "Description",
       "product": "Produit",
@@ -731,7 +890,9 @@
       "access": "Accès",
       "resolution": "Résolution",
       "tags": "Étiquettes",
-      "watchers": "Observateurs"
+      "watchers": "Observateurs",
+      "source": "Source",
+      "requester": "Expéditeur"
     },
     "columns": {
       "id": "Ticket",
@@ -740,7 +901,8 @@
       "assignee": "Assigné à",
       "created": "Créé",
       "updated": "Mis à jour",
-      "status": "Statut"
+      "status": "Statut",
+      "sla": "SLA"
     },
     "access": {
       "public": "Public",
@@ -761,7 +923,8 @@
       "waiting": "Tickets en attente",
       "in_progress": "Tickets en cours",
       "done": "Tickets terminés",
-      "deleted": "Tickets supprimés"
+      "deleted": "Tickets supprimés",
+      "sla_breached": "Tickets avec SLA non respecté"
     },
     "bulk": {
       "restore": "Restaurer",
@@ -779,18 +942,37 @@
       "all_status": "Tous les statuts",
       "all_status_categories": "Toutes les catégories de statut",
       "all_types": "Tous les types",
+      "all_priorities": "Toutes les priorités",
       "all_products": "Tous les produits",
       "all_assignees": "Tous les assignés",
       "all_reporters": "Tous les rapporteurs",
       "all_tags": "Toutes les étiquettes",
+      "n_selected": "{count} sélectionnés",
       "search_results": "Résultats de recherche pour « {term} »",
       "participant": "Participant : {name}",
       "reset": "Réinitialiser les filtres",
-      "hide_closed": "Masquer les fermées"
+      "all_sources": "Toutes les sources"
+    },
+    "custom_views": {
+      "save_button": "Enregistrer la vue",
+      "select_placeholder": "Choisir une vue",
+      "select_label": "Choisir une vue personnalisée",
+      "save_title": "Enregistrer la vue",
+      "name": "Nom",
+      "name_required": "Veuillez saisir un nom (100 caractères maximum).",
+      "shared": "Partager avec tous les utilisateurs inscrits",
+      "shared_desc": "Les autres utilisateurs inscrits peuvent choisir cette vue. Vous seul pouvez la modifier.",
+      "overwrite_confirm": "Vous avez déjà une vue nommée « {name} ». La remplacer par les filtres actuels ?",
+      "overwrite": "Remplacer",
+      "saved": "La vue a été enregistrée.",
+      "save_error": "La vue n'a pas pu être enregistrée.",
+      "load_error": "La vue n'a pas pu être chargée.",
+      "stale": "Votre vue contient des réglages de filtre qui ne sont plus disponibles. Veuillez mettre à jour votre vue dans votre profil."
     },
     "create": {
       "title": "Créer un ticket",
       "type_desc": "De quel type de ticket s'agit-il ?",
+      "priority_desc": "Degré d'urgence du ticket. Les nouveaux tickets commencent avec Normale.",
       "type_placeholder": "Sélectionnez un type...",
       "type_required": "Veuillez sélectionner un type.",
       "summary_desc": "Un titre court sur une ligne (200 caractères max.).",
@@ -833,6 +1015,11 @@
       "create_error": "Le ticket n'a pas pu être créé.",
       "created": "Le ticket {key} a été créé.",
       "saved": "Le ticket {key} a été mis à jour."
+    },
+    "source": {
+      "email": "E-mail",
+      "web": "Web",
+      "email_title": "Créé à partir d'un e-mail"
     }
   },
   "markdown": {
@@ -1010,16 +1197,21 @@
       "attachment_deleted": "a supprimé la pièce jointe {name}"
     },
     "fields": {
+      "sla_first_response": "Échéance SLA de la première réponse",
+      "sla_resolution": "Échéance SLA de la résolution",
       "tags": "Étiquettes",
       "type": "Type",
       "status": "Statut",
+      "priority": "Priorité",
       "resolution": "Résolution",
       "assignee": "Assigné à",
       "access": "Accès",
       "summary": "Résumé",
       "description": "Description",
       "product": "Produit",
-      "version": "Version"
+      "version": "Version",
+      "sla_breached_first_response": "Non-respect du SLA : première réponse (échéance)",
+      "sla_breached_resolution": "Non-respect du SLA : résolution (échéance)"
     },
     "load_error": "L'historique n'a pas pu être chargé."
   },
@@ -1060,7 +1252,9 @@
       "issue_unassigned": "{actor} a retiré l'assignation du ticket",
       "status_changed": "{actor} a changé le statut en {status}",
       "comment_added": "{actor} a ajouté un commentaire",
-      "comment_added_internal": "{actor} a ajouté un commentaire interne"
+      "comment_added_internal": "{actor} a ajouté un commentaire interne",
+      "sla_at_risk": "SLA menacé : {metric} a pour échéance {due}",
+      "sla_breached": "SLA non respecté : {metric} avait pour échéance {due}"
     },
     "prefs": {
       "description": "Choisissez pour chaque événement si vous recevez un e-mail et si vous recevez une notification dans la barre supérieure. Vous n'êtes informé que des tickets que vous pouvez voir.",
@@ -1083,6 +1277,14 @@
         "comment_added": {
           "title": "Commentaire ajouté",
           "desc": "Un commentaire a été ajouté à un ticket que vous avez signalé, suivez ou traitez."
+        },
+        "sla_at_risk": {
+          "title": "SLA menacé",
+          "desc": "Un objectif SLA d’un ticket que vous traitez ou suivez approche de son échéance (équipe de support uniquement)."
+        },
+        "sla_breached": {
+          "title": "SLA non respecté",
+          "desc": "Un objectif SLA d’un ticket que vous traitez ou suivez n’a pas été respecté, ou une politique vous escalade un ticket (équipe de support uniquement)."
         }
       },
       "saved": "Vos paramètres de notification ont été enregistrés.",
@@ -1096,7 +1298,7 @@
     "login": "Connexion",
     "register": "S'inscrire",
     "issues": "Tickets",
-    "hero_title": "Le support client, <span class=\"text-primary hero-shimmer\">organisé</span>",
+    "hero_title": "My Company <span class=\"text-primary hero-shimmer\">Support client</span>",
     "hero_lead": "LeweDesk est le système de helpdesk et de gestion de tickets de Lewe Labs. Signalez des problèmes, demandez des améliorations et suivez chaque cas du premier message jusqu'à la solution.",
     "features_title": "Tout ce dont une équipe de support a besoin",
     "features_lead": "Un ensemble ciblé d'outils pour collecter, organiser et résoudre les demandes des clients.",
@@ -1185,15 +1387,253 @@
   "license": {
     "banner": {
       "link": "Paramètres de licence",
-      "trial": "Cette installation de LeweDesk n'est pas sous licence. Elle cessera de fonctionner dans {days} jours.",
-      "trial_expired": "Cette installation de LeweDesk n'est pas sous licence et la période d'essai est terminée. Seuls les administrateurs peuvent se connecter.",
-      "expired": "La licence a expiré. Seuls les administrateurs peuvent se connecter.",
-      "blocked": "La licence a été bloquée. Seuls les administrateurs peuvent se connecter.",
-      "pending": "La licence n'a pas encore été activée.",
-      "unregistered": "La licence est valide, mais ce domaine n'y est pas enregistré.",
-      "invalid": "La clé de licence est invalide.",
+      "reason": {
+        "missing": "manquante",
+        "invalid": "invalide",
+        "unregistered": "non enregistrée pour ce domaine",
+        "pending": "pas encore activée",
+        "expired": "expirée",
+        "blocked": "bloquée"
+      },
+      "grace": "Votre licence LeweDesk est {reason}. Votre délai de grâce se termine dans {days} jours.",
+      "grace_one": "Votre licence LeweDesk est {reason}. Votre délai de grâce se termine dans 1 jour.",
+      "grace_today": "Votre licence LeweDesk est {reason}. Votre délai de grâce se termine aujourd'hui.",
+      "limited": "Votre licence LeweDesk est {reason}. LeweDesk fonctionne en mode limité : au maximum {issues} tickets et {users} utilisateurs peuvent être créés ; la configuration de la 2FA, le journal d'audit, les vues personnalisées et l'auto-inscription sont désactivés. Activez une licence valide pour supprimer les limites.",
       "expiring": "La licence expire dans {days} jours.",
       "expiring_today": "La licence expire aujourd'hui."
+    },
+    "feature_off": "Cette fonctionnalité est actuellement désactivée en raison d'une licence invalide.",
+    "limit_reached": {
+      "issues": "Limite atteinte : sans licence valide, il n'est pas possible de créer plus de {max} tickets.",
+      "users": "Limite atteinte : sans licence valide, il n'est pas possible de créer plus de {max} utilisateurs."
+    }
+  },
+  "sla": {
+    "tabs": {
+      "policies": "Politiques",
+      "calendars": "Calendriers"
+    },
+    "metric": {
+      "first_response": "Première réponse",
+      "resolution": "Résolution"
+    },
+    "unit": {
+      "minutes": "Minutes",
+      "hours": "Heures",
+      "days": "Jours"
+    },
+    "unit_short": {
+      "minutes": "min",
+      "hours": "h",
+      "days": "j"
+    },
+    "weekday": {
+      "1": "Lundi",
+      "2": "Mardi",
+      "3": "Mercredi",
+      "4": "Jeudi",
+      "5": "Vendredi",
+      "6": "Samedi",
+      "7": "Dimanche"
+    },
+    "weekday_short": {
+      "1": "Lun",
+      "2": "Mar",
+      "3": "Mer",
+      "4": "Jeu",
+      "5": "Ven",
+      "6": "Sam",
+      "7": "Dim"
+    },
+    "policies": {
+      "title": "Politiques SLA",
+      "intro": "Une politique fixe la rapidité avec laquelle les tickets doivent recevoir une première réponse et être résolus. Les politiques avec conditions sont essayées dans l’ordre de tri, et la première qui correspond au ticket s’applique. La politique par défaut (sans condition) s’applique à tous les autres tickets.",
+      "add_title": "Ajouter une politique SLA",
+      "edit_title": "Modifier la politique SLA",
+      "confirm_delete": "Supprimer la politique sélectionnée ? Une politique qui a des minuteurs de tickets ne peut pas être supprimée ; désactivez-la plutôt.",
+      "default": "Par défaut",
+      "any": "Indifférent",
+      "around_the_clock": "Jour et nuit (24/7)",
+      "conditions": "Conditions",
+      "calendar": "Calendrier",
+      "targets": "Objectifs",
+      "warning_short": "Alerte",
+      "no_targets": "Aucun objectif",
+      "name_desc": "Nom unique de la politique (100 caractères max.).",
+      "description_desc": "Brève description de quand la politique s’applique.",
+      "conditions_desc": "La politique s’applique aux tickets qui remplissent toutes les conditions définies. Laissez une condition sur « Indifférent » pour l’ignorer.",
+      "group": "Groupe du demandeur",
+      "default_notice": "Une politique sans condition est la politique par défaut pour tous les tickets auxquels aucune autre politique ne correspond. Il ne peut y en avoir qu’une.",
+      "calendar_desc": "Les horaires pendant lesquels l’horloge tourne. Sans calendrier, l’horloge tourne jour et nuit.",
+      "targets_desc": "Le temps dont l’équipe dispose pour la première réponse et la résolution, compté en temps de travail du calendrier. Laissez un champ vide s’il n’y a pas d’objectif.",
+      "targets_hint": "Un jour correspond à 24 heures de temps de travail. La ligne « Toutes les autres priorités » s’applique à chaque priorité sans ligne propre.",
+      "other_priorities": "Toutes les autres priorités",
+      "unit": "Unité",
+      "warning": "Seuil d’alerte",
+      "warning_desc": "La part de l’objectif à partir de laquelle un ticket est signalé comme à risque.",
+      "pause_statuses": "Statuts qui arrêtent l’horloge",
+      "pause_statuses_desc": "L’horloge ne tourne pas tant qu’un ticket a l’un de ces statuts (par exemple pendant qu’il attend le client).",
+      "sort_order_desc": "Les politiques au numéro le plus bas sont essayées en premier. Laissez vide pour placer une nouvelle politique à la fin. La politique par défaut n’a pas de place dans l’ordre : elle s’applique quand aucune autre ne correspond.",
+      "active_desc": "Seules les politiques actives s’appliquent aux tickets.",
+      "messages": {
+        "load_error": "Impossible de charger les politiques SLA depuis le serveur.",
+        "not_found": "La politique SLA est introuvable.",
+        "created": "La politique SLA a été créée.",
+        "updated": "La politique SLA a été mise à jour.",
+        "deleted": "La politique SLA a été supprimée.",
+        "save_error": "Impossible d’enregistrer la politique SLA.",
+        "delete_error": "Impossible de supprimer la politique SLA.",
+        "target_invalid": "Un objectif doit être un nombre entier de minutes (au moins 1)."
+      },
+      "apply": "Appliquer aux tickets ouverts",
+      "apply_confirm": "Démarrer les minuteurs SLA de tous les tickets ouverts qui n’en ont pas, avec les politiques telles qu’elles sont maintenant ? L’horloge d’un tel minuteur démarre à la création du ticket et peut donc être dépassée immédiatement. Les tickets qui ont des minuteurs ne sont pas modifiés.",
+      "apply_yes": "Oui, démarrer les minuteurs",
+      "apply_result": "Les minuteurs ont été démarrés pour {issues} ticket(s) ({timers} minuteurs).",
+      "apply_error": "Impossible de démarrer les minuteurs.",
+      "escalation": "Escalade",
+      "escalation_desc": "Qui est prévenu, en plus de la personne assignée et des suiveurs, quand un objectif de cette politique n’est pas respecté. Seules les personnes qui peuvent voir le ticket et les données SLA reçoivent le message.",
+      "escalation_user": "Utilisateur",
+      "escalation_group": "Groupe",
+      "escalation_none": "Personne"
+    },
+    "calendars": {
+      "title": "Calendriers SLA",
+      "intro": "Un calendrier indique quand l’horloge d’un SLA tourne : les horaires de chaque jour de la semaine dans un fuseau horaire. Les jours fériés arrêtent l’horloge pour toute la journée.",
+      "add_title": "Ajouter un calendrier SLA",
+      "edit_title": "Modifier le calendrier SLA",
+      "confirm_delete": "Supprimer le calendrier sélectionné avec ses horaires et ses jours fériés ? Un calendrier utilisé par une politique ne peut pas être supprimé.",
+      "timezone": "Fuseau horaire",
+      "hours": "Horaires",
+      "holidays": "Jours fériés",
+      "policies": "Politiques",
+      "closed": "Fermé",
+      "name_desc": "Nom unique du calendrier (100 caractères max.).",
+      "description_desc": "Brève description, par exemple l’équipe ou le site.",
+      "timezone_desc": "Le fuseau horaire des horaires. L’heure d’été est prise en compte.",
+      "hours_desc": "Les heures pendant lesquelles l’horloge tourne. Un jour peut avoir plusieurs plages (par exemple une pause déjeuner). Une fin à 00:00 signifie la fin de la journée.",
+      "copy_monday": "Copier le lundi sur mardi-vendredi",
+      "from": "De",
+      "until": "Jusqu’à",
+      "remove_range": "Supprimer la plage",
+      "add_range": "Ajouter une plage",
+      "messages": {
+        "load_error": "Impossible de charger les calendriers SLA depuis le serveur.",
+        "not_found": "Le calendrier SLA est introuvable.",
+        "created": "Le calendrier SLA a été créé. Vous pouvez maintenant ajouter des jours fériés.",
+        "updated": "Le calendrier SLA a été mis à jour.",
+        "deleted": "Le calendrier SLA a été supprimé.",
+        "save_error": "Impossible d’enregistrer le calendrier SLA.",
+        "delete_error": "Impossible de supprimer le calendrier SLA.",
+        "range_incomplete": "Chaque plage a besoin d’une heure de début et d’une heure de fin."
+      }
+    },
+    "holidays": {
+      "title": "Jours fériés",
+      "intro": "L’horloge ne tourne pas ces jours-là.",
+      "save_first": "Enregistrez d’abord le calendrier, vous pourrez ensuite ajouter des jours fériés.",
+      "from": "Du",
+      "to": "Au",
+      "recurring": "Chaque année",
+      "add": "Ajouter un jour férié",
+      "import": "Importer",
+      "import_label": "Importer depuis un fichier de calendrier (.ics)",
+      "import_hint": "Chaque événement du fichier devient un jour férié ; les événements annuels sont réglés sur « Chaque année ». Les jours fériés déjà présents dans le calendrier sont ignorés.",
+      "none": "Aucun jour férié pour le moment.",
+      "to_hint": "Laissez « Au » vide pour un seul jour. « Chaque année » répète les jours chaque année.",
+      "messages": {
+        "load_error": "Impossible de charger les jours fériés depuis le serveur.",
+        "created": "Le jour férié a été ajouté.",
+        "updated": "Le jour férié a été mis à jour.",
+        "deleted": "Le jour férié a été supprimé.",
+        "save_error": "Impossible d’enregistrer le jour férié.",
+        "delete_error": "Impossible de supprimer le jour férié.",
+        "import_done": "Importation terminée : {added} ajoutés, {skipped} ignorés (déjà présents), {failed} en échec.",
+        "import_none": "Le fichier ne contient aucun jour férié.",
+        "import_too_large": "Le fichier est trop volumineux (1 Mo maximum).",
+        "import_error": "Impossible de lire le fichier."
+      }
+    },
+    "state": {
+      "on_track": "Dans les temps",
+      "at_risk": "À risque",
+      "breached": "Non respecté",
+      "paused": "En pause",
+      "met": "Respecté",
+      "cancelled": "Annulé"
+    },
+    "filter": {
+      "label": "SLA",
+      "all": "Tous les états SLA",
+      "breached": "Non respecté",
+      "at_risk": "À risque",
+      "due_today": "Échéance aujourd’hui",
+      "on_track": "Dans les temps",
+      "paused": "En pause"
+    },
+    "panel": {
+      "title": "Niveau de service (SLA)",
+      "override_title": "Modifier l’échéance",
+      "new_due": "Nouvelle échéance",
+      "new_due_desc": "Dans votre fuseau horaire. L’horloge garde ses pauses et les heures ouvrées de la politique.",
+      "due_required": "Veuillez saisir une échéance.",
+      "reason": "Motif",
+      "reason_desc": "Obligatoire. Il est inscrit dans l’historique du ticket.",
+      "reason_required": "Veuillez saisir un motif (une ligne, jusqu’à 255 caractères).",
+      "in_time": "dans les temps",
+      "late_by": "en retard de {time}",
+      "met_at": "Respecté {time}",
+      "left": "{time} restants",
+      "over": "{time} de dépassement",
+      "clock_stopped": "horloge arrêtée",
+      "in": "échéance dans {time}",
+      "overdue": "en retard de {time}",
+      "due": "Échéance",
+      "policy": "Politique",
+      "target": "objectif",
+      "overridden": "Échéance modifiée à la main",
+      "change_due": "Modifier l’échéance",
+      "changed": "L’échéance a été modifiée.",
+      "change_error": "L’échéance n’a pas pu être modifiée."
+    },
+    "report": {
+      "title": "Rapport SLA",
+      "intro": "Dans quelle mesure les objectifs du SLA ont été atteints sur une période : taux de respect, temps moyens et médians, et minuteurs dépassés.",
+      "from": "Du",
+      "to": "Au",
+      "group_by": "Regrouper par",
+      "show": "Afficher",
+      "group": {
+        "policy": "Politique",
+        "product": "Produit",
+        "assignee": "Responsable",
+        "priority": "Priorité"
+      },
+      "export_summary": "Exporter le résumé (CSV)",
+      "export_breached": "Exporter les dépassés (CSV)",
+      "export_error": "Le rapport n’a pas pu être exporté.",
+      "load_error": "Le rapport n’a pas pu être chargé.",
+      "rule": "Un minuteur compte dans la période où il a été atteint ou, s’il est encore ouvert, dans celle où il est devenu en retard. Le taux de respect est la part atteinte à temps ; un minuteur ouvert et en retard compte contre.",
+      "compliance": "Respect",
+      "timers": "Minuteurs",
+      "met_in_time": "Dans les temps",
+      "breached": "Dépassés",
+      "avg": "Moyenne",
+      "median": "Médiane",
+      "all": "Tous",
+      "by": "Par {group}",
+      "empty": "Aucun minuteur sur cette période.",
+      "breached_title": "Minuteurs dépassés",
+      "no_breached": "Aucun minuteur dépassé sur cette période.",
+      "truncated": "Les {shown} plus récents sur {total}. L’export en contient davantage.",
+      "issue": "Ticket",
+      "metric": "Mesure",
+      "policy": "Politique",
+      "assignee": "Responsable",
+      "target": "Objectif",
+      "outcome": "Résultat",
+      "overrun": "Dépassement",
+      "met": "atteint",
+      "open": "ouvert"
     }
   }
 }

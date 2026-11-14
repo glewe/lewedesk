@@ -38,10 +38,12 @@ class AuditLog
     'auth' => 'auth',
     'user' => 'user',
     'setting' => 'config', 'license' => 'config', 'role' => 'config', 'group' => 'config', 'permission' => 'config', 'issue_type' => 'config',
-    'status' => 'config', 'status_category' => 'config', 'resolution' => 'config', 'product' => 'config', 'tag' => 'config',
-    'issue' => 'data', 'attachment' => 'data',
+    'status' => 'config', 'status_category' => 'config', 'resolution' => 'config', 'priority' => 'config', 'product' => 'config', 'tag' => 'config',
+    'sla_policy' => 'config', 'sla_calendar' => 'config', 'sla_holiday' => 'config', 'sla_timer' => 'data',
+    'issue' => 'data', 'attachment' => 'data', 'customview' => 'data', 'housekeeping' => 'config',
     'security' => 'security',
     'audit' => 'audit',
+    'mail' => 'mail',
   ];
 
   /** The mask that replaces a sensitive value */

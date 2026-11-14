@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+require_once __DIR__ . '/../services/SlaService.php';
+
+use App\Services\SlaService;
 use PDO;
 
 //---------------------------------------------------------------------------
 /**
- * Model for the issue lookup tables (types, status categories, status, resolutions, products, tags).
+ * Model for the issue lookup tables (types, status categories, status, resolutions, priorities, products, tags).
  * The structure of a table is described by a definition of App\Config\Lookups.
  */
 class LookupModel
@@ -168,7 +171,7 @@ class LookupModel
   //---------------------------------------------------------------------------
   /**
    * Counts the issues (soft deleted ones included) that hold one of the records. Only meaningful for
-   * lookups with a replacement column (types, status, resolutions); returns 0 for the others.
+   * lookups with a replacement column (types, status, resolutions, priorities); returns 0 for the others.
    *
    * @param int[] $ids The record ids
    *
@@ -253,12 +256,19 @@ class LookupModel
     try {
       $column = $this->definition['replacement'] ?? null;
       if ($column !== null && $replacementId !== null) {
+        // The issues with SLA timers: the new status, type or priority can stop the clock, end the resolution or change the policy
+        $timed = $this->db->prepare("SELECT DISTINCT i.id FROM issues i JOIN issue_sla t ON t.issue_id = i.id WHERE i.`$column` IN ($placeholders)");
+        $timed->execute(array_values($ids));
+        $timedIds = array_map('intval', $timed->fetchAll(PDO::FETCH_COLUMN));
+
         $set = "`$column` = ?";
         if ($column === 'status_id' && $this->categoryKeyOfStatus($replacementId) !== 'done') {
           $set .= ', resolution_id = NULL';
         }
         $this->db->prepare("UPDATE issues SET $set WHERE `$column` IN ($placeholders)")
           ->execute([$replacementId, ...array_values($ids)]);
+
+        (new SlaService($this->db))->syncMany($timedIds, in_array($column, ['type_id', 'priority_id'], true));
       }
 
       $stmt = $this->db->prepare("DELETE FROM `{$this->table}` WHERE id IN ($placeholders)");

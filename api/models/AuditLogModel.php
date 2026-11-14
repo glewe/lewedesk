@@ -21,7 +21,7 @@ use PDO;
 class AuditLogModel
 {
   /** The categories of the events (see App\Services\AuditLog::category()) */
-  public const CATEGORIES = ['auth', 'user', 'config', 'data', 'security', 'audit', 'other'];
+  public const CATEGORIES = ['auth', 'user', 'config', 'data', 'security', 'audit', 'mail', 'other'];
 
   /** The columns of the list that can be sorted by (key = parameter, value = SQL column) */
   private const SORT_COLUMNS = [

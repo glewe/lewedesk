@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+require_once __DIR__ . '/../services/SlaService.php';
+
 use App\Services\IssueActions;
 use App\Services\IssueConflictException;
 use App\Services\IssueHistory;
 use App\Services\IssueSearch;
 use App\Services\IssueVisibility;
+use App\Services\SlaService;
 use App\Utils\IssueConfig;
 use PDO;
 
@@ -34,6 +37,8 @@ class IssueModel
     'in_progress' => "i.deleted_at IS NULL AND c.`key` = 'in_progress'",
     'done' => "i.deleted_at IS NULL AND c.`key` = 'done'",
     'deleted' => 'i.deleted_at IS NOT NULL',
+    // The issues with an SLA timer that is breached (for the holders of view_sla only: see slaVisible())
+    'sla_breached' => 'i.deleted_at IS NULL AND EXISTS (SELECT 1 FROM issue_sla bt WHERE bt.issue_id = i.id AND bt.met_at IS NULL AND bt.due_at < NOW())',
   ];
 
   /** Sort keys of the list (as sent by the DataTables column "data") and their ORDER BY expressions */
@@ -42,22 +47,26 @@ class IssueModel
     'summary' => 'i.summary',
     'type' => 't.name',
     'status' => 's.name',
+    'priority' => 'pr.sort_order',
     'reporter' => 'ru.username',
     'assignee' => 'au.username',
     'created_at' => 'i.created_at',
     'updated_at' => 'i.updated_at',
+    // The earliest due time of an open SLA timer, issues without one last (see list(); for the holders of view_sla only)
+    'sla' => '(SELECT MIN(st.due_at) FROM issue_sla st WHERE st.issue_id = i.id AND st.met_at IS NULL)',
   ];
 
   /** The tables of an issue row: the list counts and selects from the same joins */
   private const FROM_SQL = 'FROM issues i
                JOIN issue_types t ON t.id = i.type_id
                JOIN `status` s ON s.id = i.status_id
+               JOIN priorities pr ON pr.id = i.priority_id
                JOIN status_categories c ON c.id = s.category_id
           LEFT JOIN users ru ON ru.id = i.reporter_id
           LEFT JOIN users au ON au.id = i.assignee_id';
 
   /** Lookup tables that an issue field can point to, with the extra condition for new values */
-  private const LOOKUP_TABLES = ['issue_types' => true, 'status' => true, 'resolutions' => true, 'products' => false];
+  private const LOOKUP_TABLES = ['issue_types' => true, 'status' => true, 'resolutions' => true, 'priorities' => true, 'products' => false];
 
   private PDO $db;
   private IssueVisibility $visibility;
@@ -80,7 +89,7 @@ class IssueModel
 
   //---------------------------------------------------------------------------
   /**
-   * Gets one issue with its type, status, resolution, product, tags, reporter, assignee and watchers.
+   * Gets one issue with its type, priority, status, resolution, product, tags, reporter, assignee and watchers.
    * Returns null if the issue does not exist or the viewer may not see it.
    *
    * @param int $id The issue id
@@ -111,7 +120,7 @@ class IssueModel
    * Lists the issues for a DataTables server-side request.
    *
    * @param array $query view (all, mine, assigned, unassigned, open, waiting, in_progress, done, deleted),
-   *                     filters (status_id, type_id, product_id, reporter_id, tag_id, participant_id: int; assignee_id: int|'none'),
+   *                     filters (status_id, type_id, priority_id, product_id, reporter_id, tag_id, participant_id: int; assignee_id: int|'none'),
    *                     search (term, optional; see IssueSearch), sort (key of SORT_COLUMNS), direction (asc|desc), start, length
    *
    * @return array{rows: array, total: int, filtered: int}
@@ -134,7 +143,10 @@ class IssueModel
     $total = $this->count($baseWhere, $baseParams);
     $filtered = $filterSql === '' ? $total : $this->count($where, $baseParams + $filterParams);
 
-    $orderBy = self::SORT_COLUMNS[$query['sort']] . ($query['direction'] === 'asc' ? ' ASC' : ' DESC') . ', i.id DESC';
+    $direction = $query['direction'] === 'asc' ? ' ASC' : ' DESC';
+    $sortColumn = self::SORT_COLUMNS[$query['sort']];
+    // Issues without an open timer (or with a stopped one) come last in both directions
+    $orderBy = ($query['sort'] === 'sla' ? "ISNULL($sortColumn) ASC, " : '') . $sortColumn . $direction . ', i.id DESC';
     $limit = (int)$query['length'];
     $offset = (int)$query['start'];
 
@@ -143,8 +155,13 @@ class IssueModel
 
     $rows = array_map(fn(array $row): array => $this->present($row, false), $stmt->fetchAll());
     $tags = $this->tagsOf(array_column($rows, 'id'));
+    // The SLA state of each row, in one query (only for the holders of view_sla, and not in the limited mode of the license)
+    $sla = $this->slaVisible() ? (new SlaService($this->db))->listSummaries(array_column($rows, 'id')) : null;
     foreach ($rows as &$row) {
       $row['tags'] = $tags[$row['id']] ?? [];
+      if ($sla !== null) {
+        $row['sla'] = $sla[$row['id']] ?? null;
+      }
     }
     unset($row);
 
@@ -168,6 +185,9 @@ class IssueModel
 
     $sums = [];
     foreach (self::VIEWS as $name => $condition) {
+      if ($name === 'sla_breached' && !$this->slaVisible()) {
+        continue;
+      }
       $sums[] = "COALESCE(SUM($condition), 0) AS `$name`";
     }
 
@@ -188,6 +208,17 @@ class IssueModel
     }
 
     return $counts;
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Tells whether the viewer may see the SLA data of the issues (permission view_sla, and the license has SLA switched on).
+   *
+   * @return bool
+   */
+  public function slaVisible(): bool
+  {
+    return SlaService::$timersEnabled && $this->visibility->hasPermission('view_sla');
   }
 
   //---------------------------------------------------------------------------
@@ -252,7 +283,8 @@ class IssueModel
   /**
    * Creates an issue with the initial status "Open".
    *
-   * @param array $data type_id, summary, description, access, product_id (nullable), version (nullable), tag_ids (optional)
+   * @param array $data type_id, summary, description, access, product_id (nullable), version (nullable), tag_ids (optional),
+   *                    priority_id (optional; the priority Normal if missing)
    * @param int   $reporterId The id of the reporting user
    *
    * @return int The new issue id
@@ -262,11 +294,14 @@ class IssueModel
     $this->db->beginTransaction();
     try {
       $stmt = $this->db->prepare(
-        "INSERT INTO issues (type_id, status_id, reporter_id, product_id, version, access, summary, description)
-         VALUES (:type_id, (SELECT id FROM `status` WHERE `key` = 'open'), :reporter_id, :product_id, :version, :access, :summary, :description)"
+        "INSERT INTO issues (type_id, status_id, priority_id, reporter_id, product_id, version, access, summary, description)
+         VALUES (:type_id, (SELECT id FROM `status` WHERE `key` = 'open'),
+                 COALESCE(:priority_id, (SELECT id FROM priorities WHERE `key` = 'normal')),
+                 :reporter_id, :product_id, :version, :access, :summary, :description)"
       );
       $stmt->execute([
         'type_id' => $data['type_id'],
+        'priority_id' => $data['priority_id'] ?? null,
         'reporter_id' => $reporterId,
         'product_id' => $data['product_id'],
         'version' => $data['version'],
@@ -287,6 +322,9 @@ class IssueModel
         }
         $this->db->prepare("INSERT INTO issue_tag (issue_id, tag_id) VALUES $values")->execute($params);
       }
+
+      // The SLA timers of the issue (see _docs/SLA.md); a failure there never fails the creation
+      (new SlaService($this->db))->startTimers($id);
 
       $this->db->commit();
     } catch (\Throwable $e) {
@@ -372,6 +410,19 @@ class IssueModel
 
   //---------------------------------------------------------------------------
   /**
+   * Gives the SLA timers of an issue as the API shows them (the controller checks who may see them).
+   *
+   * @param int $id The issue id
+   *
+   * @return array[] Empty if the issue has no timers
+   */
+  public function slaTimers(int $id): array
+  {
+    return (new SlaService($this->db))->view($id);
+  }
+
+  //---------------------------------------------------------------------------
+  /**
    * Gets the names of the tags of an issue as a comma separated text (for the history).
    *
    * @param int $id The issue id
@@ -407,14 +458,14 @@ class IssueModel
    *
    * @param array $facts The facts of the issue as checked (IssueActions::facts())
    *
-   * @return array The locked row: type_id, status_id, resolution_id, product_id, assignee_id, access, version, summary, description
+   * @return array The locked row: type_id, status_id, resolution_id, priority_id, product_id, assignee_id, access, version, summary, description
    *
    * @throws IssueConflictException If somebody else changed the issue in between
    */
   public function lockIssue(array $facts): array
   {
     $stmt = $this->db->prepare(
-      'SELECT type_id, status_id, resolution_id, product_id, assignee_id, access, version, summary, description, deleted_at
+      'SELECT type_id, status_id, resolution_id, priority_id, product_id, assignee_id, access, version, summary, description, deleted_at
          FROM issues WHERE id = :id FOR UPDATE'
     );
     $stmt->execute(['id' => $facts['id']]);
@@ -468,7 +519,7 @@ class IssueModel
    * Gives the value of a lookup record for the history: the key of a protected record (the page translates
    * it), else the name.
    *
-   * @param string   $table issue_types, status, resolutions or products
+   * @param string   $table issue_types, status, resolutions, priorities or products
    * @param int|null $id    The record id
    *
    * @return string|null Null for no record
@@ -669,7 +720,7 @@ class IssueModel
    * and the resolution rules.
    *
    * @param array $facts   The facts of the issue as checked (IssueActions::facts())
-   * @param array $changes Any of type_id, summary, description, access, product_id, version, tag_ids, status_id, resolution_id, assignee_id
+   * @param array $changes Any of type_id, priority_id, summary, description, access, product_id, version, tag_ids, status_id, resolution_id, assignee_id
    * @param int   $actorId The id of the user who edits
    *
    * @return bool Whether anything changed
@@ -687,8 +738,8 @@ class IssueModel
       $params = ['id' => $id];
       $log = [];
 
-      // Lookup fields: type, status, resolution, product
-      foreach (['type_id' => ['type', 'issue_types'], 'status_id' => ['status', 'status'], 'resolution_id' => ['resolution', 'resolutions'], 'product_id' => ['product', 'products']] as $column => [$field, $table]) {
+      // Lookup fields: type, priority, status, resolution, product
+      foreach (['type_id' => ['type', 'issue_types'], 'priority_id' => ['priority', 'priorities'], 'status_id' => ['status', 'status'], 'resolution_id' => ['resolution', 'resolutions'], 'product_id' => ['product', 'products']] as $column => [$field, $table]) {
         if (!array_key_exists($column, $changes)) {
           continue;
         }
@@ -740,6 +791,9 @@ class IssueModel
         $this->removeWatchersWithoutAccess($id);
       }
 
+      // The SLA timers follow the issue: a new status, a deleted comment, and a new policy when type, priority, product or access changed
+      (new SlaService($this->db))->sync($id, array_intersect(['type_id', 'priority_id', 'product_id', 'access'], array_keys($params)) !== []);
+
       return !empty($sets) || $tagsChanged;
     });
   }
@@ -748,7 +802,7 @@ class IssueModel
   /**
    * Tells whether a record of a lookup table can be chosen for an issue.
    *
-   * @param string $table      issue_types, status, resolutions or products
+   * @param string $table      issue_types, status, resolutions, priorities or products
    * @param int    $id         The record id
    * @param bool   $activeOnly Whether the record must be active (ignored for tables without that column)
    *
@@ -802,6 +856,18 @@ class IssueModel
 
   //---------------------------------------------------------------------------
   /**
+   * Counts all issues that are not deleted, without any visibility check. Only for system decisions (the license
+   * limit), never for output to a user.
+   *
+   * @return int
+   */
+  public function countActive(): int
+  {
+    return (int)$this->db->query('SELECT COUNT(*) FROM issues WHERE deleted_at IS NULL')->fetchColumn();
+  }
+
+  //---------------------------------------------------------------------------
+  /**
    * Builds the SELECT of an issue row (without WHERE and ORDER BY).
    *
    * @param bool $detail Whether to select the description and the details needed on the issue page
@@ -811,7 +877,7 @@ class IssueModel
   private function selectSql(bool $detail): string
   {
     $extra = $detail
-      ? ', i.description, i.version, i.resolution_id, i.product_id, i.deleted_at,
+      ? ', i.description, i.version, i.resolution_id, i.product_id, i.deleted_at, i.requester_email,
          r.`key` AS resolution_key, r.name AS resolution_name, r.icon AS resolution_icon,
          r.color AS resolution_color, r.background_color AS resolution_bg,
          p.name AS product_name, p.icon AS product_icon, p.color AS product_color, p.background_color AS product_bg,
@@ -821,12 +887,14 @@ class IssueModel
       ? ' LEFT JOIN resolutions r ON r.id = i.resolution_id LEFT JOIN products p ON p.id = i.product_id'
       : '';
 
-    return "SELECT i.id, i.summary, i.access, i.created_at, i.updated_at,
+    return "SELECT i.id, i.summary, i.access, i.source, i.created_at, i.updated_at,
                    i.type_id, t.`key` AS type_key, t.name AS type_name, t.icon AS type_icon,
                    t.color AS type_color, t.background_color AS type_bg,
                    i.status_id, s.`key` AS status_key, s.name AS status_name, s.icon AS status_icon,
                    s.color AS status_color, s.background_color AS status_bg,
                    s.category_id, c.`key` AS category_key,
+                   i.priority_id, pr.`key` AS priority_key, pr.name AS priority_name, pr.icon AS priority_icon,
+                   pr.color AS priority_color, pr.background_color AS priority_bg,
                    i.reporter_id, ru.username AS reporter_username, ru.first_name AS reporter_first_name,
                    ru.last_name AS reporter_last_name, ru.avatar AS reporter_avatar, ru.email AS reporter_email,
                    i.assignee_id, au.username AS assignee_username, au.first_name AS assignee_first_name,
@@ -880,30 +948,29 @@ class IssueModel
     $conditions = [];
     $params = [];
 
-    foreach (['status_id' => 'i.status_id', 'type_id' => 'i.type_id', 'product_id' => 'i.product_id', 'reporter_id' => 'i.reporter_id'] as $key => $column) {
-      if (isset($filters[$key])) {
-        $conditions[] = "$column = :f_$key";
-        $params["f_$key"] = $filters[$key];
+    // Each of these filters is a list of ids: an issue matches if it has any of them
+    foreach (['status_id' => 'i.status_id', 'type_id' => 'i.type_id', 'priority_id' => 'i.priority_id', 'product_id' => 'i.product_id', 'reporter_id' => 'i.reporter_id', 'status_category_id' => 's.category_id'] as $key => $column) {
+      if (!empty($filters[$key])) {
+        $conditions[] = $this->inList($column, "f_$key", $filters[$key], $params);
       }
     }
 
-    if (isset($filters['status_category_id'])) {
-      $conditions[] = 's.category_id = :f_status_category_id';
-      $params['f_status_category_id'] = $filters['status_category_id'];
+    // Where the issue came from: web, email, or both
+    if (!empty($filters['source'])) {
+      $conditions[] = $this->inList('i.source', 'f_source', $filters['source'], $params);
     }
 
-    // Hide closed issues (not when a status is chosen explicitly)
-    if (!empty($filters['hide_closed']) && !isset($filters['status_id'])) {
-      $conditions[] = "(s.`key` IS NULL OR s.`key` <> 'closed')";
-    }
-
-    if (isset($filters['assignee_id'])) {
-      if ($filters['assignee_id'] === 'none') {
-        $conditions[] = 'i.assignee_id IS NULL';
-      } else {
-        $conditions[] = 'i.assignee_id = :f_assignee_id';
-        $params['f_assignee_id'] = $filters['assignee_id'];
+    // Assignees: user ids and/or 'none' (unassigned)
+    if (!empty($filters['assignee_id'])) {
+      $ids = array_values(array_filter($filters['assignee_id'], 'is_int'));
+      $parts = [];
+      if (in_array('none', $filters['assignee_id'], true)) {
+        $parts[] = 'i.assignee_id IS NULL';
       }
+      if ($ids !== []) {
+        $parts[] = $this->inList('i.assignee_id', 'f_assignee_id', $ids, $params);
+      }
+      $conditions[] = '(' . implode(' OR ', $parts) . ')';
     }
 
     // Participant: reporter, assignee, author of a comment or watcher (one placeholder per use, as PDO requires)
@@ -916,12 +983,42 @@ class IssueModel
       }
     }
 
-    if (isset($filters['tag_id'])) {
-      $conditions[] = 'EXISTS (SELECT 1 FROM issue_tag it WHERE it.issue_id = i.id AND it.tag_id = :f_tag_id)';
-      $params['f_tag_id'] = $filters['tag_id'];
+    // SLA: an open timer of the issue is in one of the states (the caller checks that the viewer may use the filter)
+    if (!empty($filters['sla_state'])) {
+      $states = array_map(static fn(string $state): string => SlaService::stateCondition($state, 'ft'), $filters['sla_state']);
+      $conditions[] = 'i.deleted_at IS NULL AND EXISTS (SELECT 1 FROM issue_sla ft WHERE ft.issue_id = i.id AND ft.met_at IS NULL AND (' . implode(' OR ', $states) . '))';
+      if (in_array('due_today', $filters['sla_state'], true)) {
+        $params['sla_day_end'] = (int)($filters['sla_day_end'] ?? 0);
+      }
+    }
+
+    if (!empty($filters['tag_id'])) {
+      $conditions[] = 'EXISTS (SELECT 1 FROM issue_tag it WHERE it.issue_id = i.id AND ' . $this->inList('it.tag_id', 'f_tag_id', $filters['tag_id'], $params) . ')';
     }
 
     return [implode(' AND ', $conditions), $params];
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Builds "column IN (:name_0, :name_1, ...)" and adds the parameters.
+   *
+   * @param string $column The column
+   * @param string $name   The prefix of the placeholders
+   * @param int[]  $ids    The ids (not empty)
+   * @param array  $params The parameters, extended by reference
+   *
+   * @return string The condition
+   */
+  private function inList(string $column, string $name, array $ids, array &$params): string
+  {
+    $placeholders = [];
+    foreach (array_values($ids) as $index => $id) {
+      $placeholders[] = ":{$name}_$index";
+      $params["{$name}_$index"] = $id;
+    }
+
+    return "$column IN (" . implode(', ', $placeholders) . ')';
   }
 
   //---------------------------------------------------------------------------
@@ -942,9 +1039,12 @@ class IssueModel
       'key' => $this->config->issueKey((int)$row['id']),
       'summary' => $row['summary'],
       'access' => $row['access'],
+      // web or email (Email to ticket)
+      'source' => $row['source'],
       'created_at' => $row['created_at'],
       'updated_at' => $row['updated_at'],
       'type' => $this->lookup($row, 'type', (int)$row['type_id']),
+      'priority' => $this->lookup($row, 'priority', (int)$row['priority_id']),
       'status' => $this->lookup($row, 'status', (int)$row['status_id']) + [
         'category_id' => (int)$row['category_id'],
         'category_key' => $row['category_key'],
@@ -960,6 +1060,8 @@ class IssueModel
       $issue['description'] = $row['description'];
       $issue['version'] = $row['version'];
       $issue['deleted_at'] = $row['deleted_at'];
+      // The address of a sender who is not a user (Email to ticket, policy anonymous): for support staff only
+      $issue['requester_email'] = $seeEmail ? $row['requester_email'] : null;
       $issue['status']['category_name'] = $row['category_name'];
       $issue['resolution'] = $row['resolution_id'] === null ? null : $this->lookup($row, 'resolution', (int)$row['resolution_id']);
       $issue['product'] = $row['product_id'] === null ? null : [
@@ -976,7 +1078,7 @@ class IssueModel
 
   //---------------------------------------------------------------------------
   /**
-   * Shapes the columns of a lookup record (type, status, resolution) of a row.
+   * Shapes the columns of a lookup record (type, priority, status, resolution) of a row.
    *
    * @param array  $row    The row
    * @param string $prefix The column prefix

@@ -12,6 +12,9 @@ use App\Services\IssueSearch;
 use App\Services\IssueVisibility;
 use App\Services\NotificationService;
 use App\Services\RateLimiter;
+use App\Services\SlaService;
+use DateTimeImmutable;
+use DateTimeZone;
 
 //---------------------------------------------------------------------------
 /**
@@ -24,7 +27,7 @@ use App\Services\RateLimiter;
  *   GET  /issues/accessible?ids=1,2  which of the issues the viewer may see (id and summary), at most 100
  *   GET  /issues/agents   the users who can be assigned (role Agent; assign_issue)
  *   GET  /issues/{id}     read, with the actions the viewer may use (see IssueActions) and the choices of Change access
- *   PUT  /issues/{id}     edit (the Edit page: edit_issue; any of type_id, summary, description, access, product_id, version,
+ *   PUT  /issues/{id}     edit (the Edit page: edit_issue; any of type_id, priority_id, summary, description, access, product_id, version,
  *                         tag_ids and, with change_issue_status, status_id and resolution_id, with assign_issue, assignee_id)
  *   PUT  /issues/{id}/tags  replace the tags of an issue ({"tag_ids": [1, 2]})
  *
@@ -42,6 +45,7 @@ class IssueController
   private const MAX_VERSION = 50;
   private const MAX_TAGS = 20;
   private const MAX_REFERENCES = 100;
+  private const MAX_FILTER_VALUES = 100;
 
   private IssueModel $model;
   private IssueVisibility $visibility;
@@ -151,6 +155,11 @@ class IssueController
     $issue['access_options'] = $this->actions->accessOptions($facts);
     $issue['can_attach'] = $this->actions->canAttach($facts);
     $issue['can_manage_watchers'] = $this->canManageWatchers();
+    // The SLA timers are for the staff (view_sla); customers get nothing, not even an empty list
+    // (not in the limited mode of the license: the timers are not evaluated then, their facts are only kept)
+    if (SlaService::$timersEnabled && $this->visibility->hasPermission('view_sla')) {
+      $issue['sla'] = $this->model->slaTimers((int)$issue['id']);
+    }
 
     return $issue;
   }
@@ -292,6 +301,11 @@ class IssueController
     // A type that is inactive now may stay on an old issue, but cannot be chosen
     if (isset($changes['type_id']) && $changes['type_id'] !== (int)$issue['type']['id'] && !$this->model->lookupExists('issue_types', $changes['type_id'])) {
       return 'Type does not exist or is not active';
+    }
+
+    // The same for the priority
+    if (isset($changes['priority_id']) && $changes['priority_id'] !== (int)$issue['priority']['id'] && !$this->model->lookupExists('priorities', $changes['priority_id'])) {
+      return 'Priority does not exist or is not active';
     }
 
     if (array_key_exists('assignee_id', $input)) {
@@ -471,7 +485,7 @@ class IssueController
   //---------------------------------------------------------------------------
   /**
    * Lists issues for DataTables (draw, start, length, order[0][column], columns[n][data]) and the
-   * parameters view, status_id, status_category_id, type_id, product_id, assignee_id (a number or "none"), reporter_id,
+   * parameters view, status_id, status_category_id, type_id, priority_id, product_id, assignee_id (a number or "none"), reporter_id,
    * tag_id and participant_id (reporter, assignee, commenter or watcher), and q (search term, at most 100 characters: issue key or number, or words that must all be found
    * in summary, description, comments, product or tags).
    */
@@ -499,13 +513,19 @@ class IssueController
       return;
     }
 
+    // The SLA view, filter and sort are for the holders of view_sla (otherwise they would tell which issues are breached)
+    [$sort, $direction] = $this->sorting();
+    if (($view === 'sla_breached' || isset($filters['sla_state']) || $sort === 'sla') && !$this->model->slaVisible()) {
+      $this->fail(403, 'Permission required: view_sla');
+      return;
+    }
+
     $search = $_GET['q'] ?? '';
     if (!is_string($search) || mb_strlen($search) > IssueSearch::MAX_LENGTH) {
       $this->fail(400, 'Search term must be text of at most ' . IssueSearch::MAX_LENGTH . ' characters');
       return;
     }
 
-    [$sort, $direction] = $this->sorting();
     $result = $this->model->list([
       'view' => $view,
       'filters' => $filters,
@@ -623,6 +643,19 @@ class IssueController
       $fields['type_id'] = $typeId;
     }
 
+    // The priority is mandatory: on create it defaults to Normal when missing
+    if ($create ? isset($input['priority_id']) && $input['priority_id'] !== '' : array_key_exists('priority_id', $input)) {
+      $priorityId = $this->lookupId($input['priority_id']);
+      if ($priorityId === null) {
+        return 'Priority is required';
+      }
+      // On the Edit page the priority of the issue may be inactive by now: the caller checks a changed priority
+      if (!$this->model->lookupExists('priorities', $priorityId, $create)) {
+        return 'Priority does not exist or is not active';
+      }
+      $fields['priority_id'] = $priorityId;
+    }
+
     if ($create || array_key_exists('summary', $input)) {
       $summary = $this->text($input['summary'] ?? null);
       if ($summary === null || $summary === '') {
@@ -705,33 +738,93 @@ class IssueController
   {
     $filters = [];
 
-    foreach (['status_id', 'status_category_id', 'type_id', 'product_id', 'reporter_id', 'tag_id', 'participant_id'] as $key) {
+    // These accept several ids, comma-separated (e.g. status_id=1,3); a match on any of them counts
+    foreach (['status_id', 'status_category_id', 'type_id', 'priority_id', 'product_id', 'reporter_id', 'tag_id'] as $key) {
       if (isset($_GET[$key]) && $_GET[$key] !== '') {
-        $id = $this->lookupId($_GET[$key]);
-        if ($id === null) {
-          return "Filter $key must be a whole number";
+        $ids = $this->idList($_GET[$key], false);
+        if ($ids === null) {
+          return "Filter $key must be a list of whole numbers";
         }
-        $filters[$key] = $id;
+        $filters[$key] = $ids;
       }
     }
 
-    if (isset($_GET['hide_closed']) && $_GET['hide_closed'] === '1') {
-      $filters['hide_closed'] = true;
+    if (isset($_GET['source']) && $_GET['source'] !== '') {
+      $sources = is_string($_GET['source']) ? array_unique(explode(',', $_GET['source'])) : [];
+      if ($sources === [] || array_diff($sources, ['web', 'email']) !== []) {
+        return 'Filter source must be web, email or both';
+      }
+      $filters['source'] = array_values($sources);
+    }
+
+    // SLA state of an open timer: one or more of the states, comma-separated (e.g. sla_state=breached,at_risk)
+    if (isset($_GET['sla_state']) && $_GET['sla_state'] !== '') {
+      $states = is_string($_GET['sla_state']) ? array_values(array_unique(explode(',', $_GET['sla_state']))) : [];
+      if ($states === [] || array_diff($states, SlaService::LIST_STATES) !== []) {
+        return 'Filter sla_state must be one or more of ' . implode(', ', SlaService::LIST_STATES);
+      }
+      $filters['sla_state'] = $states;
+      // The end of the day for "due_today" in the time zone of the viewer (an IANA name such as Europe/Berlin; UTC without it)
+      $zone = 'UTC';
+      if (isset($_GET['sla_tz']) && $_GET['sla_tz'] !== '') {
+        $zone = is_string($_GET['sla_tz']) && strlen($_GET['sla_tz']) <= 64 && in_array($_GET['sla_tz'], DateTimeZone::listIdentifiers(), true) ? $_GET['sla_tz'] : null;
+        if ($zone === null) {
+          return 'Filter sla_tz must be a time zone such as Europe/Berlin';
+        }
+      }
+      $filters['sla_day_end'] = (new DateTimeImmutable('tomorrow', new DateTimeZone($zone)))->getTimestamp();
+    }
+
+    if (isset($_GET['participant_id']) && $_GET['participant_id'] !== '') {
+      $id = $this->lookupId($_GET['participant_id']);
+      if ($id === null) {
+        return 'Filter participant_id must be a whole number';
+      }
+      $filters['participant_id'] = $id;
     }
 
     if (isset($_GET['assignee_id']) && $_GET['assignee_id'] !== '') {
-      if ($_GET['assignee_id'] === 'none') {
-        $filters['assignee_id'] = 'none';
-      } else {
-        $id = $this->lookupId($_GET['assignee_id']);
-        if ($id === null) {
-          return 'Filter assignee_id must be a whole number or "none"';
-        }
-        $filters['assignee_id'] = $id;
+      // Whole numbers and "none" (unassigned), comma-separated
+      $ids = $this->idList($_GET['assignee_id'], true);
+      if ($ids === null) {
+        return 'Filter assignee_id must be a list of whole numbers or "none"';
       }
+      $filters['assignee_id'] = $ids;
     }
 
     return $filters;
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Reads a comma-separated list of ids from the query string.
+   *
+   * @param mixed $value     The raw parameter
+   * @param bool  $allowNone Whether the word "none" is a valid entry (kept as the string 'none')
+   *
+   * @return array<int|string>|null The distinct entries (at most MAX_FILTER_VALUES), or null if the value is not valid
+   */
+  private function idList(mixed $value, bool $allowNone): ?array
+  {
+    if (!is_string($value)) {
+      return null;
+    }
+
+    $list = [];
+    foreach (explode(',', $value) as $part) {
+      $part = trim($part);
+      if ($allowNone && $part === 'none') {
+        $entry = 'none';
+      } else {
+        $entry = $this->lookupId($part);
+        if ($entry === null) {
+          return null;
+        }
+      }
+      $list[$entry] = $entry;
+    }
+
+    return count($list) > self::MAX_FILTER_VALUES ? null : array_values($list);
   }
 
   //---------------------------------------------------------------------------

@@ -39,6 +39,22 @@ class TwoFactorController
   private ?LdapService $ldap;
   private ?OidcService $oidc;
 
+  /** @var bool False while the license is limited: nobody can set up 2FA (users who have it keep it) */
+  private bool $enrolAllowed = true;
+
+  //---------------------------------------------------------------------------
+  /**
+   * Allows or refuses setting up 2FA (refused in the limited mode of the license).
+   *
+   * @param bool $allowed False refuses the setup
+   *
+   * @return void
+   */
+  public function allowEnrolment(bool $allowed): void
+  {
+    $this->enrolAllowed = $allowed;
+  }
+
   //---------------------------------------------------------------------------
   /**
    * Constructor.
@@ -77,6 +93,10 @@ class TwoFactorController
   {
     if ($method !== 'POST') {
       $this->fail(405, 'Method not allowed');
+    }
+
+    if (!$this->enrolAllowed && in_array($action, ['setup', 'enable', 'begin'], true)) {
+      $this->fail(402, 'This feature is currently disabled due to an invalid license.', ['code' => 'license_limit']);
     }
 
     try {

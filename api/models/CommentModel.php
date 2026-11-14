@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+require_once __DIR__ . '/../services/SlaService.php';
+
 use App\Services\IssueHistory;
 use App\Services\IssueVisibility;
+use App\Services\SlaService;
 use PDO;
 
 //---------------------------------------------------------------------------
@@ -163,6 +166,9 @@ class CommentModel
     if ($isFirst) {
       $this->db->prepare('INSERT IGNORE INTO issue_watcher (issue_id, user_id) VALUES (:issue, :user)')->execute(['issue' => $issueId, 'user' => $authorId]);
     }
+
+    // The first public comment of an agent is the first response of the SLA
+    (new SlaService($this->db))->sync($issueId);
 
     return $id;
   }

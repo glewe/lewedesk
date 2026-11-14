@@ -32,6 +32,12 @@
     "activity": {
       "title": "Letzte Aktivitäten",
       "empty": "Noch keine Aktivitäten an deinen Issues."
+    },
+    "sla": {
+      "breached": "SLA verletzt",
+      "at_risk": "SLA gefährdet",
+      "compliance": "SLA-Einhaltung",
+      "days": "letzte {days} Tage"
     }
   },
   "sidebar": {
@@ -47,9 +53,12 @@
     "issue_types": "Issue-Typen",
     "products": "Produkte",
     "resolutions": "Lösungen",
+    "priorities": "Prioritäten",
     "status": "Status",
     "status_categories": "Status-Kategorien",
     "tags": "Tags",
+    "custom_views": "Eigene Ansichten",
+    "sla_setup": "SLA-Einrichtung",
     "issues_title": "Issues",
     "all_issues": "Alle Issues",
     "create_issue": "Issue erstellen",
@@ -60,7 +69,9 @@
     "waiting": "Wartend",
     "in_progress": "In Bearbeitung",
     "done": "Erledigt",
-    "deleted_issues": "Gelöscht"
+    "deleted_issues": "Gelöscht",
+    "sla_breached": "SLA verletzt",
+    "sla_report": "SLA-Bericht"
   },
   "header": {
     "search": "Suche...",
@@ -104,9 +115,11 @@
       "general": "Allgemein",
       "system": "System",
       "theme": "Design",
+      "index_page": "Startseite",
       "issues": "Issue-Konfiguration",
       "license": "Lizenz",
-      "provider": "Anbieter"
+      "provider": "Anbieter",
+      "mailin": "E-Mail zu Ticket"
     },
     "fields": {
       "application_url": "Anwendungs-URL",
@@ -149,14 +162,32 @@
       "debug_mode_desc": "Wenn dieser Schalter aktiviert ist, werden Debugging-Informationen in der Browserkonsole angezeigt.",
       "under_maintenance": "Wartungsmodus",
       "under_maintenance_desc": "Wenn dieser Schalter aktiviert ist, wird die Anwendung in den Wartungsmodus versetzt. Nur Administratoren können auf die Anwendung zugreifen.",
+      "allow_registration": "Selbstregistrierung von Benutzern erlauben",
+      "allow_registration_desc": "Erlaubt Besuchern, auf der Registrierungsseite ein eigenes Konto anzulegen. Deaktivieren Sie dies, um Benutzer manuell zu verwalten; Administratoren können weiterhin Benutzer anlegen.",
       "force_2fa": "Zwei-Faktor-Authentifizierung erzwingen",
       "force_2fa_desc": "Zwingt Benutzer, eine Zwei-Faktor-Authentifizierung einzurichten, z. B. über Google oder Microsoft Authenticator. Hat ein Benutzer 2FA noch nicht eingerichtet, wird er nach der regulären Anmeldung auf eine Seite zur Einrichtung von 2FA weitergeleitet.",
       "audit_retention_days": "Aufbewahrung des Audit-Logs (Tage)",
       "audit_retention_days_desc": "Geben Sie ein, nach wie vielen Tagen Einträge des Audit-Logs gelöscht werden. Geben Sie 0 ein, um sie dauerhaft aufzubewahren.",
+      "admin_page_size": "Seitengröße der Administration",
+      "admin_page_size_desc": "Legt fest, wie viele Zeilen pro Seite auf den Seiten der Systemkonfiguration angezeigt werden.",
       "color_mode": "Farbmodus",
       "color_mode_desc": "Wählen Sie den Standardfarbmodus der Anwendung aus.",
       "font": "Schriftart",
       "font_desc": "Wählen Sie die Schriftart für die Anwendung aus.",
+      "index_brand_icon": "Navigationsleisten-Symbol",
+      "index_brand_icon_desc": "Bootstrap-Icons-Klasse in der Navigationsleiste und der Seitenleiste, z. B. bi-headset. Leer lassen für das Standardsymbol.",
+      "index_brand_title": "Navigationsleisten-Titel",
+      "index_brand_title_desc": "Titel in der Navigationsleiste und der Seitenleiste. Leer lassen für den Standardtitel.",
+      "index_hero_title_left": "Hero-Titel (links)",
+      "index_hero_title_left_desc": "Linker Teil des Hero-Titels in der normalen Textfarbe. Leer lassen, um den Standard für diesen Teil zu behalten.",
+      "index_hero_title_right": "Hero-Titel (rechts)",
+      "index_hero_title_right_desc": "Rechter Teil des Hero-Titels, hervorgehoben dargestellt.",
+      "index_hero_subtitle": "Hero-Untertitel",
+      "index_hero_subtitle_desc": "Text unter dem Hero-Titel. Leer lassen für den Standardtext.",
+      "index_copyright_company": "Copyright-Firma",
+      "index_copyright_company_desc": "Firmenname in der Copyright-Zeile der Fußzeile. Das Jahr wird automatisch ergänzt. Leer lassen für den Standardwert.",
+      "index_copyright_url": "Copyright-Link",
+      "index_copyright_url_desc": "Optionale Webadresse (http oder https), auf die der Firmenname verweist. Ohne Adresse wird der Name als einfacher Text angezeigt.",
       "issue_key_prefix": "Präfix des Issue-Schlüssels",
       "issue_key_prefix_desc": "Geben Sie das Präfix des Issue-Schlüssels ein. Issues werden als PRÄFIX-123 angezeigt (z. B. LD-123). Das Präfix kann nicht mehr geändert werden, sobald das erste Issue existiert.",
       "support_email": "Support-E-Mail",
@@ -186,7 +217,31 @@
       "provider_email": "E-Mail",
       "provider_email_desc": "E-Mail-Adresse des Anbieters. Leer lassen, um sie auszublenden.",
       "provider_website": "Website",
-      "provider_website_desc": "Website des Anbieters, beginnend mit http:// oder https://. Leer lassen, um sie auszublenden."
+      "provider_website_desc": "Website des Anbieters, beginnend mit http:// oder https://. Leer lassen, um sie auszublenden.",
+      "mailin_poll_interval": "Prüfintervall (Sekunden)",
+      "mailin_poll_interval_desc": "Wie oft das Postfach frühestens gelesen wird. Das Lesen geschieht nach einer Anfrage an die Anwendung, es braucht also etwas Betrieb.",
+      "mailin_default_type": "Ticket-Typ",
+      "mailin_default_type_desc": "Typ der Tickets, die aus E-Mails erstellt werden.",
+      "mailin_default_product": "Produkt",
+      "mailin_default_product_desc": "Produkt der Tickets, die aus E-Mails erstellt werden.",
+      "mailin_default_access": "Zugriff",
+      "mailin_default_access_desc": "Wer die Tickets sieht, die aus E-Mails erstellt werden. „Nur Melder“ ist die sichere Wahl: der Absender und das Support-Team.",
+      "mailin_unknown_sender": "Unbekannte Absender",
+      "mailin_unknown_sender_desc": "Was mit E-Mails von Adressen geschieht, die kein Benutzer hat. Beide Möglichkeiten außer „Ablehnen“ brauchen den Nachweis des Mailservers, dass der Absender die Adresse besitzt.",
+      "mailin_send_confirmation": "Bestätigungsmail",
+      "mailin_send_confirmation_desc": "Dem Absender einer E-Mail die Ticketnummer schicken, wenn daraus ein Ticket erstellt wurde.",
+      "mailin_trust_sender": "Absenderadresse vertrauen",
+      "mailin_trust_sender_desc": "Die Adresse eines Benutzers ohne den Nachweis des Mailservers (SPF, DKIM, DMARC) akzeptieren. Nie für Support-Mitarbeiter und Administratoren. Nur für ein Postfach, das Mails von innen erhält.",
+      "mailin_max_mails_per_run": "Mails pro Prüfung",
+      "mailin_max_mails_per_run_desc": "Die meisten Mails, die bei einer Prüfung bearbeitet werden. Die übrigen warten auf die nächste.",
+      "mailin_max_body_size": "Größter Text (KB)",
+      "mailin_max_body_size_desc": "Der Text einer Mail wird ab dieser Größe abgeschnitten.",
+      "mailin_hourly_limit": "Mails pro Stunde",
+      "mailin_hourly_limit_desc": "Die meisten Mails, die innerhalb einer Stunde zu Tickets oder Kommentaren werden dürfen. Die übrigen warten im Postfach. 0 bedeutet keine Begrenzung.",
+      "mailin_allowed_domains": "Erlaubte Absender-Domains",
+      "mailin_allowed_domains_desc": "Nur Mails dieser Domains werden bearbeitet (eine pro Zeile oder durch Komma getrennt, Subdomains eingeschlossen). Leer: jede Domain.",
+      "mailin_blocked_domains": "Gesperrte Absender-Domains",
+      "mailin_blocked_domains_desc": "Mails dieser Domains werden immer abgelehnt."
     },
     "actions": {
       "save": "Einstellungen speichern",
@@ -242,12 +297,12 @@
         },
         "trial": {
           "title": "Keine Lizenz - Testphase",
-          "subject": "Diese Installation von LeweDesk ist nicht lizenziert. Sie funktioniert noch {days} Tage.",
+          "subject": "Diese Installation von LeweDesk ist nicht lizenziert. Die Testphase endet in {days} Tagen, danach läuft LeweDesk mit Einschränkungen.",
           "help": "Geben Sie unten Ihren Lizenzschlüssel ein und aktivieren Sie ihn."
         },
         "trial_expired": {
           "title": "Keine Lizenz - Testphase beendet",
-          "subject": "Diese Installation von LeweDesk ist nicht lizenziert und die Testphase ist beendet. Nur Administratoren können sich anmelden.",
+          "subject": "Diese Installation von LeweDesk ist nicht lizenziert und die Testphase ist beendet. LeweDesk läuft mit Einschränkungen.",
           "help": "Geben Sie unten Ihren Lizenzschlüssel ein und aktivieren Sie ihn."
         },
         "pending": {
@@ -257,12 +312,12 @@
         },
         "expired": {
           "title": "Lizenz abgelaufen",
-          "subject": "Ihre Lizenz ist abgelaufen. Nur Administratoren können sich anmelden.",
+          "subject": "Ihre Lizenz ist abgelaufen. Nach einer Übergangsfrist von 14 Tagen läuft LeweDesk mit Einschränkungen.",
           "help": "Bitte verlängern Sie Ihre Lizenz oder wenden Sie sich an den Hersteller."
         },
         "blocked": {
           "title": "Lizenz gesperrt",
-          "subject": "Ihre Lizenz wurde gesperrt. Nur Administratoren können sich anmelden.",
+          "subject": "Ihre Lizenz wurde gesperrt. LeweDesk läuft mit Einschränkungen.",
           "help": "Bitte wenden Sie sich an den Hersteller."
         },
         "unregistered": {
@@ -302,6 +357,65 @@
         "invalid_domain": "Die Domain dieser Installation ist für den Lizenzserver nicht gültig.",
         "https_required": "Der Lizenzserver muss über HTTPS erreicht werden. Prüfen Sie LICENSE_SERVER in der .env-Datei."
       }
+    },
+    "mailin": {
+      "off_env_title": "Aus",
+      "off_env": "E-Mail zu Ticket ist nicht eingeschaltet. Setzen Sie MAILIN_YES=1 und das Postfach (MAILIN_HOST und die Anmeldung, die standardmäßig MAIL_USER und MAIL_PASS ist) in der .env-Datei der Installation.",
+      "off_license_title": "Aus: Lizenz",
+      "off_license": "E-Mail zu Ticket ist in der .env-Datei eingeschaltet, die Lizenz erlaubt es aber im Moment nicht. Die Mails bleiben im Postfach.",
+      "on_title": "Ein",
+      "on": "Mails an das Postfach werden zu Tickets und Kommentaren.",
+      "mailbox": "Postfach",
+      "folders": "Ordner",
+      "folders_value": "gelesen: {inbox}, bearbeitet: {processed}, abgelehnt: {rejected}",
+      "auth_servers": "Vertrauenswürdiger Mailserver",
+      "auth_none": "nicht gesetzt (MAILIN_AUTH_SERVER): nur die Einstellung „Absenderadresse vertrauen“ lässt Benutzer zu, Support-Mitarbeiter können keine Mails schicken",
+      "last_run": "Letzte Prüfung",
+      "never_run": "Es gab noch keine Prüfung.",
+      "last_result": "{issues} Ticket(s), {comments} Kommentar(e), {rejected} abgelehnt, {errors} fehlgeschlagen",
+      "limited": "Die Grenze pro Stunde wurde erreicht; die übrigen Mails warten im Postfach.",
+      "mailbox_error": "Das Postfach konnte nicht gelesen werden: {error}",
+      "counts": "Letzte 24 Stunden",
+      "test": "Verbindung testen",
+      "testing": "Teste...",
+      "test_desc": "Meldet sich am Postfach an und sieht es sich an. Nichts wird verändert.",
+      "test_ok": "Verbunden. {folders} Ordner, {inbox} Mail(s) im Posteingang, {unseen} ungelesen.",
+      "test_missing": "Der Ordner / die Ordner {names} gibt es noch nicht; die erste Prüfung legt sie an.",
+      "test_failed": "Die Verbindung ist fehlgeschlagen: {error}",
+      "pickup_run": "Jetzt abholen",
+      "pickup_running": "Hole ab...",
+      "pickup_run_desc": "Liest das Postfach sofort, ohne auf die nächste Prüfung zu warten. Das Intervall beginnt ab jetzt neu.",
+      "pickup_run_ok": "Fertig. {issues} Ticket(s), {comments} Kommentar(e), {rejected} abgelehnt, {errors} fehlgeschlagen.",
+      "pickup_run_busy": "Gerade arbeitet eine andere Prüfung am Postfach. Bitte gleich noch einmal versuchen.",
+      "pickup_run_failed": "Das Postfach konnte nicht abgeholt werden: {error}",
+      "log": "Letzte Mails",
+      "log_empty": "Es wurde noch keine Mail gelesen.",
+      "col_time": "Wann",
+      "col_from": "Von",
+      "col_subject": "Betreff",
+      "col_result": "Ergebnis",
+      "col_details": "Einzelheiten",
+      "result_issue": "Ticket",
+      "result_comment": "Kommentar",
+      "result_rejected": "Abgelehnt",
+      "result_error": "Fehlgeschlagen",
+      "attempts": "{count} Versuche",
+      "first_type": "Der erste aktive Typ",
+      "no_product": "Keines",
+      "policy_reject": "Ablehnen",
+      "policy_create_user": "Konto erstellen",
+      "policy_anonymous": "Anonym (Konto „Email requester“)",
+      "load_error": "Der Stand von E-Mail zu Ticket konnte nicht geladen werden.",
+      "options_error": "Die Listen konnten nicht geladen werden; die Einstellung bleibt unverändert."
+    },
+    "housekeeping": {
+      "title": "Wartung",
+      "desc": "Versendet die wartenden E-Mails, meldet SLA-Timer, die gefährdet oder verletzt sind, und löscht, was seine Aufbewahrungsfrist überschritten hat. Sie läuft alle fünf Minuten von selbst; hier kannst Du sie sofort ausführen.",
+      "run": "Wartung jetzt ausführen",
+      "running": "Läuft...",
+      "finished": "Die Wartung wurde ausgeführt.",
+      "done": "Fertig: {sent} E-Mail(s) versendet, {notifications} Benachrichtigung(en), {mails} alte E-Mail(s), {uploads} temporäre Upload(s) und {audit} Audit-Log-Einträge gelöscht; SLA: {breached} verletzte und {at_risk} gefährdete Timer gemeldet.",
+      "error": "Die Wartung konnte nicht ausgeführt werden."
     }
   },
   "lookups": {
@@ -327,6 +441,12 @@
       "on_hold": "Zurückgestellt",
       "resolved": "Gelöst",
       "closed": "Geschlossen"
+    },
+    "priorities": {
+      "critical": "Kritisch",
+      "high": "Hoch",
+      "normal": "Normal",
+      "low": "Niedrig"
     },
     "resolutions": {
       "completed": "Abgeschlossen",
@@ -400,6 +520,23 @@
         "save_error": "Der Status konnte nicht gespeichert werden.",
         "delete_error": "Die ausgewählten Status konnten nicht gelöscht werden.",
         "not_found": "Der Status wurde nicht gefunden."
+      }
+    },
+    "priorities": {
+      "title": "Prioritäten",
+      "add_title": "Priorität hinzufügen",
+      "edit_title": "Priorität bearbeiten",
+      "name_desc": "Eindeutiger Name der Priorität (max. 50 Zeichen).",
+      "description_desc": "Kurze Beschreibung, was die Priorität bedeutet.",
+      "confirm_delete": "Die ausgewählten Prioritäten löschen? Dies kann nicht rückgängig gemacht werden.",
+      "messages": {
+        "created": "Die Priorität wurde erstellt.",
+        "updated": "Die Priorität wurde aktualisiert.",
+        "deleted": "Die ausgewählten Prioritäten wurden gelöscht.",
+        "load_error": "Prioritäten konnten nicht vom Server geladen werden.",
+        "save_error": "Die Priorität konnte nicht gespeichert werden.",
+        "delete_error": "Die ausgewählten Prioritäten konnten nicht gelöscht werden.",
+        "not_found": "Die Priorität wurde nicht gefunden."
       }
     },
     "resolutions": {
@@ -645,7 +782,8 @@
       "avatar": "Avatar",
       "notifications": "Benachrichtigungen",
       "options": "Optionen",
-      "twofa": "2FA"
+      "twofa": "2FA",
+      "custom_views": "Eigene Ansichten"
     },
     "options": {
       "language": "Sprache",
@@ -700,6 +838,26 @@
   "maintenance": {
     "banner": "Der Wartungsmodus ist aktiv. Nur Administratoren können die Anwendung nutzen."
   },
+  "custom_views": {
+    "title": "Eigene Ansichten",
+    "admin_description": "Alle gespeicherten Ansichten der Ticketliste aller Benutzer. Geteilte Ansichten gelöschter Benutzer bleiben ohne Besitzer erhalten.",
+    "admin_empty": "Es gibt noch keine eigenen Ansichten.",
+    "description": "Ihre gespeicherten Ansichten der Ticketliste. Eine Ansicht legen Sie auf der Ticketseite mit „Ansicht speichern“ an.",
+    "empty": "Sie haben noch keine eigenen Ansichten.",
+    "shared_column": "Sichtbarkeit",
+    "updated_column": "Geändert",
+    "actions_column": "Aktionen",
+    "owner_column": "Besitzer",
+    "shared_badge": "Geteilt",
+    "private_badge": "Privat",
+    "deleted_user": "(gelöschter Benutzer)",
+    "edit_title": "Ansicht bearbeiten",
+    "stale_removed": "Einige Filtereinstellungen dieser Ansicht sind nicht mehr verfügbar und wurden entfernt. Speichern Sie die Ansicht, um sie zu aktualisieren.",
+    "name_exists": "Sie haben bereits eine Ansicht mit diesem Namen.",
+    "confirm_delete": "Ansicht „{name}“ löschen? Das kann nicht rückgängig gemacht werden.",
+    "deleted": "Die Ansicht wurde gelöscht.",
+    "delete_error": "Die Ansicht konnte nicht gelöscht werden."
+  },
   "tags": {
     "input": {
       "label": "Tags",
@@ -724,6 +882,7 @@
     "fields": {
       "type": "Typ",
       "status_category": "Status-Kategorie",
+      "priority": "Priorität",
       "summary": "Zusammenfassung",
       "description": "Beschreibung",
       "product": "Produkt",
@@ -731,7 +890,9 @@
       "access": "Zugriff",
       "resolution": "Lösung",
       "tags": "Tags",
-      "watchers": "Beobachter"
+      "watchers": "Beobachter",
+      "source": "Quelle",
+      "requester": "Absender"
     },
     "columns": {
       "id": "Issue",
@@ -740,7 +901,8 @@
       "assignee": "Bearbeiter",
       "created": "Erstellt",
       "updated": "Aktualisiert",
-      "status": "Status"
+      "status": "Status",
+      "sla": "SLA"
     },
     "access": {
       "public": "Öffentlich",
@@ -761,7 +923,8 @@
       "waiting": "Wartende Issues",
       "in_progress": "Issues in Bearbeitung",
       "done": "Erledigte Issues",
-      "deleted": "Gelöschte Issues"
+      "deleted": "Gelöschte Issues",
+      "sla_breached": "Issues mit verletztem SLA"
     },
     "bulk": {
       "restore": "Wiederherstellen",
@@ -779,18 +942,37 @@
       "all_status": "Alle Status",
       "all_status_categories": "Alle Status-Kategorien",
       "all_types": "Alle Typen",
+      "all_priorities": "Alle Prioritäten",
       "all_products": "Alle Produkte",
       "all_assignees": "Alle Bearbeiter",
       "all_reporters": "Alle Melder",
       "all_tags": "Alle Tags",
+      "n_selected": "{count} ausgewählt",
       "search_results": "Suchergebnisse für \"{term}\"",
       "participant": "Beteiligt: {name}",
       "reset": "Filter zurücksetzen",
-      "hide_closed": "Geschlossene ausblenden"
+      "all_sources": "Alle Quellen"
+    },
+    "custom_views": {
+      "save_button": "Ansicht speichern",
+      "select_placeholder": "Ansicht wählen",
+      "select_label": "Eigene Ansicht auswählen",
+      "save_title": "Ansicht speichern",
+      "name": "Name",
+      "name_required": "Bitte einen Namen eingeben (bis zu 100 Zeichen).",
+      "shared": "Mit allen registrierten Benutzern teilen",
+      "shared_desc": "Andere registrierte Benutzer können diese Ansicht auswählen. Nur Sie können sie ändern.",
+      "overwrite_confirm": "Sie haben bereits eine Ansicht namens „{name}“. Mit den aktuellen Filtern überschreiben?",
+      "overwrite": "Überschreiben",
+      "saved": "Die Ansicht wurde gespeichert.",
+      "save_error": "Die Ansicht konnte nicht gespeichert werden.",
+      "load_error": "Die Ansicht konnte nicht geladen werden.",
+      "stale": "Ihre Ansicht enthält Filtereinstellungen, die nicht mehr verfügbar sind. Bitte aktualisieren Sie Ihre Ansicht in Ihrem Profil."
     },
     "create": {
       "title": "Issue erstellen",
       "type_desc": "Um welche Art von Issue handelt es sich?",
+      "priority_desc": "Wie dringend das Issue ist. Neue Issues beginnen mit Normal.",
       "type_placeholder": "Typ auswählen...",
       "type_required": "Bitte wählen Sie einen Typ.",
       "summary_desc": "Ein kurzer Titel in einer Zeile (bis zu 200 Zeichen).",
@@ -833,6 +1015,11 @@
       "create_error": "Das Issue konnte nicht erstellt werden.",
       "created": "Issue {key} wurde erstellt.",
       "saved": "Issue {key} wurde aktualisiert."
+    },
+    "source": {
+      "email": "E-Mail",
+      "web": "Web",
+      "email_title": "Aus einer E-Mail erstellt"
     }
   },
   "markdown": {
@@ -1010,16 +1197,21 @@
       "attachment_deleted": "hat den Anhang {name} gelöscht"
     },
     "fields": {
+      "sla_first_response": "SLA-Fälligkeit der ersten Antwort",
+      "sla_resolution": "SLA-Fälligkeit der Lösung",
       "tags": "Tags",
       "type": "Typ",
       "status": "Status",
+      "priority": "Priorität",
       "resolution": "Lösung",
       "assignee": "Bearbeiter",
       "access": "Zugriff",
       "summary": "Zusammenfassung",
       "description": "Beschreibung",
       "product": "Produkt",
-      "version": "Version"
+      "version": "Version",
+      "sla_breached_first_response": "SLA-Verletzung: Erste Antwort (Fälligkeit)",
+      "sla_breached_resolution": "SLA-Verletzung: Lösung (Fälligkeit)"
     },
     "load_error": "Der Verlauf konnte nicht geladen werden."
   },
@@ -1060,7 +1252,9 @@
       "issue_unassigned": "{actor} hat die Zuweisung des Tickets aufgehoben",
       "status_changed": "{actor} hat den Status auf {status} geändert",
       "comment_added": "{actor} hat einen Kommentar hinzugefügt",
-      "comment_added_internal": "{actor} hat einen internen Kommentar hinzugefügt"
+      "comment_added_internal": "{actor} hat einen internen Kommentar hinzugefügt",
+      "sla_at_risk": "SLA gefährdet: {metric} ist fällig am {due}",
+      "sla_breached": "SLA verletzt: {metric} war fällig am {due}"
     },
     "prefs": {
       "description": "Legen Sie pro Ereignis fest, ob Sie eine E-Mail und eine Benachrichtigung in der Kopfleiste erhalten. Sie erfahren nur etwas über Tickets, die Sie sehen dürfen.",
@@ -1083,6 +1277,14 @@
         "comment_added": {
           "title": "Kommentar hinzugefügt",
           "desc": "Zu einem Ticket, das Sie gemeldet haben, beobachten oder bearbeiten, wurde ein Kommentar hinzugefügt."
+        },
+        "sla_at_risk": {
+          "title": "SLA gefährdet",
+          "desc": "Ein SLA-Ziel eines Issues, an dem Du arbeitest oder das Du beobachtest, ist kurz vor der Fälligkeit (nur Support-Team)."
+        },
+        "sla_breached": {
+          "title": "SLA verletzt",
+          "desc": "Ein SLA-Ziel eines Issues, an dem Du arbeitest oder das Du beobachtest, wurde verfehlt, oder eine Richtlinie eskaliert ein Issue an Dich (nur Support-Team)."
         }
       },
       "saved": "Ihre Benachrichtigungseinstellungen wurden gespeichert.",
@@ -1096,7 +1298,7 @@
     "login": "Anmelden",
     "register": "Registrieren",
     "issues": "Issues",
-    "hero_title": "Kundensupport, <span class=\"text-primary hero-shimmer\">organisiert</span>",
+    "hero_title": "My Company <span class=\"text-primary hero-shimmer\">Kundensupport</span>",
     "hero_lead": "LeweDesk ist das Helpdesk- und Ticketsystem von Lewe Labs. Melden Sie Probleme, wünschen Sie Verbesserungen und verfolgen Sie jeden Fall von der ersten Nachricht bis zur Lösung.",
     "features_title": "Alles, was ein Support-Team braucht",
     "features_lead": "Ein gezielter Werkzeugsatz, um Kundenmeldungen zu sammeln, zu ordnen und zu lösen.",
@@ -1185,15 +1387,253 @@
   "license": {
     "banner": {
       "link": "Lizenzeinstellungen",
-      "trial": "Diese Installation von LeweDesk ist nicht lizenziert. Sie funktioniert noch {days} Tage.",
-      "trial_expired": "Diese Installation von LeweDesk ist nicht lizenziert und die Testphase ist beendet. Nur Administratoren können sich anmelden.",
-      "expired": "Die Lizenz ist abgelaufen. Nur Administratoren können sich anmelden.",
-      "blocked": "Die Lizenz wurde gesperrt. Nur Administratoren können sich anmelden.",
-      "pending": "Die Lizenz wurde noch nicht aktiviert.",
-      "unregistered": "Die Lizenz ist gültig, aber diese Domain ist nicht dafür registriert.",
-      "invalid": "Der Lizenzschlüssel ist ungültig.",
+      "reason": {
+        "missing": "fehlend",
+        "invalid": "ungültig",
+        "unregistered": "nicht für diese Domain registriert",
+        "pending": "noch nicht aktiviert",
+        "expired": "abgelaufen",
+        "blocked": "gesperrt"
+      },
+      "grace": "Ihre LeweDesk-Lizenz ist {reason}. Ihre Übergangsfrist endet in {days} Tagen.",
+      "grace_one": "Ihre LeweDesk-Lizenz ist {reason}. Ihre Übergangsfrist endet in 1 Tag.",
+      "grace_today": "Ihre LeweDesk-Lizenz ist {reason}. Ihre Übergangsfrist endet heute.",
+      "limited": "Ihre LeweDesk-Lizenz ist {reason}. LeweDesk läuft im eingeschränkten Modus: Es können höchstens {issues} Issues und {users} Benutzer angelegt werden; die Einrichtung von 2FA, das Audit-Log, Eigene Ansichten und die Selbstregistrierung sind abgeschaltet. Aktivieren Sie eine gültige Lizenz, um die Einschränkungen aufzuheben.",
       "expiring": "Die Lizenz läuft in {days} Tagen ab.",
       "expiring_today": "Die Lizenz läuft heute ab."
+    },
+    "feature_off": "Diese Funktion ist wegen einer ungültigen Lizenz derzeit deaktiviert.",
+    "limit_reached": {
+      "issues": "Limit erreicht: Ohne gültige Lizenz können höchstens {max} Issues angelegt werden.",
+      "users": "Limit erreicht: Ohne gültige Lizenz können höchstens {max} Benutzer angelegt werden."
+    }
+  },
+  "sla": {
+    "tabs": {
+      "policies": "Richtlinien",
+      "calendars": "Kalender"
+    },
+    "metric": {
+      "first_response": "Erste Antwort",
+      "resolution": "Lösung"
+    },
+    "unit": {
+      "minutes": "Minuten",
+      "hours": "Stunden",
+      "days": "Tage"
+    },
+    "unit_short": {
+      "minutes": "Min.",
+      "hours": "Std.",
+      "days": "T"
+    },
+    "weekday": {
+      "1": "Montag",
+      "2": "Dienstag",
+      "3": "Mittwoch",
+      "4": "Donnerstag",
+      "5": "Freitag",
+      "6": "Samstag",
+      "7": "Sonntag"
+    },
+    "weekday_short": {
+      "1": "Mo",
+      "2": "Di",
+      "3": "Mi",
+      "4": "Do",
+      "5": "Fr",
+      "6": "Sa",
+      "7": "So"
+    },
+    "policies": {
+      "title": "SLA-Richtlinien",
+      "intro": "Eine Richtlinie legt fest, wie schnell Tickets eine erste Antwort erhalten und gelöst sein müssen. Die Richtlinien mit Bedingungen werden in der Reihenfolge der Sortierung geprüft, die erste, die zu einem Ticket passt, gilt. Die Standardrichtlinie (ohne Bedingungen) gilt für alle anderen Tickets.",
+      "add_title": "SLA-Richtlinie hinzufügen",
+      "edit_title": "SLA-Richtlinie bearbeiten",
+      "confirm_delete": "Die ausgewählte Richtlinie löschen? Eine Richtlinie, zu der Tickets Timer haben, kann nicht gelöscht werden; deaktivieren Sie sie stattdessen.",
+      "default": "Standard",
+      "any": "Beliebig",
+      "around_the_clock": "Rund um die Uhr (24/7)",
+      "conditions": "Bedingungen",
+      "calendar": "Kalender",
+      "targets": "Ziele",
+      "warning_short": "Warnung",
+      "no_targets": "Keine Ziele",
+      "name_desc": "Eindeutiger Name der Richtlinie (max. 100 Zeichen).",
+      "description_desc": "Kurze Beschreibung, wann die Richtlinie gilt.",
+      "conditions_desc": "Die Richtlinie gilt für Tickets, die alle gesetzten Bedingungen erfüllen. Lassen Sie eine Bedingung auf „Beliebig“, um sie zu ignorieren.",
+      "group": "Gruppe des Melders",
+      "default_notice": "Eine Richtlinie ohne Bedingungen ist die Standardrichtlinie für alle Tickets, zu denen keine andere Richtlinie passt. Es kann nur eine geben.",
+      "calendar_desc": "Die Öffnungszeiten, in denen die Uhr läuft. Ohne Kalender läuft die Uhr rund um die Uhr.",
+      "targets_desc": "Wie viel Zeit das Team für die erste Antwort und die Lösung hat, gezählt in Arbeitszeit des Kalenders. Lassen Sie ein Feld leer, wenn es kein Ziel gibt.",
+      "targets_hint": "Ein Tag sind 24 Stunden Arbeitszeit. Die Zeile „Alle anderen Prioritäten“ gilt für jede Priorität ohne eigene Zeile.",
+      "other_priorities": "Alle anderen Prioritäten",
+      "unit": "Einheit",
+      "warning": "Warnschwelle",
+      "warning_desc": "Der Anteil des Ziels, ab dem ein Ticket als gefährdet gilt.",
+      "pause_statuses": "Status, die die Uhr anhalten",
+      "pause_statuses_desc": "Die Uhr läuft nicht, solange ein Ticket einen dieser Status hat (zum Beispiel während es auf den Kunden wartet).",
+      "sort_order_desc": "Richtlinien mit der kleineren Zahl werden zuerst geprüft. Leer lassen, um eine neue Richtlinie ans Ende zu stellen. Die Standardrichtlinie hat keinen Platz in der Reihenfolge: sie gilt, wenn keine andere Richtlinie passt.",
+      "active_desc": "Nur aktive Richtlinien gelten für Tickets.",
+      "messages": {
+        "load_error": "Die SLA-Richtlinien konnten nicht vom Server geladen werden.",
+        "not_found": "Die SLA-Richtlinie wurde nicht gefunden.",
+        "created": "Die SLA-Richtlinie wurde erstellt.",
+        "updated": "Die SLA-Richtlinie wurde aktualisiert.",
+        "deleted": "Die SLA-Richtlinie wurde gelöscht.",
+        "save_error": "Die SLA-Richtlinie konnte nicht gespeichert werden.",
+        "delete_error": "Die SLA-Richtlinie konnte nicht gelöscht werden.",
+        "target_invalid": "Ein Ziel muss eine ganze Zahl von Minuten sein (mindestens 1)."
+      },
+      "apply": "Auf offene Tickets anwenden",
+      "apply_confirm": "Die SLA-Timer aller offenen Tickets ohne Timer mit den Richtlinien, wie sie jetzt sind, starten? Die Uhr eines solchen Timers beginnt mit der Erstellung des Tickets und kann daher sofort überschritten sein. Tickets mit Timern bleiben unverändert.",
+      "apply_yes": "Ja, Timer starten",
+      "apply_result": "Die Timer wurden für {issues} Ticket(s) gestartet ({timers} Timer).",
+      "apply_error": "Die Timer konnten nicht gestartet werden.",
+      "escalation": "Eskalation",
+      "escalation_desc": "Wer neben dem Bearbeiter und den Beobachtern informiert wird, wenn ein Ziel dieser Richtlinie verletzt wird. Nur wer das Issue und die SLA-Daten sehen darf, bekommt die Nachricht.",
+      "escalation_user": "Benutzer",
+      "escalation_group": "Gruppe",
+      "escalation_none": "Niemand"
+    },
+    "calendars": {
+      "title": "SLA-Kalender",
+      "intro": "Ein Kalender legt fest, wann die Uhr eines SLA läuft: die Öffnungszeiten jedes Wochentags in einer Zeitzone. Feiertage halten die Uhr für den ganzen Tag an.",
+      "add_title": "SLA-Kalender hinzufügen",
+      "edit_title": "SLA-Kalender bearbeiten",
+      "confirm_delete": "Den ausgewählten Kalender mit Öffnungszeiten und Feiertagen löschen? Ein Kalender, den eine Richtlinie verwendet, kann nicht gelöscht werden.",
+      "timezone": "Zeitzone",
+      "hours": "Öffnungszeiten",
+      "holidays": "Feiertage",
+      "policies": "Richtlinien",
+      "closed": "Geschlossen",
+      "name_desc": "Eindeutiger Name des Kalenders (max. 100 Zeichen).",
+      "description_desc": "Kurze Beschreibung, zum Beispiel das Team oder der Standort.",
+      "timezone_desc": "Die Zeitzone der Öffnungszeiten. Die Sommerzeit wird berücksichtigt.",
+      "hours_desc": "Die Zeiten, in denen die Uhr läuft. Ein Tag kann mehrere Bereiche haben (zum Beispiel eine Mittagspause). Ein Ende von 00:00 bedeutet das Tagesende.",
+      "copy_monday": "Montag auf Dienstag bis Freitag kopieren",
+      "from": "Von",
+      "until": "Bis",
+      "remove_range": "Bereich entfernen",
+      "add_range": "Bereich hinzufügen",
+      "messages": {
+        "load_error": "Die SLA-Kalender konnten nicht vom Server geladen werden.",
+        "not_found": "Der SLA-Kalender wurde nicht gefunden.",
+        "created": "Der SLA-Kalender wurde erstellt. Sie können jetzt Feiertage hinzufügen.",
+        "updated": "Der SLA-Kalender wurde aktualisiert.",
+        "deleted": "Der SLA-Kalender wurde gelöscht.",
+        "save_error": "Der SLA-Kalender konnte nicht gespeichert werden.",
+        "delete_error": "Der SLA-Kalender konnte nicht gelöscht werden.",
+        "range_incomplete": "Jeder Bereich braucht eine Start- und eine Endzeit."
+      }
+    },
+    "holidays": {
+      "title": "Feiertage",
+      "intro": "An diesen Tagen läuft die Uhr nicht.",
+      "save_first": "Speichern Sie zuerst den Kalender, dann können Sie Feiertage hinzufügen.",
+      "from": "Von",
+      "to": "Bis",
+      "recurring": "Jedes Jahr",
+      "add": "Feiertag hinzufügen",
+      "import": "Importieren",
+      "import_label": "Aus einer Kalenderdatei importieren (.ics)",
+      "import_hint": "Jeder Termin der Datei wird ein Feiertag; jährliche Termine werden auf „Jedes Jahr“ gesetzt. Feiertage, die der Kalender schon hat, werden übersprungen.",
+      "none": "Noch keine Feiertage.",
+      "to_hint": "Lassen Sie „Bis“ für einen einzelnen Tag leer. „Jedes Jahr“ wiederholt die Tage jedes Jahr.",
+      "messages": {
+        "load_error": "Die Feiertage konnten nicht vom Server geladen werden.",
+        "created": "Der Feiertag wurde hinzugefügt.",
+        "updated": "Der Feiertag wurde aktualisiert.",
+        "deleted": "Der Feiertag wurde gelöscht.",
+        "save_error": "Der Feiertag konnte nicht gespeichert werden.",
+        "delete_error": "Der Feiertag konnte nicht gelöscht werden.",
+        "import_done": "Import beendet: {added} hinzugefügt, {skipped} übersprungen (schon vorhanden), {failed} fehlgeschlagen.",
+        "import_none": "Die Datei enthält keine Feiertage.",
+        "import_too_large": "Die Datei ist zu groß (höchstens 1 MB).",
+        "import_error": "Die Datei konnte nicht gelesen werden."
+      }
+    },
+    "state": {
+      "on_track": "Im Plan",
+      "at_risk": "Gefährdet",
+      "breached": "Verletzt",
+      "paused": "Pausiert",
+      "met": "Erfüllt",
+      "cancelled": "Abgebrochen"
+    },
+    "filter": {
+      "label": "SLA",
+      "all": "Alle SLA-Status",
+      "breached": "Verletzt",
+      "at_risk": "Gefährdet",
+      "due_today": "Heute fällig",
+      "on_track": "Im Plan",
+      "paused": "Pausiert"
+    },
+    "panel": {
+      "title": "Servicelevel (SLA)",
+      "override_title": "Fälligkeit ändern",
+      "new_due": "Neue Fälligkeit",
+      "new_due_desc": "In Deiner Zeitzone. Die Uhr behält ihre Pausen und die Geschäftszeiten der Richtlinie.",
+      "due_required": "Bitte gib eine Fälligkeit ein.",
+      "reason": "Grund",
+      "reason_desc": "Pflichtfeld. Er wird in den Verlauf des Issues geschrieben.",
+      "reason_required": "Bitte gib einen Grund ein (eine Zeile, bis zu 255 Zeichen).",
+      "in_time": "rechtzeitig",
+      "late_by": "{time} zu spät",
+      "met_at": "Erfüllt {time}",
+      "left": "noch {time}",
+      "over": "{time} überschritten",
+      "clock_stopped": "Uhr angehalten",
+      "in": "fällig in {time}",
+      "overdue": "{time} überfällig",
+      "due": "Fällig",
+      "policy": "Richtlinie",
+      "target": "Ziel",
+      "overridden": "Fälligkeit von Hand geändert",
+      "change_due": "Fälligkeit ändern",
+      "changed": "Die Fälligkeit wurde geändert.",
+      "change_error": "Die Fälligkeit konnte nicht geändert werden."
+    },
+    "report": {
+      "title": "SLA-Bericht",
+      "intro": "Wie gut die SLA-Ziele in einem Zeitraum eingehalten wurden: Einhaltungsquote, Durchschnitts- und Medianzeiten und die verletzten Timer.",
+      "from": "Von",
+      "to": "Bis",
+      "group_by": "Gruppieren nach",
+      "show": "Anzeigen",
+      "group": {
+        "policy": "Richtlinie",
+        "product": "Produkt",
+        "assignee": "Bearbeiter",
+        "priority": "Priorität"
+      },
+      "export_summary": "Zusammenfassung exportieren (CSV)",
+      "export_breached": "Verletzte exportieren (CSV)",
+      "export_error": "Der Bericht konnte nicht exportiert werden.",
+      "load_error": "Der Bericht konnte nicht geladen werden.",
+      "rule": "Ein Timer zählt in dem Zeitraum, in dem er erfüllt wurde, oder, wenn er noch offen ist, in dem er überfällig wurde. Die Einhaltungsquote ist der Anteil, der rechtzeitig erfüllt wurde; ein offener, überfälliger Timer zählt dagegen.",
+      "compliance": "Einhaltung",
+      "timers": "Timer",
+      "met_in_time": "Rechtzeitig",
+      "breached": "Verletzt",
+      "avg": "Durchschnitt",
+      "median": "Median",
+      "all": "Alle",
+      "by": "Nach {group}",
+      "empty": "Keine Timer in diesem Zeitraum.",
+      "breached_title": "Verletzte Timer",
+      "no_breached": "Keine verletzten Timer in diesem Zeitraum.",
+      "truncated": "Die neuesten {shown} von {total}. Der Export enthält mehr.",
+      "issue": "Issue",
+      "metric": "Kennzahl",
+      "policy": "Richtlinie",
+      "assignee": "Bearbeiter",
+      "target": "Ziel",
+      "outcome": "Ergebnis",
+      "overrun": "Überschreitung",
+      "met": "erfüllt",
+      "open": "offen"
     }
   }
 }

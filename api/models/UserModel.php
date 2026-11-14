@@ -148,6 +148,17 @@ class UserModel
 
   //---------------------------------------------------------------------------
   /**
+   * Counts all users except the built-in administrator "admin" (the license limit; inactive users count too).
+   *
+   * @return int
+   */
+  public function countExceptAdmin(): int
+  {
+    return (int)$this->db->query("SELECT COUNT(*) FROM users WHERE username <> 'admin'")->fetchColumn();
+  }
+
+  //---------------------------------------------------------------------------
+  /**
    * Gets all users (without password hashes) including their roles and groups.
    *
    * @return array

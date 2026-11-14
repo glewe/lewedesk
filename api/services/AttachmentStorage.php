@@ -114,6 +114,38 @@ class AttachmentStorage
       return ['error' => [400, 'The file could not be uploaded']];
     }
 
+    return $this->checkFile($tmp, (string)($file['name'] ?? ''), $maxSize);
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Checks a file that did not come from an upload (a part of a received mail that was written to a temporary file):
+   * the size, the extension and the content, with the same rules as inspect().
+   *
+   * @param string $path    The file
+   * @param string $name    The name it came with
+   * @param int    $maxSize The largest size in bytes
+   *
+   * @return array{name: string, mime: string, size: int, tmp: string}|array{error: array{0: int, 1: string}}
+   */
+  public function inspectLocal(string $path, string $name, int $maxSize): array
+  {
+    return is_file($path) ? $this->checkFile($path, $name, $maxSize) : ['error' => [400, 'The file could not be read']];
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Checks the size, the extension and the content of a file.
+   *
+   * @param string $tmp     The file
+   * @param string $name    The name it came with
+   * @param int    $maxSize The largest size in bytes
+   *
+   * @return array{name: string, mime: string, size: int, tmp: string}|array{error: array{0: int, 1: string}}
+   */
+  private function checkFile(string $tmp, string $name, int $maxSize): array
+  {
+    $limit = self::megabytes($maxSize);
     $size = (int)filesize($tmp);
     if ($size === 0) {
       return ['error' => [400, 'The file is empty']];
@@ -122,7 +154,7 @@ class AttachmentStorage
       return ['error' => [413, "The file is too large (maximum $limit)"]];
     }
 
-    $name = self::cleanName((string)($file['name'] ?? ''));
+    $name = self::cleanName($name);
     $extension = strtolower(pathinfo($name, PATHINFO_EXTENSION));
     if (!isset(self::TYPES[$extension])) {
       return ['error' => [415, 'This file type is not allowed. Allowed: ' . implode(', ', ['txt', 'md', 'pdf', 'zip', 'gif', 'jpg', 'png'])]];
@@ -152,6 +184,26 @@ class AttachmentStorage
     }
 
     return move_uploaded_file($tmp, $path) ? $stored : null;
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Moves a file that did not come from an upload into the storage (see inspectLocal()).
+   *
+   * @param string $path The file; it is gone after a successful call
+   *
+   * @return string|null The stored name (32 hexadecimal characters), or null if the file could not be stored
+   */
+  public function storeLocal(string $path): ?string
+  {
+    $stored = bin2hex(random_bytes(16));
+    $target = $this->path($stored);
+    $folder = dirname($target);
+    if (!is_dir($folder) && !mkdir($folder, 0775, true) && !is_dir($folder)) {
+      return null;
+    }
+
+    return (@rename($path, $target) || (@copy($path, $target) && @unlink($path))) ? $stored : null;
   }
 
   //---------------------------------------------------------------------------

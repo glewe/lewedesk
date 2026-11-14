@@ -77,6 +77,17 @@ final class Lookups
         'replacement' => 'resolution_id',
         'order' => 't.sort_order, t.name',
       ],
+      'priorities' => [
+        'table' => 'priorities',
+        'label' => 'Priority',
+        'permission' => 'manage_priorities',
+        'fields' => [...$visual, 'sort_order', 'active'],
+        'protected' => true,
+        'creatable' => true,
+        'deletable' => true,
+        'replacement' => 'priority_id',
+        'order' => 't.sort_order, t.name',
+      ],
       'products' => [
         'table' => 'products',
         'label' => 'Product',

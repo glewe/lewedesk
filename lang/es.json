@@ -32,6 +32,12 @@
     "activity": {
       "title": "Actividad reciente",
       "empty": "Aún no hay actividad en tus incidencias."
+    },
+    "sla": {
+      "breached": "SLA incumplido",
+      "at_risk": "SLA en riesgo",
+      "compliance": "Cumplimiento del SLA",
+      "days": "últimos {days} días"
     }
   },
   "sidebar": {
@@ -47,9 +53,12 @@
     "issue_types": "Tipos de incidencia",
     "products": "Productos",
     "resolutions": "Resoluciones",
+    "priorities": "Prioridades",
     "status": "Estado",
     "status_categories": "Categorías de estado",
     "tags": "Etiquetas",
+    "custom_views": "Vistas personalizadas",
+    "sla_setup": "Configuración SLA",
     "issues_title": "Incidencias",
     "all_issues": "Todas las incidencias",
     "create_issue": "Crear incidencia",
@@ -60,7 +69,9 @@
     "waiting": "En espera",
     "in_progress": "En curso",
     "done": "Finalizadas",
-    "deleted_issues": "Eliminadas"
+    "deleted_issues": "Eliminadas",
+    "sla_breached": "SLA incumplido",
+    "sla_report": "Informe SLA"
   },
   "header": {
     "search": "Buscar...",
@@ -104,9 +115,11 @@
       "general": "General",
       "system": "Sistema",
       "theme": "Tema",
+      "index_page": "Página de inicio",
       "issues": "Configuración de incidencias",
       "license": "Licencia",
-      "provider": "Proveedor"
+      "provider": "Proveedor",
+      "mailin": "Correo a incidencia"
     },
     "fields": {
       "application_url": "URL de la aplicación",
@@ -149,14 +162,32 @@
       "debug_mode_desc": "Con esta opción activada, se muestra información de depuración en la consola del navegador.",
       "under_maintenance": "En mantenimiento",
       "under_maintenance_desc": "Con esta opción activada, la aplicación pasa al modo de mantenimiento. Solo los administradores pueden acceder a la aplicación.",
+      "allow_registration": "Permitir el autorregistro de usuarios",
+      "allow_registration_desc": "Permite a los visitantes crear su propia cuenta en la página de registro. Desactívelo para gestionar los usuarios manualmente; los administradores pueden seguir creando usuarios.",
       "force_2fa": "Exigir autenticación de dos factores",
       "force_2fa_desc": "Obliga a los usuarios a configurar una autenticación de dos factores, p. ej. mediante Google o Microsoft Authenticator. Si un usuario aún no ha configurado la 2FA, será redirigido a una página de configuración de la 2FA tras el inicio de sesión normal.",
       "audit_retention_days": "Conservación del registro de auditoría (días)",
       "audit_retention_days_desc": "Introduce tras cuántos días se eliminan las entradas del registro de auditoría. Introduce 0 para conservarlas siempre.",
+      "admin_page_size": "Tamaño de página de la administración",
+      "admin_page_size_desc": "Define cuántas filas se muestran por página en las páginas de configuración del sistema.",
       "color_mode": "Modo de color",
       "color_mode_desc": "Selecciona el modo de color predeterminado de la aplicación.",
       "font": "Fuente",
       "font_desc": "Selecciona la fuente que se usará en la aplicación.",
+      "index_brand_icon": "Icono de la barra de navegación",
+      "index_brand_icon_desc": "Clase de Bootstrap Icons que se muestra en la barra de navegación y la barra lateral, p. ej. bi-headset. Déjelo vacío para el icono predeterminado.",
+      "index_brand_title": "Título de la barra de navegación",
+      "index_brand_title_desc": "Título que se muestra en la barra de navegación y la barra lateral. Déjelo vacío para el título predeterminado.",
+      "index_hero_title_left": "Título principal (izquierda)",
+      "index_hero_title_left_desc": "Parte izquierda del título principal, con el color de texto normal. Déjelo vacío para mantener el valor predeterminado de esta parte.",
+      "index_hero_title_right": "Título principal (derecha)",
+      "index_hero_title_right_desc": "Parte derecha del título principal, resaltada.",
+      "index_hero_subtitle": "Subtítulo principal",
+      "index_hero_subtitle_desc": "Texto bajo el título principal. Déjelo vacío para el texto predeterminado.",
+      "index_copyright_company": "Empresa del copyright",
+      "index_copyright_company_desc": "Nombre de la empresa en la línea de copyright del pie de página. El año se añade automáticamente. Déjelo vacío para el valor predeterminado.",
+      "index_copyright_url": "Enlace del copyright",
+      "index_copyright_url_desc": "Dirección web opcional (http o https) a la que enlaza el nombre de la empresa. Sin dirección, el nombre se muestra como texto simple.",
       "issue_key_prefix": "Prefijo de la clave de incidencia",
       "issue_key_prefix_desc": "Introduce el prefijo de la clave de incidencia. Las incidencias se muestran como PREFIJO-123 (p. ej. LD-123). El prefijo ya no se puede cambiar una vez que existe la primera incidencia.",
       "support_email": "Correo de soporte",
@@ -186,7 +217,31 @@
       "provider_email": "Correo electrónico",
       "provider_email_desc": "Dirección de correo del proveedor. Déjalo vacío para ocultarlo.",
       "provider_website": "Sitio web",
-      "provider_website_desc": "Sitio web del proveedor, que empiece por http:// o https://. Déjalo vacío para ocultarlo."
+      "provider_website_desc": "Sitio web del proveedor, que empiece por http:// o https://. Déjalo vacío para ocultarlo.",
+      "mailin_poll_interval": "Intervalo de revisión (segundos)",
+      "mailin_poll_interval_desc": "Con qué frecuencia mínima se lee el buzón. La lectura se hace tras una petición a la aplicación, así que necesita algo de actividad.",
+      "mailin_default_type": "Tipo de incidencia",
+      "mailin_default_type_desc": "Tipo de las incidencias que se crean a partir de correos.",
+      "mailin_default_product": "Producto",
+      "mailin_default_product_desc": "Producto de las incidencias que se crean a partir de correos.",
+      "mailin_default_access": "Acceso",
+      "mailin_default_access_desc": "Quién ve las incidencias creadas a partir de correos. «Solo el autor» es la opción segura: el remitente y el equipo de soporte.",
+      "mailin_unknown_sender": "Remitentes desconocidos",
+      "mailin_unknown_sender_desc": "Qué ocurre con los correos de direcciones que ningún usuario tiene. Las dos opciones distintas de «Rechazar» exigen la prueba del servidor de correo de que el remitente es dueño de la dirección.",
+      "mailin_send_confirmation": "Correo de confirmación",
+      "mailin_send_confirmation_desc": "Enviar al remitente de un correo la clave de la incidencia creada a partir de él.",
+      "mailin_trust_sender": "Confiar en la dirección del remitente",
+      "mailin_trust_sender_desc": "Aceptar la dirección de un usuario sin la prueba del servidor de correo (SPF, DKIM, DMARC). Nunca para el personal de soporte ni los administradores. Solo para un buzón que recibe correos de dentro.",
+      "mailin_max_mails_per_run": "Correos por revisión",
+      "mailin_max_mails_per_run_desc": "El mayor número de correos que se tratan en una revisión. Los demás esperan a la siguiente.",
+      "mailin_max_body_size": "Texto máximo (KB)",
+      "mailin_max_body_size_desc": "El texto de un correo se corta a partir de este tamaño.",
+      "mailin_hourly_limit": "Correos por hora",
+      "mailin_hourly_limit_desc": "El mayor número de correos que pueden convertirse en incidencias o comentarios en una hora. Los demás esperan en el buzón. 0 significa sin límite.",
+      "mailin_allowed_domains": "Dominios de remitente permitidos",
+      "mailin_allowed_domains_desc": "Solo se tratan los correos de estos dominios (uno por línea o separados por comas, subdominios incluidos). Vacío: todos los dominios.",
+      "mailin_blocked_domains": "Dominios de remitente bloqueados",
+      "mailin_blocked_domains_desc": "Los correos de estos dominios se rechazan siempre."
     },
     "actions": {
       "save": "Guardar ajustes",
@@ -242,12 +297,12 @@
         },
         "trial": {
           "title": "Sin licencia - periodo de prueba",
-          "subject": "Esta instalación de LeweDesk no tiene licencia. Dejará de funcionar en {days} días.",
+          "subject": "Esta instalación de LeweDesk no tiene licencia. El periodo de prueba termina en {days} días; después LeweDesk funciona con limitaciones.",
           "help": "Introduce abajo tu clave de licencia y actívala."
         },
         "trial_expired": {
           "title": "Sin licencia - periodo de prueba finalizado",
-          "subject": "Esta instalación de LeweDesk no tiene licencia y el periodo de prueba ha finalizado. Solo los administradores pueden iniciar sesión.",
+          "subject": "Esta instalación de LeweDesk no tiene licencia y el periodo de prueba ha finalizado. LeweDesk funciona con limitaciones.",
           "help": "Introduce abajo tu clave de licencia y actívala."
         },
         "pending": {
@@ -257,12 +312,12 @@
         },
         "expired": {
           "title": "Licencia caducada",
-          "subject": "Tu licencia ha caducado. Solo los administradores pueden iniciar sesión.",
+          "subject": "Tu licencia ha caducado. Tras un periodo de gracia de 14 días, LeweDesk funciona con limitaciones.",
           "help": "Renueva tu licencia o ponte en contacto con el proveedor."
         },
         "blocked": {
           "title": "Licencia bloqueada",
-          "subject": "Tu licencia ha sido bloqueada. Solo los administradores pueden iniciar sesión.",
+          "subject": "Tu licencia ha sido bloqueada. LeweDesk funciona con limitaciones.",
           "help": "Ponte en contacto con el proveedor."
         },
         "unregistered": {
@@ -302,6 +357,65 @@
         "invalid_domain": "El dominio de esta instalación no es válido para el servidor de licencias.",
         "https_required": "El servidor de licencias debe ser accesible mediante HTTPS. Comprueba LICENSE_SERVER en el archivo .env."
       }
+    },
+    "mailin": {
+      "off_env_title": "Desactivado",
+      "off_env": "Correo a incidencia no está activado. Defina MAILIN_YES=1 y el buzón (MAILIN_HOST y el acceso, que por defecto es MAIL_USER y MAIL_PASS) en el archivo .env de la instalación.",
+      "off_license_title": "Desactivado: licencia",
+      "off_license": "Correo a incidencia está activado en el archivo .env, pero la licencia no lo permite por ahora. Los correos se quedan en el buzón.",
+      "on_title": "Activado",
+      "on": "Los correos enviados al buzón se convierten en incidencias y comentarios.",
+      "mailbox": "Buzón",
+      "folders": "Carpetas",
+      "folders_value": "leídos: {inbox}, tratados: {processed}, rechazados: {rejected}",
+      "auth_servers": "Servidor de correo de confianza",
+      "auth_none": "sin definir (MAILIN_AUTH_SERVER): solo el ajuste «Confiar en la dirección del remitente» admite usuarios, el personal de soporte no puede enviar correos",
+      "last_run": "Última revisión",
+      "never_run": "Aún no ha habido ninguna revisión.",
+      "last_result": "{issues} incidencia(s), {comments} comentario(s), {rejected} rechazado(s), {errors} fallido(s)",
+      "limited": "Se alcanzó el límite por hora; los demás correos esperan en el buzón.",
+      "mailbox_error": "No se pudo leer el buzón: {error}",
+      "counts": "Últimas 24 horas",
+      "test": "Probar la conexión",
+      "testing": "Probando...",
+      "test_desc": "Inicia sesión en el buzón y lo consulta. No se cambia nada.",
+      "test_ok": "Conectado. {folders} carpeta(s), {inbox} correo(s) en la bandeja de entrada, {unseen} sin leer.",
+      "test_missing": "La(s) carpeta(s) {names} aún no existen; la primera revisión las crea.",
+      "test_failed": "La conexión falló: {error}",
+      "pickup_run": "Recoger ahora",
+      "pickup_running": "Recogiendo...",
+      "pickup_run_desc": "Lee el buzón ahora, sin esperar a la próxima revisión. El intervalo vuelve a empezar desde este momento.",
+      "pickup_run_ok": "Listo. {issues} incidencia(s), {comments} comentario(s), {rejected} rechazado(s), {errors} con error.",
+      "pickup_run_busy": "Otra revisión está trabajando en el buzón en este momento. Inténtelo de nuevo en un momento.",
+      "pickup_run_failed": "No se pudo recoger el buzón: {error}",
+      "log": "Últimos correos",
+      "log_empty": "Aún no se ha leído ningún correo.",
+      "col_time": "Cuándo",
+      "col_from": "De",
+      "col_subject": "Asunto",
+      "col_result": "Resultado",
+      "col_details": "Detalles",
+      "result_issue": "Incidencia",
+      "result_comment": "Comentario",
+      "result_rejected": "Rechazado",
+      "result_error": "Fallido",
+      "attempts": "{count} intentos",
+      "first_type": "El primer tipo activo",
+      "no_product": "Ninguno",
+      "policy_reject": "Rechazar",
+      "policy_create_user": "Crear una cuenta",
+      "policy_anonymous": "Anónimo (cuenta «Email requester»)",
+      "load_error": "No se pudo cargar el estado de Correo a incidencia.",
+      "options_error": "No se pudieron cargar las listas; el ajuste se deja como está."
+    },
+    "housekeeping": {
+      "title": "Mantenimiento",
+      "desc": "Envía los correos en espera, avisa de los temporizadores SLA en riesgo o incumplidos y borra lo que ha superado su plazo de conservación. Se ejecuta sola cada cinco minutos; aquí puedes ejecutarla ahora.",
+      "run": "Ejecutar el mantenimiento ahora",
+      "running": "En curso...",
+      "finished": "Se ejecutó el mantenimiento.",
+      "done": "Listo: {sent} correo(s) enviado(s), {notifications} notificación(es), {mails} correo(s) antiguo(s), {uploads} subida(s) temporal(es) y {audit} entradas del registro de auditoría borrados; SLA: {breached} temporizador(es) incumplido(s) y {at_risk} en riesgo avisados.",
+      "error": "No se pudo ejecutar el mantenimiento."
     }
   },
   "lookups": {
@@ -327,6 +441,12 @@
       "on_hold": "En pausa",
       "resolved": "Resuelta",
       "closed": "Cerrada"
+    },
+    "priorities": {
+      "critical": "Crítica",
+      "high": "Alta",
+      "normal": "Normal",
+      "low": "Baja"
     },
     "resolutions": {
       "completed": "Completada",
@@ -401,6 +521,23 @@
         "not_found": "No se encontró el estado."
       },
       "category_desc": "La categoría a la que pertenece el estado. Las categorías agrupan los estados en las listas de incidencias."
+    },
+    "priorities": {
+      "title": "Prioridades",
+      "add_title": "Añadir prioridad",
+      "edit_title": "Editar prioridad",
+      "name_desc": "Nombre único de la prioridad (máx. 50 caracteres).",
+      "description_desc": "Breve descripción de lo que significa la prioridad.",
+      "confirm_delete": "¿Eliminar las prioridades seleccionadas? Esta acción no se puede deshacer.",
+      "messages": {
+        "created": "La prioridad se ha creado.",
+        "updated": "La prioridad se ha actualizado.",
+        "deleted": "Las prioridades seleccionadas se han eliminado.",
+        "load_error": "No se pudieron cargar las prioridades del servidor.",
+        "save_error": "No se pudo guardar la prioridad.",
+        "delete_error": "No se pudieron eliminar las prioridades seleccionadas.",
+        "not_found": "No se encontró la prioridad."
+      }
     },
     "resolutions": {
       "title": "Resoluciones",
@@ -645,7 +782,8 @@
       "avatar": "Avatar",
       "notifications": "Notificaciones",
       "options": "Opciones",
-      "twofa": "2FA"
+      "twofa": "2FA",
+      "custom_views": "Vistas personalizadas"
     },
     "options": {
       "language": "Idioma",
@@ -700,6 +838,26 @@
   "maintenance": {
     "banner": "El modo de mantenimiento está activo. Solo los administradores pueden usar la aplicación."
   },
+  "custom_views": {
+    "title": "Vistas personalizadas",
+    "admin_description": "Todas las vistas guardadas de la lista de incidencias de todos los usuarios. Las vistas compartidas de usuarios eliminados se conservan sin propietario.",
+    "admin_empty": "Todavía no hay vistas personalizadas.",
+    "description": "Sus vistas guardadas de la lista de incidencias. Cree una vista en la página de incidencias con «Guardar vista».",
+    "empty": "Todavía no tiene vistas personalizadas.",
+    "shared_column": "Visibilidad",
+    "updated_column": "Actualizada",
+    "actions_column": "Acciones",
+    "owner_column": "Propietario",
+    "shared_badge": "Compartida",
+    "private_badge": "Privada",
+    "deleted_user": "(usuario eliminado)",
+    "edit_title": "Editar vista",
+    "stale_removed": "Algunos ajustes de filtro de esta vista ya no están disponibles y se quitaron. Guarde la vista para actualizarla.",
+    "name_exists": "Ya tiene una vista con este nombre.",
+    "confirm_delete": "¿Eliminar la vista «{name}»? Esta acción no se puede deshacer.",
+    "deleted": "La vista se eliminó.",
+    "delete_error": "No se pudo eliminar la vista."
+  },
   "tags": {
     "input": {
       "label": "Etiquetas",
@@ -724,6 +882,7 @@
     "fields": {
       "type": "Tipo",
       "status_category": "Categoría de estado",
+      "priority": "Prioridad",
       "summary": "Resumen",
       "description": "Descripción",
       "product": "Producto",
@@ -731,7 +890,9 @@
       "access": "Acceso",
       "resolution": "Resolución",
       "tags": "Etiquetas",
-      "watchers": "Seguidores"
+      "watchers": "Seguidores",
+      "source": "Origen",
+      "requester": "Remitente"
     },
     "columns": {
       "id": "Incidencia",
@@ -740,7 +901,8 @@
       "assignee": "Asignado a",
       "created": "Creada",
       "updated": "Actualizada",
-      "status": "Estado"
+      "status": "Estado",
+      "sla": "SLA"
     },
     "access": {
       "public": "Pública",
@@ -761,7 +923,8 @@
       "waiting": "Incidencias en espera",
       "in_progress": "Incidencias en curso",
       "done": "Incidencias finalizadas",
-      "deleted": "Incidencias eliminadas"
+      "deleted": "Incidencias eliminadas",
+      "sla_breached": "Incidencias con SLA incumplido"
     },
     "bulk": {
       "restore": "Restaurar",
@@ -779,18 +942,37 @@
       "all_status": "Todos los estados",
       "all_status_categories": "Todas las categorías de estado",
       "all_types": "Todos los tipos",
+      "all_priorities": "Todas las prioridades",
       "all_products": "Todos los productos",
       "all_assignees": "Todos los asignados",
       "all_reporters": "Todos los informantes",
       "all_tags": "Todas las etiquetas",
+      "n_selected": "{count} seleccionados",
       "search_results": "Resultados de búsqueda de «{term}»",
       "participant": "Participante: {name}",
       "reset": "Restablecer filtros",
-      "hide_closed": "Ocultar cerradas"
+      "all_sources": "Todos los orígenes"
+    },
+    "custom_views": {
+      "save_button": "Guardar vista",
+      "select_placeholder": "Seleccionar vista",
+      "select_label": "Seleccionar una vista personalizada",
+      "save_title": "Guardar vista",
+      "name": "Nombre",
+      "name_required": "Introduzca un nombre (hasta 100 caracteres).",
+      "shared": "Compartir con todos los usuarios registrados",
+      "shared_desc": "Otros usuarios registrados pueden seleccionar esta vista. Solo usted puede modificarla.",
+      "overwrite_confirm": "Ya tiene una vista llamada «{name}». ¿Sobrescribirla con los filtros actuales?",
+      "overwrite": "Sobrescribir",
+      "saved": "La vista se guardó.",
+      "save_error": "No se pudo guardar la vista.",
+      "load_error": "No se pudo cargar la vista.",
+      "stale": "Su vista contiene ajustes de filtro que ya no están disponibles. Actualice su vista en su perfil."
     },
     "create": {
       "title": "Crear incidencia",
       "type_desc": "¿Qué tipo de incidencia es?",
+      "priority_desc": "Lo urgente que es la incidencia. Las incidencias nuevas empiezan con Normal.",
       "type_placeholder": "Selecciona un tipo...",
       "type_required": "Selecciona un tipo.",
       "summary_desc": "Un título breve en una línea (hasta 200 caracteres).",
@@ -833,6 +1015,11 @@
       "create_error": "No se pudo crear la incidencia.",
       "created": "La incidencia {key} se creó.",
       "saved": "La incidencia {key} se actualizó."
+    },
+    "source": {
+      "email": "Correo",
+      "web": "Web",
+      "email_title": "Creada a partir de un correo"
     }
   },
   "markdown": {
@@ -1010,16 +1197,21 @@
       "attachment_deleted": "eliminó el archivo adjunto {name}"
     },
     "fields": {
+      "sla_first_response": "Vencimiento SLA de la primera respuesta",
+      "sla_resolution": "Vencimiento SLA de la resolución",
       "tags": "Etiquetas",
       "type": "Tipo",
       "status": "Estado",
+      "priority": "Prioridad",
       "resolution": "Resolución",
       "assignee": "Asignado a",
       "access": "Acceso",
       "summary": "Resumen",
       "description": "Descripción",
       "product": "Producto",
-      "version": "Versión"
+      "version": "Versión",
+      "sla_breached_first_response": "Incumplimiento SLA: primera respuesta (vencimiento)",
+      "sla_breached_resolution": "Incumplimiento SLA: resolución (vencimiento)"
     },
     "load_error": "No se pudo cargar el historial."
   },
@@ -1060,7 +1252,9 @@
       "issue_unassigned": "{actor} quitó la asignación de la incidencia",
       "status_changed": "{actor} cambió el estado a {status}",
       "comment_added": "{actor} añadió un comentario",
-      "comment_added_internal": "{actor} añadió un comentario interno"
+      "comment_added_internal": "{actor} añadió un comentario interno",
+      "sla_at_risk": "SLA en riesgo: {metric} vence {due}",
+      "sla_breached": "SLA incumplido: {metric} vencía {due}"
     },
     "prefs": {
       "description": "Elige para cada evento si recibes un correo y si recibes una notificación en la barra superior. Solo te enteras de las incidencias que puedes ver.",
@@ -1083,6 +1277,14 @@
         "comment_added": {
           "title": "Comentario añadido",
           "desc": "Se añadió un comentario a una incidencia que informaste, sigues o en la que trabajas."
+        },
+        "sla_at_risk": {
+          "title": "SLA en riesgo",
+          "desc": "Un objetivo SLA de una incidencia en la que trabajas o que sigues está cerca de su vencimiento (solo equipo de soporte)."
+        },
+        "sla_breached": {
+          "title": "SLA incumplido",
+          "desc": "Se incumplió un objetivo SLA de una incidencia en la que trabajas o que sigues, o una política te escala una incidencia (solo equipo de soporte)."
         }
       },
       "saved": "Tus ajustes de notificaciones se guardaron.",
@@ -1096,7 +1298,7 @@
     "login": "Iniciar sesión",
     "register": "Registrarse",
     "issues": "Incidencias",
-    "hero_title": "Atención al cliente, <span class=\"text-primary hero-shimmer\">organizada</span>",
+    "hero_title": "My Company <span class=\"text-primary hero-shimmer\">Atención al cliente</span>",
     "hero_lead": "LeweDesk es el sistema de helpdesk y gestión de tickets de Lewe Labs. Informa de problemas, solicita mejoras y sigue cada caso desde el primer mensaje hasta la solución.",
     "features_title": "Todo lo que necesita un equipo de soporte",
     "features_lead": "Un conjunto de herramientas enfocado para recopilar, organizar y resolver las consultas de los clientes.",
@@ -1185,15 +1387,253 @@
   "license": {
     "banner": {
       "link": "Ajustes de licencia",
-      "trial": "Esta instalación de LeweDesk no tiene licencia. Dejará de funcionar en {days} días.",
-      "trial_expired": "Esta instalación de LeweDesk no tiene licencia y el periodo de prueba ha finalizado. Solo los administradores pueden iniciar sesión.",
-      "expired": "La licencia ha caducado. Solo los administradores pueden iniciar sesión.",
-      "blocked": "La licencia ha sido bloqueada. Solo los administradores pueden iniciar sesión.",
-      "pending": "La licencia aún no se ha activado.",
-      "unregistered": "La licencia es válida, pero este dominio no está registrado en ella.",
-      "invalid": "La clave de licencia no es válida.",
+      "reason": {
+        "missing": "no existe",
+        "invalid": "no válida",
+        "unregistered": "dominio no registrado",
+        "pending": "pendiente de activación",
+        "expired": "caducada",
+        "blocked": "bloqueada"
+      },
+      "grace": "Licencia de LeweDesk: {reason}. Tu periodo de gracia termina en {days} días.",
+      "grace_one": "Licencia de LeweDesk: {reason}. Tu periodo de gracia termina en 1 día.",
+      "grace_today": "Licencia de LeweDesk: {reason}. Tu periodo de gracia termina hoy.",
+      "limited": "Licencia de LeweDesk: {reason}. LeweDesk funciona en modo limitado: se pueden crear como máximo {issues} incidencias y {users} usuarios; la configuración de 2FA, el registro de auditoría, las vistas personalizadas y el autorregistro están desactivados. Activa una licencia válida para quitar las limitaciones.",
       "expiring": "La licencia caduca en {days} días.",
       "expiring_today": "La licencia caduca hoy."
+    },
+    "feature_off": "Esta función está desactivada actualmente debido a una licencia no válida.",
+    "limit_reached": {
+      "issues": "Límite alcanzado: sin una licencia válida no se pueden crear más de {max} incidencias.",
+      "users": "Límite alcanzado: sin una licencia válida no se pueden crear más de {max} usuarios."
+    }
+  },
+  "sla": {
+    "tabs": {
+      "policies": "Políticas",
+      "calendars": "Calendarios"
+    },
+    "metric": {
+      "first_response": "Primera respuesta",
+      "resolution": "Resolución"
+    },
+    "unit": {
+      "minutes": "Minutos",
+      "hours": "Horas",
+      "days": "Días"
+    },
+    "unit_short": {
+      "minutes": "min",
+      "hours": "h",
+      "days": "d"
+    },
+    "weekday": {
+      "1": "Lunes",
+      "2": "Martes",
+      "3": "Miércoles",
+      "4": "Jueves",
+      "5": "Viernes",
+      "6": "Sábado",
+      "7": "Domingo"
+    },
+    "weekday_short": {
+      "1": "Lun",
+      "2": "Mar",
+      "3": "Mié",
+      "4": "Jue",
+      "5": "Vie",
+      "6": "Sáb",
+      "7": "Dom"
+    },
+    "policies": {
+      "title": "Políticas SLA",
+      "intro": "Una política fija con qué rapidez las incidencias deben recibir una primera respuesta y resolverse. Las políticas con condiciones se prueban según el orden y se aplica la primera que coincide con la incidencia. La política predeterminada (sin condiciones) se aplica a todas las demás incidencias.",
+      "add_title": "Añadir política SLA",
+      "edit_title": "Editar política SLA",
+      "confirm_delete": "¿Eliminar la política seleccionada? Una política con temporizadores de incidencias no se puede eliminar; desactívela en su lugar.",
+      "default": "Predeterminada",
+      "any": "Cualquiera",
+      "around_the_clock": "Las 24 horas (24/7)",
+      "conditions": "Condiciones",
+      "calendar": "Calendario",
+      "targets": "Objetivos",
+      "warning_short": "Aviso",
+      "no_targets": "Sin objetivos",
+      "name_desc": "Nombre único de la política (máx. 100 caracteres).",
+      "description_desc": "Breve descripción de cuándo se aplica la política.",
+      "conditions_desc": "La política se aplica a las incidencias que cumplen todas las condiciones que fije. Deje una condición en «Cualquiera» para ignorarla.",
+      "group": "Grupo del informante",
+      "default_notice": "Una política sin condiciones es la política predeterminada para todas las incidencias a las que no se aplica otra. Solo puede haber una.",
+      "calendar_desc": "El horario en el que corre el reloj. Sin calendario el reloj corre las 24 horas.",
+      "targets_desc": "De cuánto tiempo dispone el equipo para la primera respuesta y la resolución, contado en horas laborales del calendario. Deje un campo vacío si no hay objetivo.",
+      "targets_hint": "Un día son 24 horas de tiempo laboral. La fila «Todas las demás prioridades» se aplica a cada prioridad que no tiene fila propia.",
+      "other_priorities": "Todas las demás prioridades",
+      "unit": "Unidad",
+      "warning": "Umbral de aviso",
+      "warning_desc": "La parte del objetivo a partir de la cual una incidencia se marca como en riesgo.",
+      "pause_statuses": "Estados que detienen el reloj",
+      "pause_statuses_desc": "El reloj no corre mientras una incidencia tiene uno de estos estados (por ejemplo, mientras espera al cliente).",
+      "sort_order_desc": "Las políticas con el número menor se prueban primero. Déjelo vacío para poner una política nueva al final. La política predeterminada no tiene lugar en el orden: se aplica cuando ninguna otra coincide.",
+      "active_desc": "Solo las políticas activas se aplican a las incidencias.",
+      "messages": {
+        "load_error": "No se pudieron cargar las políticas SLA del servidor.",
+        "not_found": "No se encontró la política SLA.",
+        "created": "La política SLA fue creada.",
+        "updated": "La política SLA fue actualizada.",
+        "deleted": "La política SLA fue eliminada.",
+        "save_error": "No se pudo guardar la política SLA.",
+        "delete_error": "No se pudo eliminar la política SLA.",
+        "target_invalid": "Un objetivo debe ser un número entero de minutos (al menos 1)."
+      },
+      "apply": "Aplicar a incidencias abiertas",
+      "apply_confirm": "¿Iniciar los temporizadores SLA de todas las incidencias abiertas que no tienen ninguno, con las políticas tal como están ahora? El reloj de un temporizador así empieza cuando se creó la incidencia, por lo que puede estar vencido de inmediato. Las incidencias que ya tienen temporizadores no se modifican.",
+      "apply_yes": "Sí, iniciar temporizadores",
+      "apply_result": "Se iniciaron los temporizadores de {issues} incidencia(s) ({timers} temporizadores).",
+      "apply_error": "No se pudieron iniciar los temporizadores.",
+      "escalation": "Escalado",
+      "escalation_desc": "A quién se avisa, además de la persona asignada y los seguidores, cuando se incumple un objetivo de esta política. Solo recibe el aviso quien puede ver la incidencia y los datos SLA.",
+      "escalation_user": "Usuario",
+      "escalation_group": "Grupo",
+      "escalation_none": "Nadie"
+    },
+    "calendars": {
+      "title": "Calendarios SLA",
+      "intro": "Un calendario indica cuándo corre el reloj de un SLA: el horario de cada día de la semana en una zona horaria. Los festivos detienen el reloj durante todo el día.",
+      "add_title": "Añadir calendario SLA",
+      "edit_title": "Editar calendario SLA",
+      "confirm_delete": "¿Eliminar el calendario seleccionado con su horario y sus festivos? Un calendario que usa una política no se puede eliminar.",
+      "timezone": "Zona horaria",
+      "hours": "Horario",
+      "holidays": "Festivos",
+      "policies": "Políticas",
+      "closed": "Cerrado",
+      "name_desc": "Nombre único del calendario (máx. 100 caracteres).",
+      "description_desc": "Breve descripción, por ejemplo el equipo o la ubicación.",
+      "timezone_desc": "La zona horaria del horario. Se tiene en cuenta el horario de verano.",
+      "hours_desc": "Las horas en las que corre el reloj. Un día puede tener varios tramos (por ejemplo, una pausa para comer). Un final de 00:00 significa el final del día.",
+      "copy_monday": "Copiar el lunes a martes-viernes",
+      "from": "Desde",
+      "until": "Hasta",
+      "remove_range": "Quitar tramo",
+      "add_range": "Añadir tramo",
+      "messages": {
+        "load_error": "No se pudieron cargar los calendarios SLA del servidor.",
+        "not_found": "No se encontró el calendario SLA.",
+        "created": "El calendario SLA fue creado. Ya puede añadir festivos.",
+        "updated": "El calendario SLA fue actualizado.",
+        "deleted": "El calendario SLA fue eliminado.",
+        "save_error": "No se pudo guardar el calendario SLA.",
+        "delete_error": "No se pudo eliminar el calendario SLA.",
+        "range_incomplete": "Cada tramo necesita una hora de inicio y una de fin."
+      }
+    },
+    "holidays": {
+      "title": "Festivos",
+      "intro": "El reloj no corre en estos días.",
+      "save_first": "Guarde primero el calendario; después podrá añadir festivos.",
+      "from": "Desde",
+      "to": "Hasta",
+      "recurring": "Cada año",
+      "add": "Añadir festivo",
+      "import": "Importar",
+      "import_label": "Importar desde un archivo de calendario (.ics)",
+      "import_hint": "Cada evento del archivo se convierte en un festivo; los eventos anuales se marcan como «Cada año». Los festivos que el calendario ya tiene se omiten.",
+      "none": "Todavía no hay festivos.",
+      "to_hint": "Deje «Hasta» vacío para un solo día. «Cada año» repite los días todos los años.",
+      "messages": {
+        "load_error": "No se pudieron cargar los festivos del servidor.",
+        "created": "El festivo fue añadido.",
+        "updated": "El festivo fue actualizado.",
+        "deleted": "El festivo fue eliminado.",
+        "save_error": "No se pudo guardar el festivo.",
+        "delete_error": "No se pudo eliminar el festivo.",
+        "import_done": "Importación terminada: {added} añadidos, {skipped} omitidos (ya existentes), {failed} fallidos.",
+        "import_none": "El archivo no contiene festivos.",
+        "import_too_large": "El archivo es demasiado grande (máximo 1 MB).",
+        "import_error": "No se pudo leer el archivo."
+      }
+    },
+    "state": {
+      "on_track": "En plazo",
+      "at_risk": "En riesgo",
+      "breached": "Incumplido",
+      "paused": "En pausa",
+      "met": "Cumplido",
+      "cancelled": "Cancelado"
+    },
+    "filter": {
+      "label": "SLA",
+      "all": "Todos los estados SLA",
+      "breached": "Incumplido",
+      "at_risk": "En riesgo",
+      "due_today": "Vence hoy",
+      "on_track": "En plazo",
+      "paused": "En pausa"
+    },
+    "panel": {
+      "title": "Nivel de servicio (SLA)",
+      "override_title": "Cambiar el vencimiento",
+      "new_due": "Nuevo vencimiento",
+      "new_due_desc": "En tu zona horaria. El reloj conserva sus pausas y el horario laboral de la política.",
+      "due_required": "Introduce un vencimiento.",
+      "reason": "Motivo",
+      "reason_desc": "Obligatorio. Se guarda en el historial de la incidencia.",
+      "reason_required": "Introduce un motivo (una línea, hasta 255 caracteres).",
+      "in_time": "a tiempo",
+      "late_by": "con {time} de retraso",
+      "met_at": "Cumplido {time}",
+      "left": "quedan {time}",
+      "over": "{time} de más",
+      "clock_stopped": "reloj detenido",
+      "in": "vence en {time}",
+      "overdue": "vencido hace {time}",
+      "due": "Vence",
+      "policy": "Política",
+      "target": "objetivo",
+      "overridden": "Vencimiento cambiado a mano",
+      "change_due": "Cambiar vencimiento",
+      "changed": "Se cambió el vencimiento.",
+      "change_error": "No se pudo cambiar el vencimiento."
+    },
+    "report": {
+      "title": "Informe SLA",
+      "intro": "Qué tan bien se cumplieron los objetivos del SLA en un período: cumplimiento, tiempos medios y medianos, y los temporizadores incumplidos.",
+      "from": "Desde",
+      "to": "Hasta",
+      "group_by": "Agrupar por",
+      "show": "Mostrar",
+      "group": {
+        "policy": "Política",
+        "product": "Producto",
+        "assignee": "Responsable",
+        "priority": "Prioridad"
+      },
+      "export_summary": "Exportar resumen (CSV)",
+      "export_breached": "Exportar incumplidos (CSV)",
+      "export_error": "No se pudo exportar el informe.",
+      "load_error": "No se pudo cargar el informe.",
+      "rule": "Un temporizador cuenta en el período en que se cumplió o, si sigue abierto, en el que venció. El cumplimiento es la proporción cumplida a tiempo; un temporizador abierto y vencido cuenta en contra.",
+      "compliance": "Cumplimiento",
+      "timers": "Temporizadores",
+      "met_in_time": "A tiempo",
+      "breached": "Incumplidos",
+      "avg": "Media",
+      "median": "Mediana",
+      "all": "Todos",
+      "by": "Por {group}",
+      "empty": "No hay temporizadores en este período.",
+      "breached_title": "Temporizadores incumplidos",
+      "no_breached": "No hay temporizadores incumplidos en este período.",
+      "truncated": "Los {shown} más recientes de {total}. La exportación incluye más.",
+      "issue": "Incidencia",
+      "metric": "Métrica",
+      "policy": "Política",
+      "assignee": "Responsable",
+      "target": "Objetivo",
+      "outcome": "Resultado",
+      "overrun": "Exceso",
+      "met": "cumplido",
+      "open": "abierto"
     }
   }
 }

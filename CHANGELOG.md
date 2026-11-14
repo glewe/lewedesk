@@ -2,6 +2,17 @@
 
 All notable changes of LeweDesk. The newest version is first.
 
+## 1.0.2 (2026-11-xx)
+
+Improvement release.
+
+### Features
+
+- Add setting to disable user self-registration
+- Add license features
+- Add priorities feature
+- Add SLA feature
+
 ## 1.0.1 (2026-11-09)
 
 Improvement release.

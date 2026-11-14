@@ -23,21 +23,21 @@
   <meta name="robots" content="noindex, nofollow">
 
 
-  <script type="module" crossorigin src="./assets/js/settings-QJN058rq.js"></script>
-  <link rel="modulepreload" crossorigin href="./assets/js/fonts-B8V7-e6F.js">
-  <link rel="modulepreload" crossorigin href="./assets/js/lookups-DCBYELDL.js">
-  <link rel="modulepreload" crossorigin href="./assets/js/main-DDKXavPK.js">
-  <link rel="stylesheet" crossorigin href="./assets/css/fonts-Dzfg6Fbe.css">
+  <script type="module" crossorigin src="./assets/js/settings-BQ_pBA9A.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/js/fonts-dgFHIs4h.js">
+  <link rel="modulepreload" crossorigin href="./assets/js/branding-Syy4B4te.js">
+  <link rel="modulepreload" crossorigin href="./assets/js/main-CAI9vjJw.js">
+  <link rel="stylesheet" crossorigin href="./assets/css/fonts-CZR4NW46.css">
 </head>
 <body>
   <div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
     <div class="sidebar-brand d-none d-md-flex">
-      <i class="bi bi-ticket-perforated me-2 logo-gradient fs-4"></i>
-      <span class="sidebar-brand-full">Lewe<strong>Desk</strong></span>
+      <i class="bi bi-ticket-perforated me-2 logo-gradient fs-4" data-brand-icon></i>
+      <span class="sidebar-brand-full" data-brand-title>My<strong>Desk</strong></span>
       <span class="sidebar-brand-narrow"></span>
     </div>
     <div class="sidebar-mobile-bar d-md-none">
-      <span><i class="bi bi-ticket-perforated me-2 logo-gradient fs-4"></i>Lewe<strong>Desk</strong></span>
+      <span><i class="bi bi-ticket-perforated me-2 logo-gradient fs-4" data-brand-icon></i><span data-brand-title>My<strong>Desk</strong></span></span>
       <button class="sidebar-close" id="sidebar-close" type="button" aria-label="Close menu"><i class="bi bi-x-lg"></i></button>
     </div>
     <ul class="sidebar-nav">
@@ -48,7 +48,7 @@
       </li>
       <li class="nav-title" data-public data-i18n="sidebar.issues_title">Issues</li>
       <li class="nav-item" data-permission="create_issue">
-        <a class="nav-link" href="issue-add.html">
+        <a class="nav-link" href="issue-add.html" data-license-limit="issues">
           <i class="nav-icon bi bi-plus-circle"></i> <span class="nav-text" data-i18n="sidebar.create_issue">Create issue</span>
         </a>
       </li>
@@ -92,18 +92,28 @@
           <i class="nav-icon bi bi-check-circle" data-category="done"></i> <span class="nav-text" data-i18n="sidebar.done">Done</span> <span class="nav-count d-none" data-count="done"></span>
         </a>
       </li>
+      <li class="nav-item" data-permission="view_sla" data-license-feature="sla">
+        <a class="nav-link" href="issues.html?view=sla_breached">
+          <i class="nav-icon bi bi-x-octagon text-danger"></i> <span class="nav-text" data-i18n="sidebar.sla_breached">SLA breached</span> <span class="nav-count d-none" data-count="sla_breached"></span>
+        </a>
+      </li>
+      <li class="nav-item" data-permission="view_sla" data-license-feature="sla">
+        <a class="nav-link" href="sla-reports.html">
+          <i class="nav-icon bi bi-graph-up"></i> <span class="nav-text" data-i18n="sidebar.sla_report">SLA report</span>
+        </a>
+      </li>
       <li class="nav-item" data-permission="delete_issue">
         <a class="nav-link" href="issues.html?view=deleted">
           <i class="nav-icon bi bi-trash"></i> <span class="nav-text" data-i18n="sidebar.deleted_issues">Deleted</span> <span class="nav-count d-none" data-count="deleted"></span>
         </a>
       </li>
-      <li class="nav-title" data-permission-any="view_audit_log manage_settings manage_users manage_roles manage_groups manage_permissions manage_issue_types manage_status manage_status_categories manage_resolutions manage_products manage_tags" data-i18n="sidebar.administration">Administration</li>
+      <li class="nav-title" data-permission-any="view_audit_log manage_settings manage_users manage_roles manage_groups manage_permissions manage_issue_types manage_status manage_status_categories manage_resolutions manage_priorities manage_products manage_tags manage_custom_views manage_sla" data-i18n="sidebar.administration">Administration</li>
       <li class="nav-item nav-group" data-permission-any="view_audit_log manage_settings manage_users manage_roles manage_groups manage_permissions">
         <a class="nav-link nav-group-toggle" href="#">
           <i class="nav-icon bi bi-shield-lock"></i> <span class="nav-text" data-i18n="sidebar.management">System</span>
         </a>
         <ul class="nav-group-items">
-          <li class="nav-item" data-permission="view_audit_log">
+          <li class="nav-item" data-permission="view_audit_log" data-license-feature="audit_log">
             <a class="nav-link" href="audit-log.html">
               <i class="nav-icon bi bi-journal-text"></i> <span class="nav-text">Audit Log</span>
             </a>
@@ -135,14 +145,24 @@
           </li>
         </ul>
       </li>
-      <li class="nav-item nav-group" data-permission-any="manage_issue_types manage_status manage_status_categories manage_resolutions manage_products manage_tags">
+      <li class="nav-item nav-group" data-permission-any="manage_issue_types manage_status manage_status_categories manage_resolutions manage_priorities manage_products manage_tags manage_custom_views manage_sla">
         <a class="nav-link nav-group-toggle" href="#">
           <i class="nav-icon bi bi-ticket-detailed"></i> <span class="nav-text" data-i18n="sidebar.issues">Issues</span>
         </a>
         <ul class="nav-group-items">
+          <li class="nav-item" data-permission="manage_custom_views" data-license-feature="custom_views">
+            <a class="nav-link" href="custom-views.html">
+              <i class="nav-icon bi bi-bookmarks"></i> <span class="nav-text" data-i18n="sidebar.custom_views">Custom Views</span>
+            </a>
+          </li>
           <li class="nav-item" data-permission="manage_issue_types">
             <a class="nav-link" href="issue-types.html">
               <i class="nav-icon bi bi-bug"></i> <span class="nav-text" data-i18n="sidebar.issue_types">Issue Types</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_priorities">
+            <a class="nav-link" href="priorities.html">
+              <i class="nav-icon bi bi-exclamation-diamond"></i> <span class="nav-text" data-i18n="sidebar.priorities">Priorities</span>
             </a>
           </li>
           <li class="nav-item" data-permission="manage_products">
@@ -153,6 +173,11 @@
           <li class="nav-item" data-permission="manage_resolutions">
             <a class="nav-link" href="resolutions.html">
               <i class="nav-icon bi bi-check2-circle"></i> <span class="nav-text" data-i18n="sidebar.resolutions">Resolutions</span>
+            </a>
+          </li>
+          <li class="nav-item" data-permission="manage_sla" data-license-feature="sla">
+            <a class="nav-link" href="sla-setup.html">
+              <i class="nav-icon bi bi-stopwatch"></i> <span class="nav-text" data-i18n="sidebar.sla_setup">SLA Setup</span>
             </a>
           </li>
           <li class="nav-item" data-permission="manage_status">
@@ -182,7 +207,7 @@
           <i class="bi bi-list fs-4"></i>
         </button>
         <a class="header-brand d-md-none" href="#">
-          <i class="bi bi-ticket-perforated logo-gradient fs-4"></i>
+          <i class="bi bi-ticket-perforated logo-gradient fs-4" data-brand-icon></i>
         </a>
         <form class="d-none d-md-flex ms-auto me-4" id="header-search-form" role="search">
           <div class="input-group">
@@ -332,10 +357,6 @@
         <div class="alert alert-warning d-none" id="maintenance-banner" role="alert">
           <i class="bi bi-cone-striped me-2"></i> <span data-i18n="maintenance.banner">Maintenance mode is active. Only administrators can use the application.</span>
         </div>
-        <div class="alert alert-info d-none" id="license-trial-banner" role="alert">
-          <i class="bi bi-key me-2"></i> <span id="license-trial-text"></span>
-          <a href="settings.html#license" class="alert-link ms-1 d-none" id="license-trial-link" data-i18n="license.banner.link">License settings</a>
-        </div>
         <div class="alert alert-warning d-none" id="license-expiry-banner" role="alert">
           <i class="bi bi-key me-2"></i> <span id="license-expiry-text"></span>
           <a href="settings.html#license" class="alert-link ms-1" data-i18n="license.banner.link">License settings</a>
@@ -359,10 +380,16 @@
             <button class="nav-link" id="theme-tab" data-bs-toggle="tab" data-bs-target="#theme" type="button" role="tab" aria-controls="theme" aria-selected="false" data-i18n="settings.tabs.theme">Theme</button>
           </li>
           <li class="nav-item" role="presentation">
+            <button class="nav-link" id="index-page-tab" data-bs-toggle="tab" data-bs-target="#index-page" type="button" role="tab" aria-controls="index-page" aria-selected="false" data-i18n="settings.tabs.index_page">Index Page</button>
+          </li>
+          <li class="nav-item" role="presentation">
             <button class="nav-link" id="issues-tab" data-bs-toggle="tab" data-bs-target="#issues" type="button" role="tab" aria-controls="issues" aria-selected="false" data-i18n="settings.tabs.issues">Issue Config</button>
           </li>
           <li class="nav-item" role="presentation">
             <button class="nav-link" id="provider-tab" data-bs-toggle="tab" data-bs-target="#provider" type="button" role="tab" aria-controls="provider" aria-selected="false" data-i18n="settings.tabs.provider">Provider</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="mailin-tab" data-bs-toggle="tab" data-bs-target="#mailin" type="button" role="tab" aria-controls="mailin" aria-selected="false" data-i18n="settings.tabs.mailin">Email to Ticket</button>
           </li>
           <li class="nav-item" role="presentation">
             <button class="nav-link" id="license-tab" data-bs-toggle="tab" data-bs-target="#license" type="button" role="tab" aria-controls="license" aria-selected="false" data-i18n="settings.tabs.license">License</button>
@@ -617,11 +644,41 @@
               </div>
               <div class="form-row">
                 <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.allow_registration">Allow User Self-Registration</span>
+                  <p class="form-description" data-i18n="settings.fields.allow_registration_desc">Lets visitors create their own account on the registration page. Turn this off to manage users manually; administrators can still create users.</p>
+                </div>
+                <div class="form-content">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" name="allow_registration" id="allow_registration" value="true" checked>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
                   <span class="form-title" data-i18n="settings.fields.audit_retention_days">Audit Log Retention (Days)</span>
                   <p class="form-description" data-i18n="settings.fields.audit_retention_days_desc">Days after which audit log entries are deleted. 0 keeps them forever.</p>
                 </div>
                 <div class="form-content">
                   <input type="number" class="form-control" name="audit_retention_days" id="audit_retention_days" min="0" max="3650" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.admin_page_size">Administration page size</span>
+                  <p class="form-description" data-i18n="settings.fields.admin_page_size_desc">Defines how many rows are shown per page on system configuration pages.</p>
+                </div>
+                <div class="form-content">
+                  <input type="number" class="form-control" name="admin_page_size" id="admin_page_size" min="1" max="100" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.housekeeping.title">Housekeeping</span>
+                  <p class="form-description" data-i18n="settings.housekeeping.desc">Sends the waiting emails, tells about SLA timers that are at risk or breached, and deletes what is past its retention period. It runs by itself every five minutes; here you can run it now.</p>
+                </div>
+                <div class="form-content">
+                  <button type="button" class="btn btn-outline-primary" id="housekeeping-run-btn"><i class="bi bi-play-circle me-1"></i><span data-i18n="settings.housekeeping.run">Run housekeeping now</span></button>
+                  <p class="form-text mb-0 mt-2" id="housekeeping-result" aria-live="polite"></p>
                 </div>
               </div>
             </div>
@@ -664,6 +721,77 @@
                     <option value="Montserrat">Montserrat</option>
                     <option value="Open Sans">Open Sans</option>
                   </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Index Page Tab -->
+            <div class="tab-pane fade" id="index-page" role="tabpanel" aria-labelledby="index-page-tab">
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.index_brand_icon">Navbar Icon</span>
+                  <p class="form-description" data-i18n="settings.fields.index_brand_icon_desc">Bootstrap Icons class shown in the navbar and the sidebar, e.g. bi-headset. Leave empty for the default icon.</p>
+                </div>
+                <div class="form-content">
+                  <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-ticket-perforated logo-gradient" id="index_brand_icon_preview" aria-hidden="true"></i></span>
+                    <input type="text" class="form-control" name="index_brand_icon" id="index_brand_icon" maxlength="64" pattern="bi-[a-z0-9]+(-[a-z0-9]+)*" list="index_brand_icons" autocomplete="off" placeholder="bi-ticket-perforated">
+                  </div>
+                  <datalist id="index_brand_icons"><option value="bi-ticket-perforated"><option value="bi-headset"><option value="bi-life-preserver"><option value="bi-chat-dots"><option value="bi-question-circle"><option value="bi-tools"><option value="bi-wrench-adjustable"><option value="bi-building"><option value="bi-briefcase"><option value="bi-shield-check"><option value="bi-lightning-charge"><option value="bi-rocket-takeoff"><option value="bi-globe"><option value="bi-heart"><option value="bi-star"><option value="bi-bug"><option value="bi-lightbulb"><option value="bi-envelope"><option value="bi-telephone"><option value="bi-person-workspace"><option value="bi-buildings"><option value="bi-cup-hot"><option value="bi-gear"><option value="bi-bookmark-star"><option value="bi-patch-check"><option value="bi-box-seam"><option value="bi-clipboard-check"><option value="bi-compass"><option value="bi-flag"><option value="bi-emoji-smile"></datalist>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.index_brand_title">Navbar Title</span>
+                  <p class="form-description" data-i18n="settings.fields.index_brand_title_desc">Title shown in the navbar and the sidebar. Leave empty for the default title.</p>
+                </div>
+                <div class="form-content">
+                  <input type="text" class="form-control" name="index_brand_title" id="index_brand_title" maxlength="50" placeholder="MyDesk">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.index_hero_title_left">Hero Title (left)</span>
+                  <p class="form-description" data-i18n="settings.fields.index_hero_title_left_desc">Left part of the hero title, shown in the normal text color. Leave a part empty to keep the default for it.</p>
+                </div>
+                <div class="form-content">
+                  <input type="text" class="form-control" name="index_hero_title_left" id="index_hero_title_left" maxlength="100">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.index_hero_title_right">Hero Title (right)</span>
+                  <p class="form-description" data-i18n="settings.fields.index_hero_title_right_desc">Right part of the hero title, shown highlighted.</p>
+                </div>
+                <div class="form-content">
+                  <input type="text" class="form-control" name="index_hero_title_right" id="index_hero_title_right" maxlength="100">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.index_hero_subtitle">Hero Subtitle</span>
+                  <p class="form-description" data-i18n="settings.fields.index_hero_subtitle_desc">Text below the hero title. Leave empty for the default text.</p>
+                </div>
+                <div class="form-content">
+                  <textarea class="form-control" name="index_hero_subtitle" id="index_hero_subtitle" rows="2" maxlength="300"></textarea>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.index_copyright_company">Copyright Company</span>
+                  <p class="form-description" data-i18n="settings.fields.index_copyright_company_desc">Company name in the footer copyright line. The year is added automatically. Leave empty for the default.</p>
+                </div>
+                <div class="form-content">
+                  <input type="text" class="form-control" name="index_copyright_company" id="index_copyright_company" maxlength="100" placeholder="My Company">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.index_copyright_url">Copyright Link</span>
+                  <p class="form-description" data-i18n="settings.fields.index_copyright_url_desc">Optional web address (http or https) the company name links to. Without it the name is shown as plain text.</p>
+                </div>
+                <div class="form-content">
+                  <input type="url" class="form-control" name="index_copyright_url" id="index_copyright_url" maxlength="255" placeholder="https://lewe.com">
                 </div>
               </div>
             </div>
@@ -802,6 +930,145 @@
               </div>
             </div>
 
+            <!-- Email to Ticket Tab -->
+            <div class="tab-pane fade" id="mailin" role="tabpanel" aria-labelledby="mailin-tab">
+              <div id="mailin-panel" class="mb-4"></div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.mailin_poll_interval">mailin_poll_interval</span>
+                  <p class="form-description" data-i18n="settings.fields.mailin_poll_interval_desc"></p>
+                </div>
+                <div class="form-content">
+                  <input type="number" class="form-control" name="mailin_poll_interval" id="mailin_poll_interval" min="60" max="86400" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.mailin_default_type">mailin_default_type</span>
+                  <p class="form-description" data-i18n="settings.fields.mailin_default_type_desc"></p>
+                </div>
+                <div class="form-content">
+                  <select class="form-select" name="mailin_default_type" id="mailin_default_type"></select>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.mailin_default_product">mailin_default_product</span>
+                  <p class="form-description" data-i18n="settings.fields.mailin_default_product_desc"></p>
+                </div>
+                <div class="form-content">
+                  <select class="form-select" name="mailin_default_product" id="mailin_default_product"></select>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.mailin_default_access">mailin_default_access</span>
+                  <p class="form-description" data-i18n="settings.fields.mailin_default_access_desc"></p>
+                </div>
+                <div class="form-content">
+                  <select class="form-select" name="mailin_default_access" id="mailin_default_access"><option value="public" data-i18n="issues.access.public">public</option><option value="registered" data-i18n="issues.access.registered">registered</option><option value="reporter" data-i18n="issues.access.reporter">reporter</option></select>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.mailin_unknown_sender">mailin_unknown_sender</span>
+                  <p class="form-description" data-i18n="settings.fields.mailin_unknown_sender_desc"></p>
+                </div>
+                <div class="form-content">
+                  <select class="form-select" name="mailin_unknown_sender" id="mailin_unknown_sender"><option value="reject" data-i18n="settings.mailin.policy_reject">reject</option><option value="create_user" data-i18n="settings.mailin.policy_create_user">create_user</option><option value="anonymous" data-i18n="settings.mailin.policy_anonymous">anonymous</option></select>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.mailin_send_confirmation">mailin_send_confirmation</span>
+                  <p class="form-description" data-i18n="settings.fields.mailin_send_confirmation_desc"></p>
+                </div>
+                <div class="form-content">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" name="mailin_send_confirmation" id="mailin_send_confirmation" value="true">
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.mailin_trust_sender">mailin_trust_sender</span>
+                  <p class="form-description" data-i18n="settings.fields.mailin_trust_sender_desc"></p>
+                </div>
+                <div class="form-content">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" name="mailin_trust_sender" id="mailin_trust_sender" value="true">
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.mailin_max_mails_per_run">mailin_max_mails_per_run</span>
+                  <p class="form-description" data-i18n="settings.fields.mailin_max_mails_per_run_desc"></p>
+                </div>
+                <div class="form-content">
+                  <input type="number" class="form-control" name="mailin_max_mails_per_run" id="mailin_max_mails_per_run" min="1" max="200" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.mailin_max_body_size">mailin_max_body_size</span>
+                  <p class="form-description" data-i18n="settings.fields.mailin_max_body_size_desc"></p>
+                </div>
+                <div class="form-content">
+                  <input type="number" class="form-control" name="mailin_max_body_size" id="mailin_max_body_size" min="1" max="4096" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.mailin_hourly_limit">mailin_hourly_limit</span>
+                  <p class="form-description" data-i18n="settings.fields.mailin_hourly_limit_desc"></p>
+                </div>
+                <div class="form-content">
+                  <input type="number" class="form-control" name="mailin_hourly_limit" id="mailin_hourly_limit" min="0" max="10000" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.mailin_allowed_domains">mailin_allowed_domains</span>
+                  <p class="form-description" data-i18n="settings.fields.mailin_allowed_domains_desc"></p>
+                </div>
+                <div class="form-content">
+                  <textarea class="form-control" name="mailin_allowed_domains" id="mailin_allowed_domains" rows="3" maxlength="2000" spellcheck="false"></textarea>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.fields.mailin_blocked_domains">mailin_blocked_domains</span>
+                  <p class="form-description" data-i18n="settings.fields.mailin_blocked_domains_desc"></p>
+                </div>
+                <div class="form-content">
+                  <textarea class="form-control" name="mailin_blocked_domains" id="mailin_blocked_domains" rows="3" maxlength="2000" spellcheck="false"></textarea>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.mailin.test">Test Connection</span>
+                  <p class="form-description" data-i18n="settings.mailin.test_desc"></p>
+                </div>
+                <div class="form-content">
+                  <button type="button" class="btn btn-outline-secondary" id="mailin-test" data-i18n="settings.mailin.test">Test Connection</button>
+                  <div id="mailin-test-result" class="mt-2" role="status"></div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-info">
+                  <span class="form-title" data-i18n="settings.mailin.pickup_run">Pick Up Now</span>
+                  <p class="form-description" data-i18n="settings.mailin.pickup_run_desc"></p>
+                </div>
+                <div class="form-content">
+                  <button type="button" class="btn btn-outline-primary" id="mailin-run" data-i18n="settings.mailin.pickup_run">Pick Up Now</button>
+                  <div id="mailin-run-result" class="mt-2" role="status"></div>
+                </div>
+              </div>
+              <h6 class="mt-4" data-i18n="settings.mailin.log">Latest Mails</h6>
+              <div id="mailin-log" class="table-responsive"></div>
+            </div>
+
             <!-- License Tab -->
             <div class="tab-pane fade" id="license" role="tabpanel" aria-labelledby="license-tab">
               <div id="license-panel" class="mb-4"></div>
@@ -881,7 +1148,7 @@
     </div>
   </div>
 </div>
-
+
 
       </div>
     </div>
@@ -889,7 +1156,7 @@
       <div class="container-fluid h-100 d-flex align-items-center">
         <div class="flex-fill">&copy; 2026 by <a href="https://lewe.com" class="text-decoration-none">Lewe Labs</a>.</div>
         <div class="flex-fill text-center"><a href="privacy.html" class="text-decoration-none" data-i18n="header.privacy">Privacy Policy</a> &middot; <a href="imprint.html" class="text-decoration-none" data-i18n="header.imprint">Imprint</a></div>
-        <div class="flex-fill text-end">Powered by <i class="bi bi-ticket-perforated logo-gradient mx-1" aria-hidden="true"></i>Lewe<strong>Desk</strong> 1.0.1.126</div>
+        <div class="flex-fill text-end">Powered by <i class="bi bi-ticket-perforated logo-gradient mx-1" aria-hidden="true"></i>Lewe<strong>Desk</strong> 1.0.2.181</div>
       </div>
     </footer>
   </div>

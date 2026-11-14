@@ -15,7 +15,7 @@ use PDO;
 class NotificationPreferenceModel
 {
   /** The events a user can choose for (see App\Services\NotificationService) */
-  public const EVENTS = ['issue_created', 'issue_assigned', 'status_changed', 'comment_added'];
+  public const EVENTS = ['issue_created', 'issue_assigned', 'status_changed', 'comment_added', 'sla_at_risk', 'sla_breached'];
 
   private PDO $db;
 

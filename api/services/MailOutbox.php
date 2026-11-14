@@ -27,6 +27,9 @@ class MailOutbox
   /** Mails handled by one process() call */
   private const BATCH = 25;
 
+  /** Earlier mails of the same issue to the same recipient that are named in the References header */
+  private const THREAD_LENGTH = 10;
+
   /** Seconds after which a mail that is still being sent counts as lost (the process died) and is tried again */
   private const STALE_AFTER = 300;
 
@@ -35,6 +38,7 @@ class MailOutbox
 
   private PDO $db;
   private MailService $mail;
+  private string $replyTo;
   private bool $queued = false;
 
   //---------------------------------------------------------------------------
@@ -42,12 +46,15 @@ class MailOutbox
    * Constructor.
    *
    * @param PDO         $db   The database connection
-   * @param MailService $mail The mail sender
+   * @param MailService $mail    The mail sender
+   * @param string      $replyTo The address that answers to issue mails should go to (the Email-to-ticket mailbox);
+   *                             empty if answers are not read
    */
-  public function __construct(PDO $db, MailService $mail)
+  public function __construct(PDO $db, MailService $mail, string $replyTo = '')
   {
     $this->db = $db;
     $this->mail = $mail;
+    $this->replyTo = $replyTo;
   }
 
   //---------------------------------------------------------------------------
@@ -58,13 +65,25 @@ class MailOutbox
    * @param string $subject Subject line
    * @param string $html    HTML body
    * @param string $text    Plain text body
+   * @param int|null $issueId  The issue the mail is about; its mails are threaded and answers are matched to it
+   * @param bool     $internal Whether the mail is about an internal comment (an answer must not become a public comment)
    *
    * @return void
    */
-  public function queue(string $to, string $subject, string $html, string $text): void
+  public function queue(string $to, string $subject, string $html, string $text, ?int $issueId = null, bool $internal = false): void
   {
-    $this->db->prepare('INSERT INTO mail_outbox (recipient, subject, body_html, body_text) VALUES (:to, :subject, :html, :text)')
-      ->execute(['to' => $to, 'subject' => mb_substr($subject, 0, 255), 'html' => $html, 'text' => $text]);
+    $this->db->prepare(
+      'INSERT INTO mail_outbox (recipient, message_id, issue_id, is_internal, subject, body_html, body_text)
+       VALUES (:to, :message_id, :issue_id, :internal, :subject, :html, :text)'
+    )->execute([
+      'to' => $to,
+      'message_id' => $this->mail->newMessageId(),
+      'issue_id' => $issueId,
+      'internal' => $internal ? 1 : 0,
+      'subject' => mb_substr($subject, 0, 255),
+      'html' => $html,
+      'text' => $text,
+    ]);
     $this->queued = true;
   }
 
@@ -119,6 +138,39 @@ class MailOutbox
 
   //---------------------------------------------------------------------------
   /**
+   * Gives the optional headers of a mail: its stored Message-ID, the threading with the earlier mails of the issue to
+   * the same recipient, and the address for answers.
+   *
+   * @param int   $id  The mail id
+   * @param array $row The mail row (recipient, message_id, issue_id)
+   *
+   * @return array See MailService::send()
+   */
+  private function headers(int $id, array $row): array
+  {
+    $options = ['message_id' => (string)($row['message_id'] ?? '')];
+    if ($row['issue_id'] === null) {
+      return $options;
+    }
+
+    $options['reply_to'] = $this->replyTo;
+    $stmt = $this->db->prepare(
+      "SELECT message_id FROM mail_outbox
+        WHERE issue_id = :issue AND recipient = :recipient AND id < :id AND status = 'sent' AND message_id IS NOT NULL
+        ORDER BY id DESC LIMIT " . self::THREAD_LENGTH
+    );
+    $stmt->execute(['issue' => (int)$row['issue_id'], 'recipient' => $row['recipient'], 'id' => $id]);
+    $earlier = array_reverse($stmt->fetchAll(PDO::FETCH_COLUMN));
+    if ($earlier !== []) {
+      $options['references'] = $earlier;
+      $options['in_reply_to'] = end($earlier);
+    }
+
+    return $options;
+  }
+
+  //---------------------------------------------------------------------------
+  /**
    * Claims one mail and sends it.
    *
    * @param int $id The mail id
@@ -134,11 +186,11 @@ class MailOutbox
       return false;
     }
 
-    $stmt = $this->db->prepare('SELECT recipient, subject, body_html, body_text, attempts FROM mail_outbox WHERE id = :id');
+    $stmt = $this->db->prepare('SELECT recipient, message_id, issue_id, subject, body_html, body_text, attempts FROM mail_outbox WHERE id = :id');
     $stmt->execute(['id' => $id]);
     $row = $stmt->fetch();
 
-    if ($this->mail->send($row['recipient'], $row['subject'], $row['body_html'], $row['body_text'])) {
+    if ($this->mail->send($row['recipient'], $row['subject'], $row['body_html'], $row['body_text'], $this->headers($id, $row))) {
       $this->db->prepare("UPDATE mail_outbox SET status = 'sent', last_error = NULL WHERE id = :id")->execute(['id' => $id]);
 
       return true;

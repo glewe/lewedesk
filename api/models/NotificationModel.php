@@ -219,6 +219,9 @@ class NotificationModel
       'status_key' => $data['status_key'] ?? null,
       'status_name' => $data['status_name'] ?? null,
       'assignee' => $data['assignee'] ?? null,
+      // The SLA events: which timer and when it is (was) due (Unix time)
+      'sla_metric' => $data['sla_metric'] ?? null,
+      'sla_due' => isset($data['sla_due']) ? gmdate('Y-m-d\TH:i:s\Z', (int)$data['sla_due']) : null,
       'internal' => (bool)$row['is_internal'],
       'actor' => $row['actor_id'] === null
         ? null

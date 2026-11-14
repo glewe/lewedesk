@@ -67,7 +67,8 @@ class HistoryModel
     $hidden = '';
     if (!$includeInternal) {
       $events = implode(', ', array_map(fn(string $event): string => $this->db->quote($event), self::HIDDEN_FOR_INTERNAL));
-      $hidden = " AND NOT (h.is_internal = 1 AND h.event IN ($events))";
+      // The changes of the SLA due times are for the staff as well
+      $hidden = " AND NOT (h.is_internal = 1 AND h.event IN ($events)) AND (h.field IS NULL OR h.field NOT LIKE 'sla\\_%')";
     }
 
     $stmt = $this->db->prepare(

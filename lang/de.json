@@ -188,8 +188,8 @@
       "index_copyright_company_desc": "Firmenname in der Copyright-Zeile der Fußzeile. Das Jahr wird automatisch ergänzt. Leer lassen für den Standardwert.",
       "index_copyright_url": "Copyright-Link",
       "index_copyright_url_desc": "Optionale Webadresse (http oder https), auf die der Firmenname verweist. Ohne Adresse wird der Name als einfacher Text angezeigt.",
-      "issue_key_prefix": "Präfix des Issue-Schlüssels",
-      "issue_key_prefix_desc": "Geben Sie das Präfix des Issue-Schlüssels ein. Issues werden als PRÄFIX-123 angezeigt (z. B. LD-123). Das Präfix kann nicht mehr geändert werden, sobald das erste Issue existiert.",
+      "default_product_id": "Standardprodukt",
+      "default_product_id_desc": "Das Produkt neuer Issues, die keines nennen, zum Beispiel der Issues aus E-Mails. Der Schlüssel des Produkts ist das Präfix der Issue-Schlüssel (z. B. LD-123).",
       "support_email": "Support-E-Mail",
       "support_email_desc": "Geben Sie hier die E-Mail-Adresse Ihres Support-Teams ein. Beim Erstellen eines Issues wird eine Nachricht an diese Adresse gesendet.",
       "attachment_max_size": "Maximale Anhanggröße (MB)",
@@ -560,7 +560,15 @@
       "title": "Produkte",
       "name_desc": "Eindeutiger Name des Produkts (max. 50 Zeichen).",
       "description_desc": "Kurze Beschreibung des Produkts.",
-      "confirm_delete": "Die ausgewählten Produkte löschen? Sie werden von den Issues entfernt. Dies kann nicht rückgängig gemacht werden.",
+      "confirm_delete": "Die ausgewählten Produkte löschen? Dies kann nicht rückgängig gemacht werden.",
+      "tab_details": "Details",
+      "tab_versions": "Versionen",
+      "key_desc": "1 bis 4 Buchstaben. Der Schlüssel ist das Präfix der Issue-Schlüssel des Produkts (z. B. LD für LD-123).",
+      "key_invalid": "Bitte geben Sie 1 bis 4 Buchstaben ein.",
+      "key_taken": "Ein anderes Produkt hat diesen Schlüssel.",
+      "key_change_warning": "Die Issues dieses Produkts bekommen den neuen Schlüssel. Ihre alten Schlüssel bleiben gültig und führen weiterhin zu ihnen.",
+      "replacement_needed": "Das ausgewählte Produkt hat {count} Issue(s). Wählen Sie das Produkt, in das diese Issues stattdessen verschoben werden. Sie bekommen dort neue Schlüssel (die alten funktionieren weiter), ihre Versionen werden entfernt:",
+      "replacement_default": "Das ausgewählte Produkt ist das Standardprodukt. Wählen Sie das Produkt, das stattdessen Standardprodukt wird (seine Issues werden dorthin verschoben):",
       "add_title": "Produkt hinzufügen",
       "edit_title": "Produkt bearbeiten",
       "messages": {
@@ -631,7 +639,8 @@
     "replacement": "Ersatz",
     "replacement_needed": "Der ausgewählte Eintrag wird von {count} Issue(s) verwendet. Wählen Sie den Eintrag, den diese Issues stattdessen erhalten sollen:",
     "replacement_needed_many": "Die ausgewählten Einträge werden von {count} Issue(s) verwendet. Wählen Sie den Eintrag, den diese Issues stattdessen erhalten sollen:",
-    "replacement_none": "Es gibt keinen anderen aktiven Eintrag, der als Ersatz dienen kann."
+    "replacement_none": "Es gibt keinen anderen aktiven Eintrag, der als Ersatz dienen kann.",
+    "key": "Schlüssel"
   },
   "datatables": {
     "search": "Suche:",
@@ -887,6 +896,8 @@
       "description": "Beschreibung",
       "product": "Produkt",
       "version": "Version",
+      "affected_version": "Betroffene Version",
+      "fixed_version": "Behobene Version",
       "access": "Zugriff",
       "resolution": "Lösung",
       "tags": "Tags",
@@ -980,13 +991,17 @@
       "description_desc": "Beschreiben Sie das Issue so genau wie möglich: Was ist passiert, was haben Sie erwartet, und wie können wir es nachstellen?",
       "description_required": "Bitte geben Sie eine Beschreibung ein.",
       "tags_desc": "Tags helfen, Issues zu finden und zu gruppieren (optional). Tippen Sie, um die vorhandenen Tags zu durchsuchen.",
-      "product_desc": "Das Produkt, um das es im Issue geht (optional).",
-      "no_product": "Kein Produkt",
-      "version_desc": "Die Version des Produkts, in der das Issue auftritt (optional).",
+      "product_desc": "Das Produkt, um das es im Issue geht. Sein Schlüssel wird zum Präfix des Issue-Schlüssels.",
+      "product_required": "Bitte wählen Sie ein Produkt.",
+      "product_placeholder": "Produkt auswählen...",
+      "no_version": "Keine Version",
+      "affected_version_desc": "Die Version des Produkts, in der das Issue auftritt (optional).",
+      "fixed_version_desc": "Die Version des Produkts, die das Issue behebt (optional).",
       "access_desc": "Wer dieses Issue sehen darf. Das Support-Team kann es immer sehen.",
       "submit": "Issue erstellen"
     },
     "edit": {
+      "product_locked": "Das Produkt kann hier nicht geändert werden. Nutzen Sie die Aktion \"In anderes Produkt verschieben\" des Issues; der Schlüssel des Issues ändert sich.",
       "status_changed": "Status geändert.",
       "title": "Issue bearbeiten",
       "submit": "Änderungen speichern",
@@ -1008,7 +1023,8 @@
       "loading": "Wird geladen...",
       "back": "Zurück zur Liste",
       "properties": "Eigenschaften",
-      "deleted": "Gelöscht"
+      "deleted": "Gelöscht",
+      "release_notes": "Release Notes dieser Version"
     },
     "messages": {
       "load_error": "Die Issues konnten nicht geladen werden.",
@@ -1095,6 +1111,7 @@
       "assign_me": "Mir zuweisen",
       "watch": "Issue beobachten",
       "unwatch": "Issue nicht mehr beobachten",
+      "move": "In anderes Produkt verschieben",
       "change_access": "Zugriff ändern",
       "delete": "Issue löschen",
       "restore": "Issue wiederherstellen"
@@ -1105,13 +1122,15 @@
       "resolution": "Lösung",
       "assignee": "Bearbeiter",
       "access": "Zugriff",
+      "product": "Neues Produkt",
       "internal": "Interner Kommentar",
       "internal_desc": "Nur das Support-Team kann einen internen Kommentar sehen. Ein interner Kommentar ändert den Status nicht."
     },
     "placeholders": {
       "resolution": "Lösung auswählen...",
       "assignee": "Agent auswählen...",
-      "access": "Neuen Zugriff auswählen..."
+      "access": "Neuen Zugriff auswählen...",
+      "product": "Produkt auswählen..."
     },
     "unassign": "Nicht zugewiesen",
     "modal": {
@@ -1135,6 +1154,11 @@
         "text": "Wählen Sie den Agent, der sich um das Issue kümmert.",
         "submit": "Zuweisen"
       },
+      "move": {
+        "title": "Issue verschieben",
+        "text": "Das Issue bekommt die nächste Nummer des gewählten Produkts, sein Schlüssel ändert sich also. Der alte Schlüssel funktioniert weiterhin. Die betroffene und die behobene Version werden entfernt, weil Versionen zu einem Produkt gehören.",
+        "submit": "Verschieben"
+      },
       "change_access": {
         "title": "Zugriff ändern",
         "text": "Wer darf dieses Issue sehen? Beobachter, die den Zugriff verlieren, werden entfernt.",
@@ -1151,7 +1175,8 @@
       "comment_required": "Bitte geben Sie einen Kommentar ein.",
       "resolution_required": "Bitte wählen Sie eine Lösung.",
       "assignee_required": "Bitte wählen Sie einen Agent.",
-      "access_required": "Bitte wählen Sie den neuen Zugriff."
+      "access_required": "Bitte wählen Sie den neuen Zugriff.",
+      "product_required": "Bitte wählen Sie ein Produkt."
     },
     "done": {
       "respond": "Ihre Antwort wurde hinzugefügt.",
@@ -1162,12 +1187,71 @@
       "assign_me": "Das Issue ist Ihnen zugewiesen.",
       "watch": "Sie beobachten dieses Issue jetzt.",
       "unwatch": "Sie beobachten dieses Issue nicht mehr.",
+      "move": "Das Issue wurde verschoben. Sein Schlüssel ist jetzt {key}.",
       "change_access": "Der Zugriff wurde geändert.",
       "delete": "Das Issue wurde gelöscht.",
       "restore": "Das Issue wurde wiederhergestellt."
     },
     "error": "Die Aktion konnte nicht ausgeführt werden.",
     "load_error": "Die Liste der Agents konnte nicht geladen werden."
+  },
+  "versions": {
+    "status": {
+      "planned": "Geplant",
+      "development": "In Entwicklung",
+      "released": "Veröffentlicht",
+      "archived": "Archiviert"
+    },
+    "load_error": "Die Versionen konnten nicht geladen werden.",
+    "intro": "Versionen des Produkts. Issues können eine betroffene und eine behobene Version nennen.",
+    "add": "Version hinzufügen",
+    "edit": "Version bearbeiten",
+    "empty": "Dieses Produkt hat noch keine Versionen.",
+    "release_notes": "Release Notes",
+    "columns": {
+      "name": "Version",
+      "status": "Status",
+      "release_date": "Veröffentlichungsdatum",
+      "link": "Link",
+      "fixed": "Behobene Issues",
+      "affected": "Betroffene Issues"
+    },
+    "fields": {
+      "name": "Name",
+      "status": "Status",
+      "release_date": "Veröffentlichungsdatum",
+      "pick_date": "Datum auswählen",
+      "release_date_desc": "Optional, solange die Version geplant oder in Entwicklung ist; Pflicht, sobald sie veröffentlicht ist.",
+      "link": "Link",
+      "link_desc": "Optionale Web-Adresse (http oder https), z. B. das Release auf GitHub.",
+      "description": "Beschreibung"
+    },
+    "validation": {
+      "name_required": "Bitte geben Sie einen Namen ein.",
+      "release_date_required": "Eine veröffentlichte Version braucht ein Veröffentlichungsdatum.",
+      "release_date_invalid": "Bitte ein gültiges Datum im Format JJJJ-MM-TT eingeben.",
+      "link_invalid": "Bitte geben Sie eine Web-Adresse ein, die mit http:// oder https:// beginnt."
+    },
+    "messages": {
+      "created": "Die Version wurde erstellt.",
+      "updated": "Die Version wurde aktualisiert.",
+      "deleted": "Die Version wurde gelöscht.",
+      "save_error": "Die Version konnte nicht gespeichert werden.",
+      "delete_error": "Die Version konnte nicht gelöscht werden."
+    },
+    "delete": {
+      "title": "Version löschen",
+      "confirm": "Die Version \"{name}\" löschen?",
+      "replacement_needed": "Die Version \"{name}\" wird von {count} Issue(s) verwendet. Wählen Sie die Version, die diese Issues stattdessen erhalten sollen, oder keine:",
+      "replacement_desc": "Die betroffene und die behobene Version der Issues werden ersetzt.",
+      "none": "Keine (Feld leeren)"
+    },
+    "notes": {
+      "title": "Release Notes",
+      "empty": "In dieser Version wurden noch keine Issues behoben, oder Sie dürfen sie nicht sehen.",
+      "not_found": "Die Version wurde nicht gefunden.",
+      "load_error": "Die Release Notes konnten nicht geladen werden."
+    }
   },
   "history": {
     "title": "Verlauf",
@@ -1211,7 +1295,10 @@
       "summary": "Zusammenfassung",
       "description": "Beschreibung",
       "product": "Produkt",
+      "key": "Issue-Schlüssel",
       "version": "Version",
+      "affected_version": "Betroffene Version",
+      "fixed_version": "Behobene Version",
       "sla_breached_first_response": "SLA-Verletzung: Erste Antwort (Fälligkeit)",
       "sla_breached_resolution": "SLA-Verletzung: Lösung (Fälligkeit)"
     },

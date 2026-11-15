@@ -82,13 +82,13 @@ class SettingsValidator
   private static function normalize(string $key, string $value): string
   {
     return match ($key) {
-      'issue_key_prefix' => strtoupper($value),
       // Whole numbers are stored without leading zeros ("007" -> "7")
       'attachment_max_size', 'attachment_max_count', 'attachment_max_total_size', 'rate_limit_issues',
       'rate_limit_comments', 'notification_retention_days', 'notification_poll_interval',
       'temp_upload_cleanup_hours', 'audit_retention_days', 'lic_expiry_warning', 'admin_page_size',
       'mailin_poll_interval', 'mailin_max_mails_per_run', 'mailin_max_body_size', 'mailin_hourly_limit' => (string)(int)$value,
       'mailin_default_type', 'mailin_default_product' => $value === '' ? '' : (string)(int)$value,
+      'default_product_id' => (string)(int)$value,
       'mailin_allowed_domains', 'mailin_blocked_domains' => implode(', ', self::domainList($value)),
       default => $value,
     };
@@ -107,7 +107,7 @@ class SettingsValidator
     return in_array($key, self::BOOLEAN_KEYS, true) || in_array($key, [
       'application_url', 'application_name', 'application_manual', 'html_description', 'html_keywords',
       'default_language', 'alert_autoclose_delay', 'timezone', 'matomo_url', 'matomo_siteid', 'color_mode', 'font',
-      'issue_key_prefix', 'support_email', 'attachment_max_size', 'attachment_max_count', 'attachment_max_total_size',
+      'default_product_id', 'support_email', 'attachment_max_size', 'attachment_max_count', 'attachment_max_total_size',
       'rate_limit_issues', 'rate_limit_comments', 'notification_retention_days', 'notification_poll_interval',
       'temp_upload_cleanup_hours', 'audit_retention_days', 'lic_expiry_warning',
       'provider_contact', 'provider_phone', 'provider_email', 'provider_website', 'admin_page_size',
@@ -145,7 +145,8 @@ class SettingsValidator
       'alert_autoclose_delay' => self::integer($value, 0, 60000),
       'matomo_siteid' => self::integer($value, 1, null),
       'matomo_url' => $value === '' ? null : self::matomoUrl($value),
-      'issue_key_prefix' => preg_match('/^[A-Za-z][A-Za-z0-9]{0,9}$/', $value) ? null : 'must be 1-10 characters (A-Z, 0-9) and start with a letter',
+      // The product of new issues that name none (Email to ticket); whether it exists is checked by the caller
+      'default_product_id' => self::integer($value, 1, null),
       'support_email' => strlen($value) <= 255 && filter_var($value, FILTER_VALIDATE_EMAIL) !== false ? null : 'must be a valid email address',
       'attachment_max_size' => self::integer($value, 1, 50),
       'attachment_max_count' => self::integer($value, 1, 100),

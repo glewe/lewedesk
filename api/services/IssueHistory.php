@@ -16,7 +16,8 @@ use PDO;
  *
  * Events: issue_created, issue_deleted, issue_restored, comment_added, comment_edited, comment_deleted, attachment_added (the file
  * name as new value), attachment_deleted (the file name as old value), field_changed (with the
- * field: tags, type, status, resolution, product, summary, description, version, access, assignee).
+ * field: tags, type, status, resolution, product, key (an issue that was moved to another product), summary, description,
+ * affected_version, fixed_version, access, assignee, reporter).
  */
 class IssueHistory
 {

@@ -188,8 +188,6 @@
       "index_copyright_company_desc": "Nombre de la empresa en la línea de copyright del pie de página. El año se añade automáticamente. Déjelo vacío para el valor predeterminado.",
       "index_copyright_url": "Enlace del copyright",
       "index_copyright_url_desc": "Dirección web opcional (http o https) a la que enlaza el nombre de la empresa. Sin dirección, el nombre se muestra como texto simple.",
-      "issue_key_prefix": "Prefijo de la clave de incidencia",
-      "issue_key_prefix_desc": "Introduce el prefijo de la clave de incidencia. Las incidencias se muestran como PREFIJO-123 (p. ej. LD-123). El prefijo ya no se puede cambiar una vez que existe la primera incidencia.",
       "support_email": "Correo de soporte",
       "support_email_desc": "Introduce aquí la dirección de correo de tu equipo de soporte. Se envía un mensaje a esta dirección cuando se crea una incidencia.",
       "attachment_max_size": "Tamaño máximo de archivo adjunto (MB)",
@@ -241,7 +239,9 @@
       "mailin_allowed_domains": "Dominios de remitente permitidos",
       "mailin_allowed_domains_desc": "Solo se tratan los correos de estos dominios (uno por línea o separados por comas, subdominios incluidos). Vacío: todos los dominios.",
       "mailin_blocked_domains": "Dominios de remitente bloqueados",
-      "mailin_blocked_domains_desc": "Los correos de estos dominios se rechazan siempre."
+      "mailin_blocked_domains_desc": "Los correos de estos dominios se rechazan siempre.",
+      "default_product_id": "Producto predeterminado",
+      "default_product_id_desc": "El producto de las incidencias nuevas que no indican ninguno, por ejemplo las creadas desde correos. La clave del producto es el prefijo de las claves de incidencia (p. ej. LD-123)."
     },
     "actions": {
       "save": "Guardar ajustes",
@@ -571,7 +571,15 @@
         "save_error": "No se pudo guardar el producto.",
         "delete_error": "No se pudieron eliminar los productos seleccionados.",
         "not_found": "No se encontró el producto."
-      }
+      },
+      "tab_details": "Detalles",
+      "tab_versions": "Versiones",
+      "key_desc": "De 1 a 4 letras. La clave es el prefijo de las claves de incidencia del producto (p. ej. LD para LD-123).",
+      "key_invalid": "Introduce de 1 a 4 letras.",
+      "key_taken": "Otro producto tiene esta clave.",
+      "key_change_warning": "Las incidencias de este producto reciben la nueva clave. Sus claves antiguas siguen siendo válidas y llevan a ellas.",
+      "replacement_needed": "El producto seleccionado tiene {count} incidencia(s). Elige el producto al que deben pasar estas incidencias. Allí reciben claves nuevas (las claves antiguas siguen funcionando) y se borran sus versiones:",
+      "replacement_default": "El producto seleccionado es el producto predeterminado. Elige el producto que pasa a ser el predeterminado (sus incidencias también pasan a él):"
     },
     "tags": {
       "title": "Etiquetas",
@@ -631,7 +639,8 @@
     "replacement": "Sustitución",
     "replacement_needed": "El registro seleccionado lo usan {count} incidencia(s). Elige el registro que deben recibir estas incidencias en su lugar:",
     "replacement_needed_many": "Los registros seleccionados los usan {count} incidencia(s). Elige el registro que deben recibir estas incidencias en su lugar:",
-    "replacement_none": "No hay ningún otro registro activo que pueda sustituirlo."
+    "replacement_none": "No hay ningún otro registro activo que pueda sustituirlo.",
+    "key": "Clave"
   },
   "datatables": {
     "search": "Buscar:",
@@ -892,7 +901,9 @@
       "tags": "Etiquetas",
       "watchers": "Seguidores",
       "source": "Origen",
-      "requester": "Remitente"
+      "requester": "Remitente",
+      "affected_version": "Versión afectada",
+      "fixed_version": "Versión corregida"
     },
     "columns": {
       "id": "Incidencia",
@@ -981,10 +992,13 @@
       "description_required": "Introduce una descripción.",
       "tags_desc": "Las etiquetas ayudan a encontrar y agrupar incidencias (opcional). Escribe para buscar entre las etiquetas existentes.",
       "product_desc": "El producto al que se refiere la incidencia (opcional).",
-      "no_product": "Sin producto",
-      "version_desc": "La versión del producto en la que ocurre la incidencia (opcional).",
       "access_desc": "Quién puede ver esta incidencia. El equipo de soporte siempre puede verla.",
-      "submit": "Crear incidencia"
+      "submit": "Crear incidencia",
+      "product_required": "Selecciona un producto.",
+      "product_placeholder": "Selecciona un producto...",
+      "no_version": "Sin versión",
+      "affected_version_desc": "La versión del producto en la que ocurre la incidencia (opcional).",
+      "fixed_version_desc": "La versión del producto que corrige la incidencia (opcional)."
     },
     "edit": {
       "status_changed": "Estado cambiado.",
@@ -1002,13 +1016,15 @@
       "no_permission": "No tienes permiso para editar esta incidencia.",
       "save_error": "No se pudo guardar la incidencia.",
       "saved": "La incidencia {key} se actualizó.",
-      "unchanged": "No se cambió nada."
+      "unchanged": "No se cambió nada.",
+      "product_locked": "El producto no se puede cambiar aquí. Usa la acción «Mover a otro producto» de la incidencia; la clave de la incidencia cambia."
     },
     "detail": {
       "loading": "Cargando...",
       "back": "Volver a la lista",
       "properties": "Propiedades",
-      "deleted": "Eliminada"
+      "deleted": "Eliminada",
+      "release_notes": "Notas de la versión"
     },
     "messages": {
       "load_error": "No se pudieron cargar las incidencias.",
@@ -1097,7 +1113,8 @@
       "unwatch": "Dejar de seguir incidencia",
       "change_access": "Cambiar acceso",
       "delete": "Eliminar incidencia",
-      "restore": "Restaurar incidencia"
+      "restore": "Restaurar incidencia",
+      "move": "Mover a otro producto"
     },
     "fields": {
       "comment": "Comentario",
@@ -1106,12 +1123,14 @@
       "assignee": "Asignado a",
       "access": "Acceso",
       "internal": "Comentario interno",
-      "internal_desc": "Solo el equipo de soporte puede ver un comentario interno. Un comentario interno no cambia el estado."
+      "internal_desc": "Solo el equipo de soporte puede ver un comentario interno. Un comentario interno no cambia el estado.",
+      "product": "Producto nuevo"
     },
     "placeholders": {
       "resolution": "Selecciona una resolución...",
       "assignee": "Selecciona un agente...",
-      "access": "Selecciona el nuevo acceso..."
+      "access": "Selecciona el nuevo acceso...",
+      "product": "Selecciona un producto..."
     },
     "unassign": "Sin asignar",
     "modal": {
@@ -1145,13 +1164,19 @@
         "title": "Eliminar incidencia",
         "text": "La incidencia se oculta para todos salvo el equipo de soporte. Se puede restaurar más adelante. ¿Eliminar esta incidencia?",
         "submit": "Sí, eliminar"
+      },
+      "move": {
+        "title": "Mover incidencia",
+        "text": "La incidencia recibe el siguiente número del producto que selecciones, por lo que su clave cambia. La clave antigua sigue funcionando. La versión afectada y la corregida se borran, porque las versiones pertenecen a un producto.",
+        "submit": "Mover"
       }
     },
     "validation": {
       "comment_required": "Introduce un comentario.",
       "resolution_required": "Selecciona una resolución.",
       "assignee_required": "Selecciona un agente.",
-      "access_required": "Selecciona el nuevo acceso."
+      "access_required": "Selecciona el nuevo acceso.",
+      "product_required": "Selecciona un producto."
     },
     "done": {
       "respond": "Tu respuesta se añadió.",
@@ -1164,7 +1189,8 @@
       "unwatch": "Ya no sigues esta incidencia.",
       "change_access": "El acceso se cambió.",
       "delete": "La incidencia se eliminó.",
-      "restore": "La incidencia se restauró."
+      "restore": "La incidencia se restauró.",
+      "move": "La incidencia se movió. Su clave ahora es {key}."
     },
     "error": "No se pudo realizar la acción.",
     "load_error": "No se pudo cargar la lista de agentes."
@@ -1213,7 +1239,10 @@
       "product": "Producto",
       "version": "Versión",
       "sla_breached_first_response": "Incumplimiento SLA: primera respuesta (vencimiento)",
-      "sla_breached_resolution": "Incumplimiento SLA: resolución (vencimiento)"
+      "sla_breached_resolution": "Incumplimiento SLA: resolución (vencimiento)",
+      "key": "Clave de la incidencia",
+      "affected_version": "Versión afectada",
+      "fixed_version": "Versión corregida"
     },
     "load_error": "No se pudo cargar el historial."
   },
@@ -1636,6 +1665,64 @@
       "overrun": "Exceso",
       "met": "cumplido",
       "open": "abierto"
+    }
+  },
+  "versions": {
+    "status": {
+      "planned": "Planificada",
+      "development": "En desarrollo",
+      "released": "Publicada",
+      "archived": "Archivada"
+    },
+    "load_error": "No se pudieron cargar las versiones.",
+    "intro": "Versiones del producto. Las incidencias pueden indicar una versión afectada y una corregida.",
+    "add": "Añadir versión",
+    "edit": "Editar versión",
+    "empty": "Este producto aún no tiene versiones.",
+    "release_notes": "Notas de la versión",
+    "columns": {
+      "name": "Versión",
+      "status": "Estado",
+      "release_date": "Fecha de publicación",
+      "link": "Enlace",
+      "fixed": "Incidencias corregidas",
+      "affected": "Incidencias afectadas"
+    },
+    "fields": {
+      "name": "Nombre",
+      "status": "Estado",
+      "release_date": "Fecha de publicación",
+      "pick_date": "Elegir una fecha",
+      "release_date_desc": "Opcional mientras está planificada o en desarrollo; obligatoria cuando se publica la versión.",
+      "link": "Enlace",
+      "link_desc": "Dirección web opcional (http o https), p. ej. la publicación en GitHub.",
+      "description": "Descripción"
+    },
+    "validation": {
+      "name_required": "Introduce un nombre.",
+      "release_date_required": "Una versión publicada necesita una fecha de publicación.",
+      "release_date_invalid": "Introduzca una fecha válida con el formato AAAA-MM-DD.",
+      "link_invalid": "Introduce una dirección web que empiece por http:// o https://."
+    },
+    "messages": {
+      "created": "La versión se creó.",
+      "updated": "La versión se actualizó.",
+      "deleted": "La versión se eliminó.",
+      "save_error": "No se pudo guardar la versión.",
+      "delete_error": "No se pudo eliminar la versión."
+    },
+    "delete": {
+      "title": "Eliminar versión",
+      "confirm": "¿Eliminar la versión «{name}»?",
+      "replacement_needed": "La versión «{name}» la usan {count} incidencia(s). Elige la versión que deben tener en su lugar, o ninguna:",
+      "replacement_desc": "Se sustituyen la versión afectada y la corregida de las incidencias.",
+      "none": "Ninguna (vaciar el campo)"
+    },
+    "notes": {
+      "title": "Notas de la versión",
+      "empty": "Aún no se ha corregido ninguna incidencia en esta versión, o no puedes verlas.",
+      "not_found": "No se encontró la versión.",
+      "load_error": "No se pudieron cargar las notas de la versión."
     }
   }
 }

@@ -24,13 +24,14 @@ namespace App\Services;
  *   assign         assign_issue                                 assignee (an Agent) and comment
  *   assign_me      assign_issue and role Agent; not yet assigned to the viewer
  *   watch/unwatch  every logged in user
+ *   move           edit_issue                                  moves the issue to another product (new key)
  *   change_access  reporter, edit_issue                         the reporter can only lower the access
  *   delete/restore delete_issue
  */
 class IssueActions
 {
   /** All actions, in the order the menu shows them */
-  public const ACTIONS = ['edit', 'respond', 'resolve', 'close', 'reopen', 'assign', 'assign_me', 'watch', 'unwatch', 'change_access', 'delete', 'restore'];
+  public const ACTIONS = ['edit', 'move', 'respond', 'resolve', 'close', 'reopen', 'assign', 'assign_me', 'watch', 'unwatch', 'change_access', 'delete', 'restore'];
 
   /** The access values from the widest to the narrowest: the reporter can only move to the right */
   public const ACCESS_ORDER = ['public', 'registered', 'reporter'];
@@ -209,7 +210,7 @@ class IssueActions
 
     // The permission rules: who may use the action at all
     $missing = match ($action) {
-      'edit' => $this->missing('edit_issue'),
+      'edit', 'move' => $this->missing('edit_issue'),
       'respond' => $this->policy->mayComment() ? null : 'Permission required: comment_issue',
       'resolve' => $this->missing('change_issue_status'),
       'close' => $related ? null : 'You are not allowed to close this issue',

@@ -80,19 +80,23 @@ final class ParsedMail
 
   //---------------------------------------------------------------------------
   /**
-   * Finds the issue numbers named in the subject by their key, e.g. "LD-123" with the prefix LD.
+   * Finds the issue keys named in the subject, e.g. "LD-123" or "gen-7" (any product, any letter case). Whether
+   * an issue has the key is for the caller to find out (it may be a former key).
    *
-   * @param string $prefix The issue key prefix (issue_key_prefix)
-   *
-   * @return int[] In the order of appearance, without duplicates
+   * @return string[] Upper case, in the order of appearance, without duplicates
    */
-  public function issueIdsInSubject(string $prefix): array
+  public function issueKeysInSubject(): array
   {
-    if (preg_match_all('/(?<![A-Za-z0-9])' . preg_quote($prefix, '/') . '-(\d{1,9})(?!\d)/i', $this->subject, $m) < 1) {
+    if (preg_match_all('/(?<![A-Za-z0-9])([A-Za-z]{1,4})-([1-9]\d{0,8})(?![A-Za-z0-9])/', $this->subject, $m, PREG_SET_ORDER) < 1) {
       return [];
     }
 
-    return array_values(array_unique(array_map('intval', $m[1])));
+    $keys = [];
+    foreach ($m as $match) {
+      $keys[strtoupper($match[1]) . '-' . $match[2]] = true;
+    }
+
+    return array_keys($keys);
   }
 
   //---------------------------------------------------------------------------

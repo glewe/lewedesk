@@ -15,7 +15,7 @@ namespace App\Utils;
 class IssueConfig
 {
   public const DEFAULTS = [
-    'issue_key_prefix' => 'LD',
+    'default_product_id' => 0,
     'support_email' => 'support@lewe.com',
     'attachment_max_size' => 2,
     'attachment_max_count' => 10,
@@ -46,28 +46,16 @@ class IssueConfig
 
   //---------------------------------------------------------------------------
   /**
-   * Gets the prefix of the issue key (upper case).
+   * Gets the id of the default product: the product of issues that are created without one (Email to ticket).
+   * The key of an issue is built by App\Utils\IssueKey.
    *
-   * @return string
+   * @return int 0 if the setting is missing or invalid
    */
-  public function keyPrefix(): string
+  public function defaultProductId(): int
   {
-    $value = strtoupper(trim((string)($this->settings['issue_key_prefix'] ?? '')));
+    $value = $this->settings['default_product_id'] ?? null;
 
-    return preg_match('/^[A-Z][A-Z0-9]{0,9}$/', $value) ? $value : self::DEFAULTS['issue_key_prefix'];
-  }
-
-  //---------------------------------------------------------------------------
-  /**
-   * Builds the display key of an issue, e.g. LD-123.
-   *
-   * @param int $issueId The issue id (the issue number)
-   *
-   * @return string
-   */
-  public function issueKey(int $issueId): string
-  {
-    return $this->keyPrefix() . '-' . $issueId;
+    return is_string($value) && preg_match('/^[1-9]\d{0,8}$/', $value) === 1 ? (int)$value : self::DEFAULTS['default_product_id'];
   }
 
   //---------------------------------------------------------------------------

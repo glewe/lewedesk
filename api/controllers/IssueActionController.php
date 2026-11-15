@@ -25,6 +25,7 @@ use App\Services\RateLimiter;
  *   POST /issues/{id}/actions/assign_me
  *   POST /issues/{id}/actions/watch
  *   POST /issues/{id}/actions/unwatch
+ *   POST /issues/{id}/actions/move           {"product_id": 4} (also POST /issues/{key}/move): the issue gets a new key
  *   POST /issues/{id}/actions/change_access  {"access": "reporter"}
  *   POST /issues/{id}/actions/delete
  *   POST /issues/{id}/actions/restore
@@ -121,6 +122,7 @@ class IssueActionController
         'reopen' => $this->reopenAction($facts, $actorId, $input),
         'assign' => $this->assignAction($facts, $actorId, $input),
         'assign_me' => $this->assignMeAction($facts, $actorId),
+        'move' => $this->moveAction($facts, $actorId, $input),
         'change_access' => $this->changeAccessAction($facts, $actorId, $input),
         'watch' => $this->watchAction($facts, $actorId, true),
         'unwatch' => $this->watchAction($facts, $actorId, false),
@@ -312,6 +314,25 @@ class IssueActionController
     $this->events = [NotificationService::ASSIGNED];
 
     return 'Issue assigned to you';
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Move: another product (it exists). The issue gets the next number of that product, the old key keeps working,
+   * and both versions are cleared.
+   *
+   * @return string|array The success message, or [status, message]
+   */
+  private function moveAction(array $facts, int $actorId, array $input): string|array
+  {
+    $productId = $this->recordId($input['product_id'] ?? null);
+    if ($productId === null || !$this->issues->lookupExists('products', $productId)) {
+      return [400, 'Product does not exist'];
+    }
+
+    $result = $this->workflow->move($facts, $actorId, $productId);
+
+    return 'Issue moved to ' . $result['new_key'];
   }
 
   //---------------------------------------------------------------------------

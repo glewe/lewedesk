@@ -5,14 +5,18 @@ declare(strict_types=1);
 namespace App\Models;
 
 require_once __DIR__ . '/../services/SlaService.php';
+require_once __DIR__ . '/../services/IssueNumbering.php';
+require_once __DIR__ . '/../utils/IssueKey.php';
 
 use App\Services\IssueActions;
 use App\Services\IssueConflictException;
 use App\Services\IssueHistory;
+use App\Services\IssueNumbering;
 use App\Services\IssueSearch;
 use App\Services\IssueVisibility;
 use App\Services\SlaService;
 use App\Utils\IssueConfig;
+use App\Utils\IssueKey;
 use PDO;
 
 //---------------------------------------------------------------------------
@@ -43,7 +47,8 @@ class IssueModel
 
   /** Sort keys of the list (as sent by the DataTables column "data") and their ORDER BY expressions */
   public const SORT_COLUMNS = [
-    'id' => 'i.id',
+    // The key: sorted by product key and number (see list())
+    'id' => 'p.issue_key',
     'summary' => 'i.summary',
     'type' => 't.name',
     'status' => 's.name',
@@ -61,12 +66,13 @@ class IssueModel
                JOIN issue_types t ON t.id = i.type_id
                JOIN `status` s ON s.id = i.status_id
                JOIN priorities pr ON pr.id = i.priority_id
+               JOIN products p ON p.id = i.product_id
                JOIN status_categories c ON c.id = s.category_id
           LEFT JOIN users ru ON ru.id = i.reporter_id
           LEFT JOIN users au ON au.id = i.assignee_id';
 
   /** Lookup tables that an issue field can point to, with the extra condition for new values */
-  private const LOOKUP_TABLES = ['issue_types' => true, 'status' => true, 'resolutions' => true, 'priorities' => true, 'products' => false];
+  private const LOOKUP_TABLES = ['issue_types' => true, 'status' => true, 'resolutions' => true, 'priorities' => true, 'products' => false, 'product_versions' => false];
 
   private PDO $db;
   private IssueVisibility $visibility;
@@ -146,7 +152,10 @@ class IssueModel
     $direction = $query['direction'] === 'asc' ? ' ASC' : ' DESC';
     $sortColumn = self::SORT_COLUMNS[$query['sort']];
     // Issues without an open timer (or with a stopped one) come last in both directions
-    $orderBy = ($query['sort'] === 'sla' ? "ISNULL($sortColumn) ASC, " : '') . $sortColumn . $direction . ', i.id DESC';
+    // The key column sorts by the key of the product and then by the number (the direction counts for both)
+    $orderBy = $query['sort'] === 'id'
+      ? "p.issue_key$direction, i.number$direction, i.id DESC"
+      : ($query['sort'] === 'sla' ? "ISNULL($sortColumn) ASC, " : '') . $sortColumn . $direction . ', i.id DESC';
     $limit = (int)$query['length'];
     $offset = (int)$query['start'];
 
@@ -258,7 +267,7 @@ class IssueModel
    *
    * @param int[] $ids The issue ids (unique)
    *
-   * @return array<int, array{id: int, summary: string}> The visible issues in ascending order of the id
+   * @return array<int, array{id: int, key: string, summary: string}> The visible issues in ascending order of the id
    */
   public function accessible(array $ids): array
   {
@@ -273,38 +282,41 @@ class IssueModel
       $params["ref$index"] = (int)$id;
     }
 
-    $stmt = $this->db->prepare('SELECT i.id, i.summary FROM issues i WHERE ' . $scope . ' AND i.id IN (' . implode(', ', $placeholders) . ') ORDER BY i.id');
+    $stmt = $this->db->prepare('SELECT i.id, i.number, p.issue_key, i.summary FROM issues i JOIN products p ON p.id = i.product_id WHERE ' . $scope . ' AND i.id IN (' . implode(', ', $placeholders) . ') ORDER BY i.id');
     $stmt->execute($params);
 
-    return array_map(fn(array $row): array => ['id' => (int)$row['id'], 'summary' => (string)$row['summary']], $stmt->fetchAll());
+    return array_map(fn(array $row): array => ['id' => (int)$row['id'], 'key' => IssueKey::format((string)$row['issue_key'], (int)$row['number']), 'summary' => (string)$row['summary']], $stmt->fetchAll());
   }
 
   //---------------------------------------------------------------------------
   /**
    * Creates an issue with the initial status "Open".
    *
-   * @param array $data type_id, summary, description, access, product_id (nullable), version (nullable), tag_ids (optional),
-   *                    priority_id (optional; the priority Normal if missing)
+   * @param array $data type_id, summary, description, access, product_id, affected_version_id (nullable), fixed_version_id (nullable),
+   *                    tag_ids (optional), priority_id (optional; the priority Normal if missing)
    * @param int   $reporterId The id of the reporting user
    *
-   * @return int The new issue id
+   * @return int The new issue id (the number of its key comes from the counter of the product)
    */
   public function create(array $data, int $reporterId): int
   {
     $this->db->beginTransaction();
     try {
+      $number = (new IssueNumbering($this->db))->allocate((int)$data['product_id']);
       $stmt = $this->db->prepare(
-        "INSERT INTO issues (type_id, status_id, priority_id, reporter_id, product_id, version, access, summary, description)
+        "INSERT INTO issues (type_id, status_id, priority_id, reporter_id, product_id, number, affected_version_id, fixed_version_id, access, summary, description)
          VALUES (:type_id, (SELECT id FROM `status` WHERE `key` = 'open'),
                  COALESCE(:priority_id, (SELECT id FROM priorities WHERE `key` = 'normal')),
-                 :reporter_id, :product_id, :version, :access, :summary, :description)"
+                 :reporter_id, :product_id, :number, :affected_version_id, :fixed_version_id, :access, :summary, :description)"
       );
       $stmt->execute([
         'type_id' => $data['type_id'],
         'priority_id' => $data['priority_id'] ?? null,
         'reporter_id' => $reporterId,
         'product_id' => $data['product_id'],
-        'version' => $data['version'],
+        'number' => $number,
+        'affected_version_id' => $data['affected_version_id'] ?? null,
+        'fixed_version_id' => $data['fixed_version_id'] ?? null,
         'access' => $data['access'],
         'summary' => $data['summary'],
         'description' => $data['description'],
@@ -458,14 +470,14 @@ class IssueModel
    *
    * @param array $facts The facts of the issue as checked (IssueActions::facts())
    *
-   * @return array The locked row: type_id, status_id, resolution_id, priority_id, product_id, assignee_id, access, version, summary, description
+   * @return array The locked row: type_id, status_id, resolution_id, priority_id, product_id, number, affected_version_id, fixed_version_id, assignee_id, access, summary, description
    *
    * @throws IssueConflictException If somebody else changed the issue in between
    */
   public function lockIssue(array $facts): array
   {
     $stmt = $this->db->prepare(
-      'SELECT type_id, status_id, resolution_id, priority_id, product_id, assignee_id, reporter_id, access, version, summary, description, deleted_at
+      'SELECT type_id, status_id, resolution_id, priority_id, product_id, number, affected_version_id, fixed_version_id, assignee_id, reporter_id, access, summary, description, deleted_at
          FROM issues WHERE id = :id FOR UPDATE'
     );
     $stmt->execute(['id' => $facts['id']]);
@@ -519,7 +531,7 @@ class IssueModel
    * Gives the value of a lookup record for the history: the key of a protected record (the page translates
    * it), else the name.
    *
-   * @param string   $table issue_types, status, resolutions, priorities or products
+   * @param string   $table issue_types, status, resolutions, priorities, products or product_versions
    * @param int|null $id    The record id
    *
    * @return string|null Null for no record
@@ -533,8 +545,8 @@ class IssueModel
       throw new \InvalidArgumentException('Unknown lookup table');
     }
 
-    // Products have no key
-    $select = $table === 'products' ? 'name' : 'COALESCE(`key`, name)';
+    // Products and versions have no key
+    $select = in_array($table, ['products', 'product_versions'], true) ? 'name' : 'COALESCE(`key`, name)';
     $stmt = $this->db->prepare("SELECT $select FROM `$table` WHERE id = :id");
     $stmt->execute(['id' => $id]);
     $value = $stmt->fetchColumn();
@@ -749,7 +761,7 @@ class IssueModel
    * and the resolution rules.
    *
    * @param array $facts   The facts of the issue as checked (IssueActions::facts())
-   * @param array $changes Any of type_id, priority_id, summary, description, access, product_id, version, tag_ids, status_id, resolution_id, assignee_id
+   * @param array $changes Any of type_id, priority_id, summary, description, access, affected_version_id, fixed_version_id, tag_ids, status_id, resolution_id, assignee_id
    * @param int   $actorId The id of the user who edits
    *
    * @return bool Whether anything changed
@@ -767,8 +779,8 @@ class IssueModel
       $params = ['id' => $id];
       $log = [];
 
-      // Lookup fields: type, priority, status, resolution, product
-      foreach (['type_id' => ['type', 'issue_types'], 'priority_id' => ['priority', 'priorities'], 'status_id' => ['status', 'status'], 'resolution_id' => ['resolution', 'resolutions'], 'product_id' => ['product', 'products']] as $column => [$field, $table]) {
+      // Lookup fields: type, priority, status, resolution and the versions (the product only changes by moving the issue)
+      foreach (['type_id' => ['type', 'issue_types'], 'priority_id' => ['priority', 'priorities'], 'status_id' => ['status', 'status'], 'resolution_id' => ['resolution', 'resolutions'], 'affected_version_id' => ['affected_version', 'product_versions'], 'fixed_version_id' => ['fixed_version', 'product_versions']] as $column => [$field, $table]) {
         if (!array_key_exists($column, $changes)) {
           continue;
         }
@@ -797,7 +809,7 @@ class IssueModel
 
       // Text fields. The description can be long, so the history only says that it changed. The comparison is
       // done here because the database collation ignores case and accents.
-      foreach (['summary' => true, 'version' => true, 'access' => true, 'description' => false] as $field => $keepValues) {
+      foreach (['summary' => true, 'access' => true, 'description' => false] as $field => $keepValues) {
         if (!array_key_exists($field, $changes) || $row[$field] === $changes[$field]) {
           continue;
         }
@@ -831,8 +843,8 @@ class IssueModel
         $this->removeWatchersWithoutAccess($id);
       }
 
-      // The SLA timers follow the issue: a new status, a deleted comment, and a new policy when type, priority, product or access changed
-      (new SlaService($this->db))->sync($id, array_intersect(['type_id', 'priority_id', 'product_id', 'access'], array_keys($params)) !== []);
+      // The SLA timers follow the issue: a new status, a deleted comment, and a new policy when type, priority or access changed
+      (new SlaService($this->db))->sync($id, array_intersect(['type_id', 'priority_id', 'access'], array_keys($params)) !== []);
 
       return !empty($sets) || $tagsChanged;
     });
@@ -863,6 +875,24 @@ class IssueModel
 
   //---------------------------------------------------------------------------
   /**
+   * Gives the status of a version of a product.
+   *
+   * @param int $versionId The version id
+   * @param int $productId The product the version has to belong to
+   *
+   * @return string|null planned, development, released or archived; null if the product has no such version
+   */
+  public function versionStatus(int $versionId, int $productId): ?string
+  {
+    $stmt = $this->db->prepare('SELECT status FROM product_versions WHERE id = :id AND product_id = :product');
+    $stmt->execute(['id' => $versionId, 'product' => $productId]);
+    $status = $stmt->fetchColumn();
+
+    return $status === false ? null : (string)$status;
+  }
+
+  //---------------------------------------------------------------------------
+  /**
    * Tells whether all given ids are tags.
    *
    * @param int[] $ids The tag ids (unique)
@@ -880,18 +910,6 @@ class IssueModel
     $stmt->execute(array_values($ids));
 
     return (int)$stmt->fetchColumn() === count($ids);
-  }
-
-  //---------------------------------------------------------------------------
-  /**
-   * Counts all issues, soft deleted ones included, without any visibility check. Only for system
-   * decisions (e.g. locking the issue key prefix), never for output to a user.
-   *
-   * @return int
-   */
-  public function countAll(): int
-  {
-    return (int)$this->db->query('SELECT COUNT(*) FROM issues')->fetchColumn();
   }
 
   //---------------------------------------------------------------------------
@@ -917,17 +935,19 @@ class IssueModel
   private function selectSql(bool $detail): string
   {
     $extra = $detail
-      ? ', i.description, i.version, i.resolution_id, i.product_id, i.deleted_at, i.requester_email,
+      ? ', i.description, i.resolution_id, i.affected_version_id, i.fixed_version_id, i.deleted_at, i.requester_email,
          r.`key` AS resolution_key, r.name AS resolution_name, r.icon AS resolution_icon,
          r.color AS resolution_color, r.background_color AS resolution_bg,
          p.name AS product_name, p.icon AS product_icon, p.color AS product_color, p.background_color AS product_bg,
+         av.name AS affected_version_name, av.status AS affected_version_status,
+         fv.name AS fixed_version_name, fv.status AS fixed_version_status,
          c.name AS category_name'
       : '';
     $joins = $detail
-      ? ' LEFT JOIN resolutions r ON r.id = i.resolution_id LEFT JOIN products p ON p.id = i.product_id'
+      ? ' LEFT JOIN resolutions r ON r.id = i.resolution_id LEFT JOIN product_versions av ON av.id = i.affected_version_id LEFT JOIN product_versions fv ON fv.id = i.fixed_version_id'
       : '';
 
-    return "SELECT i.id, i.summary, i.access, i.source, i.created_at, i.updated_at,
+    return "SELECT i.id, i.number, i.product_id, p.issue_key AS product_key, i.summary, i.access, i.source, i.created_at, i.updated_at,
                    i.type_id, t.`key` AS type_key, t.name AS type_name, t.icon AS type_icon,
                    t.color AS type_color, t.background_color AS type_bg,
                    i.status_id, s.`key` AS status_key, s.name AS status_name, s.icon AS status_icon,
@@ -1076,7 +1096,8 @@ class IssueModel
 
     $issue = [
       'id' => (int)$row['id'],
-      'key' => $this->config->issueKey((int)$row['id']),
+      'key' => IssueKey::format((string)$row['product_key'], (int)$row['number']),
+      'number' => (int)$row['number'],
       'summary' => $row['summary'],
       'access' => $row['access'],
       // web or email (Email to ticket)
@@ -1098,14 +1119,16 @@ class IssueModel
 
     if ($detail) {
       $issue['description'] = $row['description'];
-      $issue['version'] = $row['version'];
+      $issue['affected_version'] = $this->version($row, 'affected');
+      $issue['fixed_version'] = $this->version($row, 'fixed');
       $issue['deleted_at'] = $row['deleted_at'];
       // The address of a sender who is not a user (Email to ticket, policy anonymous): for support staff only
       $issue['requester_email'] = $seeEmail ? $row['requester_email'] : null;
       $issue['status']['category_name'] = $row['category_name'];
       $issue['resolution'] = $row['resolution_id'] === null ? null : $this->lookup($row, 'resolution', (int)$row['resolution_id']);
-      $issue['product'] = $row['product_id'] === null ? null : [
+      $issue['product'] = [
         'id' => (int)$row['product_id'],
+        'issue_key' => $row['product_key'],
         'name' => $row['product_name'],
         'icon' => $row['product_icon'],
         'color' => $row['product_color'],
@@ -1114,6 +1137,22 @@ class IssueModel
     }
 
     return $issue;
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Shapes the version of a row (affected or fixed).
+   *
+   * @param array  $row    The row
+   * @param string $prefix affected or fixed
+   *
+   * @return array|null id, name and status; null if the issue has none
+   */
+  private function version(array $row, string $prefix): ?array
+  {
+    $id = $row["{$prefix}_version_id"];
+
+    return $id === null ? null : ['id' => (int)$id, 'name' => $row["{$prefix}_version_name"], 'status' => $row["{$prefix}_version_status"]];
   }
 
   //---------------------------------------------------------------------------

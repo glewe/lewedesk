@@ -14,6 +14,7 @@ use App\Services\Mailbox\ImapSocketClient;
 use App\Services\Mailbox\MailboxClient;
 use App\Services\Mailbox\MailboxException;
 use App\Utils\IssueConfig;
+use App\Utils\IssueKey;
 use App\Utils\MailInConfig;
 use App\Utils\MailInSettings;
 use DateTimeZone;
@@ -22,6 +23,7 @@ use PDO;
 require_once __DIR__ . '/../utils/MailInConfig.php';
 require_once __DIR__ . '/../utils/MailInSettings.php';
 require_once __DIR__ . '/../utils/IssueConfig.php';
+require_once __DIR__ . '/../utils/IssueKey.php';
 require_once __DIR__ . '/../models/MailInboxModel.php';
 require_once __DIR__ . '/../models/UserModel.php';
 require_once __DIR__ . '/../models/PasswordResetModel.php';
@@ -957,8 +959,11 @@ class InboundMailService
       }
     }
 
-    foreach ($mail->issueIdsInSubject($this->config->keyPrefix()) as $issueId) {
-      if ($this->issueExists($issueId)) {
+    // A key of any product, or a former key of an issue
+    $keys = new IssueKey($this->db);
+    foreach ($mail->issueKeysInSubject() as $key) {
+      $issueId = $keys->resolve($key);
+      if ($issueId !== null) {
         return ['issue' => $issueId];
       }
     }
@@ -980,6 +985,26 @@ class InboundMailService
     $stmt->execute(['id' => $issueId]);
 
     return $stmt->fetchColumn() !== false;
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Gives the product of a new issue: the product chosen for the mailbox (mailin_default_product) if it exists,
+   * else the default product of the application (default_product_id).
+   *
+   * @param MailActor $actor The sender
+   *
+   * @return int|null Null if neither exists
+   */
+  private function productId(MailActor $actor): ?int
+  {
+    foreach ([$this->settings->defaultProductId(), $this->config->defaultProductId()] as $id) {
+      if ($id !== null && $id > 0 && $actor->issues->lookupExists('products', $id)) {
+        return $id;
+      }
+    }
+
+    return null;
   }
 
   //---------------------------------------------------------------------------
@@ -1014,14 +1039,22 @@ class InboundMailService
       return $this->refused('Too many issues in the last hour for this sender');
     }
 
-    $productId = $this->settings->defaultProductId();
+    // The product of a new issue is mandatory: the mailbox setting, else the default product of the application
+    $productId = $this->productId($actor);
+    if ($productId === null) {
+      error_log('Email to ticket: no issue was created, there is no default product (setting default_product_id)');
+
+      return ['result' => 'error', 'reason' => 'There is no default product'];
+    }
+
     $issueId = $actor->issues->create([
       'type_id' => $typeId,
       'summary' => $summary,
       'description' => $text,
       'access' => $this->settings->defaultAccess(),
-      'product_id' => $productId !== null && $actor->issues->lookupExists('products', $productId) ? $productId : null,
-      'version' => null,
+      'product_id' => $productId,
+      'affected_version_id' => null,
+      'fixed_version_id' => null,
     ], $actor->userId);
 
     // The issue exists now. Whatever goes wrong from here on is logged but does not fail the mail: a second try would
@@ -1039,7 +1072,7 @@ class InboundMailService
       $to = $requesterEmail ?? (string)($actor->user['email'] ?? '');
       if ($this->settings->sendConfirmation() && filter_var($to, FILTER_VALIDATE_EMAIL) !== false) {
         [$subject, $html, $plain] = $this->mail->buildReceived(
-          ['id' => $issueId, 'key' => $this->config->issueKey($issueId), 'summary' => $summary],
+          ['id' => $issueId, 'key' => (new IssueKey($this->db))->forId($issueId), 'summary' => $summary],
           $requesterEmail === null ? $actor->displayName() : ($mail->fromName !== '' ? $mail->fromName : $requesterEmail),
           $skipped
         );

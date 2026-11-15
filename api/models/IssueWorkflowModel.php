@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace App\Models;
 
 require_once __DIR__ . '/../services/SlaService.php';
+require_once __DIR__ . '/../services/IssueNumbering.php';
 
 use App\Services\AuditLog;
+use App\Services\IssueConflictException;
 use App\Services\IssueHistory;
+use App\Services\IssueNumbering;
 use App\Services\SlaService;
 use PDO;
 
@@ -181,6 +184,62 @@ class IssueWorkflowModel
       $this->history->log($facts['id'], $actorId, 'field_changed', 'access', $facts['access'], $access);
       $this->issues->removeWatchersWithoutAccess($facts['id']);
       $this->sla->sync($facts['id'], true);
+    });
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Move: gives the issue to another product. It gets the next number of that product (a new key), its old key stays
+   * valid as an alias, and the versions are cleared (they belong to the old product). The SLA timers follow the
+   * issue, because the product is an input of the SLA policy.
+   *
+   * @param array $facts     The facts of the issue
+   * @param int   $actorId   The moving user
+   * @param int   $productId The target product (it exists; the caller checked)
+   *
+   * @return array{old_key: string, new_key: string, number: int}
+   *
+   * @throws IssueConflictException If somebody else changed the issue in between, or it already belongs to the product
+   */
+  public function move(array $facts, int $actorId, int $productId): array
+  {
+    return $this->issues->transaction(function () use ($facts, $actorId, $productId): array {
+      $row = $this->issues->lockIssue($facts);
+      if ((int)$row['product_id'] === $productId) {
+        throw new IssueConflictException('The issue already belongs to this product');
+      }
+
+      $oldProduct = $this->issues->recordValue('products', (int)$row['product_id']);
+      $versions = [];
+      foreach (['affected_version_id' => 'affected_version', 'fixed_version_id' => 'fixed_version'] as $column => $field) {
+        if ($row[$column] !== null) {
+          $versions[$field] = $this->issues->recordValue('product_versions', (int)$row[$column]);
+        }
+      }
+
+      $result = (new IssueNumbering($this->db))->move($facts['id'], $productId);
+
+      $newProduct = $this->issues->recordValue('products', $productId);
+      $this->history->log($facts['id'], $actorId, 'field_changed', 'product', $oldProduct, $newProduct);
+      $this->history->log($facts['id'], $actorId, 'field_changed', 'key', $result['old_key'], $result['new_key']);
+      foreach ($versions as $field => $name) {
+        $this->history->log($facts['id'], $actorId, 'field_changed', $field, $name, null);
+      }
+
+      $summary = $this->db->prepare('SELECT summary FROM issues WHERE id = :id');
+      $summary->execute(['id' => $facts['id']]);
+      $this->audit?->log(
+        'issue.moved',
+        ['id' => $actorId, 'username' => $this->username($actorId)],
+        'issue',
+        $facts['id'],
+        $result['new_key'] . ' ' . (string)$summary->fetchColumn(),
+        ['key' => $result['old_key'], 'product' => $oldProduct],
+        ['key' => $result['new_key'], 'product' => $newProduct]
+      );
+      $this->sla->sync($facts['id'], true);
+
+      return $result;
     });
   }
 

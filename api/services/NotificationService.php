@@ -8,7 +8,10 @@ use App\Models\IssueModel;
 use App\Models\NotificationModel;
 use App\Models\NotificationPreferenceModel;
 use App\Utils\IssueConfig;
+use App\Utils\IssueKey;
 use PDO;
+
+require_once __DIR__ . "/../utils/IssueKey.php";
 
 //---------------------------------------------------------------------------
 /**
@@ -168,7 +171,7 @@ class NotificationService
       'assignee' => $issue['assignee'],
       'internal' => $internal && in_array(self::COMMENT, $events, true),
     ];
-    $mailIssue = ['id' => $issueId, 'key' => $this->config->issueKey($issueId), 'summary' => $issue['summary'],
+    $mailIssue = ['id' => $issueId, 'key' => (new IssueKey($this->db))->forId($issueId), 'summary' => $issue['summary'],
       'priority_key' => $issue['priority_key'], 'priority_name' => $issue['priority_name']];
 
     // The recipients with their channels
@@ -261,7 +264,7 @@ class NotificationService
       'sla_metric' => $metric,
       'sla_due' => $dueAt,
     ];
-    $mailIssue = ['id' => $issueId, 'key' => $this->config->issueKey($issueId), 'summary' => $issue['summary'],
+    $mailIssue = ['id' => $issueId, 'key' => (new IssueKey($this->db))->forId($issueId), 'summary' => $issue['summary'],
       'priority_key' => $issue['priority_key'], 'priority_name' => $issue['priority_name']];
 
     $users = $this->users(array_values(array_unique(array_map('intval', $userIds))));

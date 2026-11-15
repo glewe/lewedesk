@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Utils\IssueConfig;
+use App\Utils\IssueKey;
+
+require_once __DIR__ . '/../utils/IssueKey.php';
 
 //---------------------------------------------------------------------------
 /**
@@ -15,7 +18,8 @@ use App\Utils\IssueConfig;
  * searched for viewers who may read them, so a search can never reveal their content.
  *
  * An issue matches when
- *   - the whole term is an issue key (LD-123) or a number: the issue with that id (exact match), or
+ *   - the whole term is an issue key (LD-123, a former key as well) or a number (the number of an issue of the default
+ *     product): that issue (exact match), or
  *   - every word of the term is found in the summary, the description, the text of a comment, the
  *     product name or a tag name.
  *
@@ -42,7 +46,7 @@ class IssueSearch
    * Constructor.
    *
    * @param IssueVisibility $visibility The visibility rules (internal comments)
-   * @param IssueConfig     $config     The issue settings (the prefix of the issue key)
+   * @param IssueConfig     $config     The issue settings (the default product)
    */
   public function __construct(IssueVisibility $visibility, IssueConfig $config)
   {
@@ -82,10 +86,9 @@ class IssueSearch
     }
     $condition = '(' . implode(' AND ', $perWord) . ')';
 
-    $id = $this->issueId($term);
-    if ($id !== null) {
-      $condition = "($alias.id = :s_id OR $condition)";
-      $params['s_id'] = $id;
+    $byKey = $this->keyCondition($term, $alias, $params);
+    if ($byKey !== null) {
+      $condition = "($byKey OR $condition)";
     }
 
     return [$condition, $params];
@@ -109,19 +112,40 @@ class IssueSearch
 
   //---------------------------------------------------------------------------
   /**
-   * Reads the term as an issue key ("LD-123", any letter case) or an issue number ("123").
+   * Reads the term as an issue key ("LD-123", any letter case) or an issue number ("123") and builds the condition
+   * that finds that issue: by its current key, by a former key (alias), or, for a bare number, by the number in the
+   * default product.
    *
-   * @param string $term The search term
+   * @param string $term   The search term
+   * @param string $alias  The alias of the issues table
+   * @param array  $params The parameters of the whole condition (extended)
    *
-   * @return int|null The issue id, or null if the term is something else
+   * @return string|null The condition, or null if the term is something else
    */
-  private function issueId(string $term): ?int
+  private function keyCondition(string $term, string $alias, array &$params): ?string
   {
-    $pattern = '/^(?:' . preg_quote($this->config->keyPrefix(), '/') . '-)?([1-9]\d{0,8})$/i';
+    $term = trim($term);
 
-    return preg_match($pattern, trim($term), $match) === 1 ? (int)$match[1] : null;
+    $key = IssueKey::parse($term);
+    if ($key !== null) {
+      [$productKey, $number] = $key;
+      $params['s_key_product'] = $productKey;
+      $params['s_key_number'] = $number;
+      $params['s_key_alias'] = IssueKey::format($productKey, $number);
+
+      return "(($alias.number = :s_key_number AND EXISTS (SELECT 1 FROM products sk WHERE sk.id = $alias.product_id AND sk.issue_key = :s_key_product))"
+        . " OR EXISTS (SELECT 1 FROM issue_key_aliases sa WHERE sa.issue_id = $alias.id AND sa.alias_key = :s_key_alias))";
+    }
+
+    if (preg_match('/^[1-9]\d{0,8}$/', $term) === 1 && $this->config->defaultProductId() > 0) {
+      $params['s_num_number'] = (int)$term;
+      $params['s_num_product'] = $this->config->defaultProductId();
+
+      return "($alias.number = :s_num_number AND $alias.product_id = :s_num_product)";
+    }
+
+    return null;
   }
-
   //---------------------------------------------------------------------------
   /**
    * Builds the condition for one word: found in any of the searched places.

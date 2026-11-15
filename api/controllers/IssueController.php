@@ -13,6 +13,7 @@ use App\Services\IssueVisibility;
 use App\Services\NotificationService;
 use App\Services\RateLimiter;
 use App\Services\SlaService;
+use App\Utils\IssueKey;
 use DateTimeImmutable;
 use DateTimeZone;
 
@@ -28,7 +29,8 @@ use DateTimeZone;
  *   GET  /issues/agents   the users who can be assigned (role Agent; assign_issue)
  *   GET  /issues/reporters  the users who can be made the reporter (Agents and Administrators)
  *   GET  /issues/{id}     read, with the actions the viewer may use (see IssueActions) and the choices of Change access
- *   PUT  /issues/{id}     edit (the Edit page: edit_issue; any of type_id, priority_id, summary, description, access, product_id, version,
+ *   GET  /issues/{key}    the key (LD-12) is accepted instead of the id, a former key too (the route turns it into the id, see index.php)
+ *   PUT  /issues/{id}     edit (the Edit page: edit_issue; any of type_id, priority_id, summary, description, access, affected_version_id, fixed_version_id,
  *                         tag_ids and, with change_issue_status, status_id and resolution_id, with assign_issue, assignee_id, as Agent or Administrator, reporter_id and watcher_ids)
  *   PUT  /issues/{id}/tags  replace the tags of an issue ({"tag_ids": [1, 2]})
  *
@@ -43,7 +45,6 @@ class IssueController
   private const DEFAULT_PAGE_SIZE = 25;
   private const MAX_SUMMARY = 200;
   private const MAX_DESCRIPTION = 50000;
-  private const MAX_VERSION = 50;
   private const MAX_TAGS = 20;
   private const MAX_REFERENCES = 100;
   private const MAX_FILTER_VALUES = 100;
@@ -54,6 +55,7 @@ class IssueController
   private AttachmentModel $attachments;
   private RateLimiter $limiter;
   private NotificationService $notifier;
+  private IssueKey $keys;
 
   //---------------------------------------------------------------------------
   /**
@@ -65,9 +67,11 @@ class IssueController
    * @param AttachmentModel $attachments The attachment model (temporary uploads are attached to a new issue)
    * @param RateLimiter     $limiter     The limit of issues per hour
    * @param NotificationService $notifier The notifications about new and changed issues
+   * @param IssueKey        $keys        Finds issues by their key (the list of references)
    */
-  public function __construct(IssueModel $model, IssueVisibility $visibility, IssueActions $actions, AttachmentModel $attachments, RateLimiter $limiter, NotificationService $notifier)
+  public function __construct(IssueModel $model, IssueVisibility $visibility, IssueActions $actions, AttachmentModel $attachments, RateLimiter $limiter, NotificationService $notifier, IssueKey $keys)
   {
+    $this->keys = $keys;
     $this->model = $model;
     $this->visibility = $visibility;
     $this->actions = $actions;
@@ -318,6 +322,20 @@ class IssueController
       return $changes;
     }
 
+    // The product stays as it is; moving the issue to another product has its own action (it changes the key)
+    if (isset($changes['product_id'])) {
+      if ($changes['product_id'] !== (int)$issue['product']['id']) {
+        return 'The product of an issue is changed with the action Move';
+      }
+      unset($changes['product_id']);
+    }
+
+    // The versions have to belong to the product of the issue
+    $error = $this->checkVersions($changes, (int)$issue['product']['id'], $issue);
+    if ($error !== null) {
+      return $error;
+    }
+
     // A type that is inactive now may stay on an old issue, but cannot be chosen
     if (isset($changes['type_id']) && $changes['type_id'] !== (int)$issue['type']['id'] && !$this->model->lookupExists('issue_types', $changes['type_id'])) {
       return 'Type does not exist or is not active';
@@ -427,8 +445,10 @@ class IssueController
 
   //---------------------------------------------------------------------------
   /**
-   * Tells which of the issues in the parameter "ids" (comma separated, e.g. 12,15,40) the viewer may see.
-   * Used to link issue keys in texts: a key of an issue the viewer may not see stays plain text.
+   * Tells which of the issues in the parameter "ids" the viewer may see. The list is comma separated and holds issue ids
+   * (12,15) or issue keys (LD-12,GEN-3; a former key works as well). For a key, the answer carries it as "ref" (upper
+   * case, as asked) next to the current key. Used to link issue keys in texts: a key of an issue the viewer may not
+   * see stays plain text.
    */
   private function accessible(): void
   {
@@ -439,20 +459,37 @@ class IssueController
     }
 
     $ids = [];
+    $refs = [];
     foreach (explode(',', $raw) as $item) {
-      $id = $this->lookupId($item);
+      // Whitespace is no part of an id or a key
+      $parsed = $item === trim($item) ? IssueKey::parse($item) : null;
+      $id = $parsed !== null ? ($this->keys->resolve($item) ?? 0) : $this->lookupId($item);
       if ($id === null) {
-        $this->fail(400, 'Issue ids must be a comma separated list of issue numbers');
+        $this->fail(400, 'Issue ids must be a comma separated list of issue ids or issue keys');
         return;
       }
-      $ids[$id] = $id;
+      // A key that matches no issue is not an error: it is just not accessible
+      if ($id > 0) {
+        $ids[$id] = $id;
+        if ($parsed !== null) {
+          $refs[$id][] = IssueKey::format($parsed[0], $parsed[1]);
+        }
+      }
     }
     if (count($ids) > self::MAX_REFERENCES) {
       $this->fail(400, 'At most ' . self::MAX_REFERENCES . ' issues can be asked at once');
       return;
     }
 
-    $this->respond(['status' => 'success', 'data' => $this->model->accessible(array_values($ids))]);
+    $rows = [];
+    foreach ($this->model->accessible(array_values($ids)) as $row) {
+      // One row per key that was asked (the same issue can be asked by its current and by a former key)
+      foreach ($refs[$row['id']] ?? [null] as $ref) {
+        $rows[] = $ref === null ? $row : $row + ['ref' => $ref];
+      }
+    }
+
+    $this->respond(['status' => 'success', 'data' => $rows]);
   }
 
   //---------------------------------------------------------------------------
@@ -650,7 +687,16 @@ class IssueController
       return 'Upload token is invalid';
     }
 
-    return $fields + ['product_id' => null, 'version' => null, 'upload_token' => $token === '' ? null : $token];
+    // The product is mandatory: the key of the issue comes from it
+    if (!isset($fields['product_id'])) {
+      return 'Product is required';
+    }
+    $error = $this->checkVersions($fields, (int)$fields['product_id'], null);
+    if ($error !== null) {
+      return $error;
+    }
+
+    return $fields + ['affected_version_id' => null, 'fixed_version_id' => null, 'upload_token' => $token === '' ? null : $token];
   }
 
   //---------------------------------------------------------------------------
@@ -728,29 +774,25 @@ class IssueController
       $fields['access'] = $access;
     }
 
-    if ($create ? isset($input['product_id']) : array_key_exists('product_id', $input)) {
-      $productId = null;
-      if ($input['product_id'] !== null && $input['product_id'] !== '') {
-        $productId = $this->lookupId($input['product_id']);
-        if ($productId === null || !$this->model->lookupExists('products', $productId)) {
-          return 'Product does not exist';
-        }
+    // The product (on the Edit page it must be the product of the issue: moving is an action of its own)
+    if (array_key_exists('product_id', $input) && ($create || $input['product_id'] !== null)) {
+      $productId = $this->lookupId($input['product_id']);
+      if ($productId === null || !$this->model->lookupExists('products', $productId)) {
+        return 'Product does not exist';
       }
       $fields['product_id'] = $productId;
     }
 
-    if ($create ? isset($input['version']) : array_key_exists('version', $input)) {
-      $version = $input['version'] === null ? '' : $this->text($input['version']);
-      if ($version === null) {
-        return 'Version must be text';
+    // The versions: a version id or null (none); whether it fits the product is checked by checkVersions()
+    foreach (['affected_version_id', 'fixed_version_id'] as $field) {
+      if (array_key_exists($field, $input)) {
+        $raw = $input[$field];
+        $versionId = $raw === null || $raw === '' ? null : $this->lookupId($raw);
+        if ($raw !== null && $raw !== '' && $versionId === null) {
+          return ($field === 'affected_version_id' ? 'Affected version' : 'Fixed version') . ' must be a version id or null';
+        }
+        $fields[$field] = $versionId;
       }
-      if (mb_strlen($version) > self::MAX_VERSION) {
-        return 'Version must not be longer than ' . self::MAX_VERSION . ' characters';
-      }
-      if (preg_match('/[\x00-\x1F\x7F]/', $version)) {
-        return 'Version must be a single line';
-      }
-      $fields['version'] = $version === '' ? null : $version;
     }
 
     if ($create || array_key_exists('tag_ids', $input)) {
@@ -904,6 +946,38 @@ class IssueController
     }
 
     return max($min, min($max, (int)$value));
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Checks the versions of an issue: each one has to be a version of the product, and a version that is archived
+   * cannot be newly chosen (an issue that has it already may keep it).
+   *
+   * @param array      $fields    The validated fields (affected_version_id and fixed_version_id, if given)
+   * @param int        $productId The product of the issue
+   * @param array|null $issue     The issue as it is (null for a new issue)
+   *
+   * @return string|null An error message, or null if the versions are fine
+   */
+  private function checkVersions(array $fields, int $productId, ?array $issue): ?string
+  {
+    foreach (['affected_version' => 'Affected version', 'fixed_version' => 'Fixed version'] as $name => $label) {
+      $id = $fields[$name . '_id'] ?? null;
+      if ($id === null) {
+        continue;
+      }
+
+      $status = $this->model->versionStatus($id, $productId);
+      if ($status === null) {
+        return "$label does not exist for the product of the issue";
+      }
+      $current = $issue === null ? null : ($issue[$name]['id'] ?? null);
+      if ($status === 'archived' && $id !== $current) {
+        return "$label is archived and cannot be chosen";
+      }
+    }
+
+    return null;
   }
 
   //---------------------------------------------------------------------------

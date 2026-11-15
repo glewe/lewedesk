@@ -7,9 +7,11 @@ namespace App\Controllers;
 use App\Models\MailInboxModel;
 use App\Services\InboundMailService;
 use App\Services\Mailbox\MailboxException;
-use App\Utils\IssueConfig;
+use App\Utils\IssueKey;
 use App\Utils\MailInConfig;
 use App\Utils\MailInSettings;
+
+require_once __DIR__ . '/../utils/IssueKey.php';
 
 //---------------------------------------------------------------------------
 /**
@@ -36,14 +38,14 @@ class MailInController
    * @param MailInConfig       $env      The mailbox (.env)
    * @param MailInSettings     $settings The mailin_* settings
    * @param MailInboxModel     $inbox    The log of the read mails
-   * @param IssueConfig        $config   The issue settings (for the keys)
+   * @param IssueKey           $keys     The issue keys
    */
   public function __construct(
     private readonly InboundMailService $service,
     private readonly MailInConfig $env,
     private readonly MailInSettings $settings,
     private readonly MailInboxModel $inbox,
-    private readonly IssueConfig $config
+    private readonly IssueKey $keys
   ) {
   }
 
@@ -95,7 +97,7 @@ class MailInController
       'reason' => $row['reason'] === null ? null : (string)$row['reason'],
       'attempts' => (int)$row['attempts'],
       'issue_id' => $row['issue_id'] === null ? null : (int)$row['issue_id'],
-      'issue_key' => $row['issue_id'] === null ? null : $this->config->issueKey((int)$row['issue_id']),
+      'issue_key' => $row['issue_id'] === null ? null : $this->keys->forId((int)$row['issue_id']),
       'comment_id' => $row['comment_id'] === null ? null : (int)$row['comment_id'],
       'processed_at' => (string)$row['processed_at'],
     ], $this->inbox->recent(self::RECENT));

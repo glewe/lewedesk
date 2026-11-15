@@ -6,7 +6,10 @@ namespace App\Models;
 
 use App\Services\IssueVisibility;
 use App\Utils\IssueConfig;
+use App\Utils\IssueKey;
 use PDO;
+
+require_once __DIR__ . "/../utils/IssueKey.php";
 
 //---------------------------------------------------------------------------
 /**
@@ -20,6 +23,7 @@ class NotificationModel
   private PDO $db;
   private IssueVisibility $visibility;
   private IssueConfig $config;
+  private IssueKey $keys;
 
   //---------------------------------------------------------------------------
   /**
@@ -34,6 +38,7 @@ class NotificationModel
     $this->db = $db;
     $this->visibility = $visibility;
     $this->config = $config;
+    $this->keys = new IssueKey($db);
   }
 
   //---------------------------------------------------------------------------
@@ -97,7 +102,11 @@ class NotificationModel
     $stmt->bindValue('limit', $limit, PDO::PARAM_INT);
     $stmt->execute();
 
-    return array_map(fn(array $row): array => $this->present($row), $stmt->fetchAll());
+    $rows = $stmt->fetchAll();
+    // The keys of all issues in one query (present() reads them from there)
+    $this->keys->forIds(array_column($rows, 'issue_id'));
+
+    return array_map(fn(array $row): array => $this->present($row), $rows);
   }
 
   //---------------------------------------------------------------------------
@@ -212,7 +221,7 @@ class NotificationModel
     return [
       'id' => (int)$row['id'],
       'issue_id' => $issueId,
-      'issue_key' => $this->config->issueKey($issueId),
+      'issue_key' => $this->keys->forId($issueId),
       'summary' => $row['summary'],
       'event' => $row['event'],
       'events' => $data['events'] ?? [$row['event']],

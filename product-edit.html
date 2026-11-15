@@ -23,12 +23,14 @@
   <meta name="robots" content="noindex, nofollow">
 
 
-  <script type="module" crossorigin src="./assets/js/fonts-dgFHIs4h.js"></script>
-  <script type="module" crossorigin src="./assets/js/branding-UEWAsrHG.js"></script>
-  <script type="module" crossorigin src="./assets/js/main-DEtbfUG2.js"></script>
-  <script type="module" crossorigin src="./assets/js/lookup-config-BHRz8jOp.js"></script>
-  <script type="module" crossorigin src="./assets/js/lookup-form-vIUNPBzS.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/css/fonts-CZR4NW46.css">
+  <script type="module" crossorigin src="./assets/js/product-edit-CGoLU3EL.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/js/fonts-C3DERUNI.js">
+  <link rel="modulepreload" crossorigin href="./assets/js/issue-key-Dr3Tw7Pz.js">
+  <link rel="modulepreload" crossorigin href="./assets/js/main-16rWxbyu.js">
+  <link rel="modulepreload" crossorigin href="./assets/js/lookup-config-zJnSnGyw.js">
+  <link rel="modulepreload" crossorigin href="./assets/js/lookup-form-_jDdwD1p.js">
+  <link rel="modulepreload" crossorigin href="./assets/js/versions-DDFXmWWA.js">
+  <link rel="stylesheet" crossorigin href="./assets/css/fonts-BNMgIbIj.css">
 </head>
 <body>
   <div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
@@ -372,6 +374,18 @@
 <div class="card mb-4">
   <div class="card-header" data-i18n="lookup_pages.products.edit_title"></div>
   <div class="card-body">
+    
+    <ul class="nav nav-tabs mb-4" id="lookup-tabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="details-tab" data-bs-toggle="tab" data-bs-target="#details-pane" type="button" role="tab" aria-controls="details-pane" aria-selected="true" data-i18n="lookup_pages.products.tab_details">Details</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="versions-tab" data-bs-toggle="tab" data-bs-target="#versions-pane" type="button" role="tab" aria-controls="versions-pane" aria-selected="false" data-i18n="lookup_pages.products.tab_versions">Versions</button>
+      </li>
+    </ul>
+    <div class="tab-content">
+    <div class="tab-pane fade show active" id="details-pane" role="tabpanel" aria-labelledby="details-tab" tabindex="0">
+    
     <form id="lookup-form" data-mode="edit" data-lookup="products" novalidate>
       <div class="alert alert-info d-none" id="protected-notice" role="alert">
         <i class="bi bi-lock-fill me-2"></i><span data-i18n="common.system_record_notice"></span>
@@ -396,6 +410,20 @@
           <input type="text" class="form-control" name="name" maxlength="50" required>
         </div>
       </div>
+
+      
+      <div class="form-row">
+        <div class="form-info">
+          <label class="form-title" for="issue-key-input" data-i18n="common.key">Key</label>
+          <p class="form-description" data-i18n="lookup_pages.products.key_desc"></p>
+        </div>
+        <div class="form-content">
+          <input type="text" class="form-control text-uppercase" id="issue-key-input" name="issue_key" pattern="[A-Za-z]{1,4}" autocomplete="off" spellcheck="false" required style="max-width: 8rem">
+          <div class="invalid-feedback" id="issue-key-feedback" data-i18n="lookup_pages.products.key_invalid"></div>
+          <div class="form-text text-warning-emphasis d-none" id="issue-key-warning" data-i18n="lookup_pages.products.key_change_warning"></div>
+        </div>
+      </div>
+      
 
       
 
@@ -465,6 +493,108 @@
         <button type="submit" class="btn btn-primary px-4" id="save-btn" data-i18n="common.save">Save</button>
       </div>
     </form>
+    
+    </div>
+    <div class="tab-pane fade" id="versions-pane" role="tabpanel" aria-labelledby="versions-tab" tabindex="0">
+      
+<div id="versions-panel">
+  <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+    <p class="text-body-secondary mb-0" data-i18n="versions.intro"></p>
+    <button type="button" class="btn btn-primary text-nowrap" id="version-add-btn"><i class="bi bi-plus-lg me-1"></i><span data-i18n="versions.add">Add version</span></button>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-hover align-middle w-100 d-none" id="versions-table">
+      <thead>
+        <tr>
+          <th data-i18n="versions.columns.name">Version</th>
+          <th data-i18n="versions.columns.status">Status</th>
+          <th data-i18n="versions.columns.release_date">Release date</th>
+          <th data-i18n="versions.columns.link">Link</th>
+          <th class="text-end" data-i18n="versions.columns.fixed">Fixed issues</th>
+          <th class="text-end" data-i18n="versions.columns.affected">Affected issues</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="versions-body"></tbody>
+    </table>
+  </div>
+  <p class="text-body-secondary d-none" id="versions-empty" data-i18n="versions.empty"></p>
+</div>
+
+<div class="modal fade" id="version-modal" tabindex="-1" aria-labelledby="version-modal-title" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <form class="modal-content" id="version-form" novalidate>
+      <div class="modal-header">
+        <h5 class="modal-title" id="version-modal-title"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="version-name" class="form-label" data-i18n="versions.fields.name">Name</label>
+          <input type="text" class="form-control" id="version-name" name="name" maxlength="50" autocomplete="off" required>
+          <div class="invalid-feedback" id="version-name-feedback" data-i18n="versions.validation.name_required"></div>
+        </div>
+        <div class="mb-3">
+          <label for="version-status" class="form-label" data-i18n="versions.fields.status">Status</label>
+          <select class="form-select" id="version-status" name="status"></select>
+        </div>
+        <div class="mb-3">
+          <label for="version-release-date" class="form-label" data-i18n="versions.fields.release_date">Release date</label>
+          <div class="input-group position-relative has-validation">
+            <input type="text" inputmode="numeric" maxlength="10" pattern="\d{4}-\d{2}-\d{2}" placeholder="YYYY-MM-DD" title="YYYY-MM-DD" class="form-control" id="version-release-date" name="release_date" autocomplete="off">
+            <button type="button" class="btn btn-outline-secondary" id="version-release-date-btn" data-i18n-title="versions.fields.pick_date" title="Pick a date"><i class="bi bi-calendar3"></i></button>
+            
+            <input type="date" id="version-release-date-picker" class="position-absolute opacity-0 pe-none" style="bottom: 0; right: 0; width: 2.5rem; height: 1px;" tabindex="-1" aria-hidden="true">
+            <div class="invalid-feedback" id="version-release-date-feedback" data-i18n="versions.validation.release_date_required"></div>
+          </div>
+          <div class="form-text" data-i18n="versions.fields.release_date_desc"></div>
+        </div>
+        <div class="mb-3">
+          <label for="version-link" class="form-label" data-i18n="versions.fields.link">Link</label>
+          <input type="url" class="form-control" id="version-link" name="link" maxlength="500" placeholder="https://github.com/..." autocomplete="off">
+          <div class="form-text" data-i18n="versions.fields.link_desc"></div>
+          <div class="invalid-feedback" data-i18n="versions.validation.link_invalid"></div>
+        </div>
+        <div class="mb-0">
+          <label for="version-description" class="form-label" data-i18n="versions.fields.description">Description</label>
+          <textarea class="form-control" id="version-description" name="description" rows="3" maxlength="5000"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-i18n="common.cancel">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="version-save" data-i18n="common.save">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal fade" id="version-delete-modal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" data-i18n="versions.delete.title">Delete version</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p id="version-delete-text"></p>
+        <div id="version-replacement-box" class="d-none">
+          <label for="version-replacement" class="form-label" data-i18n="common.replacement">Replacement</label>
+          <select id="version-replacement" class="form-select"></select>
+          <div class="form-text" data-i18n="versions.delete.replacement_desc"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-i18n="common.cancel">Cancel</button>
+        <button type="button" class="btn btn-danger" id="version-delete-confirm" data-i18n="common.yes_delete">Yes, delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+    </div>
+    </div>
+    
   </div>
 </div>
 
@@ -476,7 +606,7 @@
       <div class="container-fluid h-100 d-flex align-items-center">
         <div class="flex-fill">&copy; 2026 by <a href="https://lewe.com" class="text-decoration-none">Lewe Labs</a>.</div>
         <div class="flex-fill text-center"><a href="privacy.html" class="text-decoration-none" data-i18n="header.privacy">Privacy Policy</a> &middot; <a href="imprint.html" class="text-decoration-none" data-i18n="header.imprint">Imprint</a></div>
-        <div class="flex-fill text-end">Powered by <i class="bi bi-ticket-perforated logo-gradient mx-1" aria-hidden="true"></i><a href="https://lewedesk.lewe.com" class="text-decoration-none" target="_blank" rel="noopener">Lewe<strong>Desk</strong></a> 1.0.3.186</div>
+        <div class="flex-fill text-end">Powered by <i class="bi bi-ticket-perforated logo-gradient mx-1" aria-hidden="true"></i><a href="https://lewedesk.lewe.com" class="text-decoration-none" target="_blank" rel="noopener">Lewe<strong>Desk</strong></a> 1.1.0.205</div>
       </div>
     </footer>
   </div>

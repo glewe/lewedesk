@@ -12,6 +12,8 @@ error_reporting(E_ALL);
 require_once __DIR__ . '/utils/EnvLoader.php';
 require_once __DIR__ . '/utils/SettingsValidator.php';
 require_once __DIR__ . '/utils/IssueConfig.php';
+require_once __DIR__ . '/utils/IssueKey.php';
+require_once __DIR__ . '/services/IssueNumbering.php';
 require_once __DIR__ . '/config/Database.php';
 require_once __DIR__ . '/models/UserModel.php';
 require_once __DIR__ . '/services/AuthService.php';
@@ -29,6 +31,8 @@ require_once __DIR__ . '/controllers/TwoFactorController.php';
 require_once __DIR__ . '/config/Lookups.php';
 require_once __DIR__ . '/models/LookupModel.php';
 require_once __DIR__ . '/controllers/LookupController.php';
+require_once __DIR__ . '/models/ProductVersionModel.php';
+require_once __DIR__ . '/controllers/ProductVersionController.php';
 require_once __DIR__ . '/services/IssueVisibility.php';
 require_once __DIR__ . '/models/IssueModel.php';
 require_once __DIR__ . '/controllers/IssueController.php';
@@ -107,7 +111,9 @@ use App\Controllers\ProfileController;
 use App\Controllers\TwoFactorController;
 use App\Config\Lookups;
 use App\Controllers\LookupController;
+use App\Controllers\ProductVersionController;
 use App\Models\LookupModel;
+use App\Models\ProductVersionModel;
 use App\Models\IssueModel;
 use App\Models\IssueWorkflowModel;
 use App\Controllers\AttachmentController;
@@ -160,6 +166,7 @@ use App\Services\SecretVault;
 use App\Services\Totp;
 use App\Services\TwoFactorService;
 use App\Utils\IssueConfig;
+use App\Utils\IssueKey;
 
 // Load environment variables
 EnvLoader::load(dirname(__DIR__));
@@ -177,7 +184,7 @@ if ($requestOrigin !== '' && !empty($appUrlParts['scheme']) && !empty($appUrlPar
     header('Access-Control-Allow-Origin: ' . $requestOrigin);
   }
 }
-header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
 // Handle preflight requests
@@ -340,6 +347,17 @@ try {
     return $names === [] ? null : 'It is used by the SLA policies: ' . implode(', ', $names);
   };
 
+  // The issue key in the path (/issues/LD-12, /issues/LD-12/comments, a former key too): the routes below work with the
+  // issue id, so the key is turned into it here. An unknown key becomes the id 0, which no issue has (404 as for any
+  // missing issue). Who may see the issue is decided by the visibility rules of the routes, as for an id.
+  // POST /issues/12/move is the short form of the action POST /issues/12/actions/move.
+  if (preg_match('#^/issues/([A-Za-z]{1,4}-[1-9]\d{0,8})(/.*)?$#', $path, $m)) {
+    $path = '/issues/' . ((new IssueKey($pdo))->resolve($m[1]) ?? 0) . ($m[2] ?? '');
+  }
+  if (preg_match('#^/issues/(\d+)/move/?$#', $path, $m)) {
+    $path = '/issues/' . $m[1] . '/actions/move';
+  }
+
   // Roles and groups (REST style: /roles, /roles/12, /roles/delete)
   if (preg_match('#^/(roles|groups)(?:/(\d+|delete))?/?$#', $path, $m)) {
     // Reading the lists is also needed by the user and permission forms (role and group selection)
@@ -352,6 +370,24 @@ try {
       ? new EntityController(new EntityModel($pdo, 'roles', 'user_role', 'role_id'), $audit, 'Role', ['Administrator', 'Agent', 'User', 'Public'])
       : new EntityController(new EntityModel($pdo, 'groups', 'user_group', 'group_id'), $audit, 'Group', [], static fn(array $ids): ?string => $slaDeleteGuard('groups', $ids));
     $controller->handle($_SERVER['REQUEST_METHOD'], $m[2] ?? null);
+    exit;
+  }
+
+  // The versions of a product (REST style: /products/3/versions, /products/3/versions/7, /products/3/versions/7/issues).
+  // Reading is open to everybody who may see issues (the pickers of the issue forms need the versions); changing them
+  // needs the product permission. The release notes (the issues with the fixed version) need view_issue and only list
+  // the issues the viewer may see.
+  if (preg_match('#^/products/(\d+)/versions(?:/(\d+)(?:/(issues))?)?/?$#', $path, $m)) {
+    $method = $_SERVER['REQUEST_METHOD'];
+    if ($method === 'GET') {
+      $allowed = !empty($m[3]) ? $auth->can('view_issue') : $auth->canAny(['view_issue', 'manage_products']);
+      if (!$allowed) {
+        $auth->currentUser() ? sendError(403, 'Permission required: view_issue') : sendError(401, 'Authentication required');
+      }
+    } else {
+      requirePermission($auth, 'manage_products');
+    }
+    (new ProductVersionController(new ProductVersionModel($pdo, $visibility), $audit))->handle($method, (int)$m[1], isset($m[2]) ? (int)$m[2] : null, $m[3] ?? null);
     exit;
   }
 
@@ -453,7 +489,7 @@ try {
   // Administration of Email-to-ticket (GET /mailin/status, POST /mailin/test, POST /mailin/run)
   if (preg_match('#^/mailin/(status|test|run)/?$#', $path, $m)) {
     requirePermission($auth, 'manage_settings');
-    (new MailInController($mailInbound, $mailIn, new MailInSettings($allSettings), new MailInboxModel($pdo), $issueConfig))->handle($_SERVER['REQUEST_METHOD'], $m[1]);
+    (new MailInController($mailInbound, $mailIn, new MailInSettings($allSettings), new MailInboxModel($pdo), new IssueKey($pdo)))->handle($_SERVER['REQUEST_METHOD'], $m[1]);
     exit;
   }
 
@@ -565,7 +601,7 @@ try {
         sendLicenseLimit(LicenseFeatures::limitMessage('issues'));
       }
     }
-    (new IssueController($issueModel, $visibility, $issueActions, $attachmentModel, $rateLimiter, $notifier))->handle($_SERVER['REQUEST_METHOD'], $m[1] ?? null, $m[2] ?? null);
+    (new IssueController($issueModel, $visibility, $issueActions, $attachmentModel, $rateLimiter, $notifier, new IssueKey($pdo)))->handle($_SERVER['REQUEST_METHOD'], $m[1] ?? null, $m[2] ?? null);
     exit;
   }
 
@@ -654,9 +690,9 @@ try {
           sendLicenseLimit(LicenseFeatures::MESSAGE_FEATURE);
         }
 
-        // The prefix is part of every issue key that was handed out, so it stays once an issue exists
-        if (isset($clean['issue_key_prefix']) && $clean['issue_key_prefix'] !== $issueConfig->keyPrefix() && $issueModel->countAll() > 0) {
-          sendError(409, 'The issue key prefix cannot be changed once issues exist');
+        // The default product must exist (new issues that name no product, e.g. from mails, are created in it)
+        if (isset($clean['default_product_id']) && !$issueModel->lookupExists('products', (int)$clean['default_product_id'])) {
+          sendError(400, 'default_product_id: product does not exist');
         }
 
         // The change and one audit entry per changed setting stand or fall together
@@ -708,8 +744,6 @@ try {
         $settings['mailin_active'] = $mailInActive;
         // Same for single sign-on (OIDC_YES in .env): the login page shows the SSO button
         $settings['oidc_active'] = $oidc->isEnabled();
-        // Not stored either: the issue key prefix is locked once an issue exists (the settings page disables the field)
-        $settings['issue_key_locked'] = $issueModel->countAll() > 0;
         echo json_encode(['status' => 'success', 'data' => $settings]);
       }
       break;

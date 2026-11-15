@@ -188,8 +188,6 @@
       "index_copyright_company_desc": "Nom de la société dans la ligne de copyright du pied de page. L'année est ajoutée automatiquement. Laissez vide pour la valeur par défaut.",
       "index_copyright_url": "Lien du copyright",
       "index_copyright_url_desc": "Adresse web facultative (http ou https) vers laquelle pointe le nom de la société. Sans adresse, le nom est affiché comme texte simple.",
-      "issue_key_prefix": "Préfixe de la clé de ticket",
-      "issue_key_prefix_desc": "Saisissez le préfixe de la clé de ticket. Les tickets sont affichés sous la forme PRÉFIXE-123 (p. ex. LD-123). Le préfixe ne peut plus être modifié dès qu'un premier ticket existe.",
       "support_email": "E-mail du support",
       "support_email_desc": "Saisissez ici l'adresse e-mail de votre équipe de support. Un message est envoyé à cette adresse lors de la création d'un ticket.",
       "attachment_max_size": "Taille maximale d'une pièce jointe (Mo)",
@@ -241,7 +239,9 @@
       "mailin_allowed_domains": "Domaines d'expéditeur autorisés",
       "mailin_allowed_domains_desc": "Seuls les e-mails de ces domaines sont traités (un par ligne ou séparés par des virgules, sous-domaines inclus). Vide : tous les domaines.",
       "mailin_blocked_domains": "Domaines d'expéditeur bloqués",
-      "mailin_blocked_domains_desc": "Les e-mails de ces domaines sont toujours rejetés."
+      "mailin_blocked_domains_desc": "Les e-mails de ces domaines sont toujours rejetés.",
+      "default_product_id": "Produit par défaut",
+      "default_product_id_desc": "Le produit des nouveaux tickets qui n'en indiquent aucun, par exemple ceux créés à partir de courriels. La clé du produit est le préfixe des clés de ticket (p. ex. LD-123)."
     },
     "actions": {
       "save": "Enregistrer les paramètres",
@@ -571,7 +571,15 @@
         "save_error": "Le produit n'a pas pu être enregistré.",
         "delete_error": "Les produits sélectionnés n'ont pas pu être supprimés.",
         "not_found": "Le produit est introuvable."
-      }
+      },
+      "tab_details": "Détails",
+      "tab_versions": "Versions",
+      "key_desc": "De 1 à 4 lettres. La clé est le préfixe des clés de ticket du produit (p. ex. LD pour LD-123).",
+      "key_invalid": "Saisissez de 1 à 4 lettres.",
+      "key_taken": "Un autre produit a cette clé.",
+      "key_change_warning": "Les tickets de ce produit reçoivent la nouvelle clé. Leurs anciennes clés restent valables et y mènent toujours.",
+      "replacement_needed": "Le produit sélectionné compte {count} ticket(s). Choisissez le produit vers lequel ces tickets doivent être déplacés. Ils y reçoivent de nouvelles clés (les anciennes clés continuent de fonctionner) et leurs versions sont effacées :",
+      "replacement_default": "Le produit sélectionné est le produit par défaut. Choisissez le produit qui devient le produit par défaut (ses tickets y sont aussi déplacés) :"
     },
     "tags": {
       "title": "Étiquettes",
@@ -631,7 +639,8 @@
     "replacement": "Remplacement",
     "replacement_needed": "L'enregistrement sélectionné est utilisé par {count} ticket(s). Choisissez l'enregistrement que ces tickets doivent recevoir à la place :",
     "replacement_needed_many": "Les enregistrements sélectionnés sont utilisés par {count} ticket(s). Choisissez l'enregistrement que ces tickets doivent recevoir à la place :",
-    "replacement_none": "Il n'existe aucun autre enregistrement actif pouvant le remplacer."
+    "replacement_none": "Il n'existe aucun autre enregistrement actif pouvant le remplacer.",
+    "key": "Clé"
   },
   "datatables": {
     "search": "Rechercher :",
@@ -892,7 +901,9 @@
       "tags": "Étiquettes",
       "watchers": "Observateurs",
       "source": "Source",
-      "requester": "Expéditeur"
+      "requester": "Expéditeur",
+      "affected_version": "Version concernée",
+      "fixed_version": "Version corrigée"
     },
     "columns": {
       "id": "Ticket",
@@ -981,10 +992,13 @@
       "description_required": "Veuillez saisir une description.",
       "tags_desc": "Les étiquettes aident à trouver et à regrouper les tickets (facultatif). Saisissez pour rechercher parmi les étiquettes existantes.",
       "product_desc": "Le produit concerné par le ticket (facultatif).",
-      "no_product": "Aucun produit",
-      "version_desc": "La version du produit dans laquelle le problème survient (facultatif).",
       "access_desc": "Qui peut voir ce ticket. L'équipe de support peut toujours le voir.",
-      "submit": "Créer le ticket"
+      "submit": "Créer le ticket",
+      "product_required": "Veuillez sélectionner un produit.",
+      "product_placeholder": "Sélectionner un produit...",
+      "no_version": "Aucune version",
+      "affected_version_desc": "La version du produit dans laquelle le problème survient (facultatif).",
+      "fixed_version_desc": "La version du produit qui corrige le problème (facultatif)."
     },
     "edit": {
       "status_changed": "Statut modifié.",
@@ -1002,13 +1016,15 @@
       "no_permission": "Vous n'êtes pas autorisé à modifier ce ticket.",
       "save_error": "Le ticket n'a pas pu être enregistré.",
       "saved": "Le ticket {key} a été mis à jour.",
-      "unchanged": "Rien n'a été modifié."
+      "unchanged": "Rien n'a été modifié.",
+      "product_locked": "Le produit ne peut pas être modifié ici. Utilisez l'action « Déplacer vers un autre produit » du ticket ; la clé du ticket change."
     },
     "detail": {
       "loading": "Chargement...",
       "back": "Retour à la liste",
       "properties": "Propriétés",
-      "deleted": "Supprimé"
+      "deleted": "Supprimé",
+      "release_notes": "Notes de version"
     },
     "messages": {
       "load_error": "Les tickets n'ont pas pu être chargés.",
@@ -1097,7 +1113,8 @@
       "unwatch": "Ne plus suivre le ticket",
       "change_access": "Modifier l'accès",
       "delete": "Supprimer le ticket",
-      "restore": "Restaurer le ticket"
+      "restore": "Restaurer le ticket",
+      "move": "Déplacer vers un autre produit"
     },
     "fields": {
       "comment": "Commentaire",
@@ -1106,12 +1123,14 @@
       "assignee": "Assigné à",
       "access": "Accès",
       "internal": "Commentaire interne",
-      "internal_desc": "Seule l'équipe de support peut voir un commentaire interne. Un commentaire interne ne modifie pas le statut."
+      "internal_desc": "Seule l'équipe de support peut voir un commentaire interne. Un commentaire interne ne modifie pas le statut.",
+      "product": "Nouveau produit"
     },
     "placeholders": {
       "resolution": "Sélectionnez une résolution...",
       "assignee": "Sélectionnez un agent...",
-      "access": "Sélectionnez le nouvel accès..."
+      "access": "Sélectionnez le nouvel accès...",
+      "product": "Sélectionner un produit..."
     },
     "unassign": "Non assigné",
     "modal": {
@@ -1145,13 +1164,19 @@
         "title": "Supprimer le ticket",
         "text": "Le ticket est masqué pour tout le monde sauf l'équipe de support. Il peut être restauré ultérieurement. Supprimer ce ticket ?",
         "submit": "Oui, supprimer"
+      },
+      "move": {
+        "title": "Déplacer le ticket",
+        "text": "Le ticket reçoit le numéro suivant du produit sélectionné, sa clé change donc. L'ancienne clé continue de fonctionner. La version concernée et la version corrigée sont effacées, car les versions appartiennent à un produit.",
+        "submit": "Déplacer"
       }
     },
     "validation": {
       "comment_required": "Veuillez saisir un commentaire.",
       "resolution_required": "Veuillez sélectionner une résolution.",
       "assignee_required": "Veuillez sélectionner un agent.",
-      "access_required": "Veuillez sélectionner le nouvel accès."
+      "access_required": "Veuillez sélectionner le nouvel accès.",
+      "product_required": "Veuillez sélectionner un produit."
     },
     "done": {
       "respond": "Votre réponse a été ajoutée.",
@@ -1164,7 +1189,8 @@
       "unwatch": "Vous ne suivez plus ce ticket.",
       "change_access": "L'accès a été modifié.",
       "delete": "Le ticket a été supprimé.",
-      "restore": "Le ticket a été restauré."
+      "restore": "Le ticket a été restauré.",
+      "move": "Le ticket a été déplacé. Sa clé est maintenant {key}."
     },
     "error": "L'action n'a pas pu être effectuée.",
     "load_error": "La liste des agents n'a pas pu être chargée."
@@ -1213,7 +1239,10 @@
       "product": "Produit",
       "version": "Version",
       "sla_breached_first_response": "Non-respect du SLA : première réponse (échéance)",
-      "sla_breached_resolution": "Non-respect du SLA : résolution (échéance)"
+      "sla_breached_resolution": "Non-respect du SLA : résolution (échéance)",
+      "key": "Clé du ticket",
+      "affected_version": "Version concernée",
+      "fixed_version": "Version corrigée"
     },
     "load_error": "L'historique n'a pas pu être chargé."
   },
@@ -1636,6 +1665,64 @@
       "overrun": "Dépassement",
       "met": "atteint",
       "open": "ouvert"
+    }
+  },
+  "versions": {
+    "status": {
+      "planned": "Planifiée",
+      "development": "En développement",
+      "released": "Publiée",
+      "archived": "Archivée"
+    },
+    "load_error": "Les versions n'ont pas pu être chargées.",
+    "intro": "Versions du produit. Les tickets peuvent indiquer une version concernée et une version corrigée.",
+    "add": "Ajouter une version",
+    "edit": "Modifier la version",
+    "empty": "Ce produit n'a pas encore de version.",
+    "release_notes": "Notes de version",
+    "columns": {
+      "name": "Version",
+      "status": "Statut",
+      "release_date": "Date de publication",
+      "link": "Lien",
+      "fixed": "Tickets corrigés",
+      "affected": "Tickets concernés"
+    },
+    "fields": {
+      "name": "Nom",
+      "status": "Statut",
+      "release_date": "Date de publication",
+      "pick_date": "Choisir une date",
+      "release_date_desc": "Facultative tant que la version est planifiée ou en développement, obligatoire une fois publiée.",
+      "link": "Lien",
+      "link_desc": "Adresse web facultative (http ou https), p. ex. la publication sur GitHub.",
+      "description": "Description"
+    },
+    "validation": {
+      "name_required": "Veuillez saisir un nom.",
+      "release_date_required": "Une version publiée nécessite une date de publication.",
+      "release_date_invalid": "Saisissez une date valide au format AAAA-MM-JJ.",
+      "link_invalid": "Veuillez saisir une adresse web commençant par http:// ou https://."
+    },
+    "messages": {
+      "created": "La version a été créée.",
+      "updated": "La version a été mise à jour.",
+      "deleted": "La version a été supprimée.",
+      "save_error": "La version n'a pas pu être enregistrée.",
+      "delete_error": "La version n'a pas pu être supprimée."
+    },
+    "delete": {
+      "title": "Supprimer la version",
+      "confirm": "Supprimer la version « {name} » ?",
+      "replacement_needed": "La version « {name} » est utilisée par {count} ticket(s). Choisissez la version qu'ils doivent recevoir à la place, ou aucune :",
+      "replacement_desc": "La version concernée et la version corrigée des tickets sont remplacées.",
+      "none": "Aucune (vider le champ)"
+    },
+    "notes": {
+      "title": "Notes de version",
+      "empty": "Aucun ticket n'a encore été corrigé dans cette version, ou vous ne pouvez pas les voir.",
+      "not_found": "La version est introuvable.",
+      "load_error": "Les notes de version n'ont pas pu être chargées."
     }
   }
 }

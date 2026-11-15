@@ -19,8 +19,10 @@ use App\Services\AuditLog;
  *   DELETE /{lookup}/{id}       delete
  *   POST   /{lookup}/delete     delete many ({"ids": [1, 2]})
  *
- * Deleting a type, status, resolution or priority that issues use needs "replacement_id" in the body: the issues
- * get that record instead (409 with replacement_required otherwise).
+ * Deleting a type, status, resolution, priority or product that issues use needs "replacement_id" in the body: the issues
+ * get that record instead (409 with replacement_required otherwise). The issues of a deleted product move to the
+ * replacement product: they get new numbers there, their old keys stay valid, their versions are cleared. The default
+ * product (setting default_product_id) can only be deleted with a replacement; it becomes the default product.
  *
  * Records with a key are protected system records: they cannot be deleted, deactivated or renamed.
  * Their description, icon and colors can be edited.
@@ -229,7 +231,8 @@ class LookupController
       return;
     }
 
-    $deleted = $this->audit->transaction(function () use ($ids, $replacementId): int {
+    $oldDefault = $this->model->holdsDefaultProduct($ids) ? $this->model->defaultProductId() : null;
+    $deleted = $this->audit->transaction(function () use ($ids, $replacementId, $oldDefault): int {
       // The entries hold the data of the records: afterwards they are gone
       $records = array_filter(array_map(fn(int $id): ?array => $this->model->get($id), $ids));
       $replacement = $replacementId !== null ? ($this->model->get($replacementId)['name'] ?? null) : null;
@@ -245,6 +248,10 @@ class LookupController
           $replacement !== null ? ['replacement' => $replacement] : null
         );
       }
+      // The default product moved with the issues
+      if ($oldDefault !== null && $replacementId !== null) {
+        $this->audit->log('setting.changed', null, 'setting', null, 'default_product_id', ['value' => (string)$oldDefault], ['value' => (string)$replacementId]);
+      }
       return $count;
     });
     $this->respond(['status' => 'success', 'message' => "{$this->label()} deleted", 'deleted' => $deleted]);
@@ -255,7 +262,7 @@ class LookupController
    * Determines the replacement for records that issues use (types, status, resolutions, priorities). The request
    * body carries it as "replacement_id". Without a replacement the answer is 409 with
    * replacement_required and the number of issues (in_use), so that the client can ask the user.
-   * Products and tags need none: the issues just lose them.
+   * Tags need none: the issues just lose them. A product needs one when it has issues or is the default product.
    *
    * @param int[] $ids The ids that are about to be deleted
    *
@@ -265,7 +272,8 @@ class LookupController
   private function replacementFor(array $ids): array
   {
     $inUse = $this->model->usageCount($ids);
-    if ($inUse === 0) {
+    $isDefault = $this->model->holdsDefaultProduct($ids);
+    if ($inUse === 0 && !$isDefault) {
       return [null, null];
     }
 
@@ -273,7 +281,11 @@ class LookupController
 
     $given = $this->input()['replacement_id'] ?? null;
     if ($given === null || $given === '') {
-      return $fail(409, "{$this->label()} is used by $inUse issue(s). Choose a replacement.", ['replacement_required' => true, 'in_use' => $inUse]);
+      $message = $inUse > 0
+        ? "{$this->label()} is used by $inUse issue(s). Choose a replacement."
+        : "{$this->label()} is the default product. Choose a replacement.";
+
+      return $fail(409, $message, ['replacement_required' => true, 'in_use' => $inUse, 'is_default' => $isDefault]);
     }
     if (is_bool($given) || is_array($given) || !preg_match('/^[1-9]\d{0,8}$/', (string)$given)) {
       return $fail(400, 'Replacement must be a record id');
@@ -287,7 +299,8 @@ class LookupController
     if (!$replacement) {
       return $fail(400, "Replacement {$this->label()} does not exist");
     }
-    if (!$replacement['active']) {
+    // Products have no active flag
+    if (array_key_exists('active', $replacement) && !$replacement['active']) {
       return $fail(400, "Replacement {$this->label()} must be active");
     }
 
@@ -379,6 +392,9 @@ class LookupController
   private function field(string $field, mixed $value, bool $given, ?array $existing): array|string|null
   {
     switch ($field) {
+      case 'issue_key':
+        return $this->issueKey($value, $given, $existing);
+
       case 'description':
         $text = trim((string)($value ?? ''));
         return mb_strlen($text) > 255 ? 'Description must not be longer than 255 characters' : ['value' => $text];
@@ -432,6 +448,46 @@ class LookupController
     }
 
     return null;
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Validates the key of a product: 1-4 letters, stored upper case, unique, and not the start of a former issue key
+   * (an issue that was moved away from a product with that key still has to be found by it). Mandatory when a
+   * product is created.
+   *
+   * @param mixed      $value    The given value (null if not given)
+   * @param bool       $given    Whether the value was part of the request
+   * @param array|null $existing The existing record when updating
+   *
+   * @return array|string|null ['value' => key] or an error message
+   */
+  private function issueKey(mixed $value, bool $given, ?array $existing): array|string|null
+  {
+    if (!$given) {
+      return $existing === null ? 'Key is required' : null;
+    }
+
+    $key = is_string($value) ? strtoupper(trim($value)) : '';
+    if ($key === '') {
+      return 'Key is required';
+    }
+    if (!preg_match('/^[A-Z]{1,4}$/', $key)) {
+      return 'Key must be 1 to 4 letters (A-Z)';
+    }
+
+    // A key that is not changed is always fine
+    if ($existing !== null && $existing['issue_key'] === $key) {
+      return ['value' => $key];
+    }
+    if ($this->model->findByIssueKey($key) !== null) {
+      return "A {$this->label()} with this key already exists";
+    }
+    if ($this->model->keyBlockedByAliases($key, $existing === null ? null : (int)$existing['id'])) {
+      return 'The key is the start of former issue keys of another product and cannot be used';
+    }
+
+    return ['value' => $key];
   }
 
   //---------------------------------------------------------------------------

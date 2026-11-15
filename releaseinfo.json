@@ -1,5 +1,17 @@
 [
   {
+    "version": "1.1.0",
+    "date": "2026-11-15",
+    "info": "Feature release.",
+    "bugfixes": [],
+    "features": [
+      { "summary": "Implement product related issues", "issue": "https://desk.lewe.com/issue.html?id=124" }
+    ],
+    "improvements": [
+    ],
+    "removals": []
+  },
+  {
     "version": "1.0.3",
     "date": "2026-11-14",
     "info": "Improvement release.",

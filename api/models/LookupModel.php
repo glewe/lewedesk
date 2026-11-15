@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Models;
 
 require_once __DIR__ . '/../services/SlaService.php';
+require_once __DIR__ . '/../services/IssueNumbering.php';
 
+use App\Services\IssueNumbering;
 use App\Services\SlaService;
 use PDO;
 
@@ -16,7 +18,7 @@ use PDO;
  */
 class LookupModel
 {
-  private const INT_FIELDS = ['id', 'category_id', 'sort_order'];
+  private const INT_FIELDS = ['id', 'category_id', 'sort_order', 'next_issue_number'];
 
   private PDO $db;
   private array $definition;
@@ -64,10 +66,16 @@ class LookupModel
     $escape = fn(string $value): string => str_replace(['\\', '%', '_'], ['\\\\', '\\%', '\\_'], $value);
     $limit = max(1, $limit);
 
+    // A product is also found by its key
+    $byKey = $this->table === 'products' ? ' OR t.issue_key LIKE :key_contains' : '';
     $stmt = $this->db->prepare(
-      $this->select() . " WHERE t.name LIKE :contains ORDER BY (t.name LIKE :prefix) DESC, t.name LIMIT $limit"
+      $this->select() . " WHERE (t.name LIKE :contains$byKey) ORDER BY (t.name LIKE :prefix) DESC, t.name LIMIT $limit"
     );
-    $stmt->execute(['contains' => '%' . $escape($term) . '%', 'prefix' => $escape($term) . '%']);
+    $params = ['contains' => '%' . $escape($term) . '%', 'prefix' => $escape($term) . '%'];
+    if ($byKey !== '') {
+      $params['key_contains'] = $params['contains'];
+    }
+    $stmt->execute($params);
 
     return array_map(fn(array $row): array => $this->normalize($row), $stmt->fetchAll());
   }
@@ -104,6 +112,67 @@ class LookupModel
     $row = $stmt->fetch();
 
     return $row ? $this->normalize($row) : null;
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Finds a product by its issue key (upper case letters).
+   *
+   * @param string $issueKey The issue key of the product
+   *
+   * @return array|null
+   */
+  public function findByIssueKey(string $issueKey): ?array
+  {
+    $stmt = $this->db->prepare($this->select() . ' WHERE t.issue_key = :issue_key');
+    $stmt->execute(['issue_key' => $issueKey]);
+    $row = $stmt->fetch();
+
+    return $row ? $this->normalize($row) : null;
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Tells whether the former keys of issues block a product key: an issue of another product once had a key with it
+   * (LD-5) and that key has to go on resolving to the issue.
+   *
+   * @param string   $issueKey  The product key (upper case)
+   * @param int|null $productId The product that wants the key (null for a new product)
+   *
+   * @return bool
+   */
+  public function keyBlockedByAliases(string $issueKey, ?int $productId): bool
+  {
+    return (new IssueNumbering($this->db))->blockedByAliases($issueKey, $productId);
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Gets the id of the default product (setting default_product_id).
+   *
+   * @return int|null Null if the setting is missing
+   */
+  public function defaultProductId(): ?int
+  {
+    $stmt = $this->db->query("SELECT `value` FROM settings WHERE `key` = 'default_product_id'");
+    $value = $stmt->fetchColumn();
+
+    return $value !== false && preg_match('/^[1-9]\d{0,8}$/', (string)$value) === 1 ? (int)$value : null;
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Tells whether the default product is one of the products.
+   *
+   * @param int[] $ids The product ids
+   *
+   * @return bool
+   */
+  public function holdsDefaultProduct(array $ids): bool
+  {
+    $default = $this->table === 'products' ? $this->defaultProductId() : null;
+
+    return $default !== null && in_array($default, $ids, true);
   }
 
   //---------------------------------------------------------------------------
@@ -162,10 +231,23 @@ class LookupModel
       return true;
     }
 
+    // The key of a product: the old keys of its issues stay valid (the caller runs this in a transaction)
+    $oldKey = null;
+    if ($this->table === 'products' && array_key_exists('issue_key', $data)) {
+      $stmt = $this->db->prepare('SELECT issue_key FROM products WHERE id = :id');
+      $stmt->execute(['id' => $id]);
+      $oldKey = $stmt->fetchColumn();
+    }
+
     $set = implode(', ', array_map(fn(string $c): string => "`$c` = :$c", $columns));
     $stmt = $this->db->prepare("UPDATE `{$this->table}` SET $set WHERE id = :id");
+    $saved = $stmt->execute($this->bind($columns, $data) + ['id' => $id]);
 
-    return $stmt->execute($this->bind($columns, $data) + ['id' => $id]);
+    if ($saved && $oldKey !== null && $oldKey !== false && $oldKey !== $data['issue_key']) {
+      (new IssueNumbering($this->db))->keepOldKeys($id, (string)$oldKey);
+    }
+
+    return $saved;
   }
 
   //---------------------------------------------------------------------------
@@ -255,7 +337,9 @@ class LookupModel
     }
     try {
       $column = $this->definition['replacement'] ?? null;
-      if ($column !== null && $replacementId !== null) {
+      if ($this->table === 'products' && $replacementId !== null) {
+        $this->moveProductIssues($ids, $replacementId);
+      } elseif ($column !== null && $replacementId !== null) {
         // The issues with SLA timers: the new status, type or priority can stop the clock, end the resolution or change the policy
         $timed = $this->db->prepare("SELECT DISTINCT i.id FROM issues i JOIN issue_sla t ON t.issue_id = i.id WHERE i.`$column` IN ($placeholders)");
         $timed->execute(array_values($ids));
@@ -286,6 +370,42 @@ class LookupModel
       }
       throw $e;
     }
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Gives the issues of products to the replacement product before the products are deleted: each issue gets the next
+   * number of the replacement (a new key), its old key stays valid as an alias, and its versions are cleared. The
+   * default product setting follows when it pointed to one of the products. The SLA timers of the issues follow, because the
+   * product is an input of the SLA policy. Runs inside the transaction of deleteMany().
+   *
+   * @param int[] $ids           The products that are about to be deleted
+   * @param int   $replacementId The replacement product (validated by the caller)
+   *
+   * @return void
+   */
+  private function moveProductIssues(array $ids, int $replacementId): void
+  {
+    $placeholders = implode(',', array_fill(0, count($ids), '?'));
+
+    $timed = $this->db->prepare("SELECT DISTINCT i.id FROM issues i JOIN issue_sla t ON t.issue_id = i.id WHERE i.product_id IN ($placeholders)");
+    $timed->execute(array_values($ids));
+    $timedIds = array_map('intval', $timed->fetchAll(PDO::FETCH_COLUMN));
+
+    // In the order of the old numbers, so that the order stays
+    $issues = $this->db->prepare("SELECT id FROM issues WHERE product_id IN ($placeholders) ORDER BY product_id, number");
+    $issues->execute(array_values($ids));
+    $numbering = new IssueNumbering($this->db);
+    foreach ($issues->fetchAll(PDO::FETCH_COLUMN) as $issueId) {
+      $numbering->move((int)$issueId, $replacementId, false);
+    }
+
+    $default = $this->defaultProductId();
+    if ($default !== null && in_array($default, $ids, true)) {
+      $this->db->prepare("UPDATE settings SET `value` = :value WHERE `key` = 'default_product_id'")->execute(['value' => (string)$replacementId]);
+    }
+
+    (new SlaService($this->db))->syncMany($timedIds, true);
   }
 
   //---------------------------------------------------------------------------

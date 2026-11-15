@@ -188,8 +188,8 @@
       "index_copyright_company_desc": "Company name in the footer copyright line. The year is added automatically. Leave empty for the default.",
       "index_copyright_url": "Copyright Link",
       "index_copyright_url_desc": "Optional web address (http or https) the company name links to. Without it the name is shown as plain text.",
-      "issue_key_prefix": "Issue Key Prefix",
-      "issue_key_prefix_desc": "Enter the prefix of the issue key. Issues are displayed as PREFIX-123 (e.g. LD-123). The prefix cannot be changed anymore once the first issue exists.",
+      "default_product_id": "Default Product",
+      "default_product_id_desc": "The product of new issues that name none, for example the issues made from mails. The key of the product is the prefix of the issue keys (e.g. LD-123).",
       "support_email": "Support Email",
       "support_email_desc": "Enter the email address of your support team here. A message is sent to this address when an issue is created.",
       "attachment_max_size": "Maximum Attachment Size (MB)",
@@ -562,7 +562,15 @@
       "edit_title": "Edit Product",
       "name_desc": "Unique name of the product (max. 50 characters).",
       "description_desc": "Short description of what the product is for.",
-      "confirm_delete": "Delete the selected products? They are removed from the issues. This cannot be undone.",
+      "confirm_delete": "Delete the selected products? This cannot be undone.",
+      "tab_details": "Details",
+      "tab_versions": "Versions",
+      "key_desc": "1 to 4 letters. The key is the prefix of the issue keys of the product (e.g. LD for LD-123).",
+      "key_invalid": "Please enter 1 to 4 letters.",
+      "key_taken": "Another product has this key.",
+      "key_change_warning": "The issues of this product get the new key. Their old keys stay valid and still lead to them.",
+      "replacement_needed": "The selected product has {count} issue(s). Choose the product these issues should move to instead. They get new keys there (the old keys keep working) and their versions are cleared:",
+      "replacement_default": "The selected product is the default product. Choose the product that becomes the default product instead (its issues move there, too):",
       "messages": {
         "created": "The product was created.",
         "updated": "The product was updated.",
@@ -631,7 +639,8 @@
     "replacement": "Replacement",
     "replacement_needed": "The selected record is used by {count} issue(s). Choose the record these issues should get instead:",
     "replacement_needed_many": "The selected records are used by {count} issue(s). Choose the record these issues should get instead:",
-    "replacement_none": "There is no other active record that can replace it."
+    "replacement_none": "There is no other active record that can replace it.",
+    "key": "Key"
   },
   "datatables": {
     "search": "Search:",
@@ -887,6 +896,8 @@
       "description": "Description",
       "product": "Product",
       "version": "Version",
+      "affected_version": "Affected version",
+      "fixed_version": "Fixed version",
       "access": "Access",
       "resolution": "Resolution",
       "tags": "Tags",
@@ -980,13 +991,17 @@
       "description_desc": "Describe the issue as precisely as you can: what happened, what did you expect, and how can we reproduce it?",
       "description_required": "Please enter a description.",
       "tags_desc": "Tags help to find and group issues (optional). Type to search the existing tags.",
-      "product_desc": "The product the issue is about (optional).",
-      "no_product": "No product",
-      "version_desc": "The version of the product the issue occurs in (optional).",
+      "product_desc": "The product the issue is about. Its key becomes the prefix of the issue key.",
+      "product_required": "Please select a product.",
+      "product_placeholder": "Select a product...",
+      "no_version": "No version",
+      "affected_version_desc": "The version of the product the issue occurs in (optional).",
+      "fixed_version_desc": "The version of the product that fixes the issue (optional).",
       "access_desc": "Who may see this issue. The support team can always see it.",
       "submit": "Create issue"
     },
     "edit": {
+      "product_locked": "The product cannot be changed here. Use the action \"Move to another product\" of the issue; the key of the issue changes.",
       "status_changed": "Status changed.",
       "title": "Edit issue",
       "submit": "Save changes",
@@ -1008,7 +1023,8 @@
       "loading": "Loading...",
       "back": "Back to list",
       "properties": "Properties",
-      "deleted": "Deleted"
+      "deleted": "Deleted",
+      "release_notes": "Release notes of this version"
     },
     "messages": {
       "load_error": "The issues could not be loaded.",
@@ -1095,6 +1111,7 @@
       "assign_me": "Assign to me",
       "watch": "Watch issue",
       "unwatch": "Unwatch issue",
+      "move": "Move to another product",
       "change_access": "Change access",
       "delete": "Delete issue",
       "restore": "Restore issue"
@@ -1105,13 +1122,15 @@
       "resolution": "Resolution",
       "assignee": "Assignee",
       "access": "Access",
+      "product": "New product",
       "internal": "Internal comment",
       "internal_desc": "Only the support team can see an internal comment. An internal comment does not change the status."
     },
     "placeholders": {
       "resolution": "Select a resolution...",
       "assignee": "Select an Agent...",
-      "access": "Select the new access..."
+      "access": "Select the new access...",
+      "product": "Select a product..."
     },
     "unassign": "Unassigned",
     "modal": {
@@ -1135,6 +1154,11 @@
         "text": "Select the Agent who takes care of the issue.",
         "submit": "Assign"
       },
+      "move": {
+        "title": "Move issue",
+        "text": "The issue gets the next number of the product you select, so its key changes. The old key keeps working. The affected and the fixed version are cleared, because versions belong to a product.",
+        "submit": "Move"
+      },
       "change_access": {
         "title": "Change access",
         "text": "Who may see this issue? Watchers who lose access are removed.",
@@ -1151,7 +1175,8 @@
       "comment_required": "Please enter a comment.",
       "resolution_required": "Please select a resolution.",
       "assignee_required": "Please select an Agent.",
-      "access_required": "Please select the new access."
+      "access_required": "Please select the new access.",
+      "product_required": "Please select a product."
     },
     "done": {
       "respond": "Your response was added.",
@@ -1162,12 +1187,71 @@
       "assign_me": "The issue is assigned to you.",
       "watch": "You watch this issue now.",
       "unwatch": "You do not watch this issue any more.",
+      "move": "The issue was moved. Its key is now {key}.",
       "change_access": "The access was changed.",
       "delete": "The issue was deleted.",
       "restore": "The issue was restored."
     },
     "error": "The action could not be performed.",
     "load_error": "The list of Agents could not be loaded."
+  },
+  "versions": {
+    "status": {
+      "planned": "Planned",
+      "development": "In development",
+      "released": "Released",
+      "archived": "Archived"
+    },
+    "load_error": "The versions could not be loaded.",
+    "intro": "Versions of the product. Issues can name an affected and a fixed version.",
+    "add": "Add version",
+    "edit": "Edit version",
+    "empty": "This product has no versions yet.",
+    "release_notes": "Release notes",
+    "columns": {
+      "name": "Version",
+      "status": "Status",
+      "release_date": "Release date",
+      "link": "Link",
+      "fixed": "Fixed issues",
+      "affected": "Affected issues"
+    },
+    "fields": {
+      "name": "Name",
+      "status": "Status",
+      "release_date": "Release date",
+      "pick_date": "Pick a date",
+      "release_date_desc": "Optional while planned or in development, required once the version is released.",
+      "link": "Link",
+      "link_desc": "Optional web address (http or https), e.g. the release on GitHub.",
+      "description": "Description"
+    },
+    "validation": {
+      "name_required": "Please enter a name.",
+      "release_date_required": "A released version needs a release date.",
+      "release_date_invalid": "Enter a valid date as YYYY-MM-DD.",
+      "link_invalid": "Please enter a web address starting with http:// or https://."
+    },
+    "messages": {
+      "created": "The version was created.",
+      "updated": "The version was updated.",
+      "deleted": "The version was deleted.",
+      "save_error": "The version could not be saved.",
+      "delete_error": "The version could not be deleted."
+    },
+    "delete": {
+      "title": "Delete version",
+      "confirm": "Delete the version \"{name}\"?",
+      "replacement_needed": "The version \"{name}\" is used by {count} issue(s). Choose the version these issues should get instead, or none:",
+      "replacement_desc": "The affected and the fixed version of the issues are replaced.",
+      "none": "None (clear the field)"
+    },
+    "notes": {
+      "title": "Release notes",
+      "empty": "No issues have been fixed in this version yet, or you may not see them.",
+      "not_found": "The version was not found.",
+      "load_error": "The release notes could not be loaded."
+    }
   },
   "history": {
     "title": "History",
@@ -1211,7 +1295,10 @@
       "summary": "Summary",
       "description": "Description",
       "product": "Product",
+      "key": "Issue key",
       "version": "Version",
+      "affected_version": "Affected version",
+      "fixed_version": "Fixed version",
       "sla_breached_first_response": "SLA breach: first response (due time)",
       "sla_breached_resolution": "SLA breach: resolution (due time)"
     },

@@ -248,13 +248,13 @@ class NotificationMail
   /**
    * Gives the link to an issue page.
    *
-   * @param int $issueId The issue id
+   * @param string $issueKey The key of the issue, e.g. LD-12
    *
    * @return string
    */
-  public function issueLink(int $issueId): string
+  public function issueLink(string $issueKey): string
   {
-    return $this->baseUrl . '/issue.html?id=' . $issueId;
+    return $this->baseUrl . '/issue.html?key=' . rawurlencode($issueKey);
   }
 
   //---------------------------------------------------------------------------
@@ -276,7 +276,7 @@ class NotificationMail
     $heading = $texts['heading'][$message['events'][0]] ?? $texts['heading']['status_changed'];
     $key = (string)$issue['key'];
     $summary = (string)$issue['summary'];
-    $link = $this->issueLink((int)$issue['id']);
+    $link = $this->issueLink((string)$issue['key']);
     $priority = $this->priorityLine($issue);
 
     $subject = $this->appName . ': ' . (str_starts_with($message['events'][0], 'sla_') ? $heading . ': ' : '') . $key . ' - ' . (mb_strlen($summary) > 100 ? mb_substr($summary, 0, 99) . '…' : $summary);
@@ -310,7 +310,7 @@ class NotificationMail
     $texts = self::TEXTS[$this->language];
     $key = (string)$issue['key'];
     $summary = (string)$issue['summary'];
-    $link = $this->issueLink((int)$issue['id']);
+    $link = $this->issueLink((string)$issue['key']);
     $lines = [sprintf($texts['received'], $key)];
     if ($skipped !== []) {
       $lines[] = sprintf($texts['skipped'], implode('; ', $skipped));

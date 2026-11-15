@@ -92,10 +92,14 @@ final class Lookups
         'table' => 'products',
         'label' => 'Product',
         'permission' => 'manage_products',
-        'fields' => $visual,
+        // The key (issue_key) is the prefix of the issue keys of the product (LD-12); see _docs/PRODUCTS.md
+        'fields' => ['issue_key', ...$visual],
         'protected' => false,
         'creatable' => true,
         'deletable' => true,
+        // Deleting a product that has issues (or is the default product) needs a replacement product: the issues move to it
+        // (new numbers, the old keys stay valid as aliases)
+        'replacement' => 'product_id',
         'order' => 't.name',
       ],
       'tags' => [

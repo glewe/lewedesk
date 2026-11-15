@@ -77,7 +77,7 @@ The user and administrator manual is on GitBook: https://lewe.gitbook.io/lewedes
 
 ## Support and issues
 
-Please report bugs and ideas at https://desk.lewe.com (Where else if not in LeweDesk itself :-) )
+Please report bugs and ideas at https://desk.lewe.com (Where else if not in LeweDesk itself :smirk: )
 
 ## License
 

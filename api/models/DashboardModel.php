@@ -8,7 +8,10 @@ require_once __DIR__ . '/SlaReportModel.php';
 
 use App\Services\IssueVisibility;
 use App\Utils\IssueConfig;
+use App\Utils\IssueKey;
 use PDO;
+
+require_once __DIR__ . "/../utils/IssueKey.php";
 
 //---------------------------------------------------------------------------
 /**
@@ -183,17 +186,19 @@ class DashboardModel
         LIMIT $limit"
     );
     $stmt->execute($params);
+    $rows = $stmt->fetchAll();
+    $keys = (new IssueKey($this->db))->forIds(array_column($rows, 'id'));
 
     return [
       'total' => $total,
       'issues' => array_map(fn(array $row): array => [
         'id' => (int)$row['id'],
-        'key' => $this->config->issueKey((int)$row['id']),
+        'key' => $keys[(int)$row['id']] ?? '#' . $row['id'],
         'summary' => $row['summary'],
         'updated_at' => $row['updated_at'],
         'type' => $this->lookup($row, 'type'),
         'status' => $this->lookup($row, 'status'),
-      ], $stmt->fetchAll()),
+      ], $rows),
     ];
   }
 
@@ -354,6 +359,8 @@ class DashboardModel
         LIMIT $limit"
     );
     $stmt->execute($params + ['me_reporter' => $userId, 'me_assignee' => $userId, 'me_watcher' => $userId]);
+    $rows = $stmt->fetchAll();
+    $keys = (new IssueKey($this->db))->forIds(array_column($rows, 'issue_id'));
 
     return array_map(fn(array $row): array => [
       'id' => (int)$row['id'],
@@ -363,12 +370,12 @@ class DashboardModel
       'new_value' => $row['new_value'],
       'is_internal' => (bool)$row['is_internal'],
       'created_at' => $row['created_at'],
-      'issue' => ['id' => (int)$row['issue_id'], 'key' => $this->config->issueKey((int)$row['issue_id']), 'summary' => $row['summary']],
+      'issue' => ['id' => (int)$row['issue_id'], 'key' => $keys[(int)$row['issue_id']] ?? '#' . $row['issue_id'], 'summary' => $row['summary']],
       // A missing actor means the account was deleted
       'actor' => $row['actor_id'] === null
         ? ['id' => null, 'username' => null, 'display_name' => null, 'avatar' => null, 'deleted' => true]
         : IssueModel::userFields((int)$row['actor_id'], (string)$row['username'], $row['first_name'], $row['last_name'], $row['avatar']),
-    ], $stmt->fetchAll());
+    ], $rows);
   }
 
   //---------------------------------------------------------------------------

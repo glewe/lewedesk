@@ -9,7 +9,10 @@ require_once __DIR__ . '/../services/SlaService.php';
 use App\Services\IssueVisibility;
 use App\Services\SlaService;
 use App\Utils\IssueConfig;
+use App\Utils\IssueKey;
 use PDO;
+
+require_once __DIR__ . "/../utils/IssueKey.php";
 
 //---------------------------------------------------------------------------
 /**
@@ -227,16 +230,17 @@ class SlaReportModel
     );
     $stmt->execute($params + $window[1]);
     $rows = $stmt->fetchAll();
+    $keys = (new IssueKey($this->db))->forIds(array_column($rows, 'issue_id'));
 
     // A timer that is still open has no result yet: its working time up to now comes from the calendar of the timer
     $open = array_column(array_filter($rows, static fn(array $row): bool => $row['met'] === null), 'id');
     $overruns = $open === [] ? [] : (new SlaService($this->db))->overruns($open);
 
-    return array_map(function (array $row) use ($overruns): array {
+    return array_map(function (array $row) use ($overruns, $keys): array {
       $overrun = $row['met'] === null ? ($overruns[(int)$row['id']] ?? null) : max(0, (int)$row['achieved'] - (int)$row['target_minutes'] * 60);
 
       return [
-        'issue' => ['id' => (int)$row['issue_id'], 'key' => $this->config->issueKey((int)$row['issue_id']), 'summary' => $row['summary']],
+        'issue' => ['id' => (int)$row['issue_id'], 'key' => $keys[(int)$row['issue_id']] ?? '#' . $row['issue_id'], 'summary' => $row['summary']],
         'metric' => $row['metric'],
         'period' => (int)$row['period'],
         'policy' => $row['policy_name'],

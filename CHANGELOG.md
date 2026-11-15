@@ -2,6 +2,14 @@
 
 All notable changes of LeweDesk. The newest version is first.
 
+## 1.1.0 (2026-11-15)
+
+Feature release.
+
+### Features
+
+- Implement product related issues (https://desk.lewe.com/issue.html?id=124)
+
 ## 1.0.3 (2026-11-14)
 
 Improvement release.

@@ -192,7 +192,6 @@ INSERT IGNORE INTO settings (`key`, `value`) VALUES
 ('under_maintenance', 'false'),
 ('color_mode', 'dark'),
 ('font', 'Poppins'),
-('issue_key_prefix', 'LD'),
 ('support_email', 'support@lewe.com'),
 ('attachment_max_size', '2'),
 ('attachment_max_count', '10'),
@@ -494,9 +493,19 @@ INSERT IGNORE INTO priorities (`key`, name, description, icon, color, background
 ('normal', 'Normal', 'The default priority of an issue', 'bi-circle-fill', '#3399ff', '#3399ff', 30),
 ('low', 'Low', 'The issue can wait', 'bi-circle-fill', '#6b7785', '#6b7785', 40);
 
--- Products (user defined, no seed records)
+-- ---------------------------------------------------------------------------
+-- Products (see _docs/PRODUCTS.md)
+--
+-- `issue_key` (1-4 letters A-Z, upper case, unique) is the prefix of the keys of its issues (LD-12).
+-- `next_issue_number` is the number the next issue of the product gets; it is raised in the transaction that
+-- inserts the issue. Seeds: LeweDesk (LD) owns the issues that existed before products had keys, General (GEN) is the
+-- default product of new issues (setting default_product_id). Both are created in the migration section below, so
+-- that databases created before the keys existed are brought up to date by the same statements.
+-- ---------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS products (
   id INT AUTO_INCREMENT PRIMARY KEY,
+  issue_key VARCHAR(4) NOT NULL UNIQUE,
+  next_issue_number INT NOT NULL DEFAULT 1,
   name VARCHAR(50) NOT NULL UNIQUE,
   description VARCHAR(255),
   icon VARCHAR(50),
@@ -504,6 +513,23 @@ CREATE TABLE IF NOT EXISTS products (
   background_color VARCHAR(7) NOT NULL DEFAULT '#6b7785',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+-- Versions of a product (status: planned, development, released, archived). Deleting a product deletes its versions
+-- (the API requires a replacement product for the issues first).
+CREATE TABLE IF NOT EXISTS product_versions (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  product_id INT NOT NULL,
+  name VARCHAR(50) NOT NULL,
+  description TEXT NULL,
+  status ENUM('planned', 'development', 'released', 'archived') NOT NULL DEFAULT 'planned',
+  release_date DATE NULL,
+  link VARCHAR(500) NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY uq_product_versions_name (product_id, name),
+  INDEX idx_product_versions_status (product_id, status),
+  FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 -- Tags (user defined, no seed records)
@@ -519,7 +545,8 @@ CREATE TABLE IF NOT EXISTS tags (
 -- ---------------------------------------------------------------------------
 -- Issues (see _docs/TICKET_SPEC.md)
 --
--- `id` is the issue number, displayed as <issue_key_prefix>-<id>. Lookup values use ON DELETE RESTRICT:
+-- `id` is the internal id; the issue key shown to users is <products.issue_key>-<number> (`number` counts per product,
+-- see issue_key_aliases for former keys). Lookup values use ON DELETE RESTRICT:
 -- the API reassigns the issues first (a replacement is required), so an in-use value can never be
 -- removed silently. Users use ON DELETE SET NULL: issues keep existing when an account is deleted (a
 -- missing reporter is shown as "Deleted user"; a missing assignee means "unassigned"). `updated_at` has
@@ -533,8 +560,10 @@ CREATE TABLE IF NOT EXISTS issues (
   resolution_id INT NULL,
   reporter_id INT NULL,
   assignee_id INT NULL,
-  product_id INT NULL,
-  version VARCHAR(50) NULL,
+  product_id INT NOT NULL,
+  number INT NOT NULL,
+  affected_version_id INT NULL,
+  fixed_version_id INT NULL,
   access ENUM('public', 'registered', 'reporter') NOT NULL DEFAULT 'registered',
   summary VARCHAR(200) NOT NULL,
   description MEDIUMTEXT NOT NULL,
@@ -546,6 +575,9 @@ CREATE TABLE IF NOT EXISTS issues (
   INDEX idx_issues_assignee (assignee_id),
   INDEX idx_issues_reporter (reporter_id),
   INDEX idx_issues_product (product_id),
+  UNIQUE KEY uq_issues_product_number (product_id, number),
+  INDEX idx_issues_affected_version (affected_version_id),
+  INDEX idx_issues_fixed_version (fixed_version_id),
   INDEX idx_issues_access (access),
   INDEX idx_issues_updated (updated_at),
   INDEX idx_issues_deleted (deleted_at),
@@ -555,7 +587,19 @@ CREATE TABLE IF NOT EXISTS issues (
   FOREIGN KEY (resolution_id) REFERENCES resolutions(id) ON DELETE RESTRICT,
   FOREIGN KEY (reporter_id) REFERENCES users(id) ON DELETE SET NULL,
   FOREIGN KEY (assignee_id) REFERENCES users(id) ON DELETE SET NULL,
-  FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE SET NULL
+  CONSTRAINT fk_issues_product FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE RESTRICT,
+  CONSTRAINT fk_issues_affected_version FOREIGN KEY (affected_version_id) REFERENCES product_versions(id) ON DELETE SET NULL,
+  CONSTRAINT fk_issues_fixed_version FOREIGN KEY (fixed_version_id) REFERENCES product_versions(id) ON DELETE SET NULL
+) ENGINE=InnoDB;
+
+-- Former keys of issues (an issue moved to another product, or its product got a new key). An old key keeps resolving
+-- to the issue. `alias_key` is stored upper case, e.g. LD-12.
+CREATE TABLE IF NOT EXISTS issue_key_aliases (
+  alias_key VARCHAR(20) NOT NULL PRIMARY KEY,
+  issue_id INT NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_issue_key_aliases_issue (issue_id),
+  FOREIGN KEY (issue_id) REFERENCES issues(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 -- Tags of an issue (deleting a tag or an issue removes the links)
@@ -879,6 +923,118 @@ SET @require_issue_priority = (
 PREPARE require_issue_priority_stmt FROM @require_issue_priority;
 EXECUTE require_issue_priority_stmt;
 DEALLOCATE PREPARE require_issue_priority_stmt;
+
+-- ---------------------------------------------------------------------------
+-- Products with keys, numbers and versions (see _docs/PRODUCTS.md). Brings a database created before up to date; on a
+-- new database every step finds the work done and does nothing. The steps can run again.
+-- 1. Columns and tables that are missing are added (the key stays empty for now).
+-- 2. LeweDesk (LD) and General (GEN) are created, or found by their name; products without a key get one derived from
+--    the name (the first four letters, else three letters and X, else Q plus three letters from the id).
+-- 3. Issues that have no number yet (all issues of the time before products had keys) are assigned to LeweDesk with
+--    number = id, so every former key LD-<id> stays valid. The old free text version is dropped.
+-- 4. Counters, constraints and the default product setting are set.
+-- ---------------------------------------------------------------------------
+SET @add_product_key = (
+  SELECT IF(COUNT(*) = 0, 'ALTER TABLE products ADD COLUMN issue_key VARCHAR(4) NULL UNIQUE AFTER id, ADD COLUMN next_issue_number INT NOT NULL DEFAULT 1 AFTER issue_key', 'DO 0')
+  FROM information_schema.columns
+  WHERE table_schema = DATABASE() AND table_name = 'products' AND column_name = 'issue_key'
+);
+PREPARE add_product_key_stmt FROM @add_product_key;
+EXECUTE add_product_key_stmt;
+DEALLOCATE PREPARE add_product_key_stmt;
+
+SET @add_issue_number = (
+  SELECT IF(COUNT(*) = 0, 'ALTER TABLE issues ADD COLUMN number INT NULL AFTER product_id', 'DO 0')
+  FROM information_schema.columns
+  WHERE table_schema = DATABASE() AND table_name = 'issues' AND column_name = 'number'
+);
+PREPARE add_issue_number_stmt FROM @add_issue_number;
+EXECUTE add_issue_number_stmt;
+DEALLOCATE PREPARE add_issue_number_stmt;
+
+SET @add_issue_versions = (
+  SELECT IF(COUNT(*) = 0,
+    'ALTER TABLE issues ADD COLUMN affected_version_id INT NULL AFTER number, ADD COLUMN fixed_version_id INT NULL AFTER affected_version_id, ADD INDEX idx_issues_affected_version (affected_version_id), ADD INDEX idx_issues_fixed_version (fixed_version_id), ADD CONSTRAINT fk_issues_affected_version FOREIGN KEY (affected_version_id) REFERENCES product_versions(id) ON DELETE SET NULL, ADD CONSTRAINT fk_issues_fixed_version FOREIGN KEY (fixed_version_id) REFERENCES product_versions(id) ON DELETE SET NULL',
+    'DO 0')
+  FROM information_schema.columns
+  WHERE table_schema = DATABASE() AND table_name = 'issues' AND column_name = 'affected_version_id'
+);
+PREPARE add_issue_versions_stmt FROM @add_issue_versions;
+EXECUTE add_issue_versions_stmt;
+DEALLOCATE PREPARE add_issue_versions_stmt;
+
+-- LeweDesk and General: created, or found by their name (a product that exists already gets the key if it has none)
+INSERT IGNORE INTO products (issue_key, name, description, icon, color, background_color) VALUES
+('LD', 'LeweDesk', 'The LeweDesk help desk', 'bi-headset', '#3399ff', '#3399ff'),
+('GEN', 'General', 'The default product of new issues', 'bi-box', '#6b7785', '#6b7785');
+
+UPDATE IGNORE products SET issue_key = 'LD' WHERE name = 'LeweDesk' AND issue_key IS NULL;
+UPDATE IGNORE products SET issue_key = 'GEN' WHERE name = 'General' AND issue_key IS NULL;
+
+-- Keys of the other products without one (a collision leaves the product for the next, more specific, rule)
+UPDATE IGNORE products SET issue_key = UPPER(LEFT(REGEXP_REPLACE(name, '[^A-Za-z]', ''), 4))
+WHERE issue_key IS NULL AND REGEXP_REPLACE(name, '[^A-Za-z]', '') <> '';
+UPDATE IGNORE products SET issue_key = CONCAT(UPPER(LEFT(REGEXP_REPLACE(name, '[^A-Za-z]', ''), 3)), 'X')
+WHERE issue_key IS NULL AND REGEXP_REPLACE(name, '[^A-Za-z]', '') <> '';
+UPDATE IGNORE products SET issue_key = CONCAT('Q', CHAR(65 + MOD(id DIV 100, 10)), CHAR(65 + MOD(id DIV 10, 10)), CHAR(65 + MOD(id, 10)))
+WHERE issue_key IS NULL;
+
+-- Issues without a number belong to LeweDesk; the number is the former issue number
+UPDATE issues SET product_id = (SELECT id FROM products WHERE issue_key = 'LD'), number = id WHERE number IS NULL;
+
+-- The counter of a product is at least the highest number of its issues + 1
+UPDATE products p SET p.next_issue_number = (SELECT COALESCE(MAX(i.number), 0) + 1 FROM issues i WHERE i.product_id = p.id)
+WHERE p.next_issue_number <= (SELECT COALESCE(MAX(i.number), 0) FROM issues i WHERE i.product_id = p.id);
+
+SET @require_product_key = (
+  SELECT IF(COUNT(*) = 0, 'DO 0', 'ALTER TABLE products MODIFY COLUMN issue_key VARCHAR(4) NOT NULL')
+  FROM information_schema.columns
+  WHERE table_schema = DATABASE() AND table_name = 'products' AND column_name = 'issue_key' AND is_nullable = 'YES'
+);
+PREPARE require_product_key_stmt FROM @require_product_key;
+EXECUTE require_product_key_stmt;
+DEALLOCATE PREPARE require_product_key_stmt;
+
+SET @require_issue_number = (
+  SELECT IF(COUNT(*) = 0, 'DO 0', 'ALTER TABLE issues MODIFY COLUMN number INT NOT NULL, ADD UNIQUE KEY uq_issues_product_number (product_id, number)')
+  FROM information_schema.columns
+  WHERE table_schema = DATABASE() AND table_name = 'issues' AND column_name = 'number' AND is_nullable = 'YES'
+);
+PREPARE require_issue_number_stmt FROM @require_issue_number;
+EXECUTE require_issue_number_stmt;
+DEALLOCATE PREPARE require_issue_number_stmt;
+
+-- The product of an issue is mandatory (ON DELETE RESTRICT: the API moves the issues to a replacement product first).
+-- The old foreign key (ON DELETE SET NULL) has a generated name, so it is looked up.
+SET @issue_product_fk = (
+  SELECT constraint_name FROM information_schema.referential_constraints
+  WHERE constraint_schema = DATABASE() AND table_name = 'issues' AND referenced_table_name = 'products' AND delete_rule = 'SET NULL'
+  LIMIT 1
+);
+SET @require_issue_product = (
+  SELECT IF(@issue_product_fk IS NULL, 'DO 0',
+    CONCAT('ALTER TABLE issues DROP FOREIGN KEY `', @issue_product_fk, '`, MODIFY COLUMN product_id INT NOT NULL, ADD CONSTRAINT fk_issues_product FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE RESTRICT'))
+);
+PREPARE require_issue_product_stmt FROM @require_issue_product;
+EXECUTE require_issue_product_stmt;
+DEALLOCATE PREPARE require_issue_product_stmt;
+
+-- The free text version is replaced by the affected and fixed version (its values are dropped)
+SET @drop_issue_version = (
+  SELECT IF(COUNT(*) = 0, 'DO 0', 'ALTER TABLE issues DROP COLUMN version')
+  FROM information_schema.columns
+  WHERE table_schema = DATABASE() AND table_name = 'issues' AND column_name = 'version'
+);
+PREPARE drop_issue_version_stmt FROM @drop_issue_version;
+EXECUTE drop_issue_version_stmt;
+DEALLOCATE PREPARE drop_issue_version_stmt;
+
+-- Default product of new issues (also of issues created by mail); an existing setting is kept
+INSERT IGNORE INTO settings (`key`, `value`)
+SELECT 'default_product_id', CAST(id AS CHAR) FROM products WHERE issue_key = 'GEN';
+
+-- The prefix of the issue keys is the key of the product now (see _docs/PRODUCTS.md); the setting is gone
+DELETE FROM settings WHERE `key` = 'issue_key_prefix';
 
 -- ---------------------------------------------------------------------------
 -- Audit log (see _docs/AUDITLOG.md; App\Services\AuditLog)

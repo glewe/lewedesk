@@ -18,7 +18,7 @@ namespace App\Services;
  *
  *   edit           edit_issue                                   the edit page (no endpoint of its own: PUT /issues/{id})
  *   respond        may comment; not Resolved/Closed             comment (mandatory), status follows the responder
- *   resolve        change_issue_status; not Resolved/Closed     resolution (mandatory), comment, status Resolved
+ *   resolve        change_issue_status; not Resolved/Closed     resolution (mandatory), fixed_version_id (optional), comment, status Resolved
  *   close          reporter, Agents, Administrators; Resolved   status Closed, the resolution is kept
  *   reopen         reporter, Agents, Administrators; Resolved/Closed; may comment   comment (mandatory), status Open, resolution cleared
  *   assign         assign_issue                                 assignee (an Agent) and comment

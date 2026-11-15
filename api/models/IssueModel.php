@@ -875,6 +875,24 @@ class IssueModel
 
   //---------------------------------------------------------------------------
   /**
+   * Gives the status of a version of the product of an issue, and whether it is the fixed version of the issue already.
+   *
+   * @param int $versionId The version id
+   * @param int $issueId   The issue
+   *
+   * @return array|null status and is_current; null if the product of the issue has no such version
+   */
+  public function versionStatusForIssue(int $versionId, int $issueId): ?array
+  {
+    $stmt = $this->db->prepare('SELECT v.status, (i.fixed_version_id = v.id) AS is_current FROM product_versions v JOIN issues i ON i.product_id = v.product_id WHERE v.id = :version AND i.id = :issue');
+    $stmt->execute(['version' => $versionId, 'issue' => $issueId]);
+    $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+    return $row === false ? null : ['status' => (string)$row['status'], 'is_current' => (bool)$row['is_current']];
+  }
+
+  //---------------------------------------------------------------------------
+  /**
    * Gives the status of a version of a product.
    *
    * @param int $versionId The version id

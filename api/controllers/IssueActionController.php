@@ -194,6 +194,19 @@ class IssueActionController
     if (!$this->issues->lookupExists('resolutions', $resolutionId)) {
       return [400, 'Resolution does not exist or is not active'];
     }
+    // The fixed version is optional; left out (or null) it stays as it is
+    $fixedVersionId = null;
+    if (($input['fixed_version_id'] ?? null) !== null && $input['fixed_version_id'] !== '') {
+      $fixedVersionId = $this->recordId($input['fixed_version_id']);
+      $version = $fixedVersionId === null ? null : $this->issues->versionStatusForIssue($fixedVersionId, $facts['id']);
+      if ($version === null) {
+        return [400, 'Fixed version does not exist for the product of the issue'];
+      }
+      if ($version['status'] === 'archived' && !$version['is_current']) {
+        return [400, 'Fixed version is archived and cannot be chosen'];
+      }
+    }
+
     $body = $this->optionalBody($input, $facts);
     if (is_array($body)) {
       return $body;
@@ -203,7 +216,7 @@ class IssueActionController
       return $limited;
     }
 
-    $this->workflow->resolve($facts, $actorId, $resolutionId, $body);
+    $this->workflow->resolve($facts, $actorId, $resolutionId, $body, $fixedVersionId);
     $this->events = $body === null ? [NotificationService::STATUS] : [NotificationService::COMMENT, NotificationService::STATUS];
 
     return 'Issue resolved';

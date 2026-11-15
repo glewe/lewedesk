@@ -82,17 +82,23 @@ class IssueWorkflowModel
    * @param int         $actorId      The resolving user
    * @param int         $resolutionId The resolution
    * @param string|null $body         The comment, or null for none
+   * @param int|null    $fixedVersionId The fixed version to set, or null to leave it as it is
    *
    * @return void
    */
-  public function resolve(array $facts, int $actorId, int $resolutionId, ?string $body): void
+  public function resolve(array $facts, int $actorId, int $resolutionId, ?string $body, ?int $fixedVersionId = null): void
   {
-    $this->issues->transaction(function () use ($facts, $actorId, $resolutionId, $body): void {
-      $this->issues->lockIssue($facts);
+    $this->issues->transaction(function () use ($facts, $actorId, $resolutionId, $body, $fixedVersionId): void {
+      $row = $this->issues->lockIssue($facts);
       if ($body !== null) {
         $this->comments->insert($facts['id'], $actorId, $body, false);
       }
       $this->changeStatus($facts, $actorId, 'resolved', $resolutionId, false);
+      $oldVersion = $row['fixed_version_id'] === null ? null : (int)$row['fixed_version_id'];
+      if ($fixedVersionId !== null && $fixedVersionId !== $oldVersion) {
+        $this->db->prepare('UPDATE issues SET fixed_version_id = :version WHERE id = :id')->execute(['version' => $fixedVersionId, 'id' => $facts['id']]);
+        $this->history->log($facts['id'], $actorId, 'field_changed', 'fixed_version', $this->issues->recordValue('product_versions', $oldVersion), $this->issues->recordValue('product_versions', $fixedVersionId));
+      }
       $this->sla->sync($facts['id']);
     });
   }

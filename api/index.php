@@ -1087,7 +1087,7 @@ function buildResetMail(string $appName, string $baseUrl, string $name, string $
     . '<p style="margin:0 0 16px;">Hello ' . $e($name) . ',</p>'
     . '<p style="margin:0 0 28px;">We received a request to reset the password of your account. Click the button below to choose a new one.</p>'
     . '<table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 28px;"><tr>'
-    . '<td align="center" style="background-color:#5856d6;border-radius:6px;">'
+    . '<td align="center" style="background-color:#0d6efd;border-radius:6px;">'
     . '<a href="' . $e($link) . '" style="display:inline-block;padding:13px 30px;' . $font . 'font-size:15px;font-weight:600;color:#ffffff;text-decoration:none;">Reset password</a>'
     . '</td></tr></table>'
     . '<p style="margin:0 0 8px;font-size:13px;color:#aaaaaa;">This link is valid for one hour and can be used once.</p>'

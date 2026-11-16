@@ -1033,6 +1033,11 @@ class IssueModel
       }
     }
 
+    // Hide closed: not the status "closed"; a chosen status wins
+    if (!empty($filters['hide_closed']) && empty($filters['status_id'])) {
+      $conditions[] = "s.`key` <> 'closed'";
+    }
+
     // Where the issue came from: web, email, or both
     if (!empty($filters['source'])) {
       $conditions[] = $this->inList('i.source', 'f_source', $filters['source'], $params);

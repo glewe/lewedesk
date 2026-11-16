@@ -177,11 +177,11 @@
       "index_brand_icon": "Navigationsleisten-Symbol",
       "index_brand_icon_desc": "Bootstrap-Icons-Klasse in der Navigationsleiste und der Seitenleiste, z. B. bi-headset. Leer lassen für das Standardsymbol.",
       "index_brand_title": "Navigationsleisten-Titel",
-      "index_brand_title_desc": "Titel in der Navigationsleiste und der Seitenleiste. Leer lassen für den Standardtitel.",
+      "index_brand_title_desc": "Titel in der Navigationsleiste und der Seitenleiste. Leer lassen für den Standardtitel. Teile davon können mit einem span-Tag gestaltet werden, das die Attribute class und style hat (erlaubt: color, font-weight, font-style, letter-spacing, font-size, text-transform und text-decoration).",
       "index_hero_title_left": "Hero-Titel (links)",
-      "index_hero_title_left_desc": "Linker Teil des Hero-Titels in der normalen Textfarbe. Leer lassen, um den Standard für diesen Teil zu behalten.",
+      "index_hero_title_left_desc": "Linker Teil des Hero-Titels in der normalen Textfarbe. Leer lassen, um den Standard für diesen Teil zu behalten. Teile davon können mit einem span-Tag gestaltet werden, das die Attribute class und style hat (erlaubt: color, font-weight, font-style, letter-spacing, font-size, text-transform und text-decoration).",
       "index_hero_title_right": "Hero-Titel (rechts)",
-      "index_hero_title_right_desc": "Rechter Teil des Hero-Titels, hervorgehoben dargestellt.",
+      "index_hero_title_right_desc": "Rechter Teil des Hero-Titels, hervorgehoben dargestellt. Teile davon können mit einem span-Tag gestaltet werden, das die Attribute class und style hat (erlaubt: color, font-weight, font-style, letter-spacing, font-size, text-transform und text-decoration).",
       "index_hero_subtitle": "Hero-Untertitel",
       "index_hero_subtitle_desc": "Text unter dem Hero-Titel. Leer lassen für den Standardtext.",
       "index_copyright_company": "Copyright-Firma",
@@ -962,7 +962,8 @@
       "search_results": "Suchergebnisse für \"{term}\"",
       "participant": "Beteiligt: {name}",
       "reset": "Filter zurücksetzen",
-      "all_sources": "Alle Quellen"
+      "all_sources": "Alle Quellen",
+      "hide_closed": "Geschlossene ausblenden"
     },
     "custom_views": {
       "save_button": "Ansicht speichern",

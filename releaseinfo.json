@@ -1,5 +1,19 @@
 [
   {
+    "version": "1.1.1",
+    "date": "2026-11-xx",
+    "info": "Improvement release.",
+    "bugfixes": [],
+    "features": [
+    ],
+    "improvements": [
+      { "summary": "Add `Hide closed` toggle on issue list", "issue": "" },
+      { "summary": "Change email template accent color to primary", "issue": "" },
+      { "summary": "Allow span tag in branding titles", "issue": "https://desk.lewe.com/issue.html?id=125" }
+    ],
+    "removals": []
+  },
+  {
     "version": "1.1.0",
     "date": "2026-11-15",
     "info": "Feature release.",

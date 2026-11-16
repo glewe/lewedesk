@@ -180,8 +180,8 @@ class SettingsValidator
       'mailin_allowed_domains', 'mailin_blocked_domains' => self::domains($value),
       // Index page (docs/INDEX_PAGE.md); all of them may be empty = the default look
       'index_brand_icon' => $value === '' || preg_match('/^bi-[a-z0-9-]{1,60}$/', $value) ? null : 'must be a Bootstrap Icons class such as bi-headset',
-      'index_brand_title' => self::maxLength($value, 50),
-      'index_hero_title_left', 'index_hero_title_right', 'index_copyright_company' => self::maxLength($value, 100),
+      'index_brand_title', 'index_hero_title_left', 'index_hero_title_right' => self::styledText($value),
+      'index_copyright_company' => self::maxLength($value, 100),
       'index_hero_subtitle' => self::maxLength($value, 300),
       'index_copyright_url' => $value === '' ? null : self::url($value),
       default => 'is not supported',
@@ -210,6 +210,73 @@ class SettingsValidator
   private static function maxLength(string $value, int $max): ?string
   {
     return mb_strlen($value) <= $max ? null : "must not be longer than $max characters";
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Checks a styled text (brand title, hero title parts): text that may contain <span class="..." style="..."> tags. Other markup is not an error,
+   * it is shown as text. A span has to be well-formed, its class may only hold letters, digits, dashes and
+   * underscores, and its style only the whitelisted properties with a valid value. Keep this in sync with
+   * src/js/branding.js, which builds the title from these rules.
+   */
+  private static function styledText(string $value): ?string
+  {
+    if ($error = self::maxLength($value, 300)) {
+      return $error;
+    }
+
+    $styleValues = [
+      'color' => '~^(?:#(?:[0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})|[a-z]+|(?:rgb|hsl)a?\([0-9.,%\s/deg]+\))$~iD',
+      'font-weight' => '~^(?:normal|bold|bolder|lighter|[1-9]00)$~iD',
+      'font-style' => '~^(?:normal|italic|oblique)$~iD',
+      'letter-spacing' => '~^(?:normal|-?(?:\d+|\d*\.\d+)(?:px|em|rem))$~iD',
+      // 8 to 64px, 0.5 to 4em/rem, 50 to 400%: large enough to style, small enough not to break the navbar
+      'font-size' => '~^(?:(?:(?:[89]|[1-5]\d|6[0-3])(?:\.\d+)?|64)px|(?:(?:0?\.[5-9]\d*|[1-3](?:\.\d+)?)|4)(?:em|rem)|(?:(?:[5-9]\d|[1-3]\d\d)(?:\.\d+)?|400)%)$~iD',
+      'text-transform' => '~^(?:none|uppercase|lowercase|capitalize)$~iD',
+      'text-decoration' => '~^(?:none|underline|line-through)$~iD',
+    ];
+
+    $wellFormed = '~<span((?:\s+(?:class|style)="[^"<>]*")*)\s*>|</span>~i';
+    if (preg_match_all('~<span\b~i', $value) !== preg_match_all('~<span(?:\s+(?:class|style)="[^"<>]*")*\s*>~i', $value)) {
+      return 'contains an invalid <span> tag; only the attributes class and style are allowed';
+    }
+
+    $depth = 0;
+    preg_match_all($wellFormed, $value, $tags, PREG_SET_ORDER);
+    foreach ($tags as $tag) {
+      if (str_starts_with($tag[0], '</')) {
+        if (--$depth < 0) {
+          return 'contains a closing </span> without an opening <span>';
+        }
+        continue;
+      }
+      $depth++;
+
+      preg_match_all('~\s+(class|style)="([^"]*)"~i', $tag[1], $attributes, PREG_SET_ORDER);
+      foreach ($attributes as [, $name, $attribute]) {
+        if (strtolower($name) === 'class') {
+          if (!preg_match('~^[A-Za-z0-9_ -]*$~D', $attribute)) {
+            return 'has a span class with characters other than letters, digits, dashes and underscores';
+          }
+          continue;
+        }
+        foreach (explode(';', $attribute) as $declaration) {
+          if (trim($declaration) === '') {
+            continue;
+          }
+          [$property, $propertyValue] = array_pad(explode(':', $declaration, 2), 2, '');
+          $property = strtolower(trim($property));
+          if (!isset($styleValues[$property])) {
+            return 'has a span style property that is not allowed: "' . trim($property) . '" (allowed: ' . implode(', ', array_keys($styleValues)) . ')';
+          }
+          if (!preg_match($styleValues[$property], trim($propertyValue))) {
+            return "has an invalid value for the span style property $property";
+          }
+        }
+      }
+    }
+
+    return $depth === 0 ? null : 'contains a <span> that is not closed';
   }
 
   //---------------------------------------------------------------------------

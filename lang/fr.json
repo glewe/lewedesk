@@ -177,11 +177,11 @@
       "index_brand_icon": "Icône de la barre de navigation",
       "index_brand_icon_desc": "Classe Bootstrap Icons affichée dans la barre de navigation et la barre latérale, p. ex. bi-headset. Laissez vide pour l'icône par défaut.",
       "index_brand_title": "Titre de la barre de navigation",
-      "index_brand_title_desc": "Titre affiché dans la barre de navigation et la barre latérale. Laissez vide pour le titre par défaut.",
+      "index_brand_title_desc": "Titre affiché dans la barre de navigation et la barre latérale. Laissez vide pour le titre par défaut. Des parties du titre peuvent être stylisées avec une balise span ayant les attributs class et style (autorisés : color, font-weight, font-style, letter-spacing, font-size, text-transform et text-decoration).",
       "index_hero_title_left": "Titre principal (gauche)",
-      "index_hero_title_left_desc": "Partie gauche du titre principal, dans la couleur de texte normale. Laissez vide pour conserver la valeur par défaut de cette partie.",
+      "index_hero_title_left_desc": "Partie gauche du titre principal, dans la couleur de texte normale. Laissez vide pour conserver la valeur par défaut de cette partie. Des parties du titre peuvent être stylisées avec une balise span ayant les attributs class et style (autorisés : color, font-weight, font-style, letter-spacing, font-size, text-transform et text-decoration).",
       "index_hero_title_right": "Titre principal (droite)",
-      "index_hero_title_right_desc": "Partie droite du titre principal, mise en évidence.",
+      "index_hero_title_right_desc": "Partie droite du titre principal, mise en évidence. Des parties du titre peuvent être stylisées avec une balise span ayant les attributs class et style (autorisés : color, font-weight, font-style, letter-spacing, font-size, text-transform et text-decoration).",
       "index_hero_subtitle": "Sous-titre principal",
       "index_hero_subtitle_desc": "Texte sous le titre principal. Laissez vide pour le texte par défaut.",
       "index_copyright_company": "Société du copyright",
@@ -962,7 +962,8 @@
       "search_results": "Résultats de recherche pour « {term} »",
       "participant": "Participant : {name}",
       "reset": "Réinitialiser les filtres",
-      "all_sources": "Toutes les sources"
+      "all_sources": "Toutes les sources",
+      "hide_closed": "Masquer les tickets fermés"
     },
     "custom_views": {
       "save_button": "Enregistrer la vue",

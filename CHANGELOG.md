@@ -2,6 +2,16 @@
 
 All notable changes of LeweDesk. The newest version is first.
 
+## 1.1.1 (2026-11-xx)
+
+Improvement release.
+
+### Improvements
+
+- Add `Hide closed` toggle on issue list
+- Change email template accent color to primary
+- Allow span tag in branding titles (https://desk.lewe.com/issue.html?id=125)
+
 ## 1.1.0 (2026-11-15)
 
 Feature release.

@@ -177,11 +177,11 @@
       "index_brand_icon": "Navbar Icon",
       "index_brand_icon_desc": "Bootstrap Icons class shown in the navbar and the sidebar, e.g. bi-headset. Leave empty for the default icon.",
       "index_brand_title": "Navbar Title",
-      "index_brand_title_desc": "Title shown in the navbar and the sidebar. Leave empty for the default title.",
+      "index_brand_title_desc": "Title shown in the navbar and the sidebar. Leave empty for the default title. Parts of it can be styled with a span tag that has the attributes class and style (allowed: color, font-weight, font-style, letter-spacing, font-size, text-transform and text-decoration).",
       "index_hero_title_left": "Hero Title (left)",
-      "index_hero_title_left_desc": "Left part of the hero title, shown in the normal text color. Leave a part empty to keep the default for it.",
+      "index_hero_title_left_desc": "Left part of the hero title, shown in the normal text color. Leave a part empty to keep the default for it. Parts of it can be styled with a span tag that has the attributes class and style (allowed: color, font-weight, font-style, letter-spacing, font-size, text-transform and text-decoration).",
       "index_hero_title_right": "Hero Title (right)",
-      "index_hero_title_right_desc": "Right part of the hero title, shown highlighted.",
+      "index_hero_title_right_desc": "Right part of the hero title, shown highlighted. Parts of it can be styled with a span tag that has the attributes class and style (allowed: color, font-weight, font-style, letter-spacing, font-size, text-transform and text-decoration).",
       "index_hero_subtitle": "Hero Subtitle",
       "index_hero_subtitle_desc": "Text below the hero title. Leave empty for the default text.",
       "index_copyright_company": "Copyright Company",
@@ -962,7 +962,8 @@
       "search_results": "Search results for \"{term}\"",
       "participant": "Participant: {name}",
       "reset": "Reset filters",
-      "all_sources": "All sources"
+      "all_sources": "All sources",
+      "hide_closed": "Hide closed"
     },
     "custom_views": {
       "save_button": "Save view",

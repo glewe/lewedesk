@@ -465,12 +465,12 @@ class NotificationMail
       . '<tr><td style="padding:36px 32px 12px;' . $font . 'font-size:15px;line-height:1.6;color:#dee2e6;">'
       . '<h1 style="margin:0 0 20px;font-size:22px;font-weight:600;color:#ffffff;">' . $e($heading) . '</h1>'
       . '<p style="margin:0 0 16px;">' . $e($hello) . '</p>'
-      . ($key !== '' ? '<p style="margin:0 0 20px;padding:12px 16px;background-color:#252525;border-left:3px solid #5856d6;border-radius:4px;">'
+      . ($key !== '' ? '<p style="margin:0 0 20px;padding:12px 16px;background-color:#252525;border-left:3px solid #0d6efd;border-radius:4px;">'
         . '<strong style="color:#ffffff;">' . $e($key) . '</strong><br>' . $e($summary)
         . ($detail !== '' ? '<br><span style="font-size:13px;color:#aaaaaa;">' . $e($detail) . '</span>' : '') . '</p>' : '')
       . $items
       . '<table role="presentation" cellpadding="0" cellspacing="0" style="margin:18px 0 28px;"><tr>'
-      . '<td align="center" style="background-color:#5856d6;border-radius:6px;">'
+      . '<td align="center" style="background-color:#0d6efd;border-radius:6px;">'
       . '<a href="' . $e($link) . '" style="display:inline-block;padding:13px 30px;' . $font . 'font-size:15px;font-weight:600;color:#ffffff;text-decoration:none;">' . $e($button) . '</a>'
       . '</td></tr></table>'
       . '</td></tr>'

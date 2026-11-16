@@ -177,11 +177,11 @@
       "index_brand_icon": "Icono de la barra de navegación",
       "index_brand_icon_desc": "Clase de Bootstrap Icons que se muestra en la barra de navegación y la barra lateral, p. ej. bi-headset. Déjelo vacío para el icono predeterminado.",
       "index_brand_title": "Título de la barra de navegación",
-      "index_brand_title_desc": "Título que se muestra en la barra de navegación y la barra lateral. Déjelo vacío para el título predeterminado.",
+      "index_brand_title_desc": "Título que se muestra en la barra de navegación y la barra lateral. Déjelo vacío para el título predeterminado. Partes del título pueden estilizarse con una etiqueta span que tenga los atributos class y style (permitidos: color, font-weight, font-style, letter-spacing, font-size, text-transform y text-decoration).",
       "index_hero_title_left": "Título principal (izquierda)",
-      "index_hero_title_left_desc": "Parte izquierda del título principal, con el color de texto normal. Déjelo vacío para mantener el valor predeterminado de esta parte.",
+      "index_hero_title_left_desc": "Parte izquierda del título principal, con el color de texto normal. Déjelo vacío para mantener el valor predeterminado de esta parte. Partes del título pueden estilizarse con una etiqueta span que tenga los atributos class y style (permitidos: color, font-weight, font-style, letter-spacing, font-size, text-transform y text-decoration).",
       "index_hero_title_right": "Título principal (derecha)",
-      "index_hero_title_right_desc": "Parte derecha del título principal, resaltada.",
+      "index_hero_title_right_desc": "Parte derecha del título principal, resaltada. Partes del título pueden estilizarse con una etiqueta span que tenga los atributos class y style (permitidos: color, font-weight, font-style, letter-spacing, font-size, text-transform y text-decoration).",
       "index_hero_subtitle": "Subtítulo principal",
       "index_hero_subtitle_desc": "Texto bajo el título principal. Déjelo vacío para el texto predeterminado.",
       "index_copyright_company": "Empresa del copyright",
@@ -962,7 +962,8 @@
       "search_results": "Resultados de búsqueda de «{term}»",
       "participant": "Participante: {name}",
       "reset": "Restablecer filtros",
-      "all_sources": "Todos los orígenes"
+      "all_sources": "Todos los orígenes",
+      "hide_closed": "Ocultar cerrados"
     },
     "custom_views": {
       "save_button": "Guardar vista",

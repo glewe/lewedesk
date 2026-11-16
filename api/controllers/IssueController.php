@@ -853,6 +853,11 @@ class IssueController
       $filters['sla_day_end'] = (new DateTimeImmutable('tomorrow', new DateTimeZone($zone)))->getTimestamp();
     }
 
+    // Leaves out the issues with the status "closed" (the model ignores it while a status is chosen)
+    if (isset($_GET['hide_closed']) && $_GET['hide_closed'] === '1') {
+      $filters['hide_closed'] = true;
+    }
+
     if (isset($_GET['participant_id']) && $_GET['participant_id'] !== '') {
       $id = $this->lookupId($_GET['participant_id']);
       if ($id === null) {

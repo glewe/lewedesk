@@ -1,15 +1,19 @@
 [
   {
     "version": "1.1.1",
-    "date": "2026-11-xx",
+    "date": "2026-11-24",
     "info": "Improvement release.",
-    "bugfixes": [],
+    "bugfixes": [
+      { "summary": "Fix issues with a custom status (no status key) being hidden from the issue list by `Hide closed`", "issue": "" }
+    ],
     "features": [
     ],
     "improvements": [
       { "summary": "Add `Hide closed` toggle on issue list", "issue": "" },
       { "summary": "Change email template accent color to primary", "issue": "" },
-      { "summary": "Allow span tag in branding titles", "issue": "https://desk.lewe.com/issue.html?id=125" }
+      { "summary": "Allow span tag in branding titles", "issue": "" },
+      { "summary": "Show `Fixed version` and a comment field in the `Resolve` action dialog", "issue": "" },
+      { "summary": "Link to new Lewe Book user manual", "issue": "" }
     ],
     "removals": []
   },
@@ -19,7 +23,7 @@
     "info": "Feature release.",
     "bugfixes": [],
     "features": [
-      { "summary": "Implement product related issues", "issue": "https://desk.lewe.com/issue.html?id=124" }
+      { "summary": "Implement product related issues", "issue": "" }
     ],
     "improvements": [
     ],
@@ -31,10 +35,10 @@
     "info": "Improvement release.",
     "bugfixes": [],
     "features": [
-      { "summary": "Allow custom branding", "issue": "https://desk.lewe.com/issue.html?id=122" }
+      { "summary": "Allow custom branding", "issue": "" }
     ],
     "improvements": [
-      { "summary": "Allow edit reporter on issue edit page", "issue": "https://desk.lewe.com/issue.html?id=123" }
+      { "summary": "Allow edit reporter on issue edit page", "issue": "" }
     ],
     "removals": []
   },

@@ -2,7 +2,7 @@
 
 All notable changes of LeweDesk. The newest version is first.
 
-## 1.1.1 (2026-11-xx)
+## 1.1.1 (2026-11-24)
 
 Improvement release.
 
@@ -10,7 +10,13 @@ Improvement release.
 
 - Add `Hide closed` toggle on issue list
 - Change email template accent color to primary
-- Allow span tag in branding titles (https://desk.lewe.com/issue.html?id=125)
+- Allow span tag in branding titles
+- Show `Fixed version` and a comment field in the `Resolve` action dialog
+- Link to new Lewe Book user manual
+
+### Bug fixes
+
+- Fix issues with a custom status (no status key) being hidden from the issue list by `Hide closed`
 
 ## 1.1.0 (2026-11-15)
 
@@ -18,7 +24,7 @@ Feature release.
 
 ### Features
 
-- Implement product related issues (https://desk.lewe.com/issue.html?id=124)
+- Implement product related issues
 
 ## 1.0.3 (2026-11-14)
 
@@ -26,11 +32,11 @@ Improvement release.
 
 ### Features
 
-- Allow custom branding (https://desk.lewe.com/issue.html?id=122)
+- Allow custom branding
 
 ### Improvements
 
-- Allow edit reporter on issue edit page (https://desk.lewe.com/issue.html?id=123)
+- Allow edit reporter on issue edit page
 
 ## 1.0.2 (2026-11-11)
 

@@ -1035,7 +1035,8 @@ class IssueModel
 
     // Hide closed: not the status "closed"; a chosen status wins
     if (!empty($filters['hide_closed']) && empty($filters['status_id'])) {
-      $conditions[] = "s.`key` <> 'closed'";
+      // Custom statuses have no key (NULL), and NULL <> 'closed' is NULL, so compare null-safe
+      $conditions[] = "NOT (s.`key` <=> 'closed')";
     }
 
     // Where the issue came from: web, email, or both

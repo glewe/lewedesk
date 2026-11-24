@@ -169,7 +169,7 @@ DELETE FROM settings WHERE `key` IN ('system_name', 'technical_email', 'default_
 INSERT IGNORE INTO settings (`key`, `value`) VALUES
 ('application_url', 'https://desk.lewe.com'),
 ('application_name', 'LeweDesk'),
-('application_manual', 'https://lewe.gitbook.io/lewedesk'),
+('application_manual', 'https://book.lewe.com/lewedesk/'),
 ('html_description', 'LeweDesk - The web based Lewe Ticket Management application'),
 ('html_keywords', 'LeweDesk, Lewe Ticket Management, ticket, issue, support, bug, feature, improvement, Lewe'),
 ('default_language', 'en'),

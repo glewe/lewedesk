@@ -127,7 +127,7 @@
       "application_name": "Application Name",
       "application_name_desc": "Enter an application title here. It is used at several locations, e.g. the HTML header, menu and other pages where the title is referenced.",
       "application_manual": "Application Manual",
-      "application_manual_desc": "The user manual is maintained in English and is available at the Lewe Gitbook site. If you have written your own manual, enter the link here. It will be displayed in the Help menu as long as the field is not empty.",
+      "application_manual_desc": "The user manual is maintained in English and is available at the Lewe Book site (book.lewe.com). If you have written your own manual, enter the link here. It will be displayed in the Help menu as long as the field is not empty.",
       "html_description": "HTML Description",
       "html_description_desc": "Enter an application description here. It will be used in the HTML header for search engines.",
       "html_keywords": "HTML Keywords",

@@ -127,7 +127,7 @@
       "application_name": "Nombre de la aplicación",
       "application_name_desc": "Introduce aquí un título para la aplicación. Se utiliza en varios lugares, por ejemplo en la cabecera HTML, el menú y otras páginas donde se hace referencia al título.",
       "application_manual": "Manual de la aplicación",
-      "application_manual_desc": "El manual de usuario se mantiene en inglés y está disponible en el sitio Lewe Gitbook. Si has escrito tu propio manual, introduce aquí el enlace. Se mostrará en el menú Ayuda mientras el campo no esté vacío.",
+      "application_manual_desc": "El manual de usuario se mantiene en inglés y está disponible en el sitio Lewe Book (book.lewe.com). Si has escrito tu propio manual, introduce aquí el enlace. Se mostrará en el menú Ayuda mientras el campo no esté vacío.",
       "html_description": "Descripción HTML",
       "html_description_desc": "Introduce aquí una descripción de la aplicación. Se utilizará en la cabecera HTML para los motores de búsqueda.",
       "html_keywords": "Palabras clave HTML",

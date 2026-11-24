@@ -73,7 +73,7 @@ Check the product page at: https://lewedesk.lewe.com
 
 ## Documentation
 
-The user and administrator manual is on GitBook: https://lewe.gitbook.io/lewedesk
+The user and administrator manual is at https://book.lewe.com/lewedesk/
 
 ## Support and issues
 

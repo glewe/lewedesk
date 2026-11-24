@@ -127,7 +127,7 @@
       "application_name": "Anwendungsname",
       "application_name_desc": "Geben Sie hier den Titel der Anwendung ein. Er wird an verschiedenen Stellen verwendet, z. B. im HTML-Header, im Menü und auf anderen Seiten.",
       "application_manual": "Anwendungshandbuch",
-      "application_manual_desc": "Das Benutzerhandbuch wird in Englisch gepflegt und ist auf der Lewe Gitbook-Seite verfügbar. Wenn Sie ein eigenes Handbuch geschrieben haben, geben Sie hier den Link ein.",
+      "application_manual_desc": "Das Benutzerhandbuch wird in Englisch gepflegt und ist auf der Lewe-Book-Seite (book.lewe.com) verfügbar. Wenn Sie ein eigenes Handbuch geschrieben haben, geben Sie hier den Link ein.",
       "html_description": "HTML-Beschreibung",
       "html_description_desc": "Geben Sie hier eine Anwendungsbeschreibung ein. Sie wird im HTML-Header für Suchmaschinen verwendet.",
       "html_keywords": "HTML-Schlüsselwörter",

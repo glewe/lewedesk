@@ -938,6 +938,11 @@
       "sla_breached": "Tickets avec SLA non respecté"
     },
     "bulk": {
+      "menu": "Actions groupées...",
+      "change_status": "Changer le statut",
+      "status_placeholder": "Sélectionner un statut...",
+      "status_info": "Définir le statut des {count} tickets sélectionnés sur :",
+      "done_status": "Statut de {count} ticket(s) modifié.",
       "restore": "Restaurer",
       "yes_restore": "Oui, restaurer",
       "confirm_delete": "Supprimer les {count} tickets sélectionnés ? Ils sont déplacés vers les tickets supprimés et peuvent être restaurés.",

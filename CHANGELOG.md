@@ -2,6 +2,15 @@
 
 All notable changes of LeweDesk. The newest version is first.
 
+## 1.1.2 (2026-11-24)
+
+Improvement release.
+
+### Features
+
+- Add `Bulk..` dropdown button to issue list
+- Allow bulk status change
+
 ## 1.1.1 (2026-11-24)
 
 Improvement release.

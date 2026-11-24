@@ -938,6 +938,11 @@
       "sla_breached": "Issues mit verletztem SLA"
     },
     "bulk": {
+      "menu": "Mehrfachaktion...",
+      "change_status": "Status ändern",
+      "status_placeholder": "Status auswählen...",
+      "status_info": "Status der {count} ausgewählten Issues setzen auf:",
+      "done_status": "Status von {count} Issue(s) geändert.",
       "restore": "Wiederherstellen",
       "yes_restore": "Ja, wiederherstellen",
       "confirm_delete": "Die {count} ausgewählten Issues löschen? Sie werden zu den gelöschten Issues verschoben und können wiederhergestellt werden.",

@@ -938,6 +938,11 @@
       "sla_breached": "Incidencias con SLA incumplido"
     },
     "bulk": {
+      "menu": "Acciones masivas...",
+      "change_status": "Cambiar estado",
+      "status_placeholder": "Seleccione un estado...",
+      "status_info": "Establecer el estado de las {count} incidencias seleccionadas en:",
+      "done_status": "Estado de {count} incidencia(s) cambiado.",
       "restore": "Restaurar",
       "yes_restore": "Sí, restaurar",
       "confirm_delete": "¿Eliminar las {count} incidencias seleccionadas? Se mueven a las incidencias eliminadas y se pueden restaurar.",

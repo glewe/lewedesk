@@ -938,6 +938,11 @@
       "sla_breached": "SLA breached issues"
     },
     "bulk": {
+      "menu": "Bulk...",
+      "change_status": "Change status",
+      "status_placeholder": "Select a status...",
+      "status_info": "Set the status of the {count} selected issue(s) to:",
+      "done_status": "Status of {count} issue(s) changed.",
       "restore": "Restore",
       "yes_restore": "Yes, restore",
       "confirm_delete": "Delete the {count} selected issue(s)? They are moved to the deleted issues and can be restored.",

@@ -13,6 +13,11 @@ require_once __DIR__ . '/utils/EnvLoader.php';
 require_once __DIR__ . '/utils/SettingsValidator.php';
 require_once __DIR__ . '/utils/IssueConfig.php';
 require_once __DIR__ . '/utils/IssueKey.php';
+require_once __DIR__ . '/utils/GitHubRepo.php';
+require_once __DIR__ . '/models/GitHubCommitCacheModel.php';
+require_once __DIR__ . '/services/GitHubClient.php';
+require_once __DIR__ . '/services/IssueCommits.php';
+require_once __DIR__ . '/controllers/IssueCommitController.php';
 require_once __DIR__ . '/services/IssueNumbering.php';
 require_once __DIR__ . '/config/Database.php';
 require_once __DIR__ . '/models/UserModel.php';
@@ -110,6 +115,7 @@ use App\Controllers\UserController;
 use App\Controllers\ProfileController;
 use App\Controllers\TwoFactorController;
 use App\Config\Lookups;
+use App\Controllers\IssueCommitController;
 use App\Controllers\LookupController;
 use App\Controllers\ProductVersionController;
 use App\Models\LookupModel;
@@ -132,6 +138,7 @@ use App\Controllers\IssueController;
 use App\Controllers\NotificationController;
 use App\Controllers\PreferenceController;
 use App\Models\AttachmentModel;
+use App\Models\GitHubCommitCacheModel;
 use App\Models\AuditLogModel;
 use App\Models\CommentModel;
 use App\Models\CustomViewModel;
@@ -144,6 +151,8 @@ use App\Models\NotificationModel;
 use App\Models\NotificationPreferenceModel;
 use App\Models\PreferenceModel;
 use App\Services\AttachmentStorage;
+use App\Services\GitHubClient;
+use App\Services\IssueCommits;
 use App\Services\CommentPolicy;
 use App\Services\Housekeeping;
 use App\Services\IssueActions;
@@ -314,7 +323,7 @@ try {
   $attachmentStorage = new AttachmentStorage(dirname(__DIR__) . '/uploads/attachments');
 
   // No cron job needed: after the response the periodic cleanup runs when it is due (mail retry, retention, old uploads)
-  $housekeeping = new Housekeeping($mailOutbox, $notifier, $attachmentModel, $attachmentStorage, $issueConfig, $audit, dirname(__DIR__) . '/uploads/.housekeeping', new MailInboxModel($pdo), new SlaNotifier($pdo, $notifier));
+  $housekeeping = new Housekeeping($mailOutbox, $notifier, $attachmentModel, $attachmentStorage, $issueConfig, $audit, dirname(__DIR__) . '/uploads/.housekeeping', new MailInboxModel($pdo), new SlaNotifier($pdo, $notifier), new GitHubCommitCacheModel($pdo));
   register_shutdown_function(static function () use ($mailOutbox, $housekeeping, $mailInbound): void {
     // Under PHP-FPM the client gets the response now; the mail server is talked to afterwards
     ignore_user_abort(true);
@@ -404,7 +413,7 @@ try {
     } else {
       requirePermission($auth, $definition['permission']);
     }
-    (new LookupController(new LookupModel($pdo, $definition), $audit, $definition, $slaDeleteGuard))->handle($_SERVER['REQUEST_METHOD'], $m[2] ?? null);
+    (new LookupController(new LookupModel($pdo, $definition), $audit, $definition, $slaDeleteGuard, static fn(string $repo): string => (new GitHubClient())->repoStatus($repo)))->handle($_SERVER['REQUEST_METHOD'], $m[2] ?? null);
     exit;
   }
 
@@ -440,6 +449,17 @@ try {
       requireUser($auth);
     }
     $attachmentController->handleIssue($method, (int)$m[1], isset($m[2]) ? (int)$m[2] : null);
+    exit;
+  }
+
+  // The commits of an issue that mention its key, from the GitHub repository of its product (docs/GITHUB.md). Reading
+  // is open to everybody holding view_issue (the visibility rules decide which issues they get)
+  if (preg_match('#^/issues/(\d+)/commits/?$#', $path, $m)) {
+    if (!$auth->can('view_issue')) {
+      $auth->currentUser() ? sendError(403, 'Permission required: view_issue') : sendError(401, 'Authentication required');
+    }
+    requireLicensedFeature($licenseFeatures, 'github');
+    (new IssueCommitController($issueModel, new IssueCommits(new GitHubCommitCacheModel($pdo), new GitHubClient()), $pdo))->handle($_SERVER['REQUEST_METHOD'], (int)$m[1]);
     exit;
   }
 

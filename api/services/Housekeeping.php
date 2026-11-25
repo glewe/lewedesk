@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\AttachmentModel;
+use App\Models\GitHubCommitCacheModel;
 use App\Models\MailInboxModel;
 use App\Utils\IssueConfig;
 
@@ -30,7 +31,8 @@ class Housekeeping
     private readonly AuditLog $audit,
     private readonly string $stampFile,
     private readonly ?MailInboxModel $mailInbox = null,
-    private readonly ?SlaNotifier $sla = null
+    private readonly ?SlaNotifier $sla = null,
+    private readonly ?GitHubCommitCacheModel $githubCache = null
   ) {
   }
 
@@ -132,6 +134,13 @@ class Housekeeping
       $this->mailInbox?->purge($this->config->auditRetentionDays());
     } catch (\Throwable $e) {
       error_log('Email to ticket log purge failed: ' . $e->getMessage());
+    }
+
+    // The cache of the GitHub commits (entries older than a day)
+    try {
+      $this->githubCache?->purge();
+    } catch (\Throwable $e) {
+      error_log('GitHub commit cache purge failed: ' . $e->getMessage());
     }
 
     return ['sent' => $sent, 'notifications' => $deleted['notifications'], 'mails' => $deleted['mails'], 'uploads' => count($stored), 'audit' => $audit, 'sla' => $sla];

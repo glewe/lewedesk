@@ -32,6 +32,7 @@ require_once __DIR__ . '/services/MailService.php';
 require_once __DIR__ . '/services/MailOutbox.php';
 require_once __DIR__ . '/services/NotificationMail.php';
 require_once __DIR__ . '/models/AttachmentModel.php';
+require_once __DIR__ . '/models/GitHubCommitCacheModel.php';
 require_once __DIR__ . '/services/AttachmentStorage.php';
 require_once __DIR__ . '/services/NotificationService.php';
 require_once __DIR__ . '/services/SlaService.php';
@@ -46,6 +47,7 @@ require_once __DIR__ . '/services/LicenseFeatures.php';
 
 use App\Config\Database;
 use App\Models\AttachmentModel;
+use App\Models\GitHubCommitCacheModel;
 use App\Models\MailInboxModel;
 use App\Models\NotificationModel;
 use App\Models\NotificationPreferenceModel;
@@ -103,7 +105,7 @@ try {
 
   $attachments = new AttachmentModel($pdo, new IssueVisibility($auth, false));
   $storage = new AttachmentStorage(dirname(__DIR__) . '/uploads/attachments');
-  $done = (new Housekeeping($outbox, $service, $attachments, $storage, $config, $audit, dirname(__DIR__) . '/uploads/.housekeeping', new MailInboxModel($pdo), new SlaNotifier($pdo, $service)))->run();
+  $done = (new Housekeeping($outbox, $service, $attachments, $storage, $config, $audit, dirname(__DIR__) . '/uploads/.housekeeping', new MailInboxModel($pdo), new SlaNotifier($pdo, $service), new GitHubCommitCacheModel($pdo)))->run();
 
   // Email to ticket: reads the support mailbox now (nothing happens when MAILIN_YES is not 1 or the license does not allow it)
   $inbound = InboundMailService::create($pdo, $settings, $_ENV, $service, $notificationMail, $outbox, $audit, static fn(): bool => $licenseFeatures->allows('mail_in'), static fn(): bool => (new AuthPolicy(new LdapService($_ENV), new OidcService($_ENV, $pdo)))->isEnabled(), dirname(__DIR__));

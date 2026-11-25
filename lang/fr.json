@@ -578,6 +578,9 @@
       "key_invalid": "Saisissez de 1 à 4 lettres.",
       "key_taken": "Un autre produit a cette clé.",
       "key_change_warning": "Les tickets de ce produit reçoivent la nouvelle clé. Leurs anciennes clés restent valables et y mènent toujours.",
+      "github_repo": "Dépôt GitHub",
+      "github_repo_desc": "Dépôt GitHub public du produit, p. ex. https://github.com/owner/repo ou owner/repo. La page du ticket liste ses commits qui mentionnent la clé du ticket. Les dépôts privés ne sont pas pris en charge.",
+      "github_repo_unverified": "Le dépôt GitHub a été enregistré, mais GitHub n’a pas pu être joint pour le vérifier.",
       "replacement_needed": "Le produit sélectionné compte {count} ticket(s). Choisissez le produit vers lequel ces tickets doivent être déplacés. Ils y reçoivent de nouvelles clés (les anciennes clés continuent de fonctionner) et leurs versions sont effacées :",
       "replacement_default": "Le produit sélectionné est le produit par défaut. Choisissez le produit qui devient le produit par défaut (ses tickets y sont aussi déplacés) :"
     },
@@ -907,12 +910,15 @@
     },
     "columns": {
       "id": "Ticket",
+      "id_short": "Tic.",
       "summary": "Résumé",
+      "summary_short": "Rés.",
       "reporter": "Rapporteur",
       "assignee": "Assigné à",
       "created": "Créé",
       "updated": "Mis à jour",
       "status": "Statut",
+      "status_short": "Stat",
       "sla": "SLA"
     },
     "access": {
@@ -938,11 +944,11 @@
       "sla_breached": "Tickets avec SLA non respecté"
     },
     "bulk": {
-      "menu": "Actions groupées...",
-      "change_status": "Changer le statut",
-      "status_placeholder": "Sélectionner un statut...",
-      "status_info": "Définir le statut des {count} tickets sélectionnés sur :",
-      "done_status": "Statut de {count} ticket(s) modifié.",
+      "menu": "Modification groupée",
+      "info": "Modifiez les champs des {count} tickets sélectionnés. Les champs sur \"Aucun changement\" restent inchangés.",
+      "keep": "Aucun changement",
+      "versions_hint": "Les versions peuvent être définies lorsque les tickets sélectionnés appartiennent à un seul produit, ou lorsqu'un produit est choisi.",
+      "done_edit": "{count} ticket(s) mis à jour.",
       "restore": "Restaurer",
       "yes_restore": "Oui, restaurer",
       "confirm_delete": "Supprimer les {count} tickets sélectionnés ? Ils sont déplacés vers les tickets supprimés et peuvent être restaurés.",
@@ -968,7 +974,9 @@
       "participant": "Participant : {name}",
       "reset": "Réinitialiser les filtres",
       "all_sources": "Toutes les sources",
-      "hide_closed": "Masquer les tickets fermés"
+      "hide_closed": "Masquer les tickets fermés",
+      "toggle": "Filtres",
+      "active_count": "{count} actifs"
     },
     "custom_views": {
       "save_button": "Enregistrer la vue",
@@ -1252,6 +1260,13 @@
     },
     "load_error": "L'historique n'a pas pu être chargé."
   },
+  "commits": {
+    "title": "Commits",
+    "empty": "Aucun commit trouvé.",
+    "unavailable": "Les commits n’ont pas pu être chargés depuis GitHub pour le moment. Réessayez plus tard.",
+    "stale": "GitHub n’a pas répondu ; ces commits sont peut-être obsolètes.",
+    "open_repo": "Ouvrir le dépôt"
+  },
   "attachments": {
     "title": "Pièces jointes",
     "create_desc": "Joignez des fichiers au ticket. Ils sont enregistrés avec le ticket.",
@@ -1337,34 +1352,6 @@
     "issues": "Tickets",
     "hero_title": "My Company <span class=\"text-primary hero-shimmer\">Support client</span>",
     "hero_lead": "LeweDesk est le système de helpdesk et de gestion de tickets de Lewe Labs. Signalez des problèmes, demandez des améliorations et suivez chaque cas du premier message jusqu'à la solution.",
-    "features_title": "Tout ce dont une équipe de support a besoin",
-    "features_lead": "Un ensemble ciblé d'outils pour collecter, organiser et résoudre les demandes des clients.",
-    "features": {
-      "issues": {
-        "title": "Suivi des tickets",
-        "text": "Signalez des problèmes et demandez des améliorations. Chaque ticket a un type, un statut, un produit, des étiquettes, une description en markdown, des commentaires et un historique complet."
-      },
-      "workflow": {
-        "title": "Flux de travail configurable",
-        "text": "Définissez vos propres types de ticket, statuts, résolutions et produits pour que le helpdesk suive le fonctionnement de votre équipe."
-      },
-      "access": {
-        "title": "Contrôle d'accès précis",
-        "text": "Les rôles, groupes et permissions déterminent qui voit quoi. Les tickets sont publics, visibles par les utilisateurs inscrits ou privés pour le rapporteur."
-      },
-      "notifications": {
-        "title": "Notifications",
-        "text": "Restez informé grâce aux notifications dans l'application et par e-mail, configurables par utilisateur et par événement."
-      },
-      "attachments": {
-        "title": "Pièces jointes et recherche",
-        "text": "Joignez des fichiers aux tickets et aux commentaires, et retrouvez rapidement n'importe quel ticket grâce à la recherche intégrée et aux vues enregistrées."
-      },
-      "security": {
-        "title": "Sécurisé dès la conception",
-        "text": "L'authentification à deux facteurs, LDAP ou SSO (OIDC) en option, la protection anti-spam et un journal d'audit protègent vos données."
-      }
-    },
     "steps_title": "Comment ça marche",
     "steps": {
       "register": {
@@ -1378,25 +1365,6 @@
       "follow": {
         "title": "Suivez-le jusqu'à la résolution",
         "text": "Soyez informé de chaque commentaire et de chaque changement de statut jusqu'à la résolution du ticket."
-      }
-    },
-    "faq_title": "Questions fréquentes",
-    "faq": {
-      "what": {
-        "q": "Qu'est-ce que LeweDesk ?",
-        "a": "LeweDesk est un système web de helpdesk et de gestion de tickets pour le support client, développé par Lewe Labs. Les clients signalent des problèmes et demandent des améliorations, et le personnel du support les suit jusqu'à leur résolution."
-      },
-      "who": {
-        "q": "À qui s'adresse-t-il ?",
-        "a": "Aux éditeurs de logiciels et aux équipes de service qui souhaitent un endroit central et structuré pour les signalements des clients, les demandes de fonctionnalités et les échanges avec le support."
-      },
-      "languages": {
-        "q": "Quelles langues sont prises en charge ?",
-        "a": "L'interface est disponible en anglais, allemand, français et espagnol."
-      },
-      "private": {
-        "q": "Qui peut voir mes tickets ?",
-        "a": "Chaque ticket est soit public, soit visible uniquement par les utilisateurs inscrits, soit privé pour la personne qui l'a signalé. Les commentaires internes restent masqués pour les rapporteurs."
       }
     },
     "cta_title": "Prêt à commencer ?",

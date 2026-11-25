@@ -569,6 +569,9 @@
       "key_invalid": "Please enter 1 to 4 letters.",
       "key_taken": "Another product has this key.",
       "key_change_warning": "The issues of this product get the new key. Their old keys stay valid and still lead to them.",
+      "github_repo": "GitHub Repo",
+      "github_repo_desc": "Public GitHub repository of the product, e.g. https://github.com/owner/repo or owner/repo. The issue page lists its commits that mention the issue key. Private repositories are not supported.",
+      "github_repo_unverified": "The GitHub repository was saved, but GitHub could not be reached to check it.",
       "replacement_needed": "The selected product has {count} issue(s). Choose the product these issues should move to instead. They get new keys there (the old keys keep working) and their versions are cleared:",
       "replacement_default": "The selected product is the default product. Choose the product that becomes the default product instead (its issues move there, too):",
       "messages": {
@@ -907,12 +910,15 @@
     },
     "columns": {
       "id": "Issue",
+      "id_short": "Iss",
       "summary": "Summary",
+      "summary_short": "Sum",
       "reporter": "Reporter",
       "assignee": "Assignee",
       "created": "Created",
       "updated": "Updated",
       "status": "Status",
+      "status_short": "Stat",
       "sla": "SLA"
     },
     "access": {
@@ -938,11 +944,11 @@
       "sla_breached": "SLA breached issues"
     },
     "bulk": {
-      "menu": "Bulk...",
-      "change_status": "Change status",
-      "status_placeholder": "Select a status...",
-      "status_info": "Set the status of the {count} selected issue(s) to:",
-      "done_status": "Status of {count} issue(s) changed.",
+      "menu": "Bulk Edit",
+      "info": "Change the fields of the {count} selected issue(s). Fields left on \"No change\" stay as they are.",
+      "keep": "No change",
+      "versions_hint": "The versions can be set when the selected issues belong to one product, or when a product is chosen.",
+      "done_edit": "{count} issue(s) updated.",
       "restore": "Restore",
       "yes_restore": "Yes, restore",
       "confirm_delete": "Delete the {count} selected issue(s)? They are moved to the deleted issues and can be restored.",
@@ -968,7 +974,9 @@
       "participant": "Participant: {name}",
       "reset": "Reset filters",
       "all_sources": "All sources",
-      "hide_closed": "Hide closed"
+      "hide_closed": "Hide closed",
+      "toggle": "Filters",
+      "active_count": "{count} active"
     },
     "custom_views": {
       "save_button": "Save view",
@@ -1310,6 +1318,13 @@
     },
     "load_error": "The history could not be loaded."
   },
+  "commits": {
+    "title": "Commits",
+    "empty": "No commits found.",
+    "unavailable": "The commits could not be loaded from GitHub right now. Please try again later.",
+    "stale": "GitHub did not answer; these commits may be out of date.",
+    "open_repo": "Open repository"
+  },
   "attachments": {
     "title": "Attachments",
     "create_desc": "Attach files to the issue. They are saved with the issue.",
@@ -1395,34 +1410,6 @@
     "issues": "Issues",
     "hero_title": "My Company <span class=\"text-primary hero-shimmer\">Customer Support</span>",
     "hero_lead": "LeweDesk is the helpdesk and ticket management system by Lewe Labs. Report issues, request improvements and follow every case from the first message to the solution.",
-    "features_title": "Everything a support team needs",
-    "features_lead": "A focused set of tools to collect, organize and resolve customer reports.",
-    "features": {
-      "issues": {
-        "title": "Issue tracking",
-        "text": "Report issues and request improvements. Every issue has a type, status, product, tags, markdown description, comments and a full history."
-      },
-      "workflow": {
-        "title": "Configurable workflow",
-        "text": "Define your own issue types, statuses, resolutions and products so the helpdesk follows the way your team works."
-      },
-      "access": {
-        "title": "Fine-grained access control",
-        "text": "Roles, groups and permissions decide who sees what. Issues are public, visible to registered users or private to the reporter."
-      },
-      "notifications": {
-        "title": "Notifications",
-        "text": "Stay informed with in-app and email notifications, set up per user and per event."
-      },
-      "attachments": {
-        "title": "Attachments and search",
-        "text": "Attach files to issues and comments, and find any issue quickly with the built-in search and saved views."
-      },
-      "security": {
-        "title": "Secure by design",
-        "text": "Two-factor authentication, optional LDAP or SSO (OIDC), spam protection and an audit log keep your data safe."
-      }
-    },
     "steps_title": "How it works",
     "steps": {
       "register": {
@@ -1436,25 +1423,6 @@
       "follow": {
         "title": "Follow it to resolution",
         "text": "Get notified about every comment and status change until the issue is resolved."
-      }
-    },
-    "faq_title": "Frequently asked questions",
-    "faq": {
-      "what": {
-        "q": "What is LeweDesk?",
-        "a": "LeweDesk is a web-based customer support helpdesk and ticket management system by Lewe Labs. Customers report issues and request improvements, and support staff track them to resolution."
-      },
-      "who": {
-        "q": "Who is it for?",
-        "a": "Software vendors and service teams that want a structured, central place for customer reports, feature requests and support conversations."
-      },
-      "languages": {
-        "q": "Which languages does it support?",
-        "a": "The interface is available in English, German, French and Spanish."
-      },
-      "private": {
-        "q": "Who can see my issues?",
-        "a": "Each issue is either public, visible to registered users only, or private to the person who reported it. Internal comments stay hidden from reporters."
       }
     },
     "cta_title": "Ready to get started?",

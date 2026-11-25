@@ -2,6 +2,26 @@
 
 All notable changes of LeweDesk. The newest version is first.
 
+## 1.1.3 (2026-11-25)
+
+Improvement release.
+
+### Features
+
+- Add a `GitHub Repo` field to products and a `Commits` panel to the issue page that lists the commits of the repository that mention the issue key
+
+### Improvements
+
+- Move attachments section below the comments section in issue view (https://desk.lewe.com/issue.html?id=126)
+- Collapse the issue list filter panel on phones and show the number of active filters (https://desk.lewe.com/issue.html?id=127)
+- Make the issue list table responsive with short column headers on phones (https://desk.lewe.com/issue.html?id=127)
+- Start with a narrow icon-only sidebar on medium screens (https://desk.lewe.com/issue.html?id=127)
+- Replace the `Bulk..` dropdown of the issue list with a `Bulk Edit` button and a dialog to change priority, status, resolution, product, versions, assignee and reporter of the selected issues
+
+### Removals
+
+- Remove features and FAQ sections from About page
+
 ## 1.1.2 (2026-11-24)
 
 Improvement release.

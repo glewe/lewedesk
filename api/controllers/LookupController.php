@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\Models\LookupModel;
 use App\Services\AuditLog;
+use App\Utils\GitHubRepo;
 
 //---------------------------------------------------------------------------
 /**
@@ -49,6 +50,7 @@ class LookupController
   private AuditLog $audit;
   private array $definition;
   private $deleteGuard;
+  private $repoCheck;
 
   //---------------------------------------------------------------------------
   /**
@@ -59,13 +61,16 @@ class LookupController
    * @param array         $definition  The definition of the lookup (see App\Config\Lookups)
    * @param callable|null $deleteGuard fn(string $table, int[] $ids): ?string, gives the reason why the records cannot be
    *                                   deleted (for example, SLA policies use them), or null
+   * @param callable|null $repoCheck   fn(string $repo): string, tells whether a GitHub repository exists (exists, missing,
+   *                                   unavailable); used when the GitHub Repo of a product is saved
    */
-  public function __construct(LookupModel $model, AuditLog $audit, array $definition, ?callable $deleteGuard = null)
+  public function __construct(LookupModel $model, AuditLog $audit, array $definition, ?callable $deleteGuard = null, ?callable $repoCheck = null)
   {
     $this->model = $model;
     $this->audit = $audit;
     $this->definition = $definition;
     $this->deleteGuard = $deleteGuard;
+    $this->repoCheck = $repoCheck;
   }
 
   //---------------------------------------------------------------------------
@@ -153,12 +158,18 @@ class LookupController
       return;
     }
 
+    $unverified = $this->checkRepo($data, null);
+    if (is_string($unverified) && $unverified !== 'unverified') {
+      $this->fail(400, $unverified);
+      return;
+    }
+
     $id = $this->audit->transaction(function () use ($data): int {
       $id = $this->model->create($data);
       $this->audit->log($this->event('created'), null, $this->type(), $id, (string)$data['name'], null, $data);
       return $id;
     });
-    $this->respond(['status' => 'success', 'message' => "{$this->label()} created", 'data' => $this->model->get($id)], 201);
+    $this->respond(['status' => 'success', 'message' => "{$this->label()} created", 'data' => $this->model->get($id)] + $this->repoWarning($unverified), 201);
   }
 
   //---------------------------------------------------------------------------
@@ -179,6 +190,12 @@ class LookupController
       return;
     }
 
+    $unverified = $this->checkRepo($data, $existing);
+    if (is_string($unverified) && $unverified !== 'unverified') {
+      $this->fail(400, $unverified);
+      return;
+    }
+
     $this->audit->transaction(function () use ($id, $data, $existing): void {
       $this->model->update($id, $data);
       $diff = AuditLog::diff($existing, $data, array_keys($data));
@@ -186,7 +203,44 @@ class LookupController
         $this->audit->log($this->event('updated'), null, $this->type(), $id, (string)($data['name'] ?? $existing['name']), $diff['old'], $diff['new']);
       }
     });
-    $this->respond(['status' => 'success', 'message' => "{$this->label()} updated", 'data' => $this->model->get($id)]);
+    $this->respond(['status' => 'success', 'message' => "{$this->label()} updated", 'data' => $this->model->get($id)] + $this->repoWarning($unverified));
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Checks the GitHub Repo of a product that is about to be saved (only when it is new or changed): the repository
+   * must exist and be public. If GitHub cannot be asked the product is saved anyway, and the answer carries a warning.
+   *
+   * @param array      $data     The validated data
+   * @param array|null $existing The existing record when updating
+   *
+   * @return string|null An error message; 'unverified' when GitHub could not be asked; null when all is fine or nothing was checked
+   */
+  private function checkRepo(array $data, ?array $existing): ?string
+  {
+    $repo = $data['github_repo'] ?? null;
+    if ($this->repoCheck === null || !is_string($repo) || $repo === '' || ($existing !== null && ($existing['github_repo'] ?? null) === $repo)) {
+      return null;
+    }
+
+    return match (($this->repoCheck)($repo)) {
+      'exists' => null,
+      'missing' => 'The GitHub repository was not found. It must exist and be public (private repositories are not supported).',
+      default => 'unverified',
+    };
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Gets the warning part of an answer when the GitHub Repo could not be verified.
+   *
+   * @param string|null $unverified The result of checkRepo()
+   *
+   * @return array
+   */
+  private function repoWarning(?string $unverified): array
+  {
+    return $unverified === 'unverified' ? ['warning' => 'github_repo_unverified'] : [];
   }
 
   //---------------------------------------------------------------------------
@@ -394,6 +448,18 @@ class LookupController
     switch ($field) {
       case 'issue_key':
         return $this->issueKey($value, $given, $existing);
+
+      case 'github_repo':
+        // Empty clears the field; otherwise a public GitHub repository, stored as https://github.com/owner/repo
+        $text = trim((string)($value ?? ''));
+        if ($text === '') {
+          return ['value' => null];
+        }
+        $repo = GitHubRepo::normalize($text);
+
+        return $repo === null
+          ? 'GitHub Repo must be a GitHub repository like https://github.com/owner/repo or owner/repo'
+          : ['value' => $repo];
 
       case 'description':
         $text = trim((string)($value ?? ''));

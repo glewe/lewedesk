@@ -93,7 +93,8 @@ final class Lookups
         'label' => 'Product',
         'permission' => 'manage_products',
         // The key (issue_key) is the prefix of the issue keys of the product (LD-12); see _docs/PRODUCTS.md
-        'fields' => ['issue_key', ...$visual],
+        // The GitHub repository (github_repo) lists the commits of the product on the issue page; see docs/GITHUB.md
+        'fields' => ['issue_key', ...$visual, 'github_repo'],
         'protected' => false,
         'creatable' => true,
         'deletable' => true,

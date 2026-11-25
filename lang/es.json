@@ -578,6 +578,9 @@
       "key_invalid": "Introduce de 1 a 4 letras.",
       "key_taken": "Otro producto tiene esta clave.",
       "key_change_warning": "Las incidencias de este producto reciben la nueva clave. Sus claves antiguas siguen siendo válidas y llevan a ellas.",
+      "github_repo": "Repositorio de GitHub",
+      "github_repo_desc": "Repositorio público de GitHub del producto, p. ej. https://github.com/owner/repo u owner/repo. La página de la incidencia muestra sus commits que mencionan la clave de la incidencia. No se admiten repositorios privados.",
+      "github_repo_unverified": "El repositorio de GitHub se guardó, pero no se pudo contactar con GitHub para comprobarlo.",
       "replacement_needed": "El producto seleccionado tiene {count} incidencia(s). Elige el producto al que deben pasar estas incidencias. Allí reciben claves nuevas (las claves antiguas siguen funcionando) y se borran sus versiones:",
       "replacement_default": "El producto seleccionado es el producto predeterminado. Elige el producto que pasa a ser el predeterminado (sus incidencias también pasan a él):"
     },
@@ -907,12 +910,15 @@
     },
     "columns": {
       "id": "Incidencia",
+      "id_short": "Inc.",
       "summary": "Resumen",
+      "summary_short": "Res.",
       "reporter": "Informante",
       "assignee": "Asignado a",
       "created": "Creada",
       "updated": "Actualizada",
       "status": "Estado",
+      "status_short": "Est.",
       "sla": "SLA"
     },
     "access": {
@@ -938,11 +944,11 @@
       "sla_breached": "Incidencias con SLA incumplido"
     },
     "bulk": {
-      "menu": "Acciones masivas...",
-      "change_status": "Cambiar estado",
-      "status_placeholder": "Seleccione un estado...",
-      "status_info": "Establecer el estado de las {count} incidencias seleccionadas en:",
-      "done_status": "Estado de {count} incidencia(s) cambiado.",
+      "menu": "Edición masiva",
+      "info": "Cambie los campos de las {count} incidencias seleccionadas. Los campos en \"Sin cambios\" permanecen como están.",
+      "keep": "Sin cambios",
+      "versions_hint": "Las versiones se pueden establecer cuando las incidencias seleccionadas pertenecen a un producto, o cuando se elige un producto.",
+      "done_edit": "{count} incidencia(s) actualizada(s).",
       "restore": "Restaurar",
       "yes_restore": "Sí, restaurar",
       "confirm_delete": "¿Eliminar las {count} incidencias seleccionadas? Se mueven a las incidencias eliminadas y se pueden restaurar.",
@@ -968,7 +974,9 @@
       "participant": "Participante: {name}",
       "reset": "Restablecer filtros",
       "all_sources": "Todos los orígenes",
-      "hide_closed": "Ocultar cerrados"
+      "hide_closed": "Ocultar cerrados",
+      "toggle": "Filtros",
+      "active_count": "{count} activos"
     },
     "custom_views": {
       "save_button": "Guardar vista",
@@ -1252,6 +1260,13 @@
     },
     "load_error": "No se pudo cargar el historial."
   },
+  "commits": {
+    "title": "Commits",
+    "empty": "No se encontraron commits.",
+    "unavailable": "Ahora no se pudieron cargar los commits desde GitHub. Inténtalo de nuevo más tarde.",
+    "stale": "GitHub no respondió; es posible que estos commits estén desactualizados.",
+    "open_repo": "Abrir repositorio"
+  },
   "attachments": {
     "title": "Archivos adjuntos",
     "create_desc": "Adjunta archivos a la incidencia. Se guardan junto con la incidencia.",
@@ -1337,34 +1352,6 @@
     "issues": "Incidencias",
     "hero_title": "My Company <span class=\"text-primary hero-shimmer\">Atención al cliente</span>",
     "hero_lead": "LeweDesk es el sistema de helpdesk y gestión de tickets de Lewe Labs. Informa de problemas, solicita mejoras y sigue cada caso desde el primer mensaje hasta la solución.",
-    "features_title": "Todo lo que necesita un equipo de soporte",
-    "features_lead": "Un conjunto de herramientas enfocado para recopilar, organizar y resolver las consultas de los clientes.",
-    "features": {
-      "issues": {
-        "title": "Seguimiento de incidencias",
-        "text": "Informa de problemas y solicita mejoras. Cada incidencia tiene un tipo, estado, producto, etiquetas, descripción en markdown, comentarios y un historial completo."
-      },
-      "workflow": {
-        "title": "Flujo de trabajo configurable",
-        "text": "Define tus propios tipos de incidencia, estados, resoluciones y productos para que el helpdesk se adapte a la forma de trabajar de tu equipo."
-      },
-      "access": {
-        "title": "Control de acceso detallado",
-        "text": "Los roles, grupos y permisos deciden quién ve qué. Las incidencias son públicas, visibles para los usuarios registrados o privadas para el informante."
-      },
-      "notifications": {
-        "title": "Notificaciones",
-        "text": "Mantente informado con notificaciones en la aplicación y por correo, configurables por usuario y por evento."
-      },
-      "attachments": {
-        "title": "Archivos adjuntos y búsqueda",
-        "text": "Adjunta archivos a incidencias y comentarios, y encuentra cualquier incidencia rápidamente con la búsqueda integrada y las vistas guardadas."
-      },
-      "security": {
-        "title": "Seguro por diseño",
-        "text": "La autenticación de dos factores, LDAP o SSO (OIDC) opcionales, la protección contra spam y un registro de auditoría mantienen tus datos a salvo."
-      }
-    },
     "steps_title": "Cómo funciona",
     "steps": {
       "register": {
@@ -1378,25 +1365,6 @@
       "follow": {
         "title": "Síguela hasta su resolución",
         "text": "Recibe avisos de cada comentario y cambio de estado hasta que la incidencia se resuelva."
-      }
-    },
-    "faq_title": "Preguntas frecuentes",
-    "faq": {
-      "what": {
-        "q": "¿Qué es LeweDesk?",
-        "a": "LeweDesk es un sistema web de helpdesk y gestión de tickets para atención al cliente, de Lewe Labs. Los clientes informan de problemas y solicitan mejoras, y el personal de soporte les da seguimiento hasta su resolución."
-      },
-      "who": {
-        "q": "¿Para quién es?",
-        "a": "Para proveedores de software y equipos de servicio que quieren un lugar central y estructurado para las consultas de los clientes, las solicitudes de funciones y las conversaciones de soporte."
-      },
-      "languages": {
-        "q": "¿Qué idiomas admite?",
-        "a": "La interfaz está disponible en inglés, alemán, francés y español."
-      },
-      "private": {
-        "q": "¿Quién puede ver mis incidencias?",
-        "a": "Cada incidencia es pública, visible solo para los usuarios registrados o privada para la persona que la informó. Los comentarios internos permanecen ocultos para los informantes."
       }
     },
     "cta_title": "¿Listo para empezar?",

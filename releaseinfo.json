@@ -1,5 +1,25 @@
 [
   {
+    "version": "1.1.3",
+    "date": "2026-11-25",
+    "info": "Improvement release.",
+    "bugfixes": [
+    ],
+    "features": [
+      { "summary": "Add a `GitHub Repo` field to products and a `Commits` panel to the issue page that lists the commits of the repository that mention the issue key", "issue": "" }
+    ],
+    "improvements": [
+      { "summary": "Move attachments section below the comments section in issue view", "issue": "https://desk.lewe.com/issue.html?id=126" },
+      { "summary": "Collapse the issue list filter panel on phones and show the number of active filters", "issue": "https://desk.lewe.com/issue.html?id=127" },
+      { "summary": "Make the issue list table responsive with short column headers on phones", "issue": "https://desk.lewe.com/issue.html?id=127" },
+      { "summary": "Start with a narrow icon-only sidebar on medium screens", "issue": "https://desk.lewe.com/issue.html?id=127" },
+      { "summary": "Replace the `Bulk..` dropdown of the issue list with a `Bulk Edit` button and a dialog to change priority, status, resolution, product, versions, assignee and reporter of the selected issues", "issue": "" }
+    ],
+    "removals": [
+      { "summary": "Remove features and FAQ sections from About page", "issue": "" }
+    ]
+  },
+  {
     "version": "1.1.2",
     "date": "2026-11-24",
     "info": "Improvement release.",

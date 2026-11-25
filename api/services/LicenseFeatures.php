@@ -18,6 +18,7 @@ namespace App\Services;
  *   - self_register the registration page creates no accounts (the system setting allow_registration is kept)
  *   - two_fa_setup  nobody can set up 2FA, and force_2fa has no effect (users who set it up keep it)
  *   - mail_in       Email-to-ticket reads no mail (the mails stay in the mailbox; see _docs/EMAIL_TO_TICKET.md)
+ *   - github        The issue page shows no commits and the API gives none (the GitHub Repo of the products is kept; see docs/GITHUB.md)
  *
  * and these new records cannot be created beyond the limit (existing ones can still be edited and deleted):
  *
@@ -35,7 +36,7 @@ class LicenseFeatures
   public const MAX_USERS = 20;
 
   /** The features that are switched off in the limited mode */
-  public const SWITCHED = ['audit_log', 'custom_views', 'sla', 'self_register', 'two_fa_setup', 'mail_in'];
+  public const SWITCHED = ['audit_log', 'custom_views', 'sla', 'self_register', 'two_fa_setup', 'mail_in', 'github'];
 
   /** The message of an API answer (HTTP 402, code license_limit) for a switched off feature */
   public const MESSAGE_FEATURE = 'This feature is currently disabled due to an invalid license.';

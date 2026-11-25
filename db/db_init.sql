@@ -511,8 +511,33 @@ CREATE TABLE IF NOT EXISTS products (
   icon VARCHAR(50),
   color VARCHAR(7) NOT NULL DEFAULT '#6b7785',
   background_color VARCHAR(7) NOT NULL DEFAULT '#6b7785',
+  github_repo VARCHAR(255) NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+-- GitHub integration (see docs/GITHUB.md). `github_repo` is the public repository of the product, stored as
+-- https://github.com/owner/repo; the issue page lists its commits that mention the issue key. Added to databases
+-- created before (works on MySQL and MariaDB; a second run does nothing).
+SET @add_github_repo = (
+  SELECT IF(COUNT(*) = 0, 'ALTER TABLE products ADD COLUMN github_repo VARCHAR(255) NULL AFTER background_color', 'DO 0')
+  FROM information_schema.columns
+  WHERE table_schema = DATABASE() AND table_name = 'products' AND column_name = 'github_repo'
+);
+PREPARE add_github_repo_stmt FROM @add_github_repo;
+EXECUTE add_github_repo_stmt;
+DEALLOCATE PREPARE add_github_repo_stmt;
+
+-- Cache of the commits GitHub found for an issue key (live search, kept for a few minutes; rows older than a day are
+-- deleted by the housekeeping). `status` 'error' marks a failed search that is not repeated at once. `commits` holds JSON.
+CREATE TABLE IF NOT EXISTS github_commit_cache (
+  repo VARCHAR(255) NOT NULL,
+  issue_key VARCHAR(20) NOT NULL,
+  commits MEDIUMTEXT NOT NULL,
+  status ENUM('ok', 'error') NOT NULL DEFAULT 'ok',
+  fetched_at DATETIME NOT NULL,
+  PRIMARY KEY (repo, issue_key),
+  INDEX idx_github_commit_cache_fetched (fetched_at)
 ) ENGINE=InnoDB;
 
 -- Versions of a product (status: planned, development, released, archived). Deleting a product deletes its versions

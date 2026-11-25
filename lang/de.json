@@ -567,6 +567,9 @@
       "key_invalid": "Bitte geben Sie 1 bis 4 Buchstaben ein.",
       "key_taken": "Ein anderes Produkt hat diesen Schlüssel.",
       "key_change_warning": "Die Issues dieses Produkts bekommen den neuen Schlüssel. Ihre alten Schlüssel bleiben gültig und führen weiterhin zu ihnen.",
+      "github_repo": "GitHub-Repo",
+      "github_repo_desc": "Öffentliches GitHub-Repository des Produkts, z. B. https://github.com/owner/repo oder owner/repo. Die Issue-Seite listet dessen Commits, die den Issue-Schlüssel enthalten. Private Repositories werden nicht unterstützt.",
+      "github_repo_unverified": "Das GitHub-Repository wurde gespeichert, aber GitHub war nicht erreichbar, um es zu prüfen.",
       "replacement_needed": "Das ausgewählte Produkt hat {count} Issue(s). Wählen Sie das Produkt, in das diese Issues stattdessen verschoben werden. Sie bekommen dort neue Schlüssel (die alten funktionieren weiter), ihre Versionen werden entfernt:",
       "replacement_default": "Das ausgewählte Produkt ist das Standardprodukt. Wählen Sie das Produkt, das stattdessen Standardprodukt wird (seine Issues werden dorthin verschoben):",
       "add_title": "Produkt hinzufügen",
@@ -907,12 +910,15 @@
     },
     "columns": {
       "id": "Issue",
+      "id_short": "Iss",
       "summary": "Zusammenfassung",
+      "summary_short": "Zus.",
       "reporter": "Melder",
       "assignee": "Bearbeiter",
       "created": "Erstellt",
       "updated": "Aktualisiert",
       "status": "Status",
+      "status_short": "Stat",
       "sla": "SLA"
     },
     "access": {
@@ -938,11 +944,11 @@
       "sla_breached": "Issues mit verletztem SLA"
     },
     "bulk": {
-      "menu": "Mehrfachaktion...",
-      "change_status": "Status ändern",
-      "status_placeholder": "Status auswählen...",
-      "status_info": "Status der {count} ausgewählten Issues setzen auf:",
-      "done_status": "Status von {count} Issue(s) geändert.",
+      "menu": "Mehrfachbearbeitung",
+      "info": "Felder der {count} ausgewählten Issues ändern. Felder auf \"Keine Änderung\" bleiben unverändert.",
+      "keep": "Keine Änderung",
+      "versions_hint": "Die Versionen können gesetzt werden, wenn die ausgewählten Issues zu einem Produkt gehören oder ein Produkt gewählt ist.",
+      "done_edit": "{count} Issue(s) aktualisiert.",
       "restore": "Wiederherstellen",
       "yes_restore": "Ja, wiederherstellen",
       "confirm_delete": "Die {count} ausgewählten Issues löschen? Sie werden zu den gelöschten Issues verschoben und können wiederhergestellt werden.",
@@ -968,7 +974,9 @@
       "participant": "Beteiligt: {name}",
       "reset": "Filter zurücksetzen",
       "all_sources": "Alle Quellen",
-      "hide_closed": "Geschlossene ausblenden"
+      "hide_closed": "Geschlossene ausblenden",
+      "toggle": "Filter",
+      "active_count": "{count} aktiv"
     },
     "custom_views": {
       "save_button": "Ansicht speichern",
@@ -1310,6 +1318,13 @@
     },
     "load_error": "Der Verlauf konnte nicht geladen werden."
   },
+  "commits": {
+    "title": "Commits",
+    "empty": "Keine Commits gefunden.",
+    "unavailable": "Die Commits konnten gerade nicht von GitHub geladen werden. Bitte später erneut versuchen.",
+    "stale": "GitHub hat nicht geantwortet; diese Commits sind möglicherweise veraltet.",
+    "open_repo": "Repository öffnen"
+  },
   "attachments": {
     "title": "Anhänge",
     "create_desc": "Hängen Sie Dateien an das Issue an. Sie werden mit dem Issue gespeichert.",
@@ -1395,34 +1410,6 @@
     "issues": "Issues",
     "hero_title": "My Company <span class=\"text-primary hero-shimmer\">Kundensupport</span>",
     "hero_lead": "LeweDesk ist das Helpdesk- und Ticketsystem von Lewe Labs. Melden Sie Probleme, wünschen Sie Verbesserungen und verfolgen Sie jeden Fall von der ersten Nachricht bis zur Lösung.",
-    "features_title": "Alles, was ein Support-Team braucht",
-    "features_lead": "Ein gezielter Werkzeugsatz, um Kundenmeldungen zu sammeln, zu ordnen und zu lösen.",
-    "features": {
-      "issues": {
-        "title": "Vorgänge verfolgen",
-        "text": "Melden Sie Probleme und wünschen Sie Verbesserungen. Jeder Vorgang hat Typ, Status, Produkt, Tags, Markdown-Beschreibung, Kommentare und eine vollständige Historie."
-      },
-      "workflow": {
-        "title": "Konfigurierbarer Workflow",
-        "text": "Legen Sie eigene Vorgangstypen, Status, Lösungen und Produkte fest, damit der Helpdesk zu den Abläufen Ihres Teams passt."
-      },
-      "access": {
-        "title": "Feingranulare Zugriffsrechte",
-        "text": "Rollen, Gruppen und Berechtigungen bestimmen, wer was sieht. Vorgänge sind öffentlich, für registrierte Benutzer sichtbar oder nur für den Melder."
-      },
-      "notifications": {
-        "title": "Benachrichtigungen",
-        "text": "Bleiben Sie informiert mit Benachrichtigungen in der Anwendung und per E-Mail, einstellbar pro Benutzer und Ereignis."
-      },
-      "attachments": {
-        "title": "Anhänge und Suche",
-        "text": "Hängen Sie Dateien an Vorgänge und Kommentare an und finden Sie jeden Vorgang schnell mit der integrierten Suche und den Ansichten."
-      },
-      "security": {
-        "title": "Sicher von Grund auf",
-        "text": "Zwei-Faktor-Authentifizierung, optional LDAP oder SSO (OIDC), Spam-Schutz und ein Audit-Log schützen Ihre Daten."
-      }
-    },
     "steps_title": "So funktioniert es",
     "steps": {
       "register": {
@@ -1436,25 +1423,6 @@
       "follow": {
         "title": "Bis zur Lösung verfolgen",
         "text": "Lassen Sie sich über jeden Kommentar und jede Statusänderung informieren, bis der Vorgang gelöst ist."
-      }
-    },
-    "faq_title": "Häufige Fragen",
-    "faq": {
-      "what": {
-        "q": "Was ist LeweDesk?",
-        "a": "LeweDesk ist ein webbasiertes Helpdesk- und Ticketsystem von Lewe Labs. Kunden melden Probleme und wünschen Verbesserungen, das Support-Team verfolgt sie bis zur Lösung."
-      },
-      "who": {
-        "q": "Für wen ist es gedacht?",
-        "a": "Für Softwarehersteller und Service-Teams, die einen strukturierten, zentralen Ort für Kundenmeldungen, Funktionswünsche und Supportgespräche suchen."
-      },
-      "languages": {
-        "q": "Welche Sprachen werden unterstützt?",
-        "a": "Die Oberfläche ist auf Englisch, Deutsch, Französisch und Spanisch verfügbar."
-      },
-      "private": {
-        "q": "Wer kann meine Vorgänge sehen?",
-        "a": "Jeder Vorgang ist entweder öffentlich, nur für registrierte Benutzer sichtbar oder nur für den Melder. Interne Kommentare bleiben für Melder verborgen."
       }
     },
     "cta_title": "Bereit für den Start?",

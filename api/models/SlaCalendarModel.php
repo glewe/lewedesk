@@ -270,6 +270,22 @@ class SlaCalendarModel
 
   //---------------------------------------------------------------------------
   /**
+   * Deletes all holidays of a calendar.
+   *
+   * @param int $calendarId The calendar
+   *
+   * @return int The number of holidays that were deleted
+   */
+  public function deleteHolidays(int $calendarId): int
+  {
+    $stmt = $this->db->prepare('DELETE FROM sla_holidays WHERE calendar_id = :id');
+    $stmt->execute(['id' => $calendarId]);
+
+    return $stmt->rowCount();
+  }
+
+  //---------------------------------------------------------------------------
+  /**
    * Replaces the opening hours of a calendar.
    *
    * @param int   $calendarId The calendar

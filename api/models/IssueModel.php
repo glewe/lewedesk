@@ -183,12 +183,18 @@ class IssueModel
 
   //---------------------------------------------------------------------------
   /**
-   * Counts the issues of every quick view for the viewer (they vary with the visibility).
+   * Counts the issues of every quick view for the viewer (they vary with the visibility). "Closed"
+   * issues are left out, so the badges match the pages that hide them by default. The issue list
+   * overrides the count of the view it shows with its "Hide closed" switch, including that view's
+   * closed issues when the switch is off.
+   *
+   * @param bool|null   $hideClosed Whether the named view shows the closed issues (null: no view shows them)
+   * @param string|null $view       The view the override belongs to (null: it applies to every view)
    *
    * @return array<string, int> all, mine, assigned, unassigned, open, waiting, in_progress, done and,
    *                            for users who may see deleted issues, deleted
    */
-  public function counts(): array
+  public function counts(?bool $hideClosed = null, ?string $view = null): array
   {
     [$scope, $params] = $this->visibility->scope('i');
 
@@ -196,6 +202,13 @@ class IssueModel
     foreach (self::VIEWS as $name => $condition) {
       if ($name === 'sla_breached' && !$this->slaVisible()) {
         continue;
+      }
+      // Only the view the page shows may include the closed issues (its "Hide closed" switch is off)
+      $applies = $hideClosed !== null && ($view === null || $view === $name);
+      $hide = $applies ? $hideClosed : true;
+      if ($hide) {
+        // Custom statuses have no key (NULL), and NULL <> 'closed' is NULL, so compare null-safe
+        $condition .= " AND NOT (s.`key` <=> 'closed')";
       }
       $sums[] = "COALESCE(SUM($condition), 0) AS `$name`";
     }

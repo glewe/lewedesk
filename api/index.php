@@ -553,7 +553,8 @@ try {
     exit;
   }
 
-  // SLA configuration (GET, POST /sla/calendars|holidays|policies, GET, PUT, DELETE /sla/calendars|holidays|policies/12).
+  // SLA configuration (GET, POST /sla/calendars|holidays|policies, DELETE /sla/holidays?calendar_id=1 for all holidays of
+  // a calendar, GET, PUT, DELETE /sla/calendars|holidays|policies/12).
   // Needs manage_sla; off in the limited mode of the license (the configuration is kept).
   if (preg_match('#^/sla/(calendars|holidays|policies|apply)(?:/(\d+))?/?$#', $path, $m)) {
     requirePermission($auth, 'manage_sla');

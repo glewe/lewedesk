@@ -22,6 +22,7 @@ use App\Services\SlaService;
  *
  *   GET    /sla/holidays?calendar_id=1   the holidays of a calendar
  *   POST   /sla/holidays                 create ({"calendar_id", "name", "from", "to", "recurring"})
+ *   DELETE /sla/holidays?calendar_id=1   delete all holidays of a calendar
  *   GET    /sla/holidays/{id}            one holiday
  *   PUT    /sla/holidays/{id}            change (name, from, to, recurring)
  *   DELETE /sla/holidays/{id}            delete
@@ -75,7 +76,7 @@ class SlaController
       $method === 'POST' && $id === null ? $this->apply() : $this->fail(405, 'Method not allowed');
       return;
     }
-    if ($id === null && !in_array($method, ['GET', 'POST'], true)) {
+    if ($id === null && !in_array($method, ['GET', 'POST'], true) && !($resource === 'holidays' && $method === 'DELETE')) {
       $this->fail(405, 'Method not allowed');
       return;
     }
@@ -245,6 +246,10 @@ class SlaController
         $this->respond(['status' => 'success', 'data' => $this->calendars->holidays($calendarId)]);
         return;
       }
+      if ($method === 'DELETE') {
+        $this->deleteHolidays();
+        return;
+      }
       $this->createHoliday();
       return;
     }
@@ -370,6 +375,36 @@ class SlaController
     $this->refreshTimers((int)$holiday['calendar_id'], null);
 
     $this->respond(['status' => 'success', 'message' => 'Holiday deleted']);
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Deletes all holidays of the calendar named in calendar_id.
+   *
+   * @return void
+   */
+  private function deleteHolidays(): void
+  {
+    $calendarId = self::toInt($_GET['calendar_id'] ?? null);
+    $calendar = $calendarId === null ? null : $this->calendars->find($calendarId);
+    if ($calendar === null) {
+      $this->fail(400, 'calendar_id is required and must be a calendar');
+      return;
+    }
+
+    $deleted = $this->audit->transaction(function () use ($calendar): int {
+      $count = $this->calendars->deleteHolidays($calendar['id']);
+      if ($count > 0) {
+        $this->audit->log('sla_holiday.deleted_all', null, 'sla_calendar', $calendar['id'], $calendar['name'], null, ['count' => $count]);
+      }
+
+      return $count;
+    });
+    if ($deleted > 0) {
+      $this->refreshTimers($calendar['id'], null);
+    }
+
+    $this->respond(['status' => 'success', 'message' => 'Holidays deleted', 'data' => ['deleted' => $deleted]]);
   }
 
   //---------------------------------------------------------------------------

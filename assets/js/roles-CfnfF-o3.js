@@ -1,0 +1,1 @@
+import"./fonts-BQIp5bly.js";import{i}from"./entity-list-Bz8G9DqF.js";import"./main-Bklnr4Fx.js";import"./dataTables.bootstrap5.min-CXK73DxY.js";import"./select.bootstrap5.min-Cs5d0pye.js";import"./issue-key-C-pF9m5h.js";i("roles","role-edit.html");

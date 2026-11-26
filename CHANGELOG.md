@@ -2,6 +2,19 @@
 
 All notable changes of LeweDesk. The newest version is first.
 
+## 1.1.4 (2026-11-26)
+
+Improvement release.
+
+### Features
+
+- Add a `Remove all` button to the Holidays panel of the SLA calendar edit page
+
+### Bug fixes
+
+- Fix the bulk edit Save button staying disabled when changing to a status of the category Done without choosing a new resolution
+- Exclude closed issues from the sidebar quick view counts and keep the count of the shown view in sync with the `Hide closed` toggle
+
 ## 1.1.3 (2026-11-25)
 
 Improvement release.

@@ -23,7 +23,7 @@ use DateTimeZone;
  *
  *   GET  /issues          list (DataTables server-side processing; q searches, see IssueSearch)
  *   POST /issues          create (optional tag_ids; upload_token attaches the temporary uploads made under that token)
- *   GET  /issues/counts   number of issues per quick view
+ *   GET  /issues/counts   number of issues per quick view (optional view and hide_closed override the shown view)
  *   GET  /issues/people   reporters and assignees of the visible issues (list filters)
  *   GET  /issues/accessible?ids=1,2  which of the issues the viewer may see (id and summary), at most 100
  *   GET  /issues/agents   the users who can be assigned (role Agent; assign_issue)
@@ -127,9 +127,15 @@ class IssueController
     }
 
     if ($param === 'counts' || $param === 'people') {
-      $method === 'GET'
-        ? $this->respond(['status' => 'success', 'data' => $param === 'counts' ? $this->model->counts() : $this->model->people()])
-        : $this->fail(405, 'Method not allowed');
+      if ($method !== 'GET') {
+        $this->fail(405, 'Method not allowed');
+        return;
+      }
+      if ($param === 'counts') {
+        $this->counts();
+      } else {
+        $this->respond(['status' => 'success', 'data' => $this->model->people()]);
+      }
       return;
     }
 
@@ -138,6 +144,32 @@ class IssueController
       'PUT' => $this->update((int)$param),
       default => $this->fail(405, 'Method not allowed'),
     };
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Counts the issues of the quick views with the closed issues left out. The issue list passes its
+   * own view and the state of its switch, so the badge of the shown view follows the list while the
+   * viewer toggles the closed issues on and off.
+   */
+  private function counts(): void
+  {
+    $view = $_GET['view'] ?? null;
+    if ($view !== null && (!is_string($view) || !array_key_exists($view, IssueModel::VIEWS))) {
+      $this->fail(400, 'Unknown view');
+      return;
+    }
+
+    $hideClosed = null;
+    if (isset($_GET['hide_closed'])) {
+      if (!in_array($_GET['hide_closed'], ['0', '1'], true)) {
+        $this->fail(400, 'Filter hide_closed must be 0 or 1');
+        return;
+      }
+      $hideClosed = $_GET['hide_closed'] === '1';
+    }
+
+    $this->respond(['status' => 'success', 'data' => $this->model->counts($hideClosed, $view)]);
   }
 
   //---------------------------------------------------------------------------

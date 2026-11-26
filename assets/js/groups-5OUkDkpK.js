@@ -1,1 +1,0 @@
-import"./fonts-BQIp5bly.js";import{i}from"./entity-list-C7N-my04.js";import"./main-sHtMDhKR.js";import"./dataTables.bootstrap5.min-CXK73DxY.js";import"./select.bootstrap5.min-Cs5d0pye.js";import"./issue-key-C-pF9m5h.js";i("groups","group-edit.html");
